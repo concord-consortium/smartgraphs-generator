@@ -1,0 +1,16 @@
+{
+  "type": "Activity",
+  "name": "Maria’s Run",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "in this activity...."
+    },
+    {
+      "type": "Page",
+      "name": "Where did she stop",
+      "text": "look at the graph..."
+    }
+  ]
+}
