@@ -7,9 +7,16 @@ task 'build', "build the smartgraphs-generator javascript into lib/ from coffees
 task 'watch', "watch the coffeescript source tree in src/ for changes and build javascript files into lib/", watch = (cb) ->
   run 'nbin/jitter', ['src', 'lib'], cb
 
+task 'test', "run all Jasmine spec tests in spec/", test = ({quiet}) ->
+  options = ['--coffee', 'spec']
+  options.unshift '--verbose' unless quiet?
+  run 'nbin/jasmine-node', options
+
 srcFiles = ->
   files = fs.readdirSync 'src'
   return ('src/' + file for file in files when file.match(/\.coffee$/))
+
+option '-q', '--quiet', "When running tests, do not use --verbose flag"
 
 echo = (buffer) -> console.log buffer.toString()
 

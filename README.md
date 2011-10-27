@@ -5,10 +5,15 @@ We are developing a Node.js module written in Coffeescript so that it can be run
 
 To get started:
 
-  * Clone this repository
-  * Install [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/)
-  * Run `npm install` in the root of the repository to install [commander.js](https://github.com/visionmedia/commander.js/) and [Coffeescript](http://jashkenas.github.com/coffee-script/) sandboxed to this project's `node_modules` folder
-  * Look at the example command-line utility `bin/pizza` which uses `src/pizza.coffee`. Run `bin/pizza -h` to see usage and play with `bin/pizza`
-  * To run the coffeescript REPL, type `nbin/coffee`
+  * Clone this repository.
+  * Install [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/).
+  * Run `npm install` in the root of the repository to install [commander.js](https://github.com/visionmedia/commander.js/), [Coffeescript](http://jashkenas.github.com/coffee-script/) and [jasmine-node](https://github.com/mhevery/jasmine-node) sandboxed to this project's `node_modules` folder.
+  * Look at the example command-line utility `bin/pizza` which uses `src/pizza.coffee`. Run `bin/pizza -h` to see usage and play with `bin/pizza`.
+  * To run the coffeescript REPL, type `nbin/coffee`.
   * The source tree in `src/` is written in Coffeescript and compiled to Javascript in 'lib/'.
   * We are committing the compiled Javascript as we go. Therefore, before editing source files, run `nbin/cake watch` in a separate window to build the Javascript incrementally as you save Coffeescript files. When needed, you can run `nbin/cake build` to build the Javascript files in one go.
+
+Tests:
+
+  * Add Jasmine spec tests named `<name>.spec.coffee` to `spec/` directory. There is no need to compile these files to Javascript. However, the tests must have the `.spec.coffee` suffix to be recognized (or `.spec.js`, if they are originally written in Javascript).
+  * To run tests, type `nbin/cake test`. To suppress verbose test output and just get a summary, use the `-q` option: `nbin/cake -q test`.

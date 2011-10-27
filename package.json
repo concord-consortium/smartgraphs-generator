@@ -5,7 +5,8 @@
   },
   "devDependencies": {
     "coffee-script": "~1.1.2",
-    "jitter": "~1.1.0"
+    "jitter": "~1.1.0",
+    "jasmine-node": "~1.0.12"
   },
   "engines": {
     "node": ">= 0.4.0"
