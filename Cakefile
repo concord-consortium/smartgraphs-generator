@@ -1,6 +1,8 @@
 fs      = require 'fs'
 {spawn} = require 'child_process'
 
+option '-q', '--quiet', "When running tests, do not use --verbose flag"
+
 task 'build', "build the smartgraphs-generator javascript into lib/ from coffeescript in src/", build = (cb) ->
   run 'nbin/coffee', ['-c', '-o', 'lib/'].concat(srcFiles()), cb
 
@@ -15,8 +17,6 @@ task 'test', "run all Jasmine spec tests in spec/", test = ({quiet}) ->
 srcFiles = ->
   files = fs.readdirSync 'src'
   return ('src/' + file for file in files when file.match(/\.coffee$/))
-
-option '-q', '--quiet', "When running tests, do not use --verbose flag"
 
 echo = (buffer) -> console.log buffer.toString()
 
