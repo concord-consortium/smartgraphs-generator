@@ -4,6 +4,10 @@
     "commander": "~0.2.1"
   },
   "devDependencies": {
-    "coffee-script": "~1.1.2"
+    "coffee-script": "~1.1.2",
+    "jitter": "~1.1.0"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
   }
 }

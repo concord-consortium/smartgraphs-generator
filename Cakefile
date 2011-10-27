@@ -2,10 +2,10 @@ fs      = require 'fs'
 {spawn} = require 'child_process'
 
 task 'build', "build the smartgraphs-generator javascript into lib/ from coffeescript in src/", build = (cb) ->
-  runCoffee ['-c', '-o', 'lib/'].concat(srcFiles()), cb
+  run 'nbin/coffee', ['-c', '-o', 'lib/'].concat(srcFiles()), cb
 
 task 'watch', "watch the coffeescript source tree in src/ for changes and build javascript files into lib/", watch = (cb) ->
-  runCoffee ['-o', 'lib/', '-cw', 'src/'], cb
+  run 'nbin/jitter', ['src', 'lib'], cb
 
 srcFiles = ->
   files = fs.readdirSync 'src'
@@ -13,8 +13,8 @@ srcFiles = ->
 
 echo = (buffer) -> console.log buffer.toString()
 
-runCoffee = (args, cb) ->
-  proc =         spawn 'nbin/coffee', args
+run = (cmd, args, cb) ->
+  proc =         spawn cmd, args
   proc.stderr.on 'data', echo
   proc.stdout.on 'data', echo
   proc.on        'exit', (status) ->
