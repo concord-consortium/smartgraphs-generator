@@ -5,7 +5,7 @@ We're developing a node.js module written in Coffeescript so that it can be run 
 
   * Clone this repository
   * Install [node.js](http://nodejs.org/) and [npm](http://npmjs.org/)
-  * Run `npm install --dev` in the root of the repository to install [commander.js](https://github.com/visionmedia/commander.js/) and [Coffeescript](http://jashkenas.github.com/coffee-script/) sandboxed to this project's `node_modules` folder
+  * Run `npm install` in the root of the repository to install [commander.js](https://github.com/visionmedia/commander.js/) and [Coffeescript](http://jashkenas.github.com/coffee-script/) sandboxed to this project's `node_modules` folder
   * Look at the example command-line utility `bin/pizza` which uses `src/pizza.coffee`. Run `bin/pizza -h` to see usage and play with `bin/pizza`
   * To run the coffeescript REPL, type `nbin/coffee`
   * The source tree in `src/` is written in Coffeescript and compiled to Javascript in 'lib/'.
