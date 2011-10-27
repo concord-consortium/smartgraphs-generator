@@ -1,4 +1,9 @@
 { "name" : "smartgraphs-generator",
   "version" : "0.0.1",
-  "dependencies" : { "commander" : "0.2.1" }
+  "dependencies" : {
+    "commander": "~0.2.1"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.1.2"
+  }
 }
