@@ -1,2 +1,0 @@
-This project contains Coffeescript code to convert "high-level", semantic descriptions of Smartgraph activities into
-"low-level" JSON that the Smartgraphs runtime (http://github.com/concord-consortium/Smartgraphs.git) can understand.
