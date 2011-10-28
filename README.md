@@ -1,7 +1,7 @@
 This project contains Coffeescript code to convert "high-level", semantic descriptions of Smartgraph activities into
 "low-level" JSON that the Smartgraphs runtime (http://github.com/concord-consortium/Smartgraphs) can understand.
 
-We are developing a Node.js module written in Coffeescript so that it can be run on the server-side or packaged for use in a client-side app. In order to simplify the development process, we can start by making a command-line executable, written in Coffeescript, that reads from and writes to JSON files in the local filesystem. Some example files are kept in the folders `example-data/input` and `example-data/expected-output`. I've included `commander.js` as a node module in order to simplify the creation of an executable with sane option processing.
+We are developing a Node.js module written in Coffeescript so that it can be run on the server-side or packaged for use in a client-side app. In order to simplify the development process, we can start by making a command-line executable, written in Coffeescript, that reads from and writes to JSON files in the local filesystem. Some example files are kept in the folders `example-data/input` and `example-data/expected-output`. I've included [commander.js](https://github.com/visionmedia/commander.js/) as a node module in order to simplify the creation of an executable with sane option processing.
 
 To get started:
 

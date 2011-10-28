@@ -16,7 +16,7 @@ task 'test', "run all Jasmine spec tests in spec/", test = ({quiet}) ->
 
 srcFiles = ->
   files = fs.readdirSync 'src'
-  return ('src/' + file for file in files when file.match(/\.coffee$/))
+  ('src/' + file for file in files when file.match(/\.coffee$/))
 
 echo = (buffer) -> console.log buffer.toString()
 
