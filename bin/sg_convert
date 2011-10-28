@@ -1,3 +1,0 @@
-#!/usr/bin/env node
-
-require('../lib/convert_command').run();

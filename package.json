@@ -13,6 +13,6 @@
   },
   "bin": {
     "pizza"      : "./bin/pizza",
-    "sg_convert" : "./bin/sg_convert"
+    "sg-convert" : "./bin/sg-convert"
   }
 }
