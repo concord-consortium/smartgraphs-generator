@@ -1,2 +1,2 @@
-convert_funct: -> (input)
+convert_funct= (input) ->
   "hello"
