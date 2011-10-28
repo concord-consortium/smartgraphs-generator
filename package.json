@@ -10,5 +10,9 @@
   },
   "engines": {
     "node": ">= 0.4.0"
+  },
+  "bin": { 
+    "pizza" : "./bin/pizza",
+    "convert" : "./bin/convert"
   }
 }
