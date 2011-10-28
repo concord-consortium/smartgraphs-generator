@@ -13,16 +13,19 @@
 
   The complexity of processing the input tree and deciding which builder methods on the output Page, output Step, etc
   to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
-  input.* group, and that the output.* classes mostly just need to help keep the 'accounting' straight when the input.* classes call builder
-  methods on them.
+  input.* group, and that the output.* classes mostly just need to help keep the 'accounting' straight when the input.*
+  classes call builder methods on them.
 ###
+
+{Page} = require './input.page'
 
 exports.Activity = class Activity
 
   constructor: (@hash) ->
-    # '@' syntax means 'this'
-    # using '@' in the arguments list means "call the first argument 'hash' and assign its value to this.hash"
-    return
+    if hash.type isnt 'Activity' throw new Error "smartgraphs-generator: input.Activity constructor was called with a hash whose toplevel element does not have type: \"Activity\""
+
+    {@name} = hash
+    @pages = (new Page(page, this) for page in hash.pages)
 
   convert: ->
-    page.convert() for page in this.pages
+    page.convert() for page in @pages

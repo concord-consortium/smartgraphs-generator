@@ -1,8 +1,7 @@
 exports.Page = class Page
 
   constructor: (@hash, @activity) ->
-    # (process hash...)
-    @outputActivity = @activity.outputActivity
+    # TODO process @hash here
 
   # create an output.Page object and modify it appropriately
   convert: ->
