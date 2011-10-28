@@ -5,8 +5,8 @@ exports.SensorPage = class SensorPage extends Page
   constructor: ->
     super()
 
-  process: ->
+  convert: ->
     super()
     @step = @outputPage.appendStep()
-    @step.addTool('sensor', @datadef)
+    @step.addTool 'sensor', @datadef
     #...

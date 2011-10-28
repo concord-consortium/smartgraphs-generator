@@ -5,11 +5,11 @@ exports.Page = class Page
   constructor: ->
     @steps = []
 
-  toHash: () ->
+  toHash: ->
     # go over the steps, give them unique IDs...
     hash
 
   appendStep: ->
-    step = new Step(this)
+    step = new Step this
     @steps.push step
     step

@@ -24,5 +24,5 @@ exports.Activity = class Activity
     # using '@' in the arguments list means "call the first argument 'hash' and assign its value to this.hash"
     return
 
-  process: ->
-    this.pages.process()
+  convert: ->
+    page.convert() for page in this.pages

@@ -15,7 +15,7 @@ exports.Activity = class Activity
 
   constructor: (@inputActivity) ->
     # have the input activity go through its structure and call builder methods on me and the objects I contain...
-    @inputActivity.process()
+    @inputActivity.convert()
 
   toHash: ->
     #...
