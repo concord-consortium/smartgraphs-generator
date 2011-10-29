@@ -1,9 +1,9 @@
 fs   = require 'fs'
 path = require 'path'
-exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data');
+exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data')
 {InputActivity} = require './input/input-activity'
 
-exports.convert_funct = (input) ->
+exports.convert = (input) ->
   activity = new InputActivity input
   output =
     _id: "marias-run-generated-target.df6"

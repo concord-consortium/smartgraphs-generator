@@ -2,8 +2,8 @@
   Module dependencies
 ###
 
-program = require "commander"
-convert = require './convert'
+program   = require "commander"
+converter = require './converter'
 
 exports.run = ->
   ###
@@ -23,5 +23,5 @@ exports.run = ->
 
   stdin.on 'end', ->
     inputObject  = JSON.parse buffer
-    outputObject = convert.convert_funct inputObject
+    outputObject = converter.convert inputObject
     console.log JSON.stringify outputObject, null, 2
