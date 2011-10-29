@@ -28,4 +28,4 @@ describe "the converter", ->
   it "should output the correct object", ->
     outputObject = Convert.convert_funct inputObject
     expectedOutput = JSON.stringify(JSON.parse(outputString))
-    expect(JSON.stringify(outputObject)).toBe(expectedOutput)
+    expect(JSON.stringify outputObject).toEqual expectedOutput
