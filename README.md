@@ -17,3 +17,12 @@ Tests:
 
   * Add Jasmine spec tests named `<name>.spec.coffee` to `spec/` directory. There is no need to compile these files to Javascript. However, the tests must have the `.spec.coffee` suffix to be recognized (or `.spec.js`, if they are originally written in Javascript).
   * To run tests, type `nbin/cake test`. To suppress verbose test output and just get a summary, use the `-q` option: `nbin/cake -q test`.
+  
+To run the converter:
+
+  * (example:) `bin/sg-convert < example-data/input/marias-run.json > example-data/output/marias-run.json`
+  
+To install as a Node.js package (i.e., as an end user):
+
+  * `npm install -g git://github.com/concord-consortium/smartgraphs-generator.git`
+  * If your PATH is set up to use npm-installed executables, this will install the `sg-convert` executable to a location in your PATH. (If you skip the `-g` (`--global`) flag the executable will be installed local to your user.)
