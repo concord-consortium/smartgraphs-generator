@@ -23,13 +23,13 @@
 exports.InputActivity = class InputActivity
 
   constructor: (@hash) ->
-    if hash.type isnt 'Activity'
+    if @hash.type isnt 'Activity'
       throw new Error "smartgraphs-generator: InputActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\""
 
     {@name,  @owner} = hash
     @owner ||= 'shared'        # until we get owner's username into the input hash
     @url = "/#{@owner}/#{slugify @name}"
-    @pages = (new InputPage(page, this, _i + 1) for page in hash.pages)
+    @pages = (new InputPage(page, this, i + 1) for page, i in hash.pages)
 
   convert: ->
     page.convert() for page in @pages

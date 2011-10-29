@@ -4,8 +4,8 @@ exports.InputPage = class InputPage
 
   constructor: (@hash, @activity, @index) ->
     {@name, @text} = @hash
-    @url = "#{@activity.url}/page/#{slugify @name}"
-    @stepUrl = @url + "/step/1"
+    @url     = "#{@activity.url}/page/#{slugify @name}"
+    @stepUrl = "#{@url}/step/1"
     # TODO process @hash here
 
   # create an output.Page object and modify it appropriately
@@ -31,4 +31,3 @@ exports.InputPage = class InputPage
       panes: null
       isFinalStep: true
       nextButtonShouldSubmit: true
-
