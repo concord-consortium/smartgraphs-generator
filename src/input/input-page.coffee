@@ -1,8 +1,10 @@
+{slugify} = require '../slugify'
+
 exports.InputPage = class InputPage
 
   constructor: (@hash, @activity, @index) ->
     {@name, @text} = @hash
-    @url = @activity.url + "/page/" + @index
+    @url = "#{@activity.url}/page/#{slugify @name}"
     @stepUrl = @url + "/step/1"
     # TODO process @hash here
 
