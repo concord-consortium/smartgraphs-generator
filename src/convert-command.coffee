@@ -9,16 +9,16 @@ exports.run = ->
   ###
     Options
   ###
-  
+
   # none so far
-  
+
   ###
     Program body
   ###
   stdin = process.openStdin()
   stdin.setEncoding 'utf8'
   buffer = ""
-  stdin.on 'data', (data) -> 
+  stdin.on 'data', (data) ->
     buffer += data
 
   stdin.on 'end', ->

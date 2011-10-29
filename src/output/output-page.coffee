@@ -1,4 +1,4 @@
-{Step} = require './output.page'
+{Step} = require './step'
 
 exports.Page = class Page
 

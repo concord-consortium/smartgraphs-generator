@@ -1,6 +1,6 @@
-{Page} = require './input.page'
+{InputPage} = require './input-page'
 
-exports.SensorPage = class SensorPage extends Page
+exports.SensorPage = class SensorPage extends InputPage
 
   constructor: ->
     super()

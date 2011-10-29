@@ -1,10 +1,10 @@
-fs = require 'fs'
+fs   = require 'fs'
 path = require 'path'
 exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data');
-{Activity} = require './input.activity'
+{InputActivity} = require './input/input-activity'
 
 exports.convert_funct= (input) ->
-  activity = new Activity input
+  activity = new InputActivity input
   output=
     _id: "marias-run-generated-target.df6"
     _rev: 1

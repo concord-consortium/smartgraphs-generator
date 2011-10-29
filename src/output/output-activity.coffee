@@ -11,7 +11,7 @@
   know how to call.
 ###
 
-exports.Activity = class Activity
+exports.OutputActivity = class OutputActivity
 
   constructor: (@inputActivity) ->
     # have the input activity go through its structure and call builder methods on me and the objects I contain...

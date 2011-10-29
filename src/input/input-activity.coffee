@@ -17,17 +17,17 @@
   classes call builder methods on them.
 ###
 
-{Page} = require './input.page'
+{InputPage} = require './input-page'
 
-exports.Activity = class Activity
+exports.InputActivity = class InputActivity
 
   constructor: (@hash) ->
-    if hash.type isnt 'Activity' 
+    if hash.type isnt 'Activity'
       throw new Error "smartgraphs-generator: input.Activity constructor was called with a hash whose toplevel element does not have type: \"Activity\""
 
     {@name} = hash
     @url = '/shared/marias_run'
-    @pages = (new Page(page, this, _i + 1) for page in hash.pages)
+    @pages = (new InputPage(page, this, _i + 1) for page in hash.pages)
 
   convert: ->
     page.convert() for page in @pages
@@ -48,5 +48,5 @@ exports.Activity = class Activity
     output.annotations = []
     output.variables = []
     output.units = []
-    
+
     page.process(output) for page in @pages

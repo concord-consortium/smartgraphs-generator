@@ -1,4 +1,4 @@
-exports.Page = class Page
+exports.InputPage = class InputPage
 
   constructor: (@hash, @activity, @index) ->
     {@name, @text} = @hash
@@ -21,7 +21,7 @@ exports.Page = class Page
         @stepUrl
       ]
       firstStep: @stepUrl
-      
+
     output.steps.push
       url: @stepUrl
       activityPage: @url
@@ -29,5 +29,4 @@ exports.Page = class Page
       panes: null
       isFinalStep: true
       nextButtonShouldSubmit: true
-    
-      
+
