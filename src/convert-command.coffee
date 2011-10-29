@@ -24,4 +24,4 @@ exports.run = ->
   stdin.on 'end', ->
     inputObject = JSON.parse(buffer)
     outputObject = convert.convert_funct(inputObject)
-    console.log JSON.stringify outputObject
+    console.log JSON.stringify outputObject, null, 2
