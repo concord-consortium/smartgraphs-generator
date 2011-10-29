@@ -41,5 +41,12 @@ exports.Activity = class Activity
 
     output.pages = []
     output.steps = []
+    output.responseTemplates = []
+    output.axes = []
+    output.datadefs = []
+    output.tags = []
+    output.annotations = []
+    output.variables = []
+    output.units = []
     
     page.process(output) for page in @pages
