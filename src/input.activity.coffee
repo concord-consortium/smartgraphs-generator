@@ -22,10 +22,24 @@
 exports.Activity = class Activity
 
   constructor: (@hash) ->
-    if hash.type isnt 'Activity' throw new Error "smartgraphs-generator: input.Activity constructor was called with a hash whose toplevel element does not have type: \"Activity\""
+    if hash.type isnt 'Activity' 
+      throw new Error "smartgraphs-generator: input.Activity constructor was called with a hash whose toplevel element does not have type: \"Activity\""
 
     {@name} = hash
-    @pages = (new Page(page, this) for page in hash.pages)
+    @url = '/shared/marias_run'
+    @pages = (new Page(page, this, _i + 1) for page in hash.pages)
 
   convert: ->
     page.convert() for page in @pages
+
+  process: (output) ->
+    output.activity =
+      title: this.name
+      url:   @url
+      owner: 'shared'
+      pages: (page.url) for page in @pages
+
+    output.pages = []
+    output.steps = []
+    
+    page.process(output) for page in @pages
