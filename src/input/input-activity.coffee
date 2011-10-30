@@ -36,9 +36,9 @@ exports.InputActivity = class InputActivity
 
   process: (output) ->
     output.activity =
-      title: this.name
+      title: @name
       url:   @url
-      owner: 'shared'
+      owner: @owner
       pages: (page.url) for page in @pages
 
     output.pages = []

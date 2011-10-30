@@ -1,6 +1,3 @@
-fs   = require 'fs'
-path = require 'path'
-exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data')
 {InputActivity} = require './input/input-activity'
 
 exports.convert = (input) ->
