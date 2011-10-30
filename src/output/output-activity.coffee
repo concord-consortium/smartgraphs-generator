@@ -10,17 +10,21 @@
   Mostly, this class and the classes of its contained child objects implement builder methods that the input.* objects
   know how to call.
 ###
+{slugify} = require '../slugify'
 
 exports.OutputActivity = class OutputActivity
 
-  constructor: (@inputActivity) ->
-    # have the input activity go through its structure and call builder methods on me and the objects I contain...
-    @inputActivity.convert()
+  constructor: (@doc, @hash) ->
+    hash.url = "/#{hash.owner}/#{slugify hash.title}"
+    hash.pages = []
+      
+  url: ->
+    @hash.url
 
-  toHash: ->
-    #...
-    hash
+  appendPage: (props) ->
+    props.activity = this
+    props.index = @hash.pages.length + 1
+    outputPage = @doc.createPage props
+    @hash.pages.push outputPage.url()
+    outputPage
 
-  appendPage: ->
-    # ...
-    page

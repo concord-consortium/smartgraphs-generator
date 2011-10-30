@@ -27,5 +27,6 @@ describe "the converter", ->
 
   it "should output the correct object", ->
     outputObject = converter.convert inputObject
-    expectedOutput = JSON.stringify(JSON.parse outputString)
-    expect(JSON.stringify outputObject).toEqual expectedOutput
+    expect(outputObject).toEqual JSON.parse(outputString)
+    # expectedOutput = JSON.stringify(JSON.parse outputString)
+    # expect(JSON.stringify outputObject).toEqual expectedOutput

@@ -1,15 +1,20 @@
-{Step} = require './step'
+{slugify} = require '../slugify'
 
-exports.Page = class Page
+exports.OutputPage = class OutputPage
 
-  constructor: ->
-    @steps = []
+  constructor: (@doc, @hash)->
+    hash.activity = hash.activity.url()
+    hash.steps = []
+    hash.url = "#{hash.activity}/page/#{hash.index}-#{slugify hash.name}"
 
-  toHash: ->
-    # go over the steps, give them unique IDs...
-    hash
+  url: ->
+    @hash.url
 
-  appendStep: ->
-    step = new Step this
-    @steps.push step
+  appendStep: (props) ->
+    props.activityPage = this
+    index = @hash.steps.length + 1
+    step = @doc.createStep index, props
+    @hash.steps.push step.url()
+    if(index == 1)
+      @hash.firstStep = step.url()
     step
