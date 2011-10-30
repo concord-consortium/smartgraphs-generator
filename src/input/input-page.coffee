@@ -4,7 +4,7 @@ exports.InputPage = class InputPage
 
   constructor: (@hash, @activity, @index) ->
     {@name, @text} = @hash
-    @url     = "#{@activity.url}/page/#{slugify @name}"
+    @url     = "#{@activity.url}/page/#{index}-#{slugify @name}"
     @stepUrl = "#{@url}/step/1"
     # TODO process @hash here
 
