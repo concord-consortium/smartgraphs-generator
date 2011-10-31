@@ -2,23 +2,28 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Node.Browserify Test</title>
+  <title>converter.convert() Test Page</title>
 
   <style type="text/css">
-    .fixed-width {
-      font-family: Consolas, Courier New, monospace;
-      font-size: 11pt;
+    .code {
+      font-family: Consolas, Andale Mono, Courier New, monospace;
     }
 
     #input {
       width: 80em;
       height: 20em;
+      font-size: 16px;
     }
 
+    #output {
+      font-size: 16px;
+    }
   </style>
 
-  <script type="text/javascript" src="test.js"></script>
+  <script type="text/javascript" src="js/converter.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.6.4.min.js"%3E%3C/script%3E'))</script>
+
   <script type="text/javascript">
 
     var converter = require('./converter.js'),
@@ -43,11 +48,11 @@
     function update() {
       var input  = JSON.parse( $('#input').val() ),
           output = converter.convert(input);
-      $('#output').text(JSON.stringify(output, null, 2));
+      $('#output').text( JSON.stringify(output, null, 2) );
     }
-    
+
     $(function () {
-      $('#input').val(JSON.stringify(initialInput, null, 2));
+      $('#input').val( JSON.stringify(initialInput, null, 2) );
       update();
 
       $('#input').change(update);
@@ -59,17 +64,17 @@
 </head>
 
 <body>
-  <h1>Converter.convert() via node.browserify</h1>
+  <h1><span class="code">converter.convert()</span> Test Page</h1>
 
   <h2>Input</h2>
-  <textarea id="input" class="fixed-width"></textarea>
+  <textarea id="input" class="code"></textarea>
 
   <div>
     <button id="update-button">Update</button>
-  <div>
+  </div>
 
   <h2>Output</h2>
-  <pre id="output" class="fixed-width"></pre>
+  <pre id="output" class="code"></pre>
 </body>
 
 </html>
