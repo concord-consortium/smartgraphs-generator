@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Node.Browserify Test</title>
+
+  <style type="text/css">
+    .fixed-width {
+      font-family: Consolas, Courier New, monospace;
+      font-size: 11pt;
+    }
+
+    #input {
+      width: 80em;
+      height: 20em;
+    }
+
+  </style>
+
+  <script type="text/javascript" src="test.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    var converter = require('./converter.js'),
+
+        initialInput = {
+          "type": "Activity",
+          "name": "Maria’s Run",
+          "pages": [
+            {
+              "type": "Page",
+              "name": "Introduction",
+              "text": "in this activity...."
+            },
+            {
+              "type": "Page",
+              "name": "Where did she stop",
+              "text": "look at the graph..."
+            }
+          ]
+        };
+
+    function update() {
+      var input  = JSON.parse( $('#input').val() ),
+          output = converter.convert(input);
+      $('#output').text(JSON.stringify(output, null, 2));
+    }
+    
+    $(function () {
+      $('#input').val(JSON.stringify(initialInput, null, 2));
+      update();
+
+      $('#input').change(update);
+      $('#update-button').click(update);
+    });
+
+  </script>
+
+</head>
+
+<body>
+  <h1>Converter.convert() via node.browserify</h1>
+
+  <h2>Input</h2>
+  <textarea id="input" class="fixed-width"></textarea>
+
+  <div>
+    <button id="update-button">Update</button>
+  <div>
+
+  <h2>Output</h2>
+  <pre id="output" class="fixed-width"></pre>
+</body>
+
+</html>
