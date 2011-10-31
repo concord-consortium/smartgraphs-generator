@@ -12,7 +12,7 @@ To get started:
   * To run the coffeescript REPL, type `nbin/coffee`.
   * The source tree in `src/` is written in Coffeescript and compiled to Javascript in 'lib/'.
   * We are committing the compiled Javascript as we go. Therefore, before editing source files, run `nbin/cake watch` in a separate window to build the Javascript incrementally as you save Coffeescript files. When needed, you can run `nbin/cake build` to build the Javascript files in one go.
-
+  
 Tests:
 
   * Add Jasmine spec tests named `<name>.spec.coffee` to `spec/` directory. There is no need to compile these files to Javascript. However, the tests must have the `.spec.coffee` suffix to be recognized (or `.spec.js`, if they are originally written in Javascript).
@@ -22,6 +22,12 @@ To run the converter:
 
   * (example:) `bin/sg-convert < example-data/input/marias-run.json > example-data/output/marias-run.json`
   
+Browser Test Page:
+
+  * There is a browser test page at `browser/testpage.html` which uses the `convert` method defined in `converter.coffee` as built for the browser by [node-browserify](https://github.com/substack/node-browserify) tool.
+  * The `build` Cake task automatically builds this file (right now, the `watch` task does not update the browserified Javascript.)
+  * To compile and open the test on machines that support `open(1)`, use the `testpage` Cake task: `nbin/cake testpage`.
+    
 To install as a Node.js package (i.e., as an end user):
 
   * `npm install -g git://github.com/concord-consortium/smartgraphs-generator.git`
