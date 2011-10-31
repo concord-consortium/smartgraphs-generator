@@ -2,4 +2,4 @@
 .git*
 Cakefile
 src/
-test/
+spec/
