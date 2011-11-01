@@ -12,10 +12,19 @@ exports.convert = (input) ->
       name: page.name
       introText: page.text
     
-    outputPage.appendStep
+    outputStep = outputPage.appendStep
       paneConfig: 'single'
       panes: null
       isFinalStep: true
       nextButtonShouldSubmit: true
+
+    if page.panes
+      for pane in page.panes
+        switch pane.type
+          when 'ImagePane'
+            outputStep.appendPane
+              type: 'image'
+              path: pane.url
+              caption: "#{pane.license} #{pane.attribution}"
 
   outputDocument.hash  
