@@ -1,0 +1,63 @@
+{
+  "_id": "marias-run-generated-target.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Maria’s Run",
+    "url": "/shared/marias-run",
+    "owner": "shared",
+    "pages": [
+      "/shared/marias-run/page/1-introduction",
+      "/shared/marias-run/page/2-where-did-she-stop"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Introduction",
+      "url": "/shared/marias-run/page/1-introduction",
+      "activity": "/shared/marias-run",
+      "index": 1,
+      "introText": "in this activity....",
+      "steps": [
+        "/shared/marias-run/page/1-introduction/step/1"
+      ],
+      "firstStep": "/shared/marias-run/page/1-introduction/step/1"
+    },
+    {
+      "name": "Where did she stop",
+      "url": "/shared/marias-run/page/2-where-did-she-stop",
+      "activity": "/shared/marias-run",
+      "index": 2,
+      "introText": "look at the graph...",
+      "steps": [
+        "/shared/marias-run/page/2-where-did-she-stop/step/1"
+      ],
+      "firstStep": "/shared/marias-run/page/2-where-did-she-stop/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/marias-run/page/1-introduction/step/1",
+      "activityPage": "/shared/marias-run/page/1-introduction",
+      "paneConfig": "single",
+      "panes": null,
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    },
+    {
+      "url": "/shared/marias-run/page/2-where-did-she-stop/step/1",
+      "activityPage": "/shared/marias-run/page/2-where-did-she-stop",
+      "paneConfig": "single",
+      "panes": null,
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [],
+  "axes": [],
+  "datadefs": [],
+  "tags": [],
+  "annotations": [],
+  "variables": [],
+  "units": []
+}

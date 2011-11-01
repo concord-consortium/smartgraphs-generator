@@ -6,12 +6,10 @@ exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../examp
 describe "the converter", ->
   inputString  = null
   inputObject  = null
-  outputString = null
 
   beforeEach ->
-    inputString  = fs.readFileSync exampleDataDir + "/input/marias-run.json", 'utf8'
+    inputString  = fs.readFileSync exampleDataDir + "/input/two-basic-pages.json", 'utf8'
     inputObject  = JSON.parse inputString
-    outputString = fs.readFileSync exampleDataDir + "/expected-ouput/marias-run.json", 'utf8'
 
   it "should exist", ->
     expect(converter).toBeDefined()
@@ -25,8 +23,12 @@ describe "the converter", ->
     outputObject = converter.convert inputObject
     expect(typeof outputObject).toBe 'object'
 
-  it "should output the correct object", ->
-    outputObject = converter.convert inputObject
-    expect(outputObject).toEqual JSON.parse(outputString)
-    # expectedOutput = JSON.stringify(JSON.parse outputString)
-    # expect(JSON.stringify outputObject).toEqual expectedOutput
+  for exampleFile in fs.readdirSync(exampleDataDir + "/input")
+    describe "converting #{exampleFile}", ->
+    
+      it "should output the correct object", ->
+        exInputString  = fs.readFileSync exampleDataDir + "/input/" + exampleFile, 'utf8'
+        exInputObject  = JSON.parse inputString
+        expectedOutputString = fs.readFileSync exampleDataDir + "/expected-ouput/" + exampleFile, 'utf8'
+        outputObject = converter.convert inputObject
+        expect(outputObject).toEqual JSON.parse(expectedOutputString)
