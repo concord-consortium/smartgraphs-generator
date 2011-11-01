@@ -40,7 +40,13 @@
       "url": "/shared/marias-run/page/1-introduction/step/1",
       "activityPage": "/shared/marias-run/page/1-introduction",
       "paneConfig": "single",
-      "panes": null,
+      "panes": {
+          "single": {
+            "type": "image",
+            "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+            "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
+          }
+        },
       "isFinalStep": true,
       "nextButtonShouldSubmit": true
     },
