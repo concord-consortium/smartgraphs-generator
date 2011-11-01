@@ -29,7 +29,7 @@ srcFiles = ->
   files = fs.readdirSync 'src'
   ('src/' + file for file in files when file.match(/\.coffee$/))
 
-echo = (buffer) -> console.log buffer.toString()
+echo = (buffer) -> process.stdout.write buffer
 
 run = (cmd, args, cb) ->
   proc =         spawn cmd, args
