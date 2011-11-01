@@ -6,6 +6,13 @@
       "type": "Page",
       "name": "Introduction",
       "text": "in this activity...."
+      "panes": [
+        {
+          "type": "ImagePane",
+          "name": "Shoes",
+          "url": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg"
+        }
+      ]
     },
     {
       "type": "Page",
