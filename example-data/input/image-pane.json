@@ -1,0 +1,20 @@
+{
+  "type": "Activity",
+  "name": "Maria’s Run",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "ImagePane",
+          "name": "Shoes",
+          "url": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+          "license": "Creative Commons BY-NC-ND 2.0",
+          "attribution": "image courtesy flickr user altopower"
+        }
+      ]
+    }
+  ]
+}

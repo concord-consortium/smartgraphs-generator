@@ -1,0 +1,49 @@
+{
+  "_id": "marias-run-generated-target.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Maria’s Run",
+    "url": "/shared/marias-run",
+    "owner": "shared",
+    "pages": [
+      "/shared/marias-run/page/1-introduction"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Introduction",
+      "url": "/shared/marias-run/page/1-introduction",
+      "activity": "/shared/marias-run",
+      "index": 1,
+      "introText": "in this activity....",
+      "steps": [
+        "/shared/marias-run/page/1-introduction/step/1"
+      ],
+      "firstStep": "/shared/marias-run/page/1-introduction/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/marias-run/page/1-introduction/step/1",
+      "activityPage": "/shared/marias-run/page/1-introduction",
+      "paneConfig": "single",
+      "panes": {
+          "single": {
+            "type": "image",
+            "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+            "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
+          }
+        },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [],
+  "axes": [],
+  "datadefs": [],
+  "tags": [],
+  "annotations": [],
+  "variables": [],
+  "units": []
+}
