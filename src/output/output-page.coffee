@@ -1,20 +1,27 @@
-{slugify} = require '../slugify'
+{slugify}    = require '../slugify'
+{OutputStep} = require './output-step'
 
 exports.OutputPage = class OutputPage
 
-  constructor: (@doc, @hash)->
-    hash.activity = hash.activity.url()
-    hash.steps = []
-    hash.url = "#{hash.activity}/page/#{hash.index}-#{slugify hash.name}"
+  constructor: (@inputPage) ->
+    {@name}  = @inputPage
+    @steps   = []
+
+  setText: (text) ->
+    @introText = text
 
   url: ->
-    @hash.url
+    "#{@activity.url}/page/#{@index}-#{slugify @name}"
 
-  appendStep: (props) ->
-    props.activityPage = this
-    index = @hash.steps.length + 1
-    step = @doc.createStep index, props
-    @hash.steps.push step.url()
-    if(index == 1)
-      @hash.firstStep = step.url()
+  appendStep: ->
+    @steps.push step = new OutputStep this, @steps.length + 1    # sense of constructor argument changes to 'parent object' (page) here
     step
+
+  toHash: ->
+    name:      @name
+    url:       this.url()
+    activity:  @activity.url
+    index:     @index
+    introText: @introText
+    steps:     step.url() for step in @steps
+    firstStep: @steps[0]?.url()

@@ -319,89 +319,145 @@ exports.extname = function(path) {
 
 });
 
-require.define("/output/output-document.js", function (require, module, exports, __dirname, __filename) {
+require.define("/input/input-activity.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputActivity, OutputDocument, OutputPage, OutputStep;
-  OutputActivity = require('./output-activity').OutputActivity;
-  OutputPage = require('./output-page').OutputPage;
-  OutputStep = require('./output-step').OutputStep;
-  exports.OutputDocument = OutputDocument = (function() {
-    function OutputDocument() {
-      this.hash = {
-        _id: "marias-run-generated-target.df6",
-        _rev: 1,
-        data_format_version: 6,
-        activity: null,
-        pages: [],
-        steps: [],
-        responseTemplates: [],
-        axes: [],
-        datadefs: [],
-        tags: [],
-        annotations: [],
-        variables: [],
-        units: []
-      };
+  /*
+    Input "Activity" object.
+  
+    This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
+    which represent the different model objects of the semantic JSON format.
+  
+    The various subtypes of pages will know how to call 'builder' methods on the output.* classes to insert elements as
+    needed.
+  
+    For example, an input.sensorPage would have to know to call methods like output.Activity.addGraph and
+    output.Activity.addDataset, as well as mehods such as, perhaps, output.Activity.appendPage, output.Page.appendStep,
+    and output.Step.addTool('sensor')
+  
+    The complexity of processing the input tree and deciding which builder methods on the output Page, output Step, etc
+    to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
+    input.* group, and that the output.* classes mostly just need to help keep the 'accounting' straight when the input.*
+    classes call builder methods on them.
+  */
+  var InputActivity, InputPage, OutputActivity;
+  InputPage = require('./input-page').InputPage;
+  OutputActivity = require('../output/output-activity').OutputActivity;
+  exports.InputActivity = InputActivity = (function() {
+    function InputActivity(hash) {
+      var i, page;
+      this.hash = hash;
+      if (this.hash.type !== 'Activity') {
+        throw new Error("smartgraphs-generator: InputActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\"");
+      }
+      this.name = hash.name, this.owner = hash.owner;
+      this.owner || (this.owner = 'shared');
+      this.pages = (function() {
+        var _len, _ref, _results;
+        _ref = hash.pages;
+        _results = [];
+        for (i = 0, _len = _ref.length; i < _len; i++) {
+          page = _ref[i];
+          _results.push(new InputPage(page, this, i + 1));
+        }
+        return _results;
+      }).call(this);
     }
-    OutputDocument.prototype.createActivity = function(hash) {
-      var activity;
-      activity = new OutputActivity(this, hash);
-      this.hash.activity = activity.hash;
-      return activity;
+    InputActivity.prototype.toOutputActivity = function() {
+      var page, ret, _i, _len, _ref;
+      ret = new OutputActivity(this);
+      _ref = this.pages;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        page = _ref[_i];
+        ret.appendPage(page.toOutputPage());
+      }
+      return ret;
     };
-    OutputDocument.prototype.createPage = function(hash) {
-      var page;
-      page = new OutputPage(this, hash);
-      this.hash.pages.push(page.hash);
-      return page;
-    };
-    OutputDocument.prototype.createStep = function(index, hash) {
-      var step;
-      step = new OutputStep(this, index, hash);
-      this.hash.steps.push(step.hash);
-      return step;
-    };
-    return OutputDocument;
+    return InputActivity;
   })();
 }).call(this);
 
 });
 
-require.define("/output/output-activity.js", function (require, module, exports, __dirname, __filename) {
+require.define("/input/input-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  /*
-    Output "Activity" object.
-  
-    This class knows how to construct a itself from an input.Activity object. It maintains a set of child objects that
-    represent something close to the output "Smartgraphs runtime JSON" format and has a toHash method to generate that
-    format. (However, this class will likely maintain model objects that aren't explicitly represented in the final
-    output hash or in the Smartgraphs runtime; for example, having an output.Graph class makes sense, even though the
-    output hash is 'denormalized' and doesn't have an explicit representation of a Graph)
-  
-    Mostly, this class and the classes of its contained child objects implement builder methods that the input.* objects
-    know how to call.
-  */
-  var OutputActivity, slugify;
-  slugify = require('../slugify').slugify;
-  exports.OutputActivity = OutputActivity = (function() {
-    function OutputActivity(doc, hash) {
-      this.doc = doc;
+  var InputPage, OutputPage;
+  OutputPage = require('../output/output-page').OutputPage;
+  exports.InputPage = InputPage = (function() {
+    function InputPage(hash, activity, index) {
+      var _ref;
       this.hash = hash;
-      hash.url = "/" + hash.owner + "/" + (slugify(hash.title));
-      hash.pages = [];
+      this.activity = activity;
+      this.index = index;
+      _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes;
     }
-    OutputActivity.prototype.url = function() {
-      return this.hash.url;
+    InputPage.prototype.toOutputPage = function() {
+      var attribution, license, pane, ret, step, type, url, _ref;
+      ret = new OutputPage(this);
+      ret.setText(this.text);
+      step = ret.appendStep();
+      if (((_ref = this.panes) != null ? _ref.length : void 0) > 0) {
+        if (this.panes.length > 1) {
+          throw new Error("Only one pane is supported right now");
+        }
+        pane = this.panes[0];
+        type = pane.type, url = pane.url, license = pane.license, attribution = pane.attribution;
+        if (type !== 'ImagePane') {
+          throw new Error("Only ImagePanes are supported right now");
+        }
+        step.addImagePane(url, license, attribution);
+      }
+      return ret;
     };
-    OutputActivity.prototype.appendPage = function(props) {
-      var outputPage;
-      props.activity = this;
-      props.index = this.hash.pages.length + 1;
-      outputPage = this.doc.createPage(props);
-      this.hash.pages.push(outputPage.url());
-      return outputPage;
+    return InputPage;
+  })();
+}).call(this);
+
+});
+
+require.define("/output/output-page.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var OutputPage, OutputStep, slugify;
+  slugify = require('../slugify').slugify;
+  OutputStep = require('./output-step').OutputStep;
+  exports.OutputPage = OutputPage = (function() {
+    function OutputPage(inputPage) {
+      this.inputPage = inputPage;
+      this.name = this.inputPage.name;
+      this.steps = [];
+    }
+    OutputPage.prototype.setText = function(text) {
+      return this.introText = text;
     };
-    return OutputActivity;
+    OutputPage.prototype.url = function() {
+      return "" + this.activity.url + "/page/" + this.index + "-" + (slugify(this.name));
+    };
+    OutputPage.prototype.appendStep = function() {
+      var step;
+      this.steps.push(step = new OutputStep(this, this.steps.length + 1));
+      return step;
+    };
+    OutputPage.prototype.toHash = function() {
+      var step, _ref;
+      return {
+        name: this.name,
+        url: this.url(),
+        activity: this.activity.url,
+        index: this.index,
+        introText: this.introText,
+        steps: (function() {
+          var _i, _len, _ref, _results;
+          _ref = this.steps;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            step = _ref[_i];
+            _results.push(step.url());
+          }
+          return _results;
+        }).call(this),
+        firstStep: (_ref = this.steps[0]) != null ? _ref.url() : void 0
+      };
+    };
+    return OutputPage;
   })();
 }).call(this);
 
@@ -419,62 +475,139 @@ require.define("/slugify.js", function (require, module, exports, __dirname, __f
 
 });
 
-require.define("/output/output-page.js", function (require, module, exports, __dirname, __filename) {
+require.define("/output/output-step.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputPage, slugify;
-  slugify = require('../slugify').slugify;
-  exports.OutputPage = OutputPage = (function() {
-    function OutputPage(doc, hash) {
-      this.doc = doc;
-      this.hash = hash;
-      hash.activity = hash.activity.url();
-      hash.steps = [];
-      hash.url = "" + hash.activity + "/page/" + hash.index + "-" + (slugify(hash.name));
+  var OutputStep;
+  exports.OutputStep = OutputStep = (function() {
+    function OutputStep(page, index) {
+      this.page = page;
+      this.index = index;
+      this.panes = null;
     }
-    OutputPage.prototype.url = function() {
-      return this.hash.url;
+    OutputStep.prototype.addImagePane = function(url, license, attribution) {
+      return this.panes = {
+        single: {
+          type: 'image',
+          path: url,
+          caption: "" + license + " " + attribution
+        }
+      };
     };
-    OutputPage.prototype.appendStep = function(props) {
-      var index, step;
-      props.activityPage = this;
-      index = this.hash.steps.length + 1;
-      step = this.doc.createStep(index, props);
-      this.hash.steps.push(step.url());
-      if (index === 1) {
-        this.hash.firstStep = step.url();
-      }
-      return step;
+    OutputStep.prototype.url = function() {
+      return "" + (this.page.url()) + "/step/" + this.index;
     };
-    return OutputPage;
+    OutputStep.prototype.toHash = function() {
+      return {
+        url: this.url(),
+        activityPage: this.page.url(),
+        paneConfig: 'single',
+        panes: this.panes,
+        isFinalStep: true,
+        nextButtonShouldSubmit: true
+      };
+    };
+    return OutputStep;
   })();
 }).call(this);
 
 });
 
-require.define("/output/output-step.js", function (require, module, exports, __dirname, __filename) {
+require.define("/output/output-activity.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputStep;
-  exports.OutputStep = OutputStep = (function() {
-    function OutputStep(doc, index, hash) {
-      this.doc = doc;
-      this.hash = hash;
-      hash.activityPage = hash.activityPage.url();
-      hash.url = "" + hash.activityPage + "/step/1";
+  /*
+    Output "Activity" object.
+  
+    This class knows how to construct a itself from an InputActivity object. It maintains a set of child objects that
+    represent something close to the output "Smartgraphs runtime JSON" format and has a toHash method to generate that
+    format. (However, this class will likely maintain model objects that aren't explicitly represented in the final
+    output hash or in the Smartgraphs runtime; for example, having an output.Graph class makes sense, even though the
+    output hash is 'denormalized' and doesn't have an explicit representation of a Graph)
+  
+    Mostly, this class and the classes of its contained child objects implement builder methods that the input.* objects
+    know how to call.
+  */
+  var OutputActivity, OutputPage, slugify;
+  slugify = require('../slugify').slugify;
+  OutputPage = require('./output-page').OutputPage;
+  exports.OutputActivity = OutputActivity = (function() {
+    function OutputActivity(inputActivity) {
+      var _ref;
+      this.inputActivity = inputActivity;
+      _ref = this.inputActivity, this.owner = _ref.owner, this.name = _ref.name;
+      this.url = "/" + this.owner + "/" + (slugify(this.name));
+      this.pages = [];
+      this.steps = [];
     }
-    OutputStep.prototype.url = function() {
-      return this.hash.url;
+    OutputActivity.prototype.appendPage = function(outputPage) {
+      this.pages.push(outputPage);
+      outputPage.activity = this;
+      outputPage.index = this.pages.length;
+      return outputPage;
     };
-    OutputStep.prototype.appendPane = function(props) {
-      if (!this.hash.panes) {
-        return this.hash.panes = {
-          single: props
-        };
-      } else {
-        throw "Multiple panes are not handled yet";
-      }
+    OutputActivity.prototype.toHash = function() {
+      var flatten, page, step;
+      flatten = function(arrays) {
+        var _ref;
+        return (_ref = []).concat.apply(_ref, arrays);
+      };
+      return {
+        _id: 'marias-run-generated-target.df6',
+        _rev: 1,
+        data_format_version: 6,
+        activity: {
+          title: this.name,
+          url: this.url,
+          owner: this.owner,
+          pages: (function() {
+            var _i, _len, _ref, _results;
+            _ref = this.pages;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              page = _ref[_i];
+              _results.push(page.url());
+            }
+            return _results;
+          }).call(this)
+        },
+        pages: (function() {
+          var _i, _len, _ref, _results;
+          _ref = this.pages;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            page = _ref[_i];
+            _results.push(page.toHash());
+          }
+          return _results;
+        }).call(this),
+        steps: flatten((function() {
+          var _i, _len, _ref, _results;
+          _ref = this.pages;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            page = _ref[_i];
+            _results.push((function() {
+              var _j, _len2, _ref2, _results2;
+              _ref2 = page.steps;
+              _results2 = [];
+              for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+                step = _ref2[_j];
+                _results2.push(step.toHash());
+              }
+              return _results2;
+            })());
+          }
+          return _results;
+        }).call(this)),
+        responseTemplates: [],
+        axes: [],
+        datadefs: [],
+        tags: [],
+        annotations: [],
+        variables: [],
+        units: []
+      };
     };
-    OutputStep.prototype.addTool = function(name, options) {};
-    return OutputStep;
+    return OutputActivity;
   })();
 }).call(this);
 
@@ -482,44 +615,10 @@ require.define("/output/output-step.js", function (require, module, exports, __d
 
 require.define("/converter.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputDocument;
-  OutputDocument = require('./output/output-document').OutputDocument;
+  var InputActivity;
+  InputActivity = require('./input/input-activity').InputActivity;
   exports.convert = function(input) {
-    var outputActivity, outputDocument, outputPage, outputStep, page, pane, _i, _j, _len, _len2, _ref, _ref2;
-    outputDocument = new OutputDocument;
-    outputActivity = outputDocument.createActivity({
-      title: input.name,
-      owner: input.owner || 'shared'
-    });
-    _ref = input.pages;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      page = _ref[_i];
-      outputPage = outputActivity.appendPage({
-        name: page.name,
-        introText: page.text
-      });
-      outputStep = outputPage.appendStep({
-        paneConfig: 'single',
-        panes: null,
-        isFinalStep: true,
-        nextButtonShouldSubmit: true
-      });
-      if (page.panes) {
-        _ref2 = page.panes;
-        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-          pane = _ref2[_j];
-          switch (pane.type) {
-            case 'ImagePane':
-              outputStep.appendPane({
-                type: 'image',
-                path: pane.url,
-                caption: "" + pane.license + " " + pane.attribution
-              });
-          }
-        }
-      }
-    }
-    return outputDocument.hash;
+    return new InputActivity(input).toOutputActivity().toHash();
   };
 }).call(this);
 

@@ -17,8 +17,8 @@
   classes call builder methods on them.
 ###
 
-{InputPage} = require './input-page'
-{slugify}   = require '../slugify'
+{InputPage}      = require './input-page'
+{OutputActivity} = require '../output/output-activity'
 
 exports.InputActivity = class InputActivity
 
@@ -28,27 +28,10 @@ exports.InputActivity = class InputActivity
 
     {@name,  @owner} = hash
     @owner ||= 'shared'        # until we get owner's username into the input hash
-    @url = "/#{@owner}/#{slugify @name}"
     @pages = (new InputPage(page, this, i + 1) for page, i in hash.pages)
 
-  convert: ->
-    page.convert() for page in @pages
-
-  process: (output) ->
-    output.activity =
-      title: @name
-      url:   @url
-      owner: @owner
-      pages: (page.url) for page in @pages
-
-    output.pages = []
-    output.steps = []
-    output.responseTemplates = []
-    output.axes = []
-    output.datadefs = []
-    output.tags = []
-    output.annotations = []
-    output.variables = []
-    output.units = []
-
-    page.process(output) for page in @pages
+  toOutputActivity: ->
+    ret = new OutputActivity this
+    # Remember, input models call builder methods on output models. At least for now.
+    ret.appendPage page.toOutputPage() for page in @pages
+    ret

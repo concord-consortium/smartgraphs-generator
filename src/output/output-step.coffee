@@ -1,19 +1,22 @@
 exports.OutputStep = class OutputStep
 
-  constructor: (@doc, index, @hash) ->
-    hash.activityPage = hash.activityPage.url()
-    hash.url = "#{hash.activityPage}/step/1"
+  constructor: (@page, @index) ->
+    @panes = null
+
+  addImagePane: (url, license, attribution) ->
+    @panes =
+      single:
+        type:    'image'
+        path:    url
+        caption: "#{license} #{attribution}"
 
   url: ->
-    @hash.url
+    "#{@page.url()}/step/#{@index}"
 
-  appendPane: (props) ->
-    if not @hash.panes
-      @hash.panes = 
-        single: props
-    else
-      throw "Multiple panes are not handled yet"
-
-  addTool: (name, options) ->
-    # remember that we need a tool stanza in our output hash...
-    # which will happen when using @doc.createTool
+  toHash: ->
+    url:                    this.url()
+    activityPage:           @page.url()
+    paneConfig:             'single'
+    panes:                  @panes
+    isFinalStep:            true
+    nextButtonShouldSubmit: true
