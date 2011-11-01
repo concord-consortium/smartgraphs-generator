@@ -1,5 +1,5 @@
-{slugify}    = require '../slugify'
-{OutputStep} = require './output-step'
+{slugify} = require '../slugify'
+{Step}    = require './step'
 
 exports.OutputPage = class OutputPage
 
@@ -14,7 +14,7 @@ exports.OutputPage = class OutputPage
     "#{@activity.url}/page/#{@index}-#{slugify @name}"
 
   appendStep: ->
-    @steps.push step = new OutputStep this, @steps.length + 1    # sense of constructor argument changes to 'parent object' (page) here
+    @steps.push step = new Step this, @steps.length + 1    # sense of constructor argument changes to 'parent object' (page) here
     step
 
   toHash: ->

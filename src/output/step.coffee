@@ -1,4 +1,4 @@
-exports.OutputStep = class OutputStep
+exports.Step = class Step
 
   constructor: (@page, @index) ->
     @panes = null

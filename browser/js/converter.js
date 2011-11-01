@@ -416,9 +416,9 @@ require.define("/input/input-page.js", function (require, module, exports, __dir
 
 require.define("/output/output-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputPage, OutputStep, slugify;
+  var OutputPage, Step, slugify;
   slugify = require('../slugify').slugify;
-  OutputStep = require('./output-step').OutputStep;
+  Step = require('./step').Step;
   exports.OutputPage = OutputPage = (function() {
     function OutputPage(inputPage) {
       this.inputPage = inputPage;
@@ -433,7 +433,7 @@ require.define("/output/output-page.js", function (require, module, exports, __d
     };
     OutputPage.prototype.appendStep = function() {
       var step;
-      this.steps.push(step = new OutputStep(this, this.steps.length + 1));
+      this.steps.push(step = new Step(this, this.steps.length + 1));
       return step;
     };
     OutputPage.prototype.toHash = function() {
@@ -475,16 +475,16 @@ require.define("/slugify.js", function (require, module, exports, __dirname, __f
 
 });
 
-require.define("/output/output-step.js", function (require, module, exports, __dirname, __filename) {
+require.define("/output/step.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputStep;
-  exports.OutputStep = OutputStep = (function() {
-    function OutputStep(page, index) {
+  var Step;
+  exports.Step = Step = (function() {
+    function Step(page, index) {
       this.page = page;
       this.index = index;
       this.panes = null;
     }
-    OutputStep.prototype.addImagePane = function(url, license, attribution) {
+    Step.prototype.addImagePane = function(url, license, attribution) {
       return this.panes = {
         single: {
           type: 'image',
@@ -493,10 +493,10 @@ require.define("/output/output-step.js", function (require, module, exports, __d
         }
       };
     };
-    OutputStep.prototype.url = function() {
+    Step.prototype.url = function() {
       return "" + (this.page.url()) + "/step/" + this.index;
     };
-    OutputStep.prototype.toHash = function() {
+    Step.prototype.toHash = function() {
       return {
         url: this.url(),
         activityPage: this.page.url(),
@@ -506,7 +506,7 @@ require.define("/output/output-step.js", function (require, module, exports, __d
         nextButtonShouldSubmit: true
       };
     };
-    return OutputStep;
+    return Step;
   })();
 }).call(this);
 
