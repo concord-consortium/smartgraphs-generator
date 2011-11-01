@@ -23,33 +23,33 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-        
+
         if (require._core[x]) return x;
         var path = require.modules.path();
         var y = cwd || '.';
-        
+
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-        
+
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-        
+
         throw new Error("Cannot find module '" + x + "'");
-        
+
         function loadAsFileSync (x) {
             if (require.modules[x]) {
                 return x;
             }
-            
+
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-        
+
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = x + '/package.json';
@@ -69,10 +69,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-            
+
             return loadAsFileSync(x + '/index');
         }
-        
+
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -82,23 +82,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-            
+
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-        
+
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-            
+
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-            
+
             return dirs;
         }
     };
@@ -114,9 +114,9 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-    
+
     var keys = Object_keys(require.modules);
-    
+
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -134,7 +134,7 @@ require.define = function (filename, fn) {
         ? ''
         : require.modules.path().dirname(filename)
     ;
-    
+
     var require_ = function (file) {
         return require(file, dirname)
     };
@@ -144,7 +144,7 @@ require.define = function (filename, fn) {
     require_.modules = require.modules;
     require_.define = require.define;
     var module_ = { exports : {} };
-    
+
     require.modules[filename] = function () {
         require.modules[filename]._cached = module_.exports;
         fn.call(
@@ -272,7 +272,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-  
+
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -464,6 +464,15 @@ require.define("/output/output-step.js", function (require, module, exports, __d
     OutputStep.prototype.url = function() {
       return this.hash.url;
     };
+    OutputStep.prototype.appendPane = function(props) {
+      if (!this.hash.panes) {
+        return this.hash.panes = {
+          single: props
+        };
+      } else {
+        throw "Multiple panes are not handled yet";
+      }
+    };
     OutputStep.prototype.addTool = function(name, options) {};
     return OutputStep;
   })();
@@ -476,7 +485,7 @@ require.define("/converter.js", function (require, module, exports, __dirname, _
   var OutputDocument;
   OutputDocument = require('./output/output-document').OutputDocument;
   exports.convert = function(input) {
-    var outputActivity, outputDocument, outputPage, page, _i, _len, _ref;
+    var outputActivity, outputDocument, outputPage, outputStep, page, pane, _i, _j, _len, _len2, _ref, _ref2;
     outputDocument = new OutputDocument;
     outputActivity = outputDocument.createActivity({
       title: input.name,
@@ -489,12 +498,26 @@ require.define("/converter.js", function (require, module, exports, __dirname, _
         name: page.name,
         introText: page.text
       });
-      outputPage.appendStep({
+      outputStep = outputPage.appendStep({
         paneConfig: 'single',
         panes: null,
         isFinalStep: true,
         nextButtonShouldSubmit: true
       });
+      if (page.panes) {
+        _ref2 = page.panes;
+        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+          pane = _ref2[_j];
+          switch (pane.type) {
+            case 'ImagePane':
+              outputStep.appendPane({
+                type: 'image',
+                path: pane.url,
+                caption: "" + pane.license + " " + pane.attribution
+              });
+          }
+        }
+      }
     }
     return outputDocument.hash;
   };
