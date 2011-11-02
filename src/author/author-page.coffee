@@ -1,14 +1,14 @@
-{OutputPage} = require '../output/output-page'
+{RuntimePage} = require '../runtime/runtime-page'
 
-exports.InputPage = class InputPage
+exports.AuthorPage = class AuthorPage
 
   constructor: (@hash, @activity, @index) ->
     {@name, @text, @panes} = @hash
 
-  toOutputPage: ->
-    ret = new OutputPage @name
-    ret.setText @text     # OutputPage shouldn't have to know OUR property name for the text
-                          # (remember the OutputPage model should be fairly stable, the *input* models will change)
+  toRuntimePage: ->
+    ret = new RuntimePage @name
+    ret.setText @text     # RuntimePage shouldn't have to know OUR property name for the text
+                          # (remember the RuntimePage model should be fairly stable, the *input* models will change)
 
     # TODO we'll want to move this logic elsewhere
     step = ret.appendStep()

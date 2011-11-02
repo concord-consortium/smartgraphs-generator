@@ -1,4 +1,4 @@
-{InputActivity} = require './input/input-activity'
+{AuthorActivity} = require './author/author-activity'
 
 exports.convert = (input) ->
-  new InputActivity(input).toOutputActivity().toHash()
+  new AuthorActivity(input).toRuntimeActivity().toHash()

@@ -319,7 +319,7 @@ exports.extname = function(path) {
 
 });
 
-require.define("/input/input-activity.js", function (require, module, exports, __dirname, __filename) {
+require.define("/author/author-activity.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   /*
     Input "Activity" object.
@@ -330,8 +330,8 @@ require.define("/input/input-activity.js", function (require, module, exports, _
     The various subtypes of pages will know how to call 'builder' methods on the output.* classes to insert elements as
     needed.
   
-    For example, an input.sensorPage would have to know to call methods like OutputActivity.addGraph and
-    OutputActivity.addDataset, as well as mehods such as, perhaps, OutputActivity.appendPage, OutputPage.appendStep,
+    For example, an input.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
+    RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
   
     The complexity of processing the input tree and deciding which builder methods on the output Page, output Step, etc
@@ -339,15 +339,15 @@ require.define("/input/input-activity.js", function (require, module, exports, _
     input/ group, and that the output/ classes mostly just need to help keep the 'accounting' straight when the input/
     classes call builder methods on them.
   */
-  var InputActivity, InputPage, OutputActivity;
-  InputPage = require('./input-page').InputPage;
-  OutputActivity = require('../output/output-activity').OutputActivity;
-  exports.InputActivity = InputActivity = (function() {
-    function InputActivity(hash) {
+  var AuthorActivity, AuthorPage, RuntimeActivity;
+  AuthorPage = require('./author-page').AuthorPage;
+  RuntimeActivity = require('../runtime/runtime-activity').RuntimeActivity;
+  exports.AuthorActivity = AuthorActivity = (function() {
+    function AuthorActivity(hash) {
       var i, page;
       this.hash = hash;
       if (this.hash.type !== 'Activity') {
-        throw new Error("smartgraphs-generator: InputActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\"");
+        throw new Error("smartgraphs-generator: AuthorActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\"");
       }
       this.name = hash.name, this.owner = hash.owner;
       this.owner || (this.owner = 'shared');
@@ -357,42 +357,42 @@ require.define("/input/input-activity.js", function (require, module, exports, _
         _results = [];
         for (i = 0, _len = _ref.length; i < _len; i++) {
           page = _ref[i];
-          _results.push(new InputPage(page, this, i + 1));
+          _results.push(new AuthorPage(page, this, i + 1));
         }
         return _results;
       }).call(this);
     }
-    InputActivity.prototype.toOutputActivity = function() {
+    AuthorActivity.prototype.toRuntimeActivity = function() {
       var page, ret, _i, _len, _ref;
-      ret = new OutputActivity(this.owner, this.name);
+      ret = new RuntimeActivity(this.owner, this.name);
       _ref = this.pages;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         page = _ref[_i];
-        ret.appendPage(page.toOutputPage());
+        ret.appendPage(page.toRuntimePage());
       }
       return ret;
     };
-    return InputActivity;
+    return AuthorActivity;
   })();
 }).call(this);
 
 });
 
-require.define("/input/input-page.js", function (require, module, exports, __dirname, __filename) {
+require.define("/author/author-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var InputPage, OutputPage;
-  OutputPage = require('../output/output-page').OutputPage;
-  exports.InputPage = InputPage = (function() {
-    function InputPage(hash, activity, index) {
+  var AuthorPage, RuntimePage;
+  RuntimePage = require('../runtime/runtime-page').RuntimePage;
+  exports.AuthorPage = AuthorPage = (function() {
+    function AuthorPage(hash, activity, index) {
       var _ref;
       this.hash = hash;
       this.activity = activity;
       this.index = index;
       _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes;
     }
-    InputPage.prototype.toOutputPage = function() {
+    AuthorPage.prototype.toRuntimePage = function() {
       var attribution, license, pane, ret, step, type, url, _ref;
-      ret = new OutputPage(this.name);
+      ret = new RuntimePage(this.name);
       ret.setText(this.text);
       step = ret.appendStep();
       if (((_ref = this.panes) != null ? _ref.length : void 0) > 0) {
@@ -408,38 +408,38 @@ require.define("/input/input-page.js", function (require, module, exports, __dir
       }
       return ret;
     };
-    return InputPage;
+    return AuthorPage;
   })();
 }).call(this);
 
 });
 
-require.define("/output/output-page.js", function (require, module, exports, __dirname, __filename) {
+require.define("/runtime/runtime-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputPage, Step, slugify;
+  var RuntimePage, Step, slugify;
   slugify = require('../slugify').slugify;
   Step = require('./step').Step;
-  exports.OutputPage = OutputPage = (function() {
-    function OutputPage(name) {
+  exports.RuntimePage = RuntimePage = (function() {
+    function RuntimePage(name) {
       this.name = name;
       this.steps = [];
       this.activity = null;
       this.index = null;
     }
-    OutputPage.prototype.setText = function(text) {
+    RuntimePage.prototype.setText = function(text) {
       return this.introText = text;
     };
-    OutputPage.prototype.getUrl = function() {
+    RuntimePage.prototype.getUrl = function() {
       return "" + (this.activity.getUrl()) + "/page/" + this.index + "-" + (slugify(this.name));
     };
-    OutputPage.prototype.appendStep = function() {
+    RuntimePage.prototype.appendStep = function() {
       var step;
       this.steps.push(step = new Step);
       step.page = this;
       step.index = this.steps.length;
       return step;
     };
-    OutputPage.prototype.toHash = function() {
+    RuntimePage.prototype.toHash = function() {
       var step, _ref;
       return {
         name: this.name,
@@ -460,7 +460,7 @@ require.define("/output/output-page.js", function (require, module, exports, __d
         firstStep: (_ref = this.steps[0]) != null ? _ref.getUrl() : void 0
       };
     };
-    return OutputPage;
+    return RuntimePage;
   })();
 }).call(this);
 
@@ -478,7 +478,7 @@ require.define("/slugify.js", function (require, module, exports, __dirname, __f
 
 });
 
-require.define("/output/step.js", function (require, module, exports, __dirname, __filename) {
+require.define("/runtime/step.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var Step;
   exports.Step = Step = (function() {
@@ -515,7 +515,7 @@ require.define("/output/step.js", function (require, module, exports, __dirname,
 
 });
 
-require.define("/output/output-activity.js", function (require, module, exports, __dirname, __filename) {
+require.define("/runtime/runtime-activity.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   /*
     Output "Activity" object.
@@ -529,26 +529,26 @@ require.define("/output/output-activity.js", function (require, module, exports,
     Mostly, this class and the classes of its contained child objects implement builder methods that the input.* objects
     know how to call.
   */
-  var OutputActivity, OutputPage, slugify;
+  var RuntimeActivity, RuntimePage, slugify;
   slugify = require('../slugify').slugify;
-  OutputPage = require('./output-page').OutputPage;
-  exports.OutputActivity = OutputActivity = (function() {
-    function OutputActivity(owner, name) {
+  RuntimePage = require('./runtime-page').RuntimePage;
+  exports.RuntimeActivity = RuntimeActivity = (function() {
+    function RuntimeActivity(owner, name) {
       this.owner = owner;
       this.name = name;
       this.pages = [];
       this.steps = [];
     }
-    OutputActivity.prototype.getUrl = function() {
+    RuntimeActivity.prototype.getUrl = function() {
       return "/" + this.owner + "/" + (slugify(this.name));
     };
-    OutputActivity.prototype.appendPage = function(outputPage) {
+    RuntimeActivity.prototype.appendPage = function(outputPage) {
       this.pages.push(outputPage);
       outputPage.activity = this;
       outputPage.index = this.pages.length;
       return outputPage;
     };
-    OutputActivity.prototype.toHash = function() {
+    RuntimeActivity.prototype.toHash = function() {
       var flatten, page, step;
       flatten = function(arrays) {
         var _ref;
@@ -611,7 +611,7 @@ require.define("/output/output-activity.js", function (require, module, exports,
         units: []
       };
     };
-    return OutputActivity;
+    return RuntimeActivity;
   })();
 }).call(this);
 
@@ -619,10 +619,10 @@ require.define("/output/output-activity.js", function (require, module, exports,
 
 require.define("/converter.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var InputActivity;
-  InputActivity = require('./input/input-activity').InputActivity;
+  var AuthorActivity;
+  AuthorActivity = require('./author/author-activity').AuthorActivity;
   exports.convert = function(input) {
-    return new InputActivity(input).toOutputActivity().toHash();
+    return new AuthorActivity(input).toRuntimeActivity().toHash();
   };
 }).call(this);
 

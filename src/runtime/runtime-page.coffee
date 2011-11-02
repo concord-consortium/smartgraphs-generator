@@ -1,7 +1,7 @@
 {slugify} = require '../slugify'
 {Step}    = require './step'
 
-exports.OutputPage = class OutputPage
+exports.RuntimePage = class RuntimePage
 
   constructor: (@name) ->
     @steps   = []
@@ -23,7 +23,7 @@ exports.OutputPage = class OutputPage
 
   toHash: ->
     name:      @name
-    url:       this.getUrl()
+    url:       @getUrl()
     activity:  @activity.getUrl()
     index:     @index
     introText: @introText

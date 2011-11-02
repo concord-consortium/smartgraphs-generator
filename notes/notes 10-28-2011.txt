@@ -1,0 +1,26 @@
+concretely,
+
+there are presumably model objects in 'input' and 'output' namespaces
+
+output.Activity object
+
+  addX methods
+  addTool(...)
+
+  toHash
+
+
+input.Activity object
+
+  fromHash  // instantiates
+
+
+how would you add a "sensor graph"?
+
+  -- you need a dataset
+  -- you need graph axis information
+  -- you need a tool stanza in the step that mentions
+
+
+
+
