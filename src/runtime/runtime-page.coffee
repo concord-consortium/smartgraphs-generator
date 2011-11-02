@@ -1,5 +1,4 @@
 {slugify} = require '../slugify'
-{Step}    = require './step'
 
 exports.RuntimePage = class RuntimePage
 
@@ -15,7 +14,7 @@ exports.RuntimePage = class RuntimePage
     "#{@activity.getUrl()}/page/#{@index}-#{slugify @name}"
 
   appendStep: ->
-    @steps.push step = new Step
+    @steps.push step = @activity.createStep()
     step.page  = this
     step.index = @steps.length
     step

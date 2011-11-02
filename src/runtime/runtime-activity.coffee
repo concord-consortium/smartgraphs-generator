@@ -13,6 +13,7 @@
 
 {slugify}     = require '../slugify'
 {RuntimePage} = require './runtime-page'
+{Step}        = require './step'
 
 exports.RuntimeActivity = class RuntimeActivity
 
@@ -23,10 +24,16 @@ exports.RuntimeActivity = class RuntimeActivity
   getUrl: ->
     "/#{@owner}/#{slugify @name}"
 
+  # metaprogram this factory stuff?
   createPage: (name) ->
     page = new RuntimePage name
     page.activity = this
     page
+
+  createStep: ->
+    step = new Step
+    step.activity = this
+    step
 
   appendPage: (page) ->
     @pages.push page
