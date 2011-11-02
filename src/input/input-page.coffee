@@ -6,7 +6,7 @@ exports.InputPage = class InputPage
     {@name, @text, @panes} = @hash
 
   toOutputPage: ->
-    ret = new OutputPage this
+    ret = new OutputPage @name
     ret.setText @text     # OutputPage shouldn't have to know OUR property name for the text
                           # (remember the OutputPage model should be fairly stable, the *input* models will change)
 

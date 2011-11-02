@@ -16,8 +16,7 @@
 
 exports.OutputActivity = class OutputActivity
 
-  constructor: (@inputActivity) ->
-    {@owner, @name} = @inputActivity
+  constructor: (@owner, @name) ->
     @url    = "/#{@owner}/#{slugify @name}"
     @pages  = []
     @steps  = []

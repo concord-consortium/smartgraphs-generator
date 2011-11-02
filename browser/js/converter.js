@@ -364,7 +364,7 @@ require.define("/input/input-activity.js", function (require, module, exports, _
     }
     InputActivity.prototype.toOutputActivity = function() {
       var page, ret, _i, _len, _ref;
-      ret = new OutputActivity(this);
+      ret = new OutputActivity(this.owner, this.name);
       _ref = this.pages;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         page = _ref[_i];
@@ -530,10 +530,9 @@ require.define("/output/output-activity.js", function (require, module, exports,
   slugify = require('../slugify').slugify;
   OutputPage = require('./output-page').OutputPage;
   exports.OutputActivity = OutputActivity = (function() {
-    function OutputActivity(inputActivity) {
-      var _ref;
-      this.inputActivity = inputActivity;
-      _ref = this.inputActivity, this.owner = _ref.owner, this.name = _ref.name;
+    function OutputActivity(owner, name) {
+      this.owner = owner;
+      this.name = name;
       this.url = "/" + this.owner + "/" + (slugify(this.name));
       this.pages = [];
       this.steps = [];

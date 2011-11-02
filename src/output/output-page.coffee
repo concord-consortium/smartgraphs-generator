@@ -3,9 +3,11 @@
 
 exports.OutputPage = class OutputPage
 
-  constructor: (@inputPage) ->
-    {@name}  = @inputPage
+  constructor: (@name) ->
     @steps   = []
+    # need to be set
+    @activity = null
+    @index    = null
 
   setText: (text) ->
     @introText = text

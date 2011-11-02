@@ -31,7 +31,7 @@ exports.InputActivity = class InputActivity
     @pages = (new InputPage(page, this, i + 1) for page, i in hash.pages)
 
   toOutputActivity: ->
-    ret = new OutputActivity this
+    ret = new OutputActivity @owner, @name
     # Remember, input models call builder methods on output models. At least for now.
     ret.appendPage page.toOutputPage() for page in @pages
     ret
