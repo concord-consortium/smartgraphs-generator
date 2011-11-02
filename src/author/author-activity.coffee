@@ -31,7 +31,7 @@ exports.AuthorActivity = class AuthorActivity
     @pages = (new AuthorPage(page, this, i + 1) for page, i in hash.pages)
 
   toRuntimeActivity: ->
-    ret = new RuntimeActivity @owner, @name
+    runtimeActivity = new RuntimeActivity @owner, @name
     # Remember, input models call builder methods on output models. At least for now.
-    ret.appendPage page.toRuntimePage(ret) for page in @pages
-    ret
+    runtimeActivity.appendPage page.toRuntimePage(runtimeActivity) for page in @pages
+    runtimeActivity
