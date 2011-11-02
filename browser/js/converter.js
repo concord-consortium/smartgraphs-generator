@@ -322,21 +322,21 @@ exports.extname = function(path) {
 require.define("/author/author-activity.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   /*
-    Input "Activity" object.
+    "Activity" object in author forat.
   
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
   
-    The various subtypes of pages will know how to call 'builder' methods on the output.* classes to insert elements as
+    The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
   
-    For example, an input.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
+    For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
   
-    The complexity of processing the input tree and deciding which builder methods on the output Page, output Step, etc
+    The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
-    input/ group, and that the output/ classes mostly just need to help keep the 'accounting' straight when the input/
+    author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
     classes call builder methods on them.
   */
   var AuthorActivity, AuthorPage, RuntimeActivity;
@@ -523,10 +523,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
-    output.Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
+    runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
   
-    Mostly, this class and the classes of its contained child objects implement builder methods that the input.* objects
+    Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
   var RuntimeActivity, RuntimePage, slugify;
