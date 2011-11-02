@@ -13,7 +13,7 @@ exports.OutputPage = class OutputPage
     @introText = text
 
   url: ->
-    "#{@activity.url}/page/#{@index}-#{slugify @name}"
+    "#{@activity.url()}/page/#{@index}-#{slugify @name}"
 
   appendStep: ->
     @steps.push step = new Step
@@ -24,7 +24,7 @@ exports.OutputPage = class OutputPage
   toHash: ->
     name:      @name
     url:       this.url()
-    activity:  @activity.url
+    activity:  @activity.url()
     index:     @index
     introText: @introText
     steps:     step.url() for step in @steps

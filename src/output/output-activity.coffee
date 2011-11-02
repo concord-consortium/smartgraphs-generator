@@ -17,9 +17,11 @@
 exports.OutputActivity = class OutputActivity
 
   constructor: (@owner, @name) ->
-    @url    = "/#{@owner}/#{slugify @name}"
     @pages  = []
     @steps  = []
+
+  url: ->
+    "/#{@owner}/#{slugify @name}"
 
   appendPage: (outputPage) ->
     @pages.push outputPage
@@ -36,7 +38,7 @@ exports.OutputActivity = class OutputActivity
 
     activity:
       title: @name
-      url:   @url
+      url:   @url()
       owner: @owner
       pages: (page.url() for page in @pages)
 
