@@ -23,11 +23,15 @@ exports.RuntimeActivity = class RuntimeActivity
   getUrl: ->
     "/#{@owner}/#{slugify @name}"
 
-  appendPage: (outputPage) ->
-    @pages.push outputPage
-    outputPage.activity = this
-    outputPage.index    = @pages.length
-    outputPage
+  createPage: (name) ->
+    page = new RuntimePage name
+    page.activity = this
+    page
+
+  appendPage: (page) ->
+    @pages.push page
+    page.index = @pages.length
+    page
 
   toHash: ->
     flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args);

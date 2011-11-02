@@ -33,5 +33,5 @@ exports.AuthorActivity = class AuthorActivity
   toRuntimeActivity: ->
     ret = new RuntimeActivity @owner, @name
     # Remember, input models call builder methods on output models. At least for now.
-    ret.appendPage page.toRuntimePage() for page in @pages
+    ret.appendPage page.toRuntimePage(ret) for page in @pages
     ret

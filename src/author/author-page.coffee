@@ -5,8 +5,8 @@ exports.AuthorPage = class AuthorPage
   constructor: (@hash, @activity, @index) ->
     {@name, @text, @panes} = @hash
 
-  toRuntimePage: ->
-    ret = new RuntimePage @name
+  toRuntimePage: (runtimeActivity) ->
+    ret = runtimeActivity.createPage @name
     ret.setText @text     # RuntimePage shouldn't have to know OUR property name for the text
                           # (remember the RuntimePage model should be fairly stable, the *input* models will change)
 

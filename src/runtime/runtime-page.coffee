@@ -6,7 +6,6 @@ exports.RuntimePage = class RuntimePage
   constructor: (@name) ->
     @steps   = []
     # need to be set
-    @activity = null
     @index    = null
 
   setText: (text) ->
