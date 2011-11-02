@@ -16,7 +16,9 @@ exports.OutputPage = class OutputPage
     "#{@activity.url}/page/#{@index}-#{slugify @name}"
 
   appendStep: ->
-    @steps.push step = new Step this, @steps.length + 1    # sense of constructor argument changes to 'parent object' (page) here
+    @steps.push step = new Step
+    step.page  = this
+    step.index = @steps.length
     step
 
   toHash: ->

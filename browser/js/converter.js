@@ -392,7 +392,7 @@ require.define("/input/input-page.js", function (require, module, exports, __dir
     }
     InputPage.prototype.toOutputPage = function() {
       var attribution, license, pane, ret, step, type, url, _ref;
-      ret = new OutputPage(this);
+      ret = new OutputPage(this.name);
       ret.setText(this.text);
       step = ret.appendStep();
       if (((_ref = this.panes) != null ? _ref.length : void 0) > 0) {
@@ -420,10 +420,11 @@ require.define("/output/output-page.js", function (require, module, exports, __d
   slugify = require('../slugify').slugify;
   Step = require('./step').Step;
   exports.OutputPage = OutputPage = (function() {
-    function OutputPage(inputPage) {
-      this.inputPage = inputPage;
-      this.name = this.inputPage.name;
+    function OutputPage(name) {
+      this.name = name;
       this.steps = [];
+      this.activity = null;
+      this.index = null;
     }
     OutputPage.prototype.setText = function(text) {
       return this.introText = text;
@@ -433,7 +434,9 @@ require.define("/output/output-page.js", function (require, module, exports, __d
     };
     OutputPage.prototype.appendStep = function() {
       var step;
-      this.steps.push(step = new Step(this, this.steps.length + 1));
+      this.steps.push(step = new Step);
+      step.page = this;
+      step.index = this.steps.length;
       return step;
     };
     OutputPage.prototype.toHash = function() {
@@ -479,9 +482,7 @@ require.define("/output/step.js", function (require, module, exports, __dirname,
     (function() {
   var Step;
   exports.Step = Step = (function() {
-    function Step(page, index) {
-      this.page = page;
-      this.index = index;
+    function Step() {
       this.panes = null;
     }
     Step.prototype.addImagePane = function(url, license, attribution) {

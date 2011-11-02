@@ -1,7 +1,10 @@
 exports.Step = class Step
 
-  constructor: (@page, @index) ->
+  constructor: () ->
     @panes = null
+    # these need to be set later
+    @page  = null
+    @index = null
 
   addImagePane: (url, license, attribution) ->
     @panes =
