@@ -13,6 +13,9 @@ exports.Step = class Step
         path:    url
         caption: "#{license} #{attribution}"
 
+  setIndex: (@index) ->
+    @index
+
   getUrl: ->
     "#{@page.getUrl()}/step/#{@index}"
 

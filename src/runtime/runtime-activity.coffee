@@ -25,8 +25,8 @@ exports.RuntimeActivity = class RuntimeActivity
     "/#{@owner}/#{slugify @name}"
 
   # metaprogram this factory stuff?
-  createPage: (name) ->
-    page = new RuntimePage name
+  createPage: ->
+    page = new RuntimePage
     page.activity = this
     page
 
@@ -37,7 +37,7 @@ exports.RuntimeActivity = class RuntimeActivity
 
   appendPage: (page) ->
     @pages.push page
-    page.index = @pages.length
+    page.setIndex @pages.length
     page
 
   toHash: ->

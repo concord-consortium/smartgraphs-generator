@@ -6,9 +6,10 @@ exports.AuthorPage = class AuthorPage
     {@name, @text, @panes} = @hash
 
   toRuntimePage: (runtimeActivity) ->
-    runtimePage = runtimeActivity.createPage @name
-    runtimePage.setText @text     # RuntimePage shouldn't have to know OUR property name for the text
-                                  # (remember the RuntimePage model should be fairly stable, the *input* models will change)
+    runtimePage = runtimeActivity.createPage()
+
+    runtimePage.setName @name
+    runtimePage.setText @text
 
     # TODO we'll want to move this logic elsewhere
     step = runtimePage.appendStep()
