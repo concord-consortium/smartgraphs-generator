@@ -20,7 +20,7 @@ exports.OutputActivity = class OutputActivity
     @pages  = []
     @steps  = []
 
-  url: ->
+  getUrl: ->
     "/#{@owner}/#{slugify @name}"
 
   appendPage: (outputPage) ->
@@ -38,9 +38,9 @@ exports.OutputActivity = class OutputActivity
 
     activity:
       title: @name
-      url:   @url()
+      url:   @getUrl()
       owner: @owner
-      pages: (page.url() for page in @pages)
+      pages: (page.getUrl() for page in @pages)
 
     pages: page.toHash() for page in @pages
     steps: flatten ((step.toHash() for step in page.steps) for page in @pages)

@@ -12,8 +12,8 @@ exports.OutputPage = class OutputPage
   setText: (text) ->
     @introText = text
 
-  url: ->
-    "#{@activity.url()}/page/#{@index}-#{slugify @name}"
+  getUrl: ->
+    "#{@activity.getUrl()}/page/#{@index}-#{slugify @name}"
 
   appendStep: ->
     @steps.push step = new Step
@@ -23,9 +23,9 @@ exports.OutputPage = class OutputPage
 
   toHash: ->
     name:      @name
-    url:       this.url()
-    activity:  @activity.url()
+    url:       this.getUrl()
+    activity:  @activity.getUrl()
     index:     @index
     introText: @introText
-    steps:     step.url() for step in @steps
-    firstStep: @steps[0]?.url()
+    steps:     step.getUrl() for step in @steps
+    firstStep: @steps[0]?.getUrl()

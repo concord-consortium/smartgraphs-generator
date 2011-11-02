@@ -330,13 +330,13 @@ require.define("/input/input-activity.js", function (require, module, exports, _
     The various subtypes of pages will know how to call 'builder' methods on the output.* classes to insert elements as
     needed.
   
-    For example, an input.sensorPage would have to know to call methods like output.Activity.addGraph and
-    output.Activity.addDataset, as well as mehods such as, perhaps, output.Activity.appendPage, output.Page.appendStep,
-    and output.Step.addTool('sensor')
+    For example, an input.sensorPage would have to know to call methods like OutputActivity.addGraph and
+    OutputActivity.addDataset, as well as mehods such as, perhaps, OutputActivity.appendPage, OutputPage.appendStep,
+    and Step.addTool('sensor')
   
     The complexity of processing the input tree and deciding which builder methods on the output Page, output Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
-    input.* group, and that the output.* classes mostly just need to help keep the 'accounting' straight when the input.*
+    input/ group, and that the output/ classes mostly just need to help keep the 'accounting' straight when the input/
     classes call builder methods on them.
   */
   var InputActivity, InputPage, OutputActivity;
@@ -429,8 +429,8 @@ require.define("/output/output-page.js", function (require, module, exports, __d
     OutputPage.prototype.setText = function(text) {
       return this.introText = text;
     };
-    OutputPage.prototype.url = function() {
-      return "" + this.activity.url + "/page/" + this.index + "-" + (slugify(this.name));
+    OutputPage.prototype.getUrl = function() {
+      return "" + (this.activity.getUrl()) + "/page/" + this.index + "-" + (slugify(this.name));
     };
     OutputPage.prototype.appendStep = function() {
       var step;
@@ -443,8 +443,8 @@ require.define("/output/output-page.js", function (require, module, exports, __d
       var step, _ref;
       return {
         name: this.name,
-        url: this.url(),
-        activity: this.activity.url,
+        url: this.getUrl(),
+        activity: this.activity.getUrl(),
         index: this.index,
         introText: this.introText,
         steps: (function() {
@@ -453,11 +453,11 @@ require.define("/output/output-page.js", function (require, module, exports, __d
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             step = _ref[_i];
-            _results.push(step.url());
+            _results.push(step.getUrl());
           }
           return _results;
         }).call(this),
-        firstStep: (_ref = this.steps[0]) != null ? _ref.url() : void 0
+        firstStep: (_ref = this.steps[0]) != null ? _ref.getUrl() : void 0
       };
     };
     return OutputPage;
@@ -484,6 +484,8 @@ require.define("/output/step.js", function (require, module, exports, __dirname,
   exports.Step = Step = (function() {
     function Step() {
       this.panes = null;
+      this.page = null;
+      this.index = null;
     }
     Step.prototype.addImagePane = function(url, license, attribution) {
       return this.panes = {
@@ -494,13 +496,13 @@ require.define("/output/step.js", function (require, module, exports, __dirname,
         }
       };
     };
-    Step.prototype.url = function() {
-      return "" + (this.page.url()) + "/step/" + this.index;
+    Step.prototype.getUrl = function() {
+      return "" + (this.page.getUrl()) + "/step/" + this.index;
     };
     Step.prototype.toHash = function() {
       return {
-        url: this.url(),
-        activityPage: this.page.url(),
+        url: this.getUrl(),
+        activityPage: this.page.getUrl(),
         paneConfig: 'single',
         panes: this.panes,
         isFinalStep: true,
@@ -518,11 +520,11 @@ require.define("/output/output-activity.js", function (require, module, exports,
   /*
     Output "Activity" object.
   
-    This class knows how to construct a itself from an InputActivity object. It maintains a set of child objects that
-    represent something close to the output "Smartgraphs runtime JSON" format and has a toHash method to generate that
-    format. (However, this class will likely maintain model objects that aren't explicitly represented in the final
-    output hash or in the Smartgraphs runtime; for example, having an output.Graph class makes sense, even though the
-    output hash is 'denormalized' and doesn't have an explicit representation of a Graph)
+    This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
+    format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
+    aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
+    output.Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
+    representation of a Graph)
   
     Mostly, this class and the classes of its contained child objects implement builder methods that the input.* objects
     know how to call.
@@ -534,10 +536,12 @@ require.define("/output/output-activity.js", function (require, module, exports,
     function OutputActivity(owner, name) {
       this.owner = owner;
       this.name = name;
-      this.url = "/" + this.owner + "/" + (slugify(this.name));
       this.pages = [];
       this.steps = [];
     }
+    OutputActivity.prototype.getUrl = function() {
+      return "/" + this.owner + "/" + (slugify(this.name));
+    };
     OutputActivity.prototype.appendPage = function(outputPage) {
       this.pages.push(outputPage);
       outputPage.activity = this;
@@ -556,7 +560,7 @@ require.define("/output/output-activity.js", function (require, module, exports,
         data_format_version: 6,
         activity: {
           title: this.name,
-          url: this.url,
+          url: this.getUrl(),
           owner: this.owner,
           pages: (function() {
             var _i, _len, _ref, _results;
@@ -564,7 +568,7 @@ require.define("/output/output-activity.js", function (require, module, exports,
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               page = _ref[_i];
-              _results.push(page.url());
+              _results.push(page.getUrl());
             }
             return _results;
           }).call(this)

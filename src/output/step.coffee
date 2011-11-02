@@ -13,12 +13,12 @@ exports.Step = class Step
         path:    url
         caption: "#{license} #{attribution}"
 
-  url: ->
-    "#{@page.url()}/step/#{@index}"
+  getUrl: ->
+    "#{@page.getUrl()}/step/#{@index}"
 
   toHash: ->
-    url:                    this.url()
-    activityPage:           @page.url()
+    url:                    this.getUrl()
+    activityPage:           @page.getUrl()
     paneConfig:             'single'
     panes:                  @panes
     isFinalStep:            true
