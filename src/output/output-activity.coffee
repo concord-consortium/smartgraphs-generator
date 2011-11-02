@@ -29,7 +29,8 @@ exports.OutputActivity = class OutputActivity
     outputPage
 
   toHash: ->
-    flatten = (arrays) -> [].concat arrays...       # Handy CS idiom. obj.method args... => obj.apply(obj, args);
+    flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args);
+
     _id: 'marias-run-generated-target.df6'  # TODO make this the same as the URL as soon as expected output is updated
     _rev: 1
     data_format_version: 6
