@@ -23,5 +23,17 @@
         }
       ]
     }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    }
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "m"
+    }
   ]
 }
