@@ -363,14 +363,14 @@ require.define("/author/author-activity.js", function (require, module, exports,
       }).call(this);
     }
     AuthorActivity.prototype.toRuntimeActivity = function() {
-      var page, ret, _i, _len, _ref;
-      ret = new RuntimeActivity(this.owner, this.name);
+      var page, runtimeActivity, _i, _len, _ref;
+      runtimeActivity = new RuntimeActivity(this.owner, this.name);
       _ref = this.pages;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         page = _ref[_i];
-        ret.appendPage(page.toRuntimePage());
+        runtimeActivity.appendPage(page.toRuntimePage(runtimeActivity));
       }
-      return ret;
+      return runtimeActivity;
     };
     return AuthorActivity;
   })();
@@ -390,23 +390,37 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       this.index = index;
       _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes;
     }
-    AuthorPage.prototype.toRuntimePage = function() {
-      var attribution, license, pane, ret, step, type, url, _ref;
-      ret = new RuntimePage(this.name);
-      ret.setText(this.text);
-      step = ret.appendStep();
+    AuthorPage.prototype.toRuntimePage = function(runtimeActivity) {
+      var pane, runtimePage, step, type, _ref;
+      runtimePage = runtimeActivity.createPage();
+      runtimePage.setName(this.name);
+      runtimePage.setText(this.text);
+      step = runtimePage.appendStep();
       if (((_ref = this.panes) != null ? _ref.length : void 0) > 0) {
         if (this.panes.length > 1) {
           throw new Error("Only one pane is supported right now");
         }
         pane = this.panes[0];
-        type = pane.type, url = pane.url, license = pane.license, attribution = pane.attribution;
-        if (type !== 'ImagePane') {
-          throw new Error("Only ImagePanes are supported right now");
+        type = pane.type;
+        if (type === 'ImagePane') {
+          this.addImagePane(step, pane);
+        } else if (type === 'GraphPane') {
+          this.addGraphPane(step, pane);
+        } else {
+          throw new Error("Only ImagePanes and GraphPanes are supported right now");
         }
-        step.addImagePane(url, license, attribution);
       }
-      return ret;
+      return runtimePage;
+    };
+    AuthorPage.prototype.addImagePane = function(step, pane) {
+      var attribution, license, url;
+      url = pane.url, license = pane.license, attribution = pane.attribution;
+      return step.addImagePane(url, license, attribution);
+    };
+    AuthorPage.prototype.addGraphPane = function(step, pane) {
+      var title, xAxis, yAxis;
+      title = pane.title, xAxis = pane.xAxis, yAxis = pane.yAxis;
+      return step.addGraphPane(title, xAxis, yAxis);
     };
     return AuthorPage;
   })();
@@ -416,27 +430,32 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/runtime/runtime-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var RuntimePage, Step, slugify;
+  var RuntimePage, slugify;
   slugify = require('../slugify').slugify;
-  Step = require('./step').Step;
   exports.RuntimePage = RuntimePage = (function() {
-    function RuntimePage(name) {
-      this.name = name;
+    function RuntimePage() {
       this.steps = [];
-      this.activity = null;
       this.index = null;
     }
     RuntimePage.prototype.setText = function(text) {
       return this.introText = text;
+    };
+    RuntimePage.prototype.setName = function(name) {
+      this.name = name;
+      return this.name;
+    };
+    RuntimePage.prototype.setIndex = function(index) {
+      this.index = index;
+      return this.index;
     };
     RuntimePage.prototype.getUrl = function() {
       return "" + (this.activity.getUrl()) + "/page/" + this.index + "-" + (slugify(this.name));
     };
     RuntimePage.prototype.appendStep = function() {
       var step;
-      this.steps.push(step = new Step);
+      this.steps.push(step = this.activity.createStep());
       step.page = this;
-      step.index = this.steps.length;
+      step.setIndex(this.steps.length);
       return step;
     };
     RuntimePage.prototype.toHash = function() {
@@ -478,43 +497,6 @@ require.define("/slugify.js", function (require, module, exports, __dirname, __f
 
 });
 
-require.define("/runtime/step.js", function (require, module, exports, __dirname, __filename) {
-    (function() {
-  var Step;
-  exports.Step = Step = (function() {
-    function Step() {
-      this.panes = null;
-      this.page = null;
-      this.index = null;
-    }
-    Step.prototype.addImagePane = function(url, license, attribution) {
-      return this.panes = {
-        single: {
-          type: 'image',
-          path: url,
-          caption: "" + license + " " + attribution
-        }
-      };
-    };
-    Step.prototype.getUrl = function() {
-      return "" + (this.page.getUrl()) + "/step/" + this.index;
-    };
-    Step.prototype.toHash = function() {
-      return {
-        url: this.getUrl(),
-        activityPage: this.page.getUrl(),
-        paneConfig: 'single',
-        panes: this.panes,
-        isFinalStep: true,
-        nextButtonShouldSubmit: true
-      };
-    };
-    return Step;
-  })();
-}).call(this);
-
-});
-
 require.define("/runtime/runtime-activity.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   /*
@@ -529,9 +511,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
-  var RuntimeActivity, RuntimePage, slugify;
+  var RuntimeActivity, RuntimePage, Step, slugify;
   slugify = require('../slugify').slugify;
   RuntimePage = require('./runtime-page').RuntimePage;
+  Step = require('./step').Step;
   exports.RuntimeActivity = RuntimeActivity = (function() {
     function RuntimeActivity(owner, name) {
       this.owner = owner;
@@ -542,11 +525,22 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     RuntimeActivity.prototype.getUrl = function() {
       return "/" + this.owner + "/" + (slugify(this.name));
     };
-    RuntimeActivity.prototype.appendPage = function(outputPage) {
-      this.pages.push(outputPage);
-      outputPage.activity = this;
-      outputPage.index = this.pages.length;
-      return outputPage;
+    RuntimeActivity.prototype.createPage = function() {
+      var page;
+      page = new RuntimePage;
+      page.activity = this;
+      return page;
+    };
+    RuntimeActivity.prototype.createStep = function() {
+      var step;
+      step = new Step;
+      step.activity = this;
+      return step;
+    };
+    RuntimeActivity.prototype.appendPage = function(page) {
+      this.pages.push(page);
+      page.setIndex(this.pages.length);
+      return page;
     };
     RuntimeActivity.prototype.toHash = function() {
       var flatten, page, step;
@@ -612,6 +606,47 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       };
     };
     return RuntimeActivity;
+  })();
+}).call(this);
+
+});
+
+require.define("/runtime/step.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var Step;
+  exports.Step = Step = (function() {
+    function Step() {
+      this.panesHash = null;
+      this.page = null;
+      this.index = null;
+    }
+    Step.prototype.addImagePane = function(url, license, attribution) {
+      return this.panesHash = {
+        single: {
+          type: 'image',
+          path: url,
+          caption: "" + license + " " + attribution
+        }
+      };
+    };
+    Step.prototype.setIndex = function(index) {
+      this.index = index;
+      return this.index;
+    };
+    Step.prototype.getUrl = function() {
+      return "" + (this.page.getUrl()) + "/step/" + this.index;
+    };
+    Step.prototype.toHash = function() {
+      return {
+        url: this.getUrl(),
+        activityPage: this.page.getUrl(),
+        paneConfig: 'single',
+        panes: this.panesHash,
+        isFinalStep: true,
+        nextButtonShouldSubmit: true
+      };
+    };
+    return Step;
   })();
 }).call(this);
 
