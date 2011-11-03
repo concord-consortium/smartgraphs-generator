@@ -7,8 +7,8 @@ exports.RuntimePage = class RuntimePage
     # need to be set
     @index    = null
 
-  setText: (text) ->
-    @introText = text
+  setText: (@introText) ->
+    @introText
 
   setName: (@name) ->
     @name

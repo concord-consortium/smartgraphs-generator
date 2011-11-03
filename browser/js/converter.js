@@ -437,8 +437,9 @@ require.define("/runtime/runtime-page.js", function (require, module, exports, _
       this.steps = [];
       this.index = null;
     }
-    RuntimePage.prototype.setText = function(text) {
-      return this.introText = text;
+    RuntimePage.prototype.setText = function(introText) {
+      this.introText = introText;
+      return this.introText;
     };
     RuntimePage.prototype.setName = function(name) {
       this.name = name;
