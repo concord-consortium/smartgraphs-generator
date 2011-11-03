@@ -78,7 +78,7 @@ exports.RuntimeActivity = class RuntimeActivity
   toHash: ->
     flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args);
 
-    _id: 'marias-run-generated-target.df6'  # TODO make this the same as the URL as soon as expected output is updated
+    _id: "#{slugify @name}.df6"
     _rev: 1
     data_format_version: 6
 
@@ -87,6 +87,7 @@ exports.RuntimeActivity = class RuntimeActivity
       url:   @getUrl()
       owner: @owner
       pages: (page.getUrl() for page in @pages)
+      axes:  url for url of @axes
 
     pages: page.toHash() for page in @pages
     steps: flatten ((step.toHash() for step in page.steps) for page in @pages)

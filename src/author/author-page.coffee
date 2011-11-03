@@ -21,8 +21,8 @@ exports.AuthorPage = class AuthorPage
 
       switch type
         when 'ImagePane' then @addImagePane step, pane
-        when 'GraphPane' then @addGraphPane step, pane, runtimeActivity
-        else throw new Error "Only ImagePanes and GraphPanes are supported right now"
+        when 'PredefinedGraphPane' then @addPredefinedGraphPane step, pane, runtimeActivity
+        else throw new Error "Only ImagePanes and PredefinedGraphPane are supported right now"
 
     runtimePage
 
@@ -30,7 +30,7 @@ exports.AuthorPage = class AuthorPage
     {url, license, attribution} = pane
     step.addImagePane url, license, attribution
 
-  addGraphPane: (step, pane, runtimeActivity) ->
+  addPredefinedGraphPane: (step, pane, runtimeActivity) ->
 
     { title,
       xLabel, xUnits, xMin, xMax, xTicks

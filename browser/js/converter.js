@@ -422,11 +422,11 @@ require.define("/author/author-page.js", function (require, module, exports, __d
           case 'ImagePane':
             this.addImagePane(step, pane);
             break;
-          case 'GraphPane':
-            this.addGraphPane(step, pane, runtimeActivity);
+          case 'PredefinedGraphPane':
+            this.addPredefinedGraphPane(step, pane, runtimeActivity);
             break;
           default:
-            throw new Error("Only ImagePanes and GraphPanes are supported right now");
+            throw new Error("Only ImagePanes and PredefinedGraphPane are supported right now");
         }
       }
       return runtimePage;
@@ -436,7 +436,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       url = pane.url, license = pane.license, attribution = pane.attribution;
       return step.addImagePane(url, license, attribution);
     };
-    AuthorPage.prototype.addGraphPane = function(step, pane, runtimeActivity) {
+    AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity) {
       var title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef;
       title = pane.title, xLabel = pane.xLabel, xUnits = pane.xUnits, xMin = pane.xMin, xMax = pane.xMax, xTicks = pane.xTicks, yLabel = pane.yLabel, yUnits = pane.yUnits, yMin = pane.yMin, yMax = pane.yMax, yTicks = pane.yTicks;
       xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(xUnits));
@@ -609,7 +609,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         return (_ref = []).concat.apply(_ref, arrays);
       };
       return {
-        _id: 'marias-run-generated-target.df6',
+        _id: "" + (slugify(this.name)) + ".df6",
         _rev: 1,
         data_format_version: 6,
         activity: {
@@ -623,6 +623,14 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               page = _ref[_i];
               _results.push(page.getUrl());
+            }
+            return _results;
+          }).call(this),
+          axes: (function() {
+            var _results;
+            _results = [];
+            for (url in this.axes) {
+              _results.push(url);
             }
             return _results;
           }).call(this)
