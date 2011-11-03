@@ -41,24 +41,24 @@
           "annotations": []
         }
       },
-      "hideSubmitButton": true,
-      "tools": []
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     }
   ],
   "units": [
-    { 
-      "url": "/shared/simple-graph/units/meters",
-      "activity": null,
-      "name": "meter",
-      "abbreviation": "m",
-      "pluralName": "meters"
-    },
-    { 
+    {
       "url": "/shared/simple-graph/units/minutes",
-      "activity": null,
+      "activity": "/shared/simple-graph",
       "name": "minute",
       "abbreviation": "m",
       "pluralName": "minutes"
+    },
+    {
+      "url": "/shared/simple-graph/units/meters",
+      "activity": "/shared/simple-graph",
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
     }
   ],
   "axes": [
