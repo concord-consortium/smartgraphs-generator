@@ -2,16 +2,25 @@
 
 exports.convert = (input) ->
   outputDocument = new OutputDocument
-  
+  outputUnits = {}
+
   outputActivity = outputDocument.createActivity
     title: input.name
     owner: input.owner || 'shared'
+
+  if input.units
+    for unit in input.units
+      outputUnits[unit.name] = outputDocument.createUnit
+        name: unit.name.replace /s$/, ''
+        abbreviation: unit.abbreviation
+        pluralName: unit.name
+        activity: null
 
   for page in input.pages
     outputPage = outputActivity.appendPage
       name: page.name
       introText: page.text
-    
+
     outputStep = outputPage.appendStep
       paneConfig: 'single'
       panes: null
@@ -20,11 +29,31 @@ exports.convert = (input) ->
 
     if page.panes
       for pane in page.panes
+        console.log "found #{pane.type} pane"
         switch pane.type
           when 'ImagePane'
             outputStep.appendPane
               type: 'image'
               path: pane.url
               caption: "#{pane.license} #{pane.attribution}"
+          when 'PredefinedGraphPane'
+            xAxis = outputDocument.createAxis
+              min: pane.xMin
+              max: pane.xMax
+              nSteps: pane.xTicks
+              label: pane.xLabel
+              units: outputUnits[pane.xUnits].url()
+            yAxis = outputDocument.createAxis
+              min: pane.yMin
+              max: pane.yMax
+              nSteps: pane.yTicks
+              label: pane.yLabel
+              units: outputUnits[pane.yUnits].url()
+            outputStep.appendPane
+              type: 'graph'
+              title: pane.title
+              xAxis: xAxis.url()
+              yAxis: yAxis.url()
+              annotations: []
 
-  outputDocument.hash  
+  outputDocument.hash
