@@ -13,7 +13,7 @@ exports.Step = class Step
         path:    url
         caption: "#{license} #{attribution}"
 
-  addGraphPane: ({ title, xAxis, yAxis }) ->
+  addGraphPane: ({ title, datadef, xAxis, yAxis }) ->
     @panesHash =
       single:
         type:        'graph'
@@ -21,6 +21,7 @@ exports.Step = class Step
         xAxis:       xAxis.getUrl()
         yAxis:       yAxis.getUrl()
         annotations: []
+        data:        if datadef? then [datadef.name] else []
 
   setIndex: (@index) ->
     @index

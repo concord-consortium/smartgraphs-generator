@@ -16,14 +16,18 @@
 {Step}        = require './step'
 {Axis}        = require './axis'
 {RuntimeUnit} = require './runtime-unit'
+{Datadef}     = require './datadef'
 
 exports.RuntimeActivity = class RuntimeActivity
 
   constructor: (@owner, @name) ->
-    @pages    = []
-    @steps    = []
-    @unitRefs = {}
-    @axes     = {}
+    @pages     = []
+    @steps     = []
+    @unitRefs  = {}
+    @axes      = {}
+    @nAxes     = 0
+    @datadefs  = {}
+    @nDatadefs = 0
 
   getUrl: ->
     "/#{@owner}/#{slugify @name}"
@@ -47,9 +51,9 @@ exports.RuntimeActivity = class RuntimeActivity
     unit
 
   ###
-    Forward references. (Things that may be used in one place but defined elsewhere.)
+    Forward references. So far only Units need this because everything else is defined inline, but this is expected
+    to change, right?
   ###
-
   getUnitRef: (name) ->
     if ref = @unitRefs[name] then return ref
     else ref = @unitRefs[name] = { name, unit: null }
@@ -62,13 +66,20 @@ exports.RuntimeActivity = class RuntimeActivity
     unit
 
   ###
-    Axis is an oddball for the time being. It's defined when used, but later we'll want to reuse axes
+    Things that are defined only inline (for now) and therefore don't need to be treated as forward references.
   ###
   createAndAppendAxis: ({label, unitRef, min, max, nSteps}) ->
-    axis = new Axis {label, unitRef, min, max, nSteps}
+    axis = new Axis { label, unitRef, min, max, nSteps, index: ++@nAxes }
     axis.activity = this
     @axes[axis.getUrl()] = axis
     axis
+
+  createAndAppendDatadef: ({data, xLabel, xUnitsRef, yLabel, yUnitsRef}) ->
+    # for a while we'll only deal with one kind of Datadef: UnorderedDataPoints
+    datadef = new Datadef { data, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs }
+    datadef.activity = this
+    @datadefs[datadef.name] = datadef
+    datadef
 
   appendPage: (page) ->
     @pages.push page
@@ -94,7 +105,7 @@ exports.RuntimeActivity = class RuntimeActivity
 
     responseTemplates: []
     axes:              @axes[url].toHash() for url of @axes
-    datadefs:          []
+    datadefs:          Datadef.serializeDatadefs(@datadefs[name] for name of @datadefs)
     tags:              []
     annotations:       []
     variables:         []

@@ -437,8 +437,8 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       return step.addImagePane(url, license, attribution);
     };
     AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity) {
-      var title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef;
-      title = pane.title, xLabel = pane.xLabel, xUnits = pane.xUnits, xMin = pane.xMin, xMax = pane.xMax, xTicks = pane.xTicks, yLabel = pane.yLabel, yUnits = pane.yUnits, yMin = pane.yMin, yMax = pane.yMax, yTicks = pane.yTicks;
+      var data, datadef, title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef;
+      title = pane.title, data = pane.data, xLabel = pane.xLabel, xUnits = pane.xUnits, xMin = pane.xMin, xMax = pane.xMax, xTicks = pane.xTicks, yLabel = pane.yLabel, yUnits = pane.yUnits, yMin = pane.yMin, yMax = pane.yMax, yTicks = pane.yTicks;
       xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(xUnits));
       yUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(yUnits));
       xAxis = runtimeActivity.createAndAppendAxis({
@@ -455,8 +455,18 @@ require.define("/author/author-page.js", function (require, module, exports, __d
         max: yMax,
         nSteps: yTicks
       });
+      if (data != null) {
+        datadef = runtimeActivity.createAndAppendDatadef({
+          data: data,
+          xLabel: xLabel,
+          xUnitsRef: xUnitsRef,
+          yLabel: yLabel,
+          yUnitsRef: yUnitsRef
+        });
+      }
       return step.addGraphPane({
         title: title,
+        datadef: datadef,
         xAxis: xAxis,
         yAxis: yAxis
       });
@@ -517,12 +527,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
-  var Axis, RuntimeActivity, RuntimePage, RuntimeUnit, Step, slugify;
+  var Axis, Datadef, RuntimeActivity, RuntimePage, RuntimeUnit, Step, slugify;
   slugify = require('../slugify').slugify;
   RuntimePage = require('./runtime-page').RuntimePage;
   Step = require('./step').Step;
   Axis = require('./axis').Axis;
   RuntimeUnit = require('./runtime-unit').RuntimeUnit;
+  Datadef = require('./datadef').Datadef;
   exports.RuntimeActivity = RuntimeActivity = (function() {
     function RuntimeActivity(owner, name) {
       this.owner = owner;
@@ -531,6 +542,9 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.steps = [];
       this.unitRefs = {};
       this.axes = {};
+      this.nAxes = 0;
+      this.datadefs = {};
+      this.nDatadefs = 0;
     }
     RuntimeActivity.prototype.getUrl = function() {
       return "/" + this.owner + "/" + (slugify(this.name));
@@ -557,7 +571,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return unit;
     };
     /*
-        Forward references. (Things that may be used in one place but defined elsewhere.)
+        Forward references. So far only Units need this because everything else is defined inline, but this is expected
+        to change, right?
       */
     RuntimeActivity.prototype.getUnitRef = function(name) {
       var ref;
@@ -581,7 +596,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return unit;
     };
     /*
-        Axis is an oddball for the time being. It's defined when used, but later we'll want to reuse axes
+        Things that are defined only inline (for now) and therefore don't need to be treated as forward references.
       */
     RuntimeActivity.prototype.createAndAppendAxis = function(_arg) {
       var axis, label, max, min, nSteps, unitRef;
@@ -591,11 +606,27 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         unitRef: unitRef,
         min: min,
         max: max,
-        nSteps: nSteps
+        nSteps: nSteps,
+        index: ++this.nAxes
       });
       axis.activity = this;
       this.axes[axis.getUrl()] = axis;
       return axis;
+    };
+    RuntimeActivity.prototype.createAndAppendDatadef = function(_arg) {
+      var data, datadef, xLabel, xUnitsRef, yLabel, yUnitsRef;
+      data = _arg.data, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef;
+      datadef = new Datadef({
+        data: data,
+        xLabel: xLabel,
+        xUnitsRef: xUnitsRef,
+        yLabel: yLabel,
+        yUnitsRef: yUnitsRef,
+        index: ++this.nDatadefs
+      });
+      datadef.activity = this;
+      this.datadefs[datadef.name] = datadef;
+      return datadef;
     };
     RuntimeActivity.prototype.appendPage = function(page) {
       this.pages.push(page);
@@ -673,7 +704,14 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           }
           return _results;
         }).call(this),
-        datadefs: [],
+        datadefs: Datadef.serializeDatadefs((function() {
+          var _results;
+          _results = [];
+          for (name in this.datadefs) {
+            _results.push(this.datadefs[name]);
+          }
+          return _results;
+        }).call(this)),
         tags: [],
         annotations: [],
         variables: [],
@@ -782,15 +820,16 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       };
     };
     Step.prototype.addGraphPane = function(_arg) {
-      var title, xAxis, yAxis;
-      title = _arg.title, xAxis = _arg.xAxis, yAxis = _arg.yAxis;
+      var datadef, title, xAxis, yAxis;
+      title = _arg.title, datadef = _arg.datadef, xAxis = _arg.xAxis, yAxis = _arg.yAxis;
       return this.panesHash = {
         single: {
           type: 'graph',
           title: title,
           xAxis: xAxis.getUrl(),
           yAxis: yAxis.getUrl(),
-          annotations: []
+          annotations: [],
+          data: datadef != null ? [datadef.name] : []
         }
       };
     };
@@ -821,13 +860,11 @@ require.define("/runtime/axis.js", function (require, module, exports, __dirname
     (function() {
   var Axis;
   exports.Axis = Axis = (function() {
-    Axis.currentId = 1;
     function Axis(_arg) {
-      this.label = _arg.label, this.unitRef = _arg.unitRef, this.min = _arg.min, this.max = _arg.max, this.nSteps = _arg.nSteps;
-      this.id = Axis.currentId++;
+      this.label = _arg.label, this.unitRef = _arg.unitRef, this.min = _arg.min, this.max = _arg.max, this.nSteps = _arg.nSteps, this.index = _arg.index;
     }
     Axis.prototype.getUrl = function() {
-      return "" + (this.activity.getUrl()) + "/axes/" + this.id;
+      return "" + (this.activity.getUrl()) + "/axes/" + this.index;
     };
     Axis.prototype.toHash = function() {
       return {
@@ -866,6 +903,62 @@ require.define("/runtime/runtime-unit.js", function (require, module, exports, _
       };
     };
     return RuntimeUnit;
+  })();
+}).call(this);
+
+});
+
+require.define("/runtime/datadef.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  /*
+    Currently this is a synonym for 'UnorderedDataPoints'. However, we will eventually have to handle
+    FirstOrderDifference and Function Datadefs
+  */
+  var Datadef;
+  exports.Datadef = Datadef = (function() {
+    Datadef.serializeDatadefs = function(datadefs) {
+      var datadef;
+      if (datadefs.length === 0) {
+        return [];
+      } else {
+        return [
+          {
+            type: 'UnorderedDataPoints',
+            records: (function() {
+              var _i, _len, _results;
+              _results = [];
+              for (_i = 0, _len = datadefs.length; _i < _len; _i++) {
+                datadef = datadefs[_i];
+                _results.push(datadef.toHash());
+              }
+              return _results;
+            })()
+          }
+        ];
+      }
+    };
+    function Datadef(_arg) {
+      this.data = _arg.data, this.xLabel = _arg.xLabel, this.xUnitsRef = _arg.xUnitsRef, this.yLabel = _arg.yLabel, this.yUnitsRef = _arg.yUnitsRef, this.index = _arg.index;
+      this.name = "datadef-" + this.index;
+    }
+    Datadef.prototype.getUrl = function() {
+      return "" + (this.activity.getUrl()) + "/datadefs/" + this.name;
+    };
+    Datadef.prototype.toHash = function() {
+      return {
+        url: this.getUrl(),
+        name: this.name,
+        activity: this.activity.getUrl(),
+        xUnits: this.xUnitsRef.unit.getUrl(),
+        xLabel: this.xLabel,
+        xShortLabel: this.xLabel,
+        yUnits: this.yUnitsRef.unit.getUrl(),
+        yLabel: this.yLabel,
+        yShortLabel: this.yLabel,
+        points: this.data
+      };
+    };
+    return Datadef;
   })();
 }).call(this);
 

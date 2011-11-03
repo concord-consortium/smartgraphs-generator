@@ -33,6 +33,7 @@ exports.AuthorPage = class AuthorPage
   addPredefinedGraphPane: (step, pane, runtimeActivity) ->
 
     { title,
+      data,
       xLabel, xUnits, xMin, xMax, xTicks
       yLabel, yUnits, yMin, yMax, yTicks } = pane
 
@@ -42,4 +43,7 @@ exports.AuthorPage = class AuthorPage
     xAxis = runtimeActivity.createAndAppendAxis { label: xLabel, unitRef: xUnitsRef, min: xMin, max: xMax, nSteps: xTicks }
     yAxis = runtimeActivity.createAndAppendAxis { label: yLabel, unitRef: yUnitsRef, min: yMin, max: yMax, nSteps: yTicks }
 
-    step.addGraphPane { title, xAxis, yAxis }
+    if data?
+      datadef = runtimeActivity.createAndAppendDatadef { data, xLabel, xUnitsRef, yLabel, yUnitsRef }
+
+    step.addGraphPane { title, datadef, xAxis, yAxis }
