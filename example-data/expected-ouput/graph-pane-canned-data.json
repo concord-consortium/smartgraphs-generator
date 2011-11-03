@@ -49,14 +49,14 @@
   "units": [
     { 
       "url": "/shared/simple-graph-canned-data/units/meters",
-      "activity": null,
+      "activity": "/shared/simple-graph-canned-data",
       "name": "meter",
       "abbreviation": "m",
       "pluralName": "meters"
     },
     { 
       "url": "/shared/simple-graph-canned-data/units/minutes",
-      "activity": null,
+      "activity": "/shared/simple-graph-canned-data",
       "name": "minute",
       "abbreviation": "m",
       "pluralName": "minutes"

@@ -1,7 +1,7 @@
 exports.OutputUnit = class OutputUnit
 
   constructor: (@doc, @hash) ->
-    hash.activity = null
+    hash.activity = @doc.baseUrl()
     hash.url = "#{@doc.baseUrl()}/units/#{hash.pluralName}"
 
   url: ->

@@ -48,14 +48,14 @@
   "units": [
     { 
       "url": "/shared/simple-graph-no-data/units/meters",
-      "activity": null,
+      "activity": "/shared/simple-graph-no-data",
       "name": "meter",
       "abbreviation": "m",
       "pluralName": "meters"
     },
     { 
       "url": "/shared/simple-graph-no-data/units/minutes",
-      "activity": null,
+      "activity": "/shared/simple-graph-no-data",
       "name": "minute",
       "abbreviation": "m",
       "pluralName": "minutes"

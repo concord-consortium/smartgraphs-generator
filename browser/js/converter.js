@@ -535,7 +535,7 @@ require.define("/output/output-unit.js", function (require, module, exports, __d
     function OutputUnit(doc, hash) {
       this.doc = doc;
       this.hash = hash;
-      hash.activity = null;
+      hash.activity = this.doc.baseUrl();
       hash.url = "" + (this.doc.baseUrl()) + "/units/" + hash.pluralName;
     }
     OutputUnit.prototype.url = function() {
@@ -572,7 +572,7 @@ require.define("/output/output-data.js", function (require, module, exports, __d
     function OutputData(doc, prefix, index, hash) {
       this.doc = doc;
       this.hash = hash;
-      hash.activity = doc.activity.url();
+      hash.activity = this.doc.baseUrl();
       hash.name = "" + prefix + "-" + index;
       hash.url = "" + (this.doc.baseUrl()) + "/datadefs/" + hash.name;
     }
