@@ -1,5 +1,5 @@
 {
-  "_id": "marias-run-generated-target.df6",
+  "_id": "marias-run.df6",
   "_rev": 1,
   "data_format_version": 6,
   "activity": {
@@ -8,7 +8,8 @@
     "owner": "shared",
     "pages": [
       "/shared/marias-run/page/1-introduction"
-    ]
+    ],
+    "axes": []
   },
   "pages": [
     {

@@ -18,6 +18,7 @@
 ###
 
 {AuthorPage}      = require './author-page'
+{AuthorUnit}      = require './author-unit'
 {RuntimeActivity} = require '../runtime/runtime-activity'
 
 exports.AuthorActivity = class AuthorActivity
@@ -29,9 +30,11 @@ exports.AuthorActivity = class AuthorActivity
     {@name,  @owner} = hash
     @owner ||= 'shared'        # until we get owner's username into the input hash
     @pages = (new AuthorPage(page, this, i + 1) for page, i in hash.pages)
+    @units = (new AuthorUnit(unit, this) for unit in hash.units || [])
 
   toRuntimeActivity: ->
-    ret = new RuntimeActivity @owner, @name
+    runtimeActivity = new RuntimeActivity @owner, @name
     # Remember, input models call builder methods on output models. At least for now.
-    ret.appendPage page.toRuntimePage(ret) for page in @pages
-    ret
+    runtimeActivity.appendPage page.toRuntimePage(runtimeActivity) for page in @pages
+    runtimeActivity.defineUnit unit.toRuntimeUnit(runtimeActivity) for unit in @units
+    runtimeActivity

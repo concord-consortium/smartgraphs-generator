@@ -14,19 +14,25 @@
 {slugify}     = require '../slugify'
 {RuntimePage} = require './runtime-page'
 {Step}        = require './step'
+{Axis}        = require './axis'
+{RuntimeUnit} = require './runtime-unit'
 
 exports.RuntimeActivity = class RuntimeActivity
 
   constructor: (@owner, @name) ->
-    @pages  = []
-    @steps  = []
+    @pages    = []
+    @steps    = []
+    @unitRefs = {}
+    @axes     = {}
 
   getUrl: ->
     "/#{@owner}/#{slugify @name}"
 
-  # metaprogram this factory stuff?
-  createPage: (name) ->
-    page = new RuntimePage name
+  ###
+    Factories for stuff we own. Could be metaprogrammed.
+  ###
+  createPage: ->
+    page = new RuntimePage
     page.activity = this
     page
 
@@ -35,15 +41,44 @@ exports.RuntimeActivity = class RuntimeActivity
     step.activity = this
     step
 
+  createUnit: ->
+    unit = new RuntimeUnit
+    unit.activity = this
+    unit
+
+  ###
+    Forward references. (Things that may be used in one place but defined elsewhere.)
+  ###
+
+  getUnitRef: (name) ->
+    if ref = @unitRefs[name] then return ref
+    else ref = @unitRefs[name] = { name, unit: null }
+    ref
+
+  defineUnit: (unit) ->
+    ref = @getUnitRef unit.name
+    if ref.unit? then throw new Error "Warning: redefining unit #{ref.name}"
+    ref.unit = unit
+    unit
+
+  ###
+    Axis is an oddball for the time being. It's defined when used, but later we'll want to reuse axes
+  ###
+  createAndAppendAxis: ({label, unitRef, min, max, nSteps}) ->
+    axis = new Axis {label, unitRef, min, max, nSteps}
+    axis.activity = this
+    @axes[axis.getUrl()] = axis
+    axis
+
   appendPage: (page) ->
     @pages.push page
-    page.index = @pages.length
+    page.setIndex @pages.length
     page
 
   toHash: ->
     flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args);
 
-    _id: 'marias-run-generated-target.df6'  # TODO make this the same as the URL as soon as expected output is updated
+    _id: "#{slugify @name}.df6"
     _rev: 1
     data_format_version: 6
 
@@ -52,14 +87,15 @@ exports.RuntimeActivity = class RuntimeActivity
       url:   @getUrl()
       owner: @owner
       pages: (page.getUrl() for page in @pages)
+      axes:  url for url of @axes
 
     pages: page.toHash() for page in @pages
     steps: flatten ((step.toHash() for step in page.steps) for page in @pages)
 
     responseTemplates: []
-    axes:              []
+    axes:              @axes[url].toHash() for url of @axes
     datadefs:          []
     tags:              []
     annotations:       []
     variables:         []
-    units:             []
+    units:             @unitRefs[name].unit.toHash() for name of @unitRefs
