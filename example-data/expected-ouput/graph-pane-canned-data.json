@@ -1,70 +1,70 @@
 {
-  "_id": "simple-graph-canned-data.df6",
-  "_rev": "1",
+  "_id": "simple-graph.df6",
+  "_rev": 1,
   "data_format_version": 6,
   "activity": {
-    "title": "Simple Graph Canned Data",
+    "title": "Simple Graph",
     "url": "/shared/simple-graph",
     "owner": "shared",
     "pages": [
-      "/shared/simple-graph/page/1"
+      "/shared/simple-graph/page/1-graph"
     ],
     "axes": [
-      "/shared/simple-graph/axes/12s",
-      "/shared/simple-graph/axes/10m"
+      "/shared/simple-graph/axes/1",
+      "/shared/simple-graph/axes/2"
     ]
   },
   "pages": [
     {
-      "name": "Position and Velocity Graphs",
-      "url": "/shared/simple-graph/page/1",
+      "name": "Graph",
+      "url": "/shared/simple-graph/page/1-graph",
       "activity": "/shared/simple-graph",
       "index": 1,
       "introText": "in this activity....",
       "steps": [
-        "/shared/simple-graph/page/1/step/1"
+        "/shared/simple-graph/page/1-graph/step/1"
       ],
-      "firstStep": "/shared/simple-graph/page/1/step/1"
+      "firstStep": "/shared/simple-graph/page/1-graph/step/1"
     }
   ],
   "steps": [
     {
-      "url": "/shared/simple-graph/page/1/step/1",
-      "activityPage": "/shared/simple-graph/page/1",
+      "url": "/shared/simple-graph/page/1-graph/step/1",
+      "activityPage": "/shared/simple-graph/page/1-graph",
       "paneConfig": "single",
       "panes": {
         "single": {
           "type": "graph",
           "title": "Position vs. Time",
-          "xAxis": "/shared/simple-graph/axes/12s",
-          "yAxis": "/shared/simple-graph/axes/10m",
-          "data" : ["position-data"],
+          "xAxis": "/shared/simple-graph/axes/1",
+          "yAxis": "/shared/simple-graph/axes/2",
+          "data": ["datadef-1"],
           "annotations": []
         }
       },
-      "hideSubmitButton": true,
-      "tools": []
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     }
   ],
   "units": [
-    { 
-      "url": "/shared/simple-graph/units/meters",
-      "activity": null,
-      "name": "meter",
-      "abbreviation": "m",
-      "pluralName": "meters"
-    },
-    { 
+    {
       "url": "/shared/simple-graph/units/minutes",
-      "activity": null,
+      "activity": "/shared/simple-graph",
       "name": "minute",
       "abbreviation": "m",
       "pluralName": "minutes"
+    },
+    {
+      "url": "/shared/simple-graph/units/meters",
+      "activity": "/shared/simple-graph",
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
     }
   ],
   "axes": [
     {
-      "url": "/shared/simple-graph/axes/12s",
+      "url": "/shared/simple-graph/axes/1",
       "units": "/shared/simple-graph/units/minutes",
       "min": 0,
       "max": 10,
@@ -72,7 +72,7 @@
       "label": "Time"
     },
     {
-      "url": "/shared/simple-graph/axes/10m",
+      "url": "/shared/simple-graph/axes/2",
       "units": "/shared/simple-graph/units/meters",
       "min": 0,
       "max": 2000,
@@ -91,8 +91,8 @@
       "type": "UnorderedDataPoints",
       "records": [
         {
-          "url": "/shared/simple-graph/datadefs/position-data",
-          "name": "position-data",
+          "url": "/shared/simple-graph/datadefs/datadef-1",
+          "name": "datadef-1",
           "activity": "/shared/simple-graph",
           "xUnits": "/shared/simple-graph/units/minutes",
           "xLabel": "Time",
