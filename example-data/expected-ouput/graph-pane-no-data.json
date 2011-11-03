@@ -38,6 +38,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/simple-graph/axes/1",
           "yAxis": "/shared/simple-graph/axes/2",
+          "data": [],
           "annotations": []
         }
       },
