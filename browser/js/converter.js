@@ -23,33 +23,33 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-
+        
         if (require._core[x]) return x;
         var path = require.modules.path();
         var y = cwd || '.';
-
+        
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-
+        
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-
+        
         throw new Error("Cannot find module '" + x + "'");
-
+        
         function loadAsFileSync (x) {
             if (require.modules[x]) {
                 return x;
             }
-
+            
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-
+        
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = x + '/package.json';
@@ -69,10 +69,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-
+            
             return loadAsFileSync(x + '/index');
         }
-
+        
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -82,23 +82,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-
+            
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-
+        
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-
+            
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-
+            
             return dirs;
         }
     };
@@ -114,9 +114,9 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-
+    
     var keys = Object_keys(require.modules);
-
+    
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -134,7 +134,7 @@ require.define = function (filename, fn) {
         ? ''
         : require.modules.path().dirname(filename)
     ;
-
+    
     var require_ = function (file) {
         return require(file, dirname)
     };
@@ -144,7 +144,7 @@ require.define = function (filename, fn) {
     require_.modules = require.modules;
     require_.define = require.define;
     var module_ = { exports : {} };
-
+    
     require.modules[filename] = function () {
         require.modules[filename]._cached = module_.exports;
         fn.call(
@@ -272,7 +272,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-
+  
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -321,10 +321,13 @@ exports.extname = function(path) {
 
 require.define("/output/output-document.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputActivity, OutputDocument, OutputPage, OutputStep;
+  var OutputActivity, OutputAxis, OutputDocument, OutputPage, OutputStep, OutputUnit, slugify;
+  slugify = require('../slugify').slugify;
   OutputActivity = require('./output-activity').OutputActivity;
   OutputPage = require('./output-page').OutputPage;
   OutputStep = require('./output-step').OutputStep;
+  OutputUnit = require('./output-unit').OutputUnit;
+  OutputAxis = require('./output-axis').OutputAxis;
   exports.OutputDocument = OutputDocument = (function() {
     function OutputDocument() {
       this.hash = {
@@ -343,10 +346,14 @@ require.define("/output/output-document.js", function (require, module, exports,
         units: []
       };
     }
+    OutputDocument.prototype.baseUrl = function() {
+      return this.activity.url();
+    };
     OutputDocument.prototype.createActivity = function(hash) {
       var activity;
-      activity = new OutputActivity(this, hash);
+      this.activity = activity = new OutputActivity(this, hash);
       this.hash.activity = activity.hash;
+      this.hash._id = "" + (slugify(activity.hash.title)) + ".df6";
       return activity;
     };
     OutputDocument.prototype.createPage = function(hash) {
@@ -361,8 +368,35 @@ require.define("/output/output-document.js", function (require, module, exports,
       this.hash.steps.push(step.hash);
       return step;
     };
+    OutputDocument.prototype.createUnit = function(hash) {
+      var unit;
+      unit = new OutputUnit(this, hash);
+      this.hash.units.push(unit.hash);
+      return unit;
+    };
+    OutputDocument.prototype.createAxis = function(hash) {
+      var axis, index, _base;
+      index = this.hash.axes.length + 1;
+      axis = new OutputAxis(this, index, hash);
+      this.hash.axes.push(axis.hash);
+      (_base = this.activity.hash).axes || (_base.axes = []);
+      this.activity.hash.axes.push(axis.url());
+      return axis;
+    };
     return OutputDocument;
   })();
+}).call(this);
+
+});
+
+require.define("/slugify.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  exports.slugify = function(text) {
+    text = text.replace(/[^-a-zA-Z0-9,&\s]+/ig, '');
+    text = text.replace(/-/gi, "_");
+    text = text.replace(/\s/gi, "-");
+    return text.toLowerCase();
+  };
 }).call(this);
 
 });
@@ -403,18 +437,6 @@ require.define("/output/output-activity.js", function (require, module, exports,
     };
     return OutputActivity;
   })();
-}).call(this);
-
-});
-
-require.define("/slugify.js", function (require, module, exports, __dirname, __filename) {
-    (function() {
-  exports.slugify = function(text) {
-    text = text.replace(/[^-a-zA-Z0-9,&\s]+/ig, '');
-    text = text.replace(/-/gi, "_");
-    text = text.replace(/\s/gi, "-");
-    return text.toLowerCase();
-  };
 }).call(this);
 
 });
@@ -480,20 +502,70 @@ require.define("/output/output-step.js", function (require, module, exports, __d
 
 });
 
+require.define("/output/output-unit.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var OutputUnit;
+  exports.OutputUnit = OutputUnit = (function() {
+    function OutputUnit(doc, hash) {
+      this.doc = doc;
+      this.hash = hash;
+      hash.activity = null;
+      hash.url = "" + (this.doc.baseUrl()) + "/units/" + hash.pluralName;
+    }
+    OutputUnit.prototype.url = function() {
+      return this.hash.url;
+    };
+    return OutputUnit;
+  })();
+}).call(this);
+
+});
+
+require.define("/output/output-axis.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var OutputAxis;
+  exports.OutputAxis = OutputAxis = (function() {
+    function OutputAxis(doc, index, hash) {
+      this.doc = doc;
+      this.hash = hash;
+      hash.url = "" + (this.doc.baseUrl()) + "/axes/" + index;
+    }
+    OutputAxis.prototype.url = function() {
+      return this.hash.url;
+    };
+    return OutputAxis;
+  })();
+}).call(this);
+
+});
+
 require.define("/converter.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var OutputDocument;
   OutputDocument = require('./output/output-document').OutputDocument;
   exports.convert = function(input) {
-    var outputActivity, outputDocument, outputPage, outputStep, page, pane, _i, _j, _len, _len2, _ref, _ref2;
+    var outputActivity, outputDocument, outputPage, outputStep, outputUnits, page, pane, unit, xAxis, yAxis, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
     outputDocument = new OutputDocument;
+    outputUnits = {};
     outputActivity = outputDocument.createActivity({
       title: input.name,
       owner: input.owner || 'shared'
     });
-    _ref = input.pages;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      page = _ref[_i];
+    if (input.units) {
+      _ref = input.units;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        unit = _ref[_i];
+        outputUnits[unit.name] = outputDocument.createUnit({
+          name: unit.name.replace(/s$/, ''),
+          abbreviation: unit.abbreviation,
+          pluralName: unit.name,
+          activity: null
+        });
+      }
+    }
+    _ref2 = input.pages;
+    for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+      page = _ref2[_j];
       outputPage = outputActivity.appendPage({
         name: page.name,
         introText: page.text
@@ -505,15 +577,39 @@ require.define("/converter.js", function (require, module, exports, __dirname, _
         nextButtonShouldSubmit: true
       });
       if (page.panes) {
-        _ref2 = page.panes;
-        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-          pane = _ref2[_j];
+        _ref3 = page.panes;
+        for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+          pane = _ref3[_k];
+          console.log("found " + pane.type + " pane");
           switch (pane.type) {
             case 'ImagePane':
               outputStep.appendPane({
                 type: 'image',
                 path: pane.url,
                 caption: "" + pane.license + " " + pane.attribution
+              });
+              break;
+            case 'PredefinedGraphPane':
+              xAxis = outputDocument.createAxis({
+                min: pane.xMin,
+                max: pane.xMax,
+                nSteps: pane.xTicks,
+                label: pane.xLabel,
+                units: outputUnits[pane.xUnits].url()
+              });
+              yAxis = outputDocument.createAxis({
+                min: pane.yMin,
+                max: pane.yMax,
+                nSteps: pane.yTicks,
+                label: pane.yLabel,
+                units: outputUnits[pane.yUnits].url()
+              });
+              outputStep.appendPane({
+                type: 'graph',
+                title: pane.title,
+                xAxis: xAxis.url(),
+                yAxis: yAxis.url(),
+                annotations: []
               });
           }
         }
