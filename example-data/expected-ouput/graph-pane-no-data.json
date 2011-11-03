@@ -1,0 +1,91 @@
+{
+  "_id": "simple-graph.df6",
+  "_rev": "1",
+  "data_format_version": 6,
+  "activity": {
+    "title": "Simple Graph No Data",
+    "url": "/shared/simple-graph",
+    "owner": "shared",
+    "pages": [
+      "/shared/simple-graph/page/1"
+    ],
+    "axes": [
+      "/shared/simple-graph/axes/12s",
+      "/shared/simple-graph/axes/10m"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Position and Velocity Graphs",
+      "url": "/shared/simple-graph/page/1",
+      "activity": "/shared/simple-graph",
+      "index": 1,
+      "introText": "in this activity....",
+      "steps": [
+        "/shared/simple-graph/page/1/step/1"
+      ],
+      "firstStep": "/shared/simple-graph/page/1/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/simple-graph/page/1/step/1",
+      "activityPage": "/shared/simple-graph/page/1",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Position vs. Time",
+          "xAxis": "/shared/simple-graph/axes/12s",
+          "yAxis": "/shared/simple-graph/axes/10m",
+          "annotations": []
+        }
+      },
+      "hideSubmitButton": true,
+      "tools": []
+    }
+  ],
+  "units": [
+    { 
+      "url": "/shared/simple-graph/units/meters",
+      "activity": null,
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
+    },
+    { 
+      "url": "/shared/simple-graph/units/minutes",
+      "activity": null,
+      "name": "minute",
+      "abbreviation": "m",
+      "pluralName": "minutes"
+    }
+  ],
+  "axes": [
+    {
+      "url": "/shared/simple-graph/axes/12s",
+      "units": "/shared/simple-graph/units/minutes",
+      "min": 0,
+      "max": 10,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/simple-graph/axes/10m",
+      "units": "/shared/simple-graph/units/meters",
+      "min": 0,
+      "max": 2000,
+      "nSteps": 10,
+      "label": "Position"
+    }
+  ],
+  "responseTemplates": [
+  ],
+  "tags": [
+  ],
+  "variables": [
+  ],
+  "datadefs": [
+  ],
+  "annotations": []
+}

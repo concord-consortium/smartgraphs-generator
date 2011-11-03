@@ -1,6 +1,6 @@
 {
   "type": "Activity",
-  "name": "Maria’s Run",
+  "name": "Simple Graph No Data",
   "pages": [
     {
       "type": "Page",
@@ -14,17 +14,12 @@
           "yUnits": "meters",
           "yMin": 0,
           "yMax": 2000,
-          "yTicks": 200,
+          "yTicks": 10,
           "xLabel": "Time",
           "xUnits": "minutes",
           "xMin": 0,
           "xMax": 10,
-          "xTicks": 1,
-          "data": [
-            [1,200], 
-            [2,400],
-            [3,600]
-          ] 
+          "xTicks": 10
         }
       ]
     }
