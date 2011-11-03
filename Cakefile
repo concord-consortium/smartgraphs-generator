@@ -2,6 +2,7 @@ fs      = require 'fs'
 {spawn} = require 'child_process'
 
 option '-q', '--quiet', "When running tests, do not use --verbose flag"
+option '-j', '--junit', "When running tests, generate a junit XML report"
 
 task 'build:js', "build the smartgraphs-generator javascript in lib/ from coffeescript in src/", buildjs = (cb) ->
   run 'nbin/coffee', ['-c', '-o', 'lib/'].concat(srcFiles()), cb
@@ -20,9 +21,10 @@ task 'testpage', "build and open test page", testpage = (cb) ->
 task 'watch', "watch the coffeescript source tree in src/ for changes and build javascript files into lib/", watch = (cb) ->
   run 'nbin/jitter', ['src', 'lib'], cb
 
-task 'test', "run all Jasmine spec tests in spec/", test = ({quiet}) ->
+task 'test', "run all Jasmine spec tests in spec/", test = ({quiet, junit}) ->
   options = ['--coffee', 'spec']
   options.unshift '--verbose' unless quiet?
+  options.unshift '--junitreport' if junit?
   run 'nbin/jasmine-node', options
 
 srcFiles = ->
