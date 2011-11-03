@@ -1,43 +1,43 @@
 {
   "_id": "simple-graph.df6",
-  "_rev": "1",
+  "_rev": 1,
   "data_format_version": 6,
   "activity": {
-    "title": "Simple Graph No Data",
+    "title": "Simple Graph",
     "url": "/shared/simple-graph",
     "owner": "shared",
     "pages": [
-      "/shared/simple-graph/page/1"
+      "/shared/simple-graph/page/1-graph"
     ],
     "axes": [
-      "/shared/simple-graph/axes/12s",
-      "/shared/simple-graph/axes/10m"
+      "/shared/simple-graph/axes/1",
+      "/shared/simple-graph/axes/2"
     ]
   },
   "pages": [
     {
-      "name": "Position and Velocity Graphs",
-      "url": "/shared/simple-graph/page/1",
+      "name": "Graph",
+      "url": "/shared/simple-graph/page/1-graph",
       "activity": "/shared/simple-graph",
       "index": 1,
       "introText": "in this activity....",
       "steps": [
-        "/shared/simple-graph/page/1/step/1"
+        "/shared/simple-graph/page/1-graph/step/1"
       ],
-      "firstStep": "/shared/simple-graph/page/1/step/1"
+      "firstStep": "/shared/simple-graph/page/1-graph/step/1"
     }
   ],
   "steps": [
     {
-      "url": "/shared/simple-graph/page/1/step/1",
-      "activityPage": "/shared/simple-graph/page/1",
+      "url": "/shared/simple-graph/page/1-graph/step/1",
+      "activityPage": "/shared/simple-graph/page/1-graph",
       "paneConfig": "single",
       "panes": {
         "single": {
           "type": "graph",
           "title": "Position vs. Time",
-          "xAxis": "/shared/simple-graph/axes/12s",
-          "yAxis": "/shared/simple-graph/axes/10m",
+          "xAxis": "/shared/simple-graph/axes/1",
+          "yAxis": "/shared/simple-graph/axes/2",
           "annotations": []
         }
       },
@@ -63,7 +63,7 @@
   ],
   "axes": [
     {
-      "url": "/shared/simple-graph/axes/12s",
+      "url": "/shared/simple-graph/axes/1",
       "units": "/shared/simple-graph/units/minutes",
       "min": 0,
       "max": 10,
@@ -71,7 +71,7 @@
       "label": "Time"
     },
     {
-      "url": "/shared/simple-graph/axes/10m",
+      "url": "/shared/simple-graph/axes/2",
       "units": "/shared/simple-graph/units/meters",
       "min": 0,
       "max": 2000,
