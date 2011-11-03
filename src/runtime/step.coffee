@@ -1,13 +1,13 @@
 exports.Step = class Step
 
   constructor: () ->
-    @panes = null
+    @panesHash = null
     # these need to be set later
     @page  = null
     @index = null
 
   addImagePane: (url, license, attribution) ->
-    @panes =
+    @panesHash =
       single:
         type:    'image'
         path:    url
@@ -23,6 +23,6 @@ exports.Step = class Step
     url:                    this.getUrl()
     activityPage:           @page.getUrl()
     paneConfig:             'single'
-    panes:                  @panes
+    panes:                  @panesHash
     isFinalStep:            true
     nextButtonShouldSubmit: true
