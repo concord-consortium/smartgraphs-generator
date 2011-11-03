@@ -13,6 +13,15 @@ exports.Step = class Step
         path:    url
         caption: "#{license} #{attribution}"
 
+  addGraphPane: ({ title, xAxis, yAxis }) ->
+    @panesHash =
+      single:
+        type:        'graph'
+        title:       title
+        xAxis:       xAxis.getUrl()
+        yAxis:       yAxis.getUrl()
+        annotations: []
+
   setIndex: (@index) ->
     @index
 

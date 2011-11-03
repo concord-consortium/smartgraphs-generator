@@ -1,4 +1,4 @@
-{RuntimePage} = require '../runtime/runtime-page'
+{dumbSingularize} = require '../singularize'
 
 exports.AuthorPage = class AuthorPage
 
@@ -21,8 +21,8 @@ exports.AuthorPage = class AuthorPage
 
       switch type
         when 'ImagePane' then @addImagePane step, pane
-        when 'GraphPane' then @addGraphPane step, pane
-      else throw new Error "Only ImagePanes and GraphPanes are supported right now"
+        when 'GraphPane' then @addGraphPane step, pane, runtimeActivity
+        else throw new Error "Only ImagePanes and GraphPanes are supported right now"
 
     runtimePage
 
@@ -30,5 +30,16 @@ exports.AuthorPage = class AuthorPage
     {url, license, attribution} = pane
     step.addImagePane url, license, attribution
 
-  addGraphPane: (step, pane) ->
-    null
+  addGraphPane: (step, pane, runtimeActivity) ->
+
+    { title,
+      xLabel, xUnits, xMin, xMax, xTicks
+      yLabel, yUnits, yMin, yMax, yTicks } = pane
+
+    xUnitsRef = runtimeActivity.getUnitRef dumbSingularize xUnits
+    yUnitsRef = runtimeActivity.getUnitRef dumbSingularize yUnits
+
+    xAxis = runtimeActivity.createAndAppendAxis { label: xLabel, unitRef: xUnitsRef, min: xMin, max: xMax, nSteps: xTicks }
+    yAxis = runtimeActivity.createAndAppendAxis { label: yLabel, unitRef: yUnitsRef, min: yMin, max: yMax, nSteps: yTicks }
+
+    step.addGraphPane { title, xAxis, yAxis }
