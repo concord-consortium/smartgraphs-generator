@@ -8,7 +8,7 @@
       "text": "in this activity....",
       "panes": [
         {
-          "type": "GraphPane",
+          "type": "PredefinedGraphPane",
           "title": "Position vs. Time",
           "yLabel": "Position",
           "yUnits": "meters",

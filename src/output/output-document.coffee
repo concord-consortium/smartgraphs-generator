@@ -4,6 +4,7 @@
 {OutputStep} = require('./output-step')
 {OutputUnit} = require('./output-unit')
 {OutputAxis} = require('./output-axis')
+{OutputData} = require('./output-data')
 
 exports.OutputDocument = class OutputDocument
   constructor: ->
@@ -53,3 +54,15 @@ exports.OutputDocument = class OutputDocument
     @activity.hash.axes ||= []
     @activity.hash.axes.push axis.url()
     axis
+
+  createData: (hash) ->
+    unorderedDataPoints = (item for item in @hash.datadefs when item.type == "UnorderedDataPoints")[0]
+    if !unorderedDataPoints
+      @hash.datadefs.push unorderedDataPoints =
+        type: "UnorderedDataPoints"
+        records: []
+
+    index = unorderedDataPoints.records.length + 1
+    data = new OutputData this, "unordered", index, hash
+    unorderedDataPoints.records.push data.hash
+    data

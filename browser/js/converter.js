@@ -321,13 +321,14 @@ exports.extname = function(path) {
 
 require.define("/output/output-document.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var OutputActivity, OutputAxis, OutputDocument, OutputPage, OutputStep, OutputUnit, slugify;
+  var OutputActivity, OutputAxis, OutputData, OutputDocument, OutputPage, OutputStep, OutputUnit, slugify;
   slugify = require('../slugify').slugify;
   OutputActivity = require('./output-activity').OutputActivity;
   OutputPage = require('./output-page').OutputPage;
   OutputStep = require('./output-step').OutputStep;
   OutputUnit = require('./output-unit').OutputUnit;
   OutputAxis = require('./output-axis').OutputAxis;
+  OutputData = require('./output-data').OutputData;
   exports.OutputDocument = OutputDocument = (function() {
     function OutputDocument() {
       this.hash = {
@@ -382,6 +383,31 @@ require.define("/output/output-document.js", function (require, module, exports,
       (_base = this.activity.hash).axes || (_base.axes = []);
       this.activity.hash.axes.push(axis.url());
       return axis;
+    };
+    OutputDocument.prototype.createData = function(hash) {
+      var data, index, item, unorderedDataPoints;
+      unorderedDataPoints = ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.hash.datadefs;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          item = _ref[_i];
+          if (item.type === "UnorderedDataPoints") {
+            _results.push(item);
+          }
+        }
+        return _results;
+      }).call(this))[0];
+      if (!unorderedDataPoints) {
+        this.hash.datadefs.push(unorderedDataPoints = {
+          type: "UnorderedDataPoints",
+          records: []
+        });
+      }
+      index = unorderedDataPoints.records.length + 1;
+      data = new OutputData(this, "unordered", index, hash);
+      unorderedDataPoints.records.push(data.hash);
+      return data;
     };
     return OutputDocument;
   })();
@@ -539,12 +565,35 @@ require.define("/output/output-axis.js", function (require, module, exports, __d
 
 });
 
+require.define("/output/output-data.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var OutputData;
+  exports.OutputData = OutputData = (function() {
+    function OutputData(doc, prefix, index, hash) {
+      this.doc = doc;
+      this.hash = hash;
+      hash.activity = doc.activity.url();
+      hash.name = "" + prefix + "-" + index;
+      hash.url = "" + (this.doc.baseUrl()) + "/datadefs/" + hash.name;
+    }
+    OutputData.prototype.url = function() {
+      return this.hash.url;
+    };
+    OutputData.prototype.name = function() {
+      return this.hash.name;
+    };
+    return OutputData;
+  })();
+}).call(this);
+
+});
+
 require.define("/converter.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var OutputDocument;
   OutputDocument = require('./output/output-document').OutputDocument;
   exports.convert = function(input) {
-    var outputActivity, outputDocument, outputPage, outputStep, outputUnits, page, pane, unit, xAxis, yAxis, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
+    var data, outputActivity, outputDocument, outputPage, outputStep, outputUnits, page, pane, unit, xAxis, yAxis, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
     outputDocument = new OutputDocument;
     outputUnits = {};
     outputActivity = outputDocument.createActivity({
@@ -604,11 +653,23 @@ require.define("/converter.js", function (require, module, exports, __dirname, _
                 label: pane.yLabel,
                 units: outputUnits[pane.yUnits].url()
               });
+              if (pane.data) {
+                data = outputDocument.createData({
+                  points: pane.data,
+                  xUnits: outputUnits[pane.xUnits].url(),
+                  yUnits: outputUnits[pane.yUnits].url(),
+                  xLabel: pane.xLabel,
+                  yLabel: pane.yLabel,
+                  xShortLabel: pane.xLabel,
+                  yShortLabel: pane.yLabel
+                });
+              }
               outputStep.appendPane({
                 type: 'graph',
                 title: pane.title,
                 xAxis: xAxis.url(),
                 yAxis: yAxis.url(),
+                data: data ? [data.name()] : void 0,
                 annotations: []
               });
           }

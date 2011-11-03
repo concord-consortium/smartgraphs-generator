@@ -49,11 +49,21 @@ exports.convert = (input) ->
               nSteps: pane.yTicks
               label: pane.yLabel
               units: outputUnits[pane.yUnits].url()
+            if pane.data
+              data = outputDocument.createData
+                points: pane.data
+                xUnits: outputUnits[pane.xUnits].url()
+                yUnits: outputUnits[pane.yUnits].url()
+                xLabel: pane.xLabel
+                yLabel: pane.yLabel
+                xShortLabel: pane.xLabel
+                yShortLabel: pane.yLabel
             outputStep.appendPane
               type: 'graph'
               title: pane.title
               xAxis: xAxis.url()
               yAxis: yAxis.url()
+              data: if data then [data.name()] else undefined
               annotations: []
 
   outputDocument.hash
