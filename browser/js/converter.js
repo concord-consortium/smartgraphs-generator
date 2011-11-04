@@ -457,7 +457,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       });
       if (data != null) {
         datadef = runtimeActivity.createAndAppendDatadef({
-          data: data,
+          points: data,
           xLabel: xLabel,
           xUnitsRef: xUnitsRef,
           yLabel: yLabel,
@@ -614,10 +614,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return axis;
     };
     RuntimeActivity.prototype.createAndAppendDatadef = function(_arg) {
-      var data, datadef, xLabel, xUnitsRef, yLabel, yUnitsRef;
-      data = _arg.data, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef;
+      var datadef, points, xLabel, xUnitsRef, yLabel, yUnitsRef;
+      points = _arg.points, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef;
       datadef = new Datadef({
-        data: data,
+        points: points,
         xLabel: xLabel,
         xUnitsRef: xUnitsRef,
         yLabel: yLabel,
@@ -938,7 +938,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
       }
     };
     function Datadef(_arg) {
-      this.data = _arg.data, this.xLabel = _arg.xLabel, this.xUnitsRef = _arg.xUnitsRef, this.yLabel = _arg.yLabel, this.yUnitsRef = _arg.yUnitsRef, this.index = _arg.index;
+      this.points = _arg.points, this.xLabel = _arg.xLabel, this.xUnitsRef = _arg.xUnitsRef, this.yLabel = _arg.yLabel, this.yUnitsRef = _arg.yUnitsRef, this.index = _arg.index;
       this.name = "datadef-" + this.index;
     }
     Datadef.prototype.getUrl = function() {
@@ -955,7 +955,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
         yUnits: this.yUnitsRef.unit.getUrl(),
         yLabel: this.yLabel,
         yShortLabel: this.yLabel,
-        points: this.data
+        points: this.points
       };
     };
     return Datadef;

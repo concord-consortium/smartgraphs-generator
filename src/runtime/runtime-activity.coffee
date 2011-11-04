@@ -74,9 +74,9 @@ exports.RuntimeActivity = class RuntimeActivity
     @axes[axis.getUrl()] = axis
     axis
 
-  createAndAppendDatadef: ({data, xLabel, xUnitsRef, yLabel, yUnitsRef}) ->
+  createAndAppendDatadef: ({points, xLabel, xUnitsRef, yLabel, yUnitsRef}) ->
     # for a while we'll only deal with one kind of Datadef: UnorderedDataPoints
-    datadef = new Datadef { data, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs }
+    datadef = new Datadef { points, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs }
     datadef.activity = this
     @datadefs[datadef.name] = datadef
     datadef

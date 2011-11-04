@@ -44,6 +44,6 @@ exports.AuthorPage = class AuthorPage
     yAxis = runtimeActivity.createAndAppendAxis { label: yLabel, unitRef: yUnitsRef, min: yMin, max: yMax, nSteps: yTicks }
 
     if data?
-      datadef = runtimeActivity.createAndAppendDatadef { data, xLabel, xUnitsRef, yLabel, yUnitsRef }
+      datadef = runtimeActivity.createAndAppendDatadef { points: data, xLabel, xUnitsRef, yLabel, yUnitsRef }
 
     step.addGraphPane { title, datadef, xAxis, yAxis }

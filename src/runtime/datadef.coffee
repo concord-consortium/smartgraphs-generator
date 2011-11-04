@@ -9,7 +9,7 @@ exports.Datadef = class Datadef
   @serializeDatadefs = (datadefs) ->
     if datadefs.length == 0 then [] else [{ type: 'UnorderedDataPoints', records: (datadef.toHash() for datadef in datadefs) }]
 
-  constructor: ({@data, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @index}) ->
+  constructor: ({@points, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @index}) ->
     @name = "datadef-#{@index}"
 
   getUrl: ->
@@ -25,4 +25,4 @@ exports.Datadef = class Datadef
     yUnits:      @yUnitsRef.unit.getUrl()
     yLabel:      @yLabel
     yShortLabel: @yLabel
-    points:      @data
+    points:      @points
