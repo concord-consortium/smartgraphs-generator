@@ -6,22 +6,22 @@ exports.Step = class Step
     @page  = null
     @index = null
 
-  addImagePane: (url, license, attribution) ->
-    @panesHash =
-      single:
-        type:    'image'
-        path:    url
-        caption: "#{license} #{attribution}"
+  addImagePane: (url, license, attribution, numPanes, index) ->
+    @panesHash ?= {}
+    @panesHash[@getPaneKey numPanes, index] =
+      type:    'image'
+      path:    url
+      caption: "#{license} #{attribution}"
 
-  addGraphPane: ({ title, datadef, xAxis, yAxis }) ->
-    @panesHash =
-      single:
-        type:        'graph'
-        title:       title
-        xAxis:       xAxis.getUrl()
-        yAxis:       yAxis.getUrl()
-        annotations: []
-        data:        if datadef? then [datadef.name] else []
+  addGraphPane: ({ title, datadef, xAxis, yAxis, numPanes, index }) ->
+    @panesHash ?= {}
+    @panesHash[@getPaneKey numPanes, index] =
+      type:        'graph'
+      title:       title
+      xAxis:       xAxis.getUrl()
+      yAxis:       yAxis.getUrl()
+      annotations: []
+      data:        if datadef? then [datadef.name] else []
 
   setIndex: (@index) ->
     @index
@@ -29,10 +29,13 @@ exports.Step = class Step
   getUrl: ->
     "#{@page.getUrl()}/step/#{@index}"
 
+  getPaneKey: (numPanes, index) ->
+    if numPanes == 1 then "single" else if index == 0 then "top" else "bottom"
+
   toHash: ->
     url:                    this.getUrl()
     activityPage:           @page.getUrl()
-    paneConfig:             'single'
+    paneConfig:             if  @panesHash?.top? then 'split' else 'single',
     panes:                  @panesHash
     isFinalStep:            true
     nextButtonShouldSubmit: true

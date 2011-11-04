@@ -15,23 +15,22 @@ exports.AuthorPage = class AuthorPage
     step = runtimePage.appendStep()
 
     if @panes?.length > 0
-      if @panes.length > 1 then throw new Error "Only one pane is supported right now"
-      pane = @panes[0]
-      type = pane.type
+      if @panes.length > 2 then throw new Error "There cannot be more than two panes"
+      for pane, i in @panes
+        type = pane.type
 
-      switch type
-        when 'ImagePane' then @addImagePane step, pane
-        when 'PredefinedGraphPane' then @addPredefinedGraphPane step, pane, runtimeActivity
-        else throw new Error "Only ImagePanes and PredefinedGraphPane are supported right now"
+        switch type
+          when 'ImagePane' then @addImagePane step, pane, @panes.length, i
+          when 'PredefinedGraphPane' then @addPredefinedGraphPane step, pane, runtimeActivity, @panes.length, i
+          else throw new Error "Only ImagePanes and PredefinedGraphPane are supported right now"
 
     runtimePage
 
-  addImagePane: (step, pane) ->
+  addImagePane: (step, pane, numPanes, index) ->
     {url, license, attribution} = pane
-    step.addImagePane url, license, attribution
+    step.addImagePane url, license, attribution, numPanes, index
 
-  addPredefinedGraphPane: (step, pane, runtimeActivity) ->
-
+  addPredefinedGraphPane: (step, pane, runtimeActivity, numPanes, index) ->
     { title,
       data,
       xLabel, xUnits, xMin, xMax, xTicks
@@ -46,4 +45,4 @@ exports.AuthorPage = class AuthorPage
     if data?
       datadef = runtimeActivity.createAndAppendDatadef { points: data, xLabel, xUnitsRef, yLabel, yUnitsRef }
 
-    step.addGraphPane { title, datadef, xAxis, yAxis }
+    step.addGraphPane { title, datadef, xAxis, yAxis, numPanes, index }
