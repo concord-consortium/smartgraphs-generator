@@ -1,0 +1,49 @@
+// scytacki: this seems complete, but it should be reviewed by other developers
+{
+  "type": "Activity",
+  "name": "Pick A Point Sequence",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "ImagePane",
+          "name": "Shoes",
+          "url": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+          "license": "Creative Commons BY-NC-ND 2.0",
+          "attribution": "image courtesy flickr user altopower"
+        }
+      ],
+      "sequence": {
+        "type": "PickAPointSequence",
+        "initialPrompt": "Click the point...",
+        // this will need to be refactored to handle different types of correct conditions. 
+        // but refactoring should be easy, and we should not design the data model until we have the need
+        "correctPoint": [4, 800],
+        "hints": [
+          {
+            "type": "Step",
+            "name": "1st wrong answer",
+            "text": "Look at the graph..."
+          },
+          {
+            "type": "Step",
+            "name": "2nd wrong answer",
+            // Steps will have optional visual prompts later
+            "text": "In these two intervals...."
+          }
+        ],
+        "giveUpStep": {
+          "type": "Step",
+          "text": "If you look carefully, ...."
+        },
+        "correctStep": {
+         "type": "Step",
+         "text": "Four minutes into her run ...." 
+        }
+      }
+    }
+  ]
+}
