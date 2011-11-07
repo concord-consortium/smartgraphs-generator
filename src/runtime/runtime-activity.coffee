@@ -26,7 +26,7 @@ exports.RuntimeActivity = class RuntimeActivity
     @unitRefs  = {}
     @axes      = {}
     @nAxes     = 0
-    @datadefs  = {}
+    @datadefRefs = {}
     @nDatadefs = 0
 
   getUrl: ->
@@ -50,20 +50,35 @@ exports.RuntimeActivity = class RuntimeActivity
     unit.activity = this
     unit
 
+  createDatadef: ({ points, xLabel, xUnitsRef, yLabel, yUnitsRef }) ->
+    datadef = new Datadef { points, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs }
+    datadef.activity = this
+    datadef
+
   ###
-    Forward references. So far only Units need this because everything else is defined inline, but this is expected
-    to change, right?
+    Forward references. Some of this is repetitious and should be factored out.
   ###
-  getUnitRef: (name) ->
-    if ref = @unitRefs[name] then return ref
-    else ref = @unitRefs[name] = { name, unit: null }
+  getUnitRef: (key) ->
+    if ref = @unitRefs[key] then return ref
+    else ref = @unitRefs[key] = { key, unit: null }
     ref
 
-  defineUnit: (unit) ->
-    ref = @getUnitRef unit.name
-    if ref.unit? then throw new Error "Warning: redefining unit #{ref.name}"
+  defineUnit: (key, unit) ->
+    ref = @getUnitRef key
+    if ref.unit? then throw new Error "Warning: redefining unit #{key}"
     ref.unit = unit
     unit
+
+  getDatadefRef: (key) ->
+    if ref = @datadefRefs[key] then return ref
+    else ref = @datadefRefs[key] = { key, datadef: null }
+    ref
+
+  defineDatadef: (key, datadef) ->
+    ref = @getDatadefRef key
+    if ref.datadef? then throw new Error "Warning: redefining datadef #{key}"
+    ref.datadef = datadef
+    datadef
 
   ###
     Things that are defined only inline (for now) and therefore don't need to be treated as forward references.
@@ -105,8 +120,8 @@ exports.RuntimeActivity = class RuntimeActivity
 
     responseTemplates: []
     axes:              @axes[url].toHash() for url of @axes
-    datadefs:          Datadef.serializeDatadefs(@datadefs[name] for name of @datadefs)
+    datadefs:          Datadef.serializeDatadefs(@datadefRefs[key].datadef for key of @datadefRefs)
     tags:              []
     annotations:       []
     variables:         []
-    units:             @unitRefs[name].unit.toHash() for name of @unitRefs
+    units:             @unitRefs[key].unit.toHash() for key of @unitRefs

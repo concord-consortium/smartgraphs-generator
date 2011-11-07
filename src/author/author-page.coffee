@@ -4,6 +4,7 @@ exports.AuthorPage = class AuthorPage
 
   constructor: (@hash, @activity, @index) ->
     {@name, @text, @panes} = @hash
+    @datadefRef = null
 
   toRuntimePage: (runtimeActivity) ->
     runtimePage = runtimeActivity.createPage()
@@ -20,18 +21,18 @@ exports.AuthorPage = class AuthorPage
         type = pane.type
 
         switch type
-          when 'ImagePane' then @addImagePane step, pane, @panes.length, i
-          when 'PredefinedGraphPane' then @addPredefinedGraphPane step, pane, runtimeActivity, @panes.length, i
-          when 'TablePane' then @addTablePane step, pane, runtimeActivity, @panes.length, i
+          when 'ImagePane'           then @addImagePane step, pane, i
+          when 'PredefinedGraphPane' then @addPredefinedGraphPane step, pane, runtimeActivity, i
+          when 'TablePane'           then @addTablePane step, pane, runtimeActivity, i
           else throw new Error "Only ImagePanes, PredefinedGraphPanes and TablePanes are supported right now"
 
     runtimePage
 
-  addImagePane: (step, pane, numPanes, index) ->
+  addImagePane: (step, pane, index) ->
     {url, license, attribution} = pane
-    step.addImagePane url, license, attribution, numPanes, index
+    step.addImagePane { url, license, attribution, index }
 
-  addPredefinedGraphPane: (step, pane, runtimeActivity, numPanes, index) ->
+  addPredefinedGraphPane: (step, pane, runtimeActivity, index) ->
     { title,
       data,
       xLabel, xUnits, xMin, xMax, xTicks
@@ -44,11 +45,12 @@ exports.AuthorPage = class AuthorPage
     yAxis = runtimeActivity.createAndAppendAxis { label: yLabel, unitRef: yUnitsRef, min: yMin, max: yMax, nSteps: yTicks }
 
     if data?
-      datadef = runtimeActivity.createAndAppendDatadef { points: data, xLabel, xUnitsRef, yLabel, yUnitsRef }
-      step.setTableData(datadef.name)
+      @datadefRef ?= runtimeActivity.getDatadefRef @name     # @name is the page name -- just a unique key for stashing this reference
+      datadef = runtimeActivity.createDatadef { points: data, xLabel, xUnitsRef, yLabel, yUnitsRef }
+      runtimeActivity.defineDatadef @name, datadef
 
-    step.addGraphPane { title, datadef, xAxis, yAxis, numPanes, index }
+    step.addGraphPane { title, @datadefRef, xAxis, yAxis, index }
 
-  addTablePane: (step, pane, runtimeActivity, numPanes, index) ->
-    data = step.findGraphData()
-    step.addTablePane(data, numPanes, index)
+  addTablePane: (step, pane, runtimeActivity, index) ->
+    @datadefRef ?= runtimeActivity.getDatadefRef @name      # @name is the page name
+    step.addTablePane { @datadefRef, index }

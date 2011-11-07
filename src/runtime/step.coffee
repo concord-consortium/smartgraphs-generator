@@ -1,34 +1,37 @@
 exports.Step = class Step
 
   constructor: () ->
-    @panesHash = null
+    @paneDefs = []
     # these need to be set later
     @page  = null
     @index = null
 
-  addImagePane: (url, license, attribution, numPanes, index) ->
-    @panesHash ?= {}
-    @panesHash[@getPaneKey numPanes, index] =
-      type:    'image'
-      path:    url
-      caption: "#{license} #{attribution}"
+  addImagePane: ({ url, license, attribution, index }) ->
+    @paneDefs[index] = { toHash: @getImagePaneHash, url, license, attribution }
 
-  addGraphPane: ({ title, datadef, xAxis, yAxis, numPanes, index }) ->
-    @panesHash ?= {}
-    @panesHash[@getPaneKey numPanes, index] =
-      type:        'graph'
-      title:       title
-      xAxis:       xAxis.getUrl()
-      yAxis:       yAxis.getUrl()
-      annotations: []
-      data:        if datadef? then [datadef.name] else []
+  getImagePaneHash: ->
+    type:    'image'
+    path:    @url
+    caption: "#{@license} #{@attribution}"
 
-  addTablePane: (data, numPanes, index) ->
-    @panesHash ?= {}
-    @panesHash[@getPaneKey numPanes, index] =
-      type:         'table'
-      data:         data
-      annotations:  []
+  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index }) ->
+    @paneDefs[index] = { toHash: @getGraphPaneHash, title, datadefRef, xAxis, yAxis }
+
+  getGraphPaneHash: ->
+    type:        'graph'
+    title:       @title
+    xAxis:       @xAxis.getUrl()
+    yAxis:       @yAxis.getUrl()
+    annotations: []
+    data:        if @datadefRef? then [@datadefRef.datadef.name] else []
+
+  addTablePane: ({ datadefRef, index }) ->
+    @paneDefs[index] = { toHash: @getTablePaneHash, type: 'graph', datadefRef }
+
+  getTablePaneHash:  ->
+    type:         'table'
+    data:         @datadefRef.datadef.name
+    annotations:  []
 
   setIndex: (@index) ->
     @index
@@ -39,20 +42,21 @@ exports.Step = class Step
   getPaneKey: (numPanes, index) ->
     if numPanes == 1 then "single" else if index == 0 then "top" else "bottom"
 
-  findGraphData: ->
-    for key, pane of @panesHash
-      if pane.type == 'graph'
-        return pane.data?[0]
-
-  setTableData: (data) ->
-    for key, pane of @panesHash
-      if pane.type == 'table'
-        pane.data = data
-
   toHash: ->
-    url:                    this.getUrl()
-    activityPage:           @page.getUrl()
-    paneConfig:             if  @panesHash?.top? then 'split' else 'single',
-    panes:                  @panesHash
-    isFinalStep:            true
-    nextButtonShouldSubmit: true
+    panesHash = null
+    if @paneDefs.length == 1
+      panesHash =
+        single: @paneDefs[0].toHash @paneDefs[0]
+    else if @paneDefs.length == 2
+      panesHash =
+        top:    @paneDefs[0].toHash @paneDefs[0]
+        bottom: @paneDefs[1].toHash @paneDefs[1]
+
+    return {
+      url:                    this.getUrl()
+      activityPage:           @page.getUrl()
+      paneConfig:             if  @paneDefs.length == 2 then 'split' else 'single',
+      panes:                  panesHash
+      isFinalStep:            true
+      nextButtonShouldSubmit: true
+    }

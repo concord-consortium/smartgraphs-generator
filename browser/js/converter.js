@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-
+  
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-
+  
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-
+  
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-
+  
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -374,7 +374,7 @@ require.define("/author/author-activity.js", function (require, module, exports,
       }).call(this);
     }
     AuthorActivity.prototype.toRuntimeActivity = function() {
-      var page, runtimeActivity, unit, _i, _j, _len, _len2, _ref, _ref2;
+      var page, runtimeActivity, runtimeUnit, unit, _i, _j, _len, _len2, _ref, _ref2;
       runtimeActivity = new RuntimeActivity(this.owner, this.name);
       _ref = this.pages;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -384,7 +384,7 @@ require.define("/author/author-activity.js", function (require, module, exports,
       _ref2 = this.units;
       for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
         unit = _ref2[_j];
-        runtimeActivity.defineUnit(unit.toRuntimeUnit(runtimeActivity));
+        runtimeActivity.defineUnit((runtimeUnit = unit.toRuntimeUnit(runtimeActivity)).name, runtimeUnit);
       }
       return runtimeActivity;
     };
@@ -405,6 +405,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       this.activity = activity;
       this.index = index;
       _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes;
+      this.datadefRef = null;
     }
     AuthorPage.prototype.toRuntimePage = function(runtimeActivity) {
       var i, pane, runtimePage, step, type, _len, _ref, _ref2;
@@ -422,13 +423,13 @@ require.define("/author/author-page.js", function (require, module, exports, __d
           type = pane.type;
           switch (type) {
             case 'ImagePane':
-              this.addImagePane(step, pane, this.panes.length, i);
+              this.addImagePane(step, pane, i);
               break;
             case 'PredefinedGraphPane':
-              this.addPredefinedGraphPane(step, pane, runtimeActivity, this.panes.length, i);
+              this.addPredefinedGraphPane(step, pane, runtimeActivity, i);
               break;
             case 'TablePane':
-              this.addTablePane(step, pane, runtimeActivity, this.panes.length, i);
+              this.addTablePane(step, pane, runtimeActivity, i);
               break;
             default:
               throw new Error("Only ImagePanes, PredefinedGraphPanes and TablePanes are supported right now");
@@ -437,13 +438,18 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       }
       return runtimePage;
     };
-    AuthorPage.prototype.addImagePane = function(step, pane, numPanes, index) {
+    AuthorPage.prototype.addImagePane = function(step, pane, index) {
       var attribution, license, url;
       url = pane.url, license = pane.license, attribution = pane.attribution;
-      return step.addImagePane(url, license, attribution, numPanes, index);
+      return step.addImagePane({
+        url: url,
+        license: license,
+        attribution: attribution,
+        index: index
+      });
     };
-    AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity, numPanes, index) {
-      var data, datadef, title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef;
+    AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity, index) {
+      var data, datadef, title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef, _ref;
       title = pane.title, data = pane.data, xLabel = pane.xLabel, xUnits = pane.xUnits, xMin = pane.xMin, xMax = pane.xMax, xTicks = pane.xTicks, yLabel = pane.yLabel, yUnits = pane.yUnits, yMin = pane.yMin, yMax = pane.yMax, yTicks = pane.yTicks;
       xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(xUnits));
       yUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(yUnits));
@@ -462,28 +468,35 @@ require.define("/author/author-page.js", function (require, module, exports, __d
         nSteps: yTicks
       });
       if (data != null) {
-        datadef = runtimeActivity.createAndAppendDatadef({
+        if ((_ref = this.datadefRef) == null) {
+          this.datadefRef = runtimeActivity.getDatadefRef(this.name);
+        }
+        datadef = runtimeActivity.createDatadef({
           points: data,
           xLabel: xLabel,
           xUnitsRef: xUnitsRef,
           yLabel: yLabel,
           yUnitsRef: yUnitsRef
         });
-        step.setTableData(datadef.name);
+        runtimeActivity.defineDatadef(this.name, datadef);
       }
       return step.addGraphPane({
         title: title,
-        datadef: datadef,
+        datadefRef: this.datadefRef,
         xAxis: xAxis,
         yAxis: yAxis,
-        numPanes: numPanes,
         index: index
       });
     };
-    AuthorPage.prototype.addTablePane = function(step, pane, runtimeActivity, numPanes, index) {
-      var data;
-      data = step.findGraphData();
-      return step.addTablePane(data, numPanes, index);
+    AuthorPage.prototype.addTablePane = function(step, pane, runtimeActivity, index) {
+      var _ref;
+      if ((_ref = this.datadefRef) == null) {
+        this.datadefRef = runtimeActivity.getDatadefRef(this.name);
+      }
+      return step.addTablePane({
+        datadefRef: this.datadefRef,
+        index: index
+      });
     };
     return AuthorPage;
   })();
@@ -531,13 +544,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-
+  
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-
+  
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
@@ -557,7 +570,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.unitRefs = {};
       this.axes = {};
       this.nAxes = 0;
-      this.datadefs = {};
+      this.datadefRefs = {};
       this.nDatadefs = 0;
     }
     RuntimeActivity.prototype.getUrl = function() {
@@ -584,30 +597,64 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       unit.activity = this;
       return unit;
     };
+    RuntimeActivity.prototype.createDatadef = function(_arg) {
+      var datadef, points, xLabel, xUnitsRef, yLabel, yUnitsRef;
+      points = _arg.points, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef;
+      datadef = new Datadef({
+        points: points,
+        xLabel: xLabel,
+        xUnitsRef: xUnitsRef,
+        yLabel: yLabel,
+        yUnitsRef: yUnitsRef,
+        index: ++this.nDatadefs
+      });
+      datadef.activity = this;
+      return datadef;
+    };
     /*
-        Forward references. So far only Units need this because everything else is defined inline, but this is expected
-        to change, right?
+        Forward references. Some of this is repetitious and should be factored out.
       */
-    RuntimeActivity.prototype.getUnitRef = function(name) {
+    RuntimeActivity.prototype.getUnitRef = function(key) {
       var ref;
-      if (ref = this.unitRefs[name]) {
+      if (ref = this.unitRefs[key]) {
         return ref;
       } else {
-        ref = this.unitRefs[name] = {
-          name: name,
+        ref = this.unitRefs[key] = {
+          key: key,
           unit: null
         };
       }
       return ref;
     };
-    RuntimeActivity.prototype.defineUnit = function(unit) {
+    RuntimeActivity.prototype.defineUnit = function(key, unit) {
       var ref;
-      ref = this.getUnitRef(unit.name);
+      ref = this.getUnitRef(key);
       if (ref.unit != null) {
-        throw new Error("Warning: redefining unit " + ref.name);
+        throw new Error("Warning: redefining unit " + key);
       }
       ref.unit = unit;
       return unit;
+    };
+    RuntimeActivity.prototype.getDatadefRef = function(key) {
+      var ref;
+      if (ref = this.datadefRefs[key]) {
+        return ref;
+      } else {
+        ref = this.datadefRefs[key] = {
+          key: key,
+          datadef: null
+        };
+      }
+      return ref;
+    };
+    RuntimeActivity.prototype.defineDatadef = function(key, datadef) {
+      var ref;
+      ref = this.getDatadefRef(key);
+      if (ref.datadef != null) {
+        throw new Error("Warning: redefining datadef " + key);
+      }
+      ref.datadef = datadef;
+      return datadef;
     };
     /*
         Things that are defined only inline (for now) and therefore don't need to be treated as forward references.
@@ -648,7 +695,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return page;
     };
     RuntimeActivity.prototype.toHash = function() {
-      var flatten, name, page, step, url;
+      var flatten, key, page, step, url;
       flatten = function(arrays) {
         var _ref;
         return (_ref = []).concat.apply(_ref, arrays);
@@ -721,8 +768,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         datadefs: Datadef.serializeDatadefs((function() {
           var _results;
           _results = [];
-          for (name in this.datadefs) {
-            _results.push(this.datadefs[name]);
+          for (key in this.datadefRefs) {
+            _results.push(this.datadefRefs[key].datadef);
           }
           return _results;
         }).call(this)),
@@ -732,8 +779,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         units: (function() {
           var _results;
           _results = [];
-          for (name in this.unitRefs) {
-            _results.push(this.unitRefs[name].unit.toHash());
+          for (key in this.unitRefs) {
+            _results.push(this.unitRefs[key].unit.toHash());
           }
           return _results;
         }).call(this)
@@ -820,44 +867,61 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
   var Step;
   exports.Step = Step = (function() {
     function Step() {
-      this.panesHash = null;
+      this.paneDefs = [];
       this.page = null;
       this.index = null;
     }
-    Step.prototype.addImagePane = function(url, license, attribution, numPanes, index) {
-      var _ref;
-      if ((_ref = this.panesHash) == null) {
-        this.panesHash = {};
-      }
-      return this.panesHash[this.getPaneKey(numPanes, index)] = {
+    Step.prototype.addImagePane = function(_arg) {
+      var attribution, index, license, url;
+      url = _arg.url, license = _arg.license, attribution = _arg.attribution, index = _arg.index;
+      return this.paneDefs[index] = {
+        toHash: this.getImagePaneHash,
+        url: url,
+        license: license,
+        attribution: attribution
+      };
+    };
+    Step.prototype.getImagePaneHash = function() {
+      return {
         type: 'image',
-        path: url,
-        caption: "" + license + " " + attribution
+        path: this.url,
+        caption: "" + this.license + " " + this.attribution
       };
     };
     Step.prototype.addGraphPane = function(_arg) {
-      var datadef, index, numPanes, title, xAxis, yAxis, _ref;
-      title = _arg.title, datadef = _arg.datadef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, numPanes = _arg.numPanes, index = _arg.index;
-      if ((_ref = this.panesHash) == null) {
-        this.panesHash = {};
-      }
-      return this.panesHash[this.getPaneKey(numPanes, index)] = {
-        type: 'graph',
+      var datadefRef, index, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index;
+      return this.paneDefs[index] = {
+        toHash: this.getGraphPaneHash,
         title: title,
-        xAxis: xAxis.getUrl(),
-        yAxis: yAxis.getUrl(),
-        annotations: [],
-        data: datadef != null ? [datadef.name] : []
+        datadefRef: datadefRef,
+        xAxis: xAxis,
+        yAxis: yAxis
       };
     };
-    Step.prototype.addTablePane = function(data, numPanes, index) {
-      var _ref;
-      if ((_ref = this.panesHash) == null) {
-        this.panesHash = {};
-      }
-      return this.panesHash[this.getPaneKey(numPanes, index)] = {
+    Step.prototype.getGraphPaneHash = function() {
+      return {
+        type: 'graph',
+        title: this.title,
+        xAxis: this.xAxis.getUrl(),
+        yAxis: this.yAxis.getUrl(),
+        annotations: [],
+        data: this.datadefRef != null ? [this.datadefRef.datadef.name] : []
+      };
+    };
+    Step.prototype.addTablePane = function(_arg) {
+      var datadefRef, index;
+      datadefRef = _arg.datadefRef, index = _arg.index;
+      return this.paneDefs[index] = {
+        toHash: this.getTablePaneHash,
+        type: 'graph',
+        datadefRef: datadefRef
+      };
+    };
+    Step.prototype.getTablePaneHash = function() {
+      return {
         type: 'table',
-        data: data,
+        data: this.datadefRef.datadef.name,
         annotations: []
       };
     };
@@ -877,33 +941,24 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         return "bottom";
       }
     };
-    Step.prototype.findGraphData = function() {
-      var key, pane, _ref, _ref2;
-      _ref = this.panesHash;
-      for (key in _ref) {
-        pane = _ref[key];
-        if (pane.type === 'graph') {
-          return (_ref2 = pane.data) != null ? _ref2[0] : void 0;
-        }
-      }
-    };
-    Step.prototype.setTableData = function(data) {
-      var key, pane, _ref, _results;
-      _ref = this.panesHash;
-      _results = [];
-      for (key in _ref) {
-        pane = _ref[key];
-        _results.push(pane.type === 'table' ? pane.data = data : void 0);
-      }
-      return _results;
-    };
     Step.prototype.toHash = function() {
-      var _ref;
+      var panesHash;
+      panesHash = null;
+      if (this.paneDefs.length === 1) {
+        panesHash = {
+          single: this.paneDefs[0].toHash(this.paneDefs[0])
+        };
+      } else if (this.paneDefs.length === 2) {
+        panesHash = {
+          top: this.paneDefs[0].toHash(this.paneDefs[0]),
+          bottom: this.paneDefs[1].toHash(this.paneDefs[1])
+        };
+      }
       return {
         url: this.getUrl(),
         activityPage: this.page.getUrl(),
-        paneConfig: ((_ref = this.panesHash) != null ? _ref.top : void 0) != null ? 'split' : 'single',
-        panes: this.panesHash,
+        paneConfig: this.paneDefs.length === 2 ? 'split' : 'single',
+        panes: panesHash,
         isFinalStep: true,
         nextButtonShouldSubmit: true
       };
