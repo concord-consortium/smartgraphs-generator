@@ -19,8 +19,8 @@ exports.RuntimePage = class RuntimePage
   getUrl: ->
     "#{@activity.getUrl()}/page/#{@index}-#{slugify @name}"
 
-  appendStep: ->
-    @steps.push step = @activity.createStep()
+  appendStep: (sequence) ->
+    @steps.push step = @activity.createStep(sequence)
     step.page  = this
     step.setIndex @steps.length
     step

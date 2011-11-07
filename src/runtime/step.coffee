@@ -1,10 +1,11 @@
 exports.Step = class Step
 
-  constructor: () ->
+  constructor: (@sequence) ->
     @paneDefs = []
     # these need to be set later
     @page  = null
     @index = null
+    @beforeText = @sequence.text if @sequence?.type == "InstructionSequence"
 
   addImagePane: ({ url, license, attribution, index }) ->
     @paneDefs[index] = { toHash: @getImagePaneHash, url, license, attribution }
@@ -51,7 +52,6 @@ exports.Step = class Step
       panesHash =
         top:    @paneDefs[0].toHash()
         bottom: @paneDefs[1].toHash()
-
     return {
       url:                    this.getUrl()
       activityPage:           @page.getUrl()
@@ -59,4 +59,5 @@ exports.Step = class Step
       panes:                  panesHash
       isFinalStep:            true
       nextButtonShouldSubmit: true
+      beforeText:             @beforeText
     }

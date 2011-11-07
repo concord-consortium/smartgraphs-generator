@@ -3,7 +3,7 @@
 exports.AuthorPage = class AuthorPage
 
   constructor: (@hash, @activity, @index) ->
-    {@name, @text, @panes} = @hash
+    {@name, @text, @panes, @sequence} = @hash
     @datadefRef = null
 
   toRuntimePage: (runtimeActivity) ->
@@ -13,7 +13,8 @@ exports.AuthorPage = class AuthorPage
     runtimePage.setText @text
 
     # TODO we'll want to move this logic elsewhere
-    step = runtimePage.appendStep()
+    # This assumes one step per page. We will need to rework this when there are multiple steps
+    step = runtimePage.appendStep(@sequence)
 
     if @panes?.length > 0
       if @panes.length > 2 then throw new Error "There cannot be more than two panes"

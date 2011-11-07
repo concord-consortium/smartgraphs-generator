@@ -404,7 +404,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       this.hash = hash;
       this.activity = activity;
       this.index = index;
-      _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes;
+      _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes, this.sequence = _ref.sequence;
       this.datadefRef = null;
     }
     AuthorPage.prototype.toRuntimePage = function(runtimeActivity) {
@@ -412,7 +412,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       runtimePage = runtimeActivity.createPage();
       runtimePage.setName(this.name);
       runtimePage.setText(this.text);
-      step = runtimePage.appendStep();
+      step = runtimePage.appendStep(this.sequence);
       if (((_ref = this.panes) != null ? _ref.length : void 0) > 0) {
         if (this.panes.length > 2) {
           throw new Error("There cannot be more than two panes");
@@ -589,9 +589,9 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       page.activity = this;
       return page;
     };
-    RuntimeActivity.prototype.createStep = function() {
+    RuntimeActivity.prototype.createStep = function(sequence) {
       var step;
-      step = new Step;
+      step = new Step(sequence);
       step.activity = this;
       return step;
     };
@@ -832,9 +832,9 @@ require.define("/runtime/runtime-page.js", function (require, module, exports, _
     RuntimePage.prototype.getUrl = function() {
       return "" + (this.activity.getUrl()) + "/page/" + this.index + "-" + (slugify(this.name));
     };
-    RuntimePage.prototype.appendStep = function() {
+    RuntimePage.prototype.appendStep = function(sequence) {
       var step;
-      this.steps.push(step = this.activity.createStep());
+      this.steps.push(step = this.activity.createStep(sequence));
       step.page = this;
       step.setIndex(this.steps.length);
       return step;
@@ -870,10 +870,15 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     (function() {
   var Step;
   exports.Step = Step = (function() {
-    function Step() {
+    function Step(sequence) {
+      var _ref;
+      this.sequence = sequence;
       this.paneDefs = [];
       this.page = null;
       this.index = null;
+      if (((_ref = this.sequence) != null ? _ref.type : void 0) === "InstructionSequence") {
+        this.beforeText = this.sequence.text;
+      }
     }
     Step.prototype.addImagePane = function(_arg) {
       var attribution, index, license, url;
@@ -964,7 +969,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         paneConfig: this.paneDefs.length === 2 ? 'split' : 'single',
         panes: panesHash,
         isFinalStep: true,
-        nextButtonShouldSubmit: true
+        nextButtonShouldSubmit: true,
+        beforeText: this.beforeText
       };
     };
     return Step;

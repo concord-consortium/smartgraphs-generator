@@ -40,8 +40,8 @@ exports.RuntimeActivity = class RuntimeActivity
     page.activity = this
     page
 
-  createStep: ->
-    step = new Step
+  createStep: (sequence) ->
+    step = new Step sequence
     step.activity = this
     step
 
