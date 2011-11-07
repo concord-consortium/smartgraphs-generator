@@ -65,7 +65,7 @@ exports.RuntimeActivity = class RuntimeActivity
 
   defineUnit: (key, unit) ->
     ref = @getUnitRef key
-    if ref.unit? then throw new Error "Warning: redefining unit #{key}"
+    if ref.unit? then throw new Error "Redefinition of unit #{key}"
     ref.unit = unit
     unit
 
@@ -76,7 +76,7 @@ exports.RuntimeActivity = class RuntimeActivity
 
   defineDatadef: (key, datadef) ->
     ref = @getDatadefRef key
-    if ref.datadef? then throw new Error "Warning: redefining datadef #{key}"
+    if ref.datadef? then throw new Error "Redefinition of datadef #{key}"
     ref.datadef = datadef
     datadef
 
@@ -88,13 +88,6 @@ exports.RuntimeActivity = class RuntimeActivity
     axis.activity = this
     @axes[axis.getUrl()] = axis
     axis
-
-  createAndAppendDatadef: ({points, xLabel, xUnitsRef, yLabel, yUnitsRef}) ->
-    # for a while we'll only deal with one kind of Datadef: UnorderedDataPoints
-    datadef = new Datadef { points, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs }
-    datadef.activity = this
-    @datadefs[datadef.name] = datadef
-    datadef
 
   appendPage: (page) ->
     @pages.push page

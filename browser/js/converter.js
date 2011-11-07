@@ -634,7 +634,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       var ref;
       ref = this.getUnitRef(key);
       if (ref.unit != null) {
-        throw new Error("Warning: redefining unit " + key);
+        throw new Error("Redefinition of unit " + key);
       }
       ref.unit = unit;
       return unit;
@@ -655,7 +655,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       var ref;
       ref = this.getDatadefRef(key);
       if (ref.datadef != null) {
-        throw new Error("Warning: redefining datadef " + key);
+        throw new Error("Redefinition of datadef " + key);
       }
       ref.datadef = datadef;
       return datadef;
@@ -677,21 +677,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       axis.activity = this;
       this.axes[axis.getUrl()] = axis;
       return axis;
-    };
-    RuntimeActivity.prototype.createAndAppendDatadef = function(_arg) {
-      var datadef, points, xLabel, xUnitsRef, yLabel, yUnitsRef;
-      points = _arg.points, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef;
-      datadef = new Datadef({
-        points: points,
-        xLabel: xLabel,
-        xUnitsRef: xUnitsRef,
-        yLabel: yLabel,
-        yUnitsRef: yUnitsRef,
-        index: ++this.nDatadefs
-      });
-      datadef.activity = this;
-      this.datadefs[datadef.name] = datadef;
-      return datadef;
     };
     RuntimeActivity.prototype.appendPage = function(page) {
       this.pages.push(page);
