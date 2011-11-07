@@ -1,0 +1,51 @@
+{
+  "_id": "instruction-sequence.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Instruction Sequence",
+    "url": "/shared/instruction-sequence",
+    "owner": "shared",
+    "pages": [
+      "/shared/instruction-sequence/page/1-introduction"
+    ],
+    "axes": []
+  },
+  "pages": [
+    {
+      "name": "Introduction",
+      "url": "/shared/instruction-sequence/page/1-introduction",
+      "activity": "/shared/instruction-sequence",
+      "index": 1,
+      "introText": "in this activity....",
+      "steps": [
+        "/shared/instruction-sequence/page/1-introduction/step/1"
+      ],
+      "firstStep": "/shared/instruction-sequence/page/1-introduction/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/instruction-sequence/page/1-introduction/step/1",
+      "activityPage": "/shared/instruction-sequence/page/1-introduction",
+      "paneConfig": "single",
+      "beforeText": "Click the next button to get started",
+      "panes": {
+          "single": {
+            "type": "image",
+            "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+            "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
+          }
+        },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [],
+  "axes": [],
+  "datadefs": [],
+  "tags": [],
+  "annotations": [],
+  "variables": [],
+  "units": []
+}
