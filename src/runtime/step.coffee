@@ -46,11 +46,11 @@ exports.Step = class Step
     panesHash = null
     if @paneDefs.length == 1
       panesHash =
-        single: @paneDefs[0].toHash @paneDefs[0]
+        single: @paneDefs[0].toHash()
     else if @paneDefs.length == 2
       panesHash =
-        top:    @paneDefs[0].toHash @paneDefs[0]
-        bottom: @paneDefs[1].toHash @paneDefs[1]
+        top:    @paneDefs[0].toHash()
+        bottom: @paneDefs[1].toHash()
 
     return {
       url:                    this.getUrl()
