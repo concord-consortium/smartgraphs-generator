@@ -1,0 +1,31 @@
+{
+  "type": "Activity",
+  "name": "Simple Graph",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Graph",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "data": [
+            [1,200],
+            [2,400],
+            [3,600]
+          ]
+        }
+      ]
+    }
+  ],
+  "units": []
+}

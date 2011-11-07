@@ -6,4 +6,4 @@ exports.Axis = class Axis
     "#{@activity.getUrl()}/axes/#{@index}"
 
   toHash: ->
-    { url: @getUrl(), units: @unitRef.unit.getUrl(), @min, @max, @nSteps, @label }
+    { url: @getUrl(), units: @unitRef?.unit.getUrl(), @min, @max, @nSteps, @label }

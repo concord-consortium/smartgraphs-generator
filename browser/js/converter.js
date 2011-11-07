@@ -23,33 +23,33 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-
+        
         if (require._core[x]) return x;
         var path = require.modules.path();
         var y = cwd || '.';
-
+        
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-
+        
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-
+        
         throw new Error("Cannot find module '" + x + "'");
-
+        
         function loadAsFileSync (x) {
             if (require.modules[x]) {
                 return x;
             }
-
+            
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-
+        
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = x + '/package.json';
@@ -69,10 +69,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-
+            
             return loadAsFileSync(x + '/index');
         }
-
+        
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -82,23 +82,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-
+            
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-
+        
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-
+            
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-
+            
             return dirs;
         }
     };
@@ -114,9 +114,9 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-
+    
     var keys = Object_keys(require.modules);
-
+    
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -134,7 +134,7 @@ require.define = function (filename, fn) {
         ? ''
         : require.modules.path().dirname(filename)
     ;
-
+    
     var require_ = function (file) {
         return require(file, dirname)
     };
@@ -144,7 +144,7 @@ require.define = function (filename, fn) {
     require_.modules = require.modules;
     require_.define = require.define;
     var module_ = { exports : {} };
-
+    
     require.modules[filename] = function () {
         require.modules[filename]._cached = module_.exports;
         fn.call(
@@ -272,7 +272,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-
+  
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -451,8 +451,12 @@ require.define("/author/author-page.js", function (require, module, exports, __d
     AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity, index) {
       var data, datadef, title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef, _ref;
       title = pane.title, data = pane.data, xLabel = pane.xLabel, xUnits = pane.xUnits, xMin = pane.xMin, xMax = pane.xMax, xTicks = pane.xTicks, yLabel = pane.yLabel, yUnits = pane.yUnits, yMin = pane.yMin, yMax = pane.yMax, yTicks = pane.yTicks;
-      xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(xUnits));
-      yUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(yUnits));
+      if (!!xUnits) {
+        xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(xUnits));
+      }
+      if (!!yUnits) {
+        yUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(yUnits));
+      }
       xAxis = runtimeActivity.createAndAppendAxis({
         label: xLabel,
         unitRef: xUnitsRef,
@@ -980,9 +984,10 @@ require.define("/runtime/axis.js", function (require, module, exports, __dirname
       return "" + (this.activity.getUrl()) + "/axes/" + this.index;
     };
     Axis.prototype.toHash = function() {
+      var _ref;
       return {
         url: this.getUrl(),
-        units: this.unitRef.unit.getUrl(),
+        units: (_ref = this.unitRef) != null ? _ref.unit.getUrl() : void 0,
         min: this.min,
         max: this.max,
         nSteps: this.nSteps,
@@ -1058,14 +1063,15 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
       return "" + (this.activity.getUrl()) + "/datadefs/" + this.name;
     };
     Datadef.prototype.toHash = function() {
+      var _ref, _ref2;
       return {
         url: this.getUrl(),
         name: this.name,
         activity: this.activity.getUrl(),
-        xUnits: this.xUnitsRef.unit.getUrl(),
+        xUnits: (_ref = this.xUnitsRef) != null ? _ref.unit.getUrl() : void 0,
         xLabel: this.xLabel,
         xShortLabel: this.xLabel,
-        yUnits: this.yUnitsRef.unit.getUrl(),
+        yUnits: (_ref2 = this.yUnitsRef) != null ? _ref2.unit.getUrl() : void 0,
         yLabel: this.yLabel,
         yShortLabel: this.yLabel,
         points: this.points

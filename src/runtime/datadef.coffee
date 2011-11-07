@@ -19,10 +19,10 @@ exports.Datadef = class Datadef
     url:         @getUrl()
     name:        @name
     activity:    @activity.getUrl()
-    xUnits:      @xUnitsRef.unit.getUrl()
+    xUnits:      @xUnitsRef?.unit.getUrl()
     xLabel:      @xLabel
     xShortLabel: @xLabel
-    yUnits:      @yUnitsRef.unit.getUrl()
+    yUnits:      @yUnitsRef?.unit.getUrl()
     yLabel:      @yLabel
     yShortLabel: @yLabel
     points:      @points

@@ -38,8 +38,8 @@ exports.AuthorPage = class AuthorPage
       xLabel, xUnits, xMin, xMax, xTicks
       yLabel, yUnits, yMin, yMax, yTicks } = pane
 
-    xUnitsRef = runtimeActivity.getUnitRef dumbSingularize xUnits
-    yUnitsRef = runtimeActivity.getUnitRef dumbSingularize yUnits
+    xUnitsRef = runtimeActivity.getUnitRef dumbSingularize xUnits unless !xUnits
+    yUnitsRef = runtimeActivity.getUnitRef dumbSingularize yUnits unless !yUnits
 
     xAxis = runtimeActivity.createAndAppendAxis { label: xLabel, unitRef: xUnitsRef, min: xMin, max: xMax, nSteps: xTicks }
     yAxis = runtimeActivity.createAndAppendAxis { label: yLabel, unitRef: yUnitsRef, min: yMin, max: yMax, nSteps: yTicks }
