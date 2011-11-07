@@ -27,7 +27,7 @@
           ]
         },
         {
-          "type": "MatchingTablePane"
+          "type": "TablePane"
         }
       ]
     }

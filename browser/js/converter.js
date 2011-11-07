@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-  
+
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-  
+
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-  
+
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-  
+
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -407,36 +407,42 @@ require.define("/author/author-page.js", function (require, module, exports, __d
       _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes;
     }
     AuthorPage.prototype.toRuntimePage = function(runtimeActivity) {
-      var pane, runtimePage, step, type, _ref;
+      var i, pane, runtimePage, step, type, _len, _ref, _ref2;
       runtimePage = runtimeActivity.createPage();
       runtimePage.setName(this.name);
       runtimePage.setText(this.text);
       step = runtimePage.appendStep();
       if (((_ref = this.panes) != null ? _ref.length : void 0) > 0) {
-        if (this.panes.length > 1) {
-          throw new Error("Only one pane is supported right now");
+        if (this.panes.length > 2) {
+          throw new Error("There cannot be more than two panes");
         }
-        pane = this.panes[0];
-        type = pane.type;
-        switch (type) {
-          case 'ImagePane':
-            this.addImagePane(step, pane);
-            break;
-          case 'PredefinedGraphPane':
-            this.addPredefinedGraphPane(step, pane, runtimeActivity);
-            break;
-          default:
-            throw new Error("Only ImagePanes and PredefinedGraphPane are supported right now");
+        _ref2 = this.panes;
+        for (i = 0, _len = _ref2.length; i < _len; i++) {
+          pane = _ref2[i];
+          type = pane.type;
+          switch (type) {
+            case 'ImagePane':
+              this.addImagePane(step, pane, this.panes.length, i);
+              break;
+            case 'PredefinedGraphPane':
+              this.addPredefinedGraphPane(step, pane, runtimeActivity, this.panes.length, i);
+              break;
+            case 'TablePane':
+              this.addTablePane(step, pane, runtimeActivity, this.panes.length, i);
+              break;
+            default:
+              throw new Error("Only ImagePanes, PredefinedGraphPanes and TablePanes are supported right now");
+          }
         }
       }
       return runtimePage;
     };
-    AuthorPage.prototype.addImagePane = function(step, pane) {
+    AuthorPage.prototype.addImagePane = function(step, pane, numPanes, index) {
       var attribution, license, url;
       url = pane.url, license = pane.license, attribution = pane.attribution;
-      return step.addImagePane(url, license, attribution);
+      return step.addImagePane(url, license, attribution, numPanes, index);
     };
-    AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity) {
+    AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity, numPanes, index) {
       var data, datadef, title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef;
       title = pane.title, data = pane.data, xLabel = pane.xLabel, xUnits = pane.xUnits, xMin = pane.xMin, xMax = pane.xMax, xTicks = pane.xTicks, yLabel = pane.yLabel, yUnits = pane.yUnits, yMin = pane.yMin, yMax = pane.yMax, yTicks = pane.yTicks;
       xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(xUnits));
@@ -463,13 +469,21 @@ require.define("/author/author-page.js", function (require, module, exports, __d
           yLabel: yLabel,
           yUnitsRef: yUnitsRef
         });
+        step.setTableData(datadef.name);
       }
       return step.addGraphPane({
         title: title,
         datadef: datadef,
         xAxis: xAxis,
-        yAxis: yAxis
+        yAxis: yAxis,
+        numPanes: numPanes,
+        index: index
       });
+    };
+    AuthorPage.prototype.addTablePane = function(step, pane, runtimeActivity, numPanes, index) {
+      var data;
+      data = step.findGraphData();
+      return step.addTablePane(data, numPanes, index);
     };
     return AuthorPage;
   })();
@@ -517,13 +531,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-  
+
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-  
+
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
@@ -810,27 +824,41 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       this.page = null;
       this.index = null;
     }
-    Step.prototype.addImagePane = function(url, license, attribution) {
-      return this.panesHash = {
-        single: {
-          type: 'image',
-          path: url,
-          caption: "" + license + " " + attribution
-        }
+    Step.prototype.addImagePane = function(url, license, attribution, numPanes, index) {
+      var _ref;
+      if ((_ref = this.panesHash) == null) {
+        this.panesHash = {};
+      }
+      return this.panesHash[this.getPaneKey(numPanes, index)] = {
+        type: 'image',
+        path: url,
+        caption: "" + license + " " + attribution
       };
     };
     Step.prototype.addGraphPane = function(_arg) {
-      var datadef, title, xAxis, yAxis;
-      title = _arg.title, datadef = _arg.datadef, xAxis = _arg.xAxis, yAxis = _arg.yAxis;
-      return this.panesHash = {
-        single: {
-          type: 'graph',
-          title: title,
-          xAxis: xAxis.getUrl(),
-          yAxis: yAxis.getUrl(),
-          annotations: [],
-          data: datadef != null ? [datadef.name] : []
-        }
+      var datadef, index, numPanes, title, xAxis, yAxis, _ref;
+      title = _arg.title, datadef = _arg.datadef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, numPanes = _arg.numPanes, index = _arg.index;
+      if ((_ref = this.panesHash) == null) {
+        this.panesHash = {};
+      }
+      return this.panesHash[this.getPaneKey(numPanes, index)] = {
+        type: 'graph',
+        title: title,
+        xAxis: xAxis.getUrl(),
+        yAxis: yAxis.getUrl(),
+        annotations: [],
+        data: datadef != null ? [datadef.name] : []
+      };
+    };
+    Step.prototype.addTablePane = function(data, numPanes, index) {
+      var _ref;
+      if ((_ref = this.panesHash) == null) {
+        this.panesHash = {};
+      }
+      return this.panesHash[this.getPaneKey(numPanes, index)] = {
+        type: 'table',
+        data: data,
+        annotations: []
       };
     };
     Step.prototype.setIndex = function(index) {
@@ -840,11 +868,41 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     Step.prototype.getUrl = function() {
       return "" + (this.page.getUrl()) + "/step/" + this.index;
     };
+    Step.prototype.getPaneKey = function(numPanes, index) {
+      if (numPanes === 1) {
+        return "single";
+      } else if (index === 0) {
+        return "top";
+      } else {
+        return "bottom";
+      }
+    };
+    Step.prototype.findGraphData = function() {
+      var key, pane, _ref, _ref2;
+      _ref = this.panesHash;
+      for (key in _ref) {
+        pane = _ref[key];
+        if (pane.type === 'graph') {
+          return (_ref2 = pane.data) != null ? _ref2[0] : void 0;
+        }
+      }
+    };
+    Step.prototype.setTableData = function(data) {
+      var key, pane, _ref, _results;
+      _ref = this.panesHash;
+      _results = [];
+      for (key in _ref) {
+        pane = _ref[key];
+        _results.push(pane.type === 'table' ? pane.data = data : void 0);
+      }
+      return _results;
+    };
     Step.prototype.toHash = function() {
+      var _ref;
       return {
         url: this.getUrl(),
         activityPage: this.page.getUrl(),
-        paneConfig: 'single',
+        paneConfig: ((_ref = this.panesHash) != null ? _ref.top : void 0) != null ? 'split' : 'single',
         panes: this.panesHash,
         isFinalStep: true,
         nextButtonShouldSubmit: true

@@ -23,6 +23,13 @@ exports.Step = class Step
       annotations: []
       data:        if datadef? then [datadef.name] else []
 
+  addTablePane: (data, numPanes, index) ->
+    @panesHash ?= {}
+    @panesHash[@getPaneKey numPanes, index] =
+      type:         'table'
+      data:         data
+      annotations:  []
+
   setIndex: (@index) ->
     @index
 
@@ -31,6 +38,16 @@ exports.Step = class Step
 
   getPaneKey: (numPanes, index) ->
     if numPanes == 1 then "single" else if index == 0 then "top" else "bottom"
+
+  findGraphData: ->
+    for key, pane of @panesHash
+      if pane.type == 'graph'
+        return pane.data?[0]
+
+  setTableData: (data) ->
+    for key, pane of @panesHash
+      if pane.type == 'table'
+        pane.data = data
 
   toHash: ->
     url:                    this.getUrl()

@@ -22,7 +22,8 @@ exports.AuthorPage = class AuthorPage
         switch type
           when 'ImagePane' then @addImagePane step, pane, @panes.length, i
           when 'PredefinedGraphPane' then @addPredefinedGraphPane step, pane, runtimeActivity, @panes.length, i
-          else throw new Error "Only ImagePanes and PredefinedGraphPane are supported right now"
+          when 'TablePane' then @addTablePane step, pane, runtimeActivity, @panes.length, i
+          else throw new Error "Only ImagePanes, PredefinedGraphPanes and TablePanes are supported right now"
 
     runtimePage
 
@@ -44,5 +45,10 @@ exports.AuthorPage = class AuthorPage
 
     if data?
       datadef = runtimeActivity.createAndAppendDatadef { points: data, xLabel, xUnitsRef, yLabel, yUnitsRef }
+      step.setTableData(datadef.name)
 
     step.addGraphPane { title, datadef, xAxis, yAxis, numPanes, index }
+
+  addTablePane: (step, pane, runtimeActivity, numPanes, index) ->
+    data = step.findGraphData()
+    step.addTablePane(data, numPanes, index)

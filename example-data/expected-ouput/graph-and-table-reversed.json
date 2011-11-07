@@ -34,16 +34,16 @@
       "paneConfig": "split",
       "panes": {
         "top": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": []
+        },
+        "bottom": {
           "type": "graph",
           "title": "Position vs. Time",
           "xAxis": "/shared/graph-and-table/axes/1",
           "yAxis": "/shared/graph-and-table/axes/2",
           "data" : ["datadef-1"],
-          "annotations": []
-        },
-        "bottom": {
-          "type": "table",
-          "data": "datadef-1",
           "annotations": []
         }
       },
