@@ -21,27 +21,25 @@
         "initialPrompt": "Click the point...",
         // this will need to be refactored to handle different types of correct conditions. 
         // but refactoring should be easy, and we should not design the data model until we have the need
-        "correctPoint": [4, 800],
+        "correctAnswerPoint": [4, 800],
         "hints": [
           {
-            "type": "Step",
             "name": "1st wrong answer",
             "text": "Look at the graph..."
           },
           {
-            "type": "Step",
             "name": "2nd wrong answer",
-            // Steps will have optional visual prompts later
+            // Hints will have optional visual prompts later
             "text": "In these two intervals...."
           }
         ],
-        "giveUpStep": {
-          "type": "Step",
+        "giveUp": {
           "text": "If you look carefully, ...."
+          // giveUp will have optional visual prompts later
         },
-        "correctStep": {
-         "type": "Step",
-         "text": "Four minutes into her run ...." 
+        "confirmCorrect": {
+          "text": "Four minutes into her run ...." 
+          // confirmCorrect will have optional visual prompts later
         }
       }
     }
