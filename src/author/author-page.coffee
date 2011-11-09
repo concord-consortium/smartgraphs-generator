@@ -108,17 +108,15 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence
       step.addTaggingTool { tag, datadefRef }
       step.setSubmitButtonTitle "Check My Answer"
 
-      # note that the end result is just that each step's default branch is the next one... but let's make the logic
-      # more explicit
-      if step is lastAnswerableStep
-        step.setDefaultBranch giveUpStep
-      else
-        step.setDefaultBranch answerableSteps[index+1]
-
       step.appendResponseBranch {
         criterion: ["coordinates=", tag.name, @correctAnswerPoint[0], @correctAnswerPoint[1]]
         step: confirmCorrectStep
       }
+
+      if step is lastAnswerableStep
+        step.setDefaultBranch giveUpStep
+      else
+        step.setDefaultBranch answerableSteps[index+1]
 
 ###
   Pane types

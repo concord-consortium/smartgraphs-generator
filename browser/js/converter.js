@@ -561,15 +561,11 @@ require.define("/author/author-page.js", function (require, module, exports, __d
           datadefRef: datadefRef
         });
         step.setSubmitButtonTitle("Check My Answer");
-        if (step === lastAnswerableStep) {
-          step.setDefaultBranch(giveUpStep);
-        } else {
-          step.setDefaultBranch(answerableSteps[index + 1]);
-        }
-        _results.push(step.appendResponseBranch({
+        step.appendResponseBranch({
           criterion: ["coordinates=", tag.name, this.correctAnswerPoint[0], this.correctAnswerPoint[1]],
           step: confirmCorrectStep
-        }));
+        });
+        _results.push(step === lastAnswerableStep ? step.setDefaultBranch(giveUpStep) : step.setDefaultBranch(answerableSteps[index + 1]));
       }
       return _results;
     };
