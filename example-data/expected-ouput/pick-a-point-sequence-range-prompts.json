@@ -291,7 +291,7 @@
           "activity": "/shared/pick-a-point-sequence",
           "datadefName": "datadef-1",
           "color": "#1f77b4",
-          "x1Record": 2,
+          "x1Record": 1,
           "x2Record": 3
         },
         {
@@ -301,16 +301,16 @@
           "datadefName": "datadef-1",
           "color": "#1f77b4",
           "isUnboundedLeft": true,
-          "x1Record": 2,
+          "x1Record": 3,
         },
         {
           "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-3",
-          "name": "segment-overlay-2",
+          "name": "segment-overlay-3",
           "activity": "/shared/pick-a-point-sequence",
           "datadefName": "datadef-1",
           "color": "#1f77b4",
           "isUnboundedLeft": true,
-          "x1Record": 2,
+          "x1Record": 4,
         }
       ]
     }
