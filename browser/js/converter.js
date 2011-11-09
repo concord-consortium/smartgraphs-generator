@@ -396,8 +396,9 @@ require.define("/author/author-activity.js", function (require, module, exports,
 
 require.define("/author/author-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPage, AuthorPane, ImagePane, InstructionSequence, NoSequence, PickAPointSequence, PredefinedGraphPane, Sequence, TablePane, dumbSingularize;
-  dumbSingularize = require('../singularize').dumbSingularize;
+  var AuthorPage, AuthorPane, Sequence;
+  Sequence = require('./sequences').Sequence;
+  AuthorPane = require('./author-panes').AuthorPane;
   exports.AuthorPage = AuthorPage = (function() {
     function AuthorPage(hash, activity, index) {
       var h, pane, _len, _ref, _ref2, _ref3, _ref4;
@@ -441,10 +442,15 @@ require.define("/author/author-page.js", function (require, module, exports, __d
     };
     return AuthorPage;
   })();
-  /*
-    Sequence types
-  */
-  Sequence = {
+}).call(this);
+
+});
+
+require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var AuthorPane, InstructionSequence, NoSequence, PickAPointSequence, Sequence;
+  AuthorPane = require('./author-panes').AuthorPane;
+  Sequence = exports.Sequence = {
     classFor: {},
     fromHash: function(hash) {
       var SequenceClass;
@@ -571,10 +577,15 @@ require.define("/author/author-page.js", function (require, module, exports, __d
     };
     return PickAPointSequence;
   })();
-  /*
-    Pane types
-  */
-  AuthorPane = {
+}).call(this);
+
+});
+
+require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var AuthorPane, ImagePane, PredefinedGraphPane, TablePane, dumbSingularize;
+  dumbSingularize = require('../singularize').dumbSingularize;
+  AuthorPane = exports.AuthorPane = {
     classFor: {},
     fromHash: function(hash) {
       var PaneClass;
