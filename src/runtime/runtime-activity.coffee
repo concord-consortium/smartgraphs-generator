@@ -17,6 +17,8 @@
 {Axis}        = require './axis'
 {RuntimeUnit} = require './runtime-unit'
 {Datadef}     = require './datadef'
+{Tag}         = require './tag'
+{Annotation, HighlightedPoint} = require './annotations'
 
 exports.RuntimeActivity = class RuntimeActivity
 
@@ -24,10 +26,19 @@ exports.RuntimeActivity = class RuntimeActivity
     @pages     = []
     @steps     = []
     @unitRefs  = {}
+
     @axes      = {}
     @nAxes     = 0
+
     @datadefRefs = {}
-    @nDatadefs = 0
+    @nDatadefs   = 0
+
+    @annotations  = {}
+    @nAnnotations = 0
+
+    @tags      = []
+    @nTags     = 0
+
 
   getUrl: ->
     "/#{@owner}/#{slugify @name}"
@@ -89,6 +100,19 @@ exports.RuntimeActivity = class RuntimeActivity
     @axes[axis.getUrl()] = axis
     axis
 
+  createAndAppendTag: ->
+    tag = new Tag { index: ++@nTags }
+    tag.activity = this
+    @tags.push tag
+    tag
+
+  createAndAppendHighlightedPoint: ({ datadefRef, tag, color }) ->
+    point = new HighlightedPoint { datadefRef, tag, color, index: ++@nAnnotations }
+    point.activity = this
+    @annotations.highlightedPoints ?= []
+    @annotations.highlightedPoints.push point
+    point
+
   appendPage: (page) ->
     @pages.push page
     page.setIndex @pages.length
@@ -114,7 +138,7 @@ exports.RuntimeActivity = class RuntimeActivity
     responseTemplates: []
     axes:              @axes[url].toHash() for url of @axes
     datadefs:          Datadef.serializeDatadefs(@datadefRefs[key].datadef for key of @datadefRefs)
-    tags:              []
-    annotations:       []
+    tags:              tag.toHash() for tag in @tags
+    annotations:       Annotation.serializeAnnotations @annotations
     variables:         []
     units:             @unitRefs[key].unit.toHash() for key of @unitRefs

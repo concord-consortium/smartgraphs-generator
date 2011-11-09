@@ -396,7 +396,7 @@ require.define("/author/author-activity.js", function (require, module, exports,
 
 require.define("/author/author-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPage, AuthorPane, ImagePane, InstructionSequence, NoSequence, PredefinedGraphPane, Sequence, TablePane, dumbSingularize;
+  var AuthorPage, AuthorPane, ImagePane, InstructionSequence, NoSequence, PickAPointSequence, PredefinedGraphPane, Sequence, TablePane, dumbSingularize;
   dumbSingularize = require('../singularize').dumbSingularize;
   exports.AuthorPage = AuthorPage = (function() {
     function AuthorPage(hash, activity, index) {
@@ -488,6 +488,93 @@ require.define("/author/author-page.js", function (require, module, exports, __d
     };
     return InstructionSequence;
   })();
+  Sequence.classFor['PickAPointSequence'] = PickAPointSequence = (function() {
+    PickAPointSequence.prototype.HIGHLIGHT_COLOR = '#1f77b4';
+    function PickAPointSequence(_arg) {
+      this.initialPrompt = _arg.initialPrompt, this.correctAnswerPoint = _arg.correctAnswerPoint, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect;
+    }
+    PickAPointSequence.prototype.appendSteps = function(runtimePage) {
+      var answerableSteps, confirmCorrectStep, datadefRef, giveUpStep, graphPane, highlightedPoint, hint, hintStep, i, index, initialPromptStep, lastAnswerableStep, pane, runtimeActivity, step, steps, tablePane, tag, _i, _j, _k, _len, _len2, _len3, _len4, _len5, _ref, _ref2, _ref3, _results;
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor['PredefinedGraphPane']) {
+          graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor['TablePane']) {
+          tablePane = pane;
+        }
+      }
+      if (!(graphPane != null) && !(tablePane != null)) {
+        throw new Error("PickAPointSequence requires at least one graph or table pane");
+      }
+      runtimeActivity = runtimePage.activity;
+      datadefRef = runtimeActivity.getDatadefRef("" + this.page.index + "-" + graphPane.index);
+      tag = runtimeActivity.createAndAppendTag();
+      highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint({
+        datadefRef: datadefRef,
+        tag: tag,
+        color: this.HIGHLIGHT_COLOR
+      });
+      steps = [];
+      answerableSteps = [];
+      steps.push(initialPromptStep = runtimePage.appendStep());
+      answerableSteps.push(initialPromptStep);
+      initialPromptStep.setBeforeText(this.initialPrompt);
+      _ref2 = this.hints;
+      for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
+        hint = _ref2[_i];
+        steps.push(hintStep = runtimePage.appendStep());
+        answerableSteps.push(hintStep);
+        hintStep.setBeforeText(hint.text);
+      }
+      steps.push(giveUpStep = runtimePage.appendStep());
+      giveUpStep.setBeforeText(this.giveUp.text);
+      steps.push(confirmCorrectStep = runtimePage.appendStep());
+      confirmCorrectStep.setBeforeText(this.confirmCorrect.text);
+      for (_j = 0, _len3 = steps.length; _j < _len3; _j++) {
+        step = steps[_j];
+        _ref3 = this.page.panes;
+        for (_k = 0, _len4 = _ref3.length; _k < _len4; _k++) {
+          pane = _ref3[_k];
+          pane.addToStep(step);
+        }
+      }
+      lastAnswerableStep = answerableSteps[answerableSteps.length - 1];
+      _results = [];
+      for (index = 0, _len5 = answerableSteps.length; index < _len5; index++) {
+        step = answerableSteps[index];
+        if (graphPane != null) {
+          step.addAnnotationToPane({
+            annotation: highlightedPoint,
+            index: graphPane.index
+          });
+        }
+        if (tablePane != null) {
+          step.addAnnotationToPane({
+            annotation: highlightedPoint,
+            index: tablePane.index
+          });
+        }
+        step.addTaggingTool({
+          tag: tag,
+          datadefRef: datadefRef
+        });
+        step.setSubmitButtonTitle("Check My Answer");
+        if (step === lastAnswerableStep) {
+          step.setDefaultBranch(giveUpStep);
+        } else {
+          step.setDefaultBranch(answerableSteps[index + 1]);
+        }
+        _results.push(step.appendResponseBranch({
+          criterion: ["coordinates=", tag.name, this.correctAnswerPoint[0], this.correctAnswerPoint[1]],
+          step: confirmCorrectStep
+        }));
+      }
+      return _results;
+    };
+    return PickAPointSequence;
+  })();
   /*
     Pane types
   */
@@ -530,7 +617,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
         nSteps: this.yTicks
       });
       if (this.data != null) {
-        dataKey = "" + this.page.name + "-" + this.index;
+        dataKey = "" + this.page.index + "-" + this.index;
         this.datadefRef = runtimeActivity.getDatadefRef(dataKey);
         datadef = runtimeActivity.createDatadef({
           points: this.data,
@@ -580,7 +667,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
     TablePane.prototype.addToStep = function(step) {
       var dataKey, datadefRef, otherPaneIndex;
       otherPaneIndex = 1 - this.index;
-      dataKey = "" + this.page.name + "-" + otherPaneIndex;
+      dataKey = "" + this.page.index + "-" + otherPaneIndex;
       datadefRef = this.runtimeActivity.getDatadefRef(dataKey);
       return step.addTablePane({
         datadefRef: datadefRef,
@@ -643,13 +730,15 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
-  var Axis, Datadef, RuntimeActivity, RuntimePage, RuntimeUnit, Step, slugify;
+  var Annotation, Axis, Datadef, HighlightedPoint, RuntimeActivity, RuntimePage, RuntimeUnit, Step, Tag, slugify, _ref;
   slugify = require('../slugify').slugify;
   RuntimePage = require('./runtime-page').RuntimePage;
   Step = require('./step').Step;
   Axis = require('./axis').Axis;
   RuntimeUnit = require('./runtime-unit').RuntimeUnit;
   Datadef = require('./datadef').Datadef;
+  Tag = require('./tag').Tag;
+  _ref = require('./annotations'), Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint;
   exports.RuntimeActivity = RuntimeActivity = (function() {
     function RuntimeActivity(owner, name) {
       this.owner = owner;
@@ -661,6 +750,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.nAxes = 0;
       this.datadefRefs = {};
       this.nDatadefs = 0;
+      this.annotations = {};
+      this.nAnnotations = 0;
+      this.tags = [];
+      this.nTags = 0;
     }
     RuntimeActivity.prototype.getUrl = function() {
       return "/" + this.owner + "/" + (slugify(this.name));
@@ -763,16 +856,41 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.axes[axis.getUrl()] = axis;
       return axis;
     };
+    RuntimeActivity.prototype.createAndAppendTag = function() {
+      var tag;
+      tag = new Tag({
+        index: ++this.nTags
+      });
+      tag.activity = this;
+      this.tags.push(tag);
+      return tag;
+    };
+    RuntimeActivity.prototype.createAndAppendHighlightedPoint = function(_arg) {
+      var color, datadefRef, point, tag, _base, _ref2;
+      datadefRef = _arg.datadefRef, tag = _arg.tag, color = _arg.color;
+      point = new HighlightedPoint({
+        datadefRef: datadefRef,
+        tag: tag,
+        color: color,
+        index: ++this.nAnnotations
+      });
+      point.activity = this;
+      if ((_ref2 = (_base = this.annotations).highlightedPoints) == null) {
+        _base.highlightedPoints = [];
+      }
+      this.annotations.highlightedPoints.push(point);
+      return point;
+    };
     RuntimeActivity.prototype.appendPage = function(page) {
       this.pages.push(page);
       page.setIndex(this.pages.length);
       return page;
     };
     RuntimeActivity.prototype.toHash = function() {
-      var flatten, key, page, step, url;
+      var flatten, key, page, step, tag, url;
       flatten = function(arrays) {
-        var _ref;
-        return (_ref = []).concat.apply(_ref, arrays);
+        var _ref2;
+        return (_ref2 = []).concat.apply(_ref2, arrays);
       };
       return {
         _id: "" + (slugify(this.name)) + ".df6",
@@ -783,11 +901,11 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           url: this.getUrl(),
           owner: this.owner,
           pages: (function() {
-            var _i, _len, _ref, _results;
-            _ref = this.pages;
+            var _i, _len, _ref2, _results;
+            _ref2 = this.pages;
             _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              page = _ref[_i];
+            for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+              page = _ref2[_i];
               _results.push(page.getUrl());
             }
             return _results;
@@ -802,27 +920,27 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           }).call(this)
         },
         pages: (function() {
-          var _i, _len, _ref, _results;
-          _ref = this.pages;
+          var _i, _len, _ref2, _results;
+          _ref2 = this.pages;
           _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            page = _ref[_i];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            page = _ref2[_i];
             _results.push(page.toHash());
           }
           return _results;
         }).call(this),
         steps: flatten((function() {
-          var _i, _len, _ref, _results;
-          _ref = this.pages;
+          var _i, _len, _ref2, _results;
+          _ref2 = this.pages;
           _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            page = _ref[_i];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            page = _ref2[_i];
             _results.push((function() {
-              var _j, _len2, _ref2, _results2;
-              _ref2 = page.steps;
+              var _j, _len2, _ref3, _results2;
+              _ref3 = page.steps;
               _results2 = [];
-              for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-                step = _ref2[_j];
+              for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
+                step = _ref3[_j];
                 _results2.push(step.toHash());
               }
               return _results2;
@@ -847,8 +965,17 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           }
           return _results;
         }).call(this)),
-        tags: [],
-        annotations: [],
+        tags: (function() {
+          var _i, _len, _ref2, _results;
+          _ref2 = this.tags;
+          _results = [];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            tag = _ref2[_i];
+            _results.push(tag.toHash());
+          }
+          return _results;
+        }).call(this),
+        annotations: Annotation.serializeAnnotations(this.annotations),
         variables: [],
         units: (function() {
           var _results;
@@ -942,6 +1069,10 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
   exports.Step = Step = (function() {
     function Step() {
       this.panes = [];
+      this.tools = {};
+      this.responseBranches = [];
+      this.isFinalStep = true;
+      this.nextButtonShouldSubmit = true;
       this.page = null;
       this.index = null;
     }
@@ -950,6 +1081,12 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
     Step.prototype.setBeforeText = function(beforeText) {
       this.beforeText = beforeText;
+    };
+    Step.prototype.setSubmitButtonTitle = function(submitButtonTitle) {
+      this.submitButtonTitle = submitButtonTitle;
+    };
+    Step.prototype.setDefaultBranch = function(defaultBranch) {
+      this.defaultBranch = defaultBranch;
     };
     Step.prototype.getUrl = function() {
       return "" + (this.page.getUrl()) + "/step/" + this.index;
@@ -978,13 +1115,24 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         datadefRef: datadefRef,
         xAxis: xAxis,
         yAxis: yAxis,
+        annotations: [],
         toHash: function() {
+          var annotation;
           return {
             type: 'graph',
             title: this.title,
             xAxis: this.xAxis.getUrl(),
             yAxis: this.yAxis.getUrl(),
-            annotations: [],
+            annotations: (function() {
+              var _i, _len, _ref, _results;
+              _ref = this.annotations;
+              _results = [];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                annotation = _ref[_i];
+                _results.push(annotation.name);
+              }
+              return _results;
+            }).call(this),
             data: this.datadefRef != null ? [this.datadefRef.datadef.name] : []
           };
         }
@@ -995,14 +1143,61 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       datadefRef = _arg.datadefRef, index = _arg.index;
       return this.panes[index] = {
         datadefRef: datadefRef,
+        annotations: [],
         toHash: function() {
+          var annotation;
           return {
             type: 'table',
             data: this.datadefRef.datadef.name,
-            annotations: []
+            annotations: (function() {
+              var _i, _len, _ref, _results;
+              _ref = this.annotations;
+              _results = [];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                annotation = _ref[_i];
+                _results.push(annotation.name);
+              }
+              return _results;
+            }).call(this)
           };
         }
       };
+    };
+    Step.prototype.addAnnotationToPane = function(_arg) {
+      var annotation, index;
+      annotation = _arg.annotation, index = _arg.index;
+      return this.panes[index].annotations.push(annotation);
+    };
+    Step.prototype.addTaggingTool = function(_arg) {
+      var datadefRef, tag;
+      tag = _arg.tag, datadefRef = _arg.datadefRef;
+      return this.tools['tagging'] = {
+        tag: tag,
+        datadefRef: datadefRef,
+        toHash: function() {
+          return {
+            name: 'tagging',
+            setup: {
+              tag: this.tag.name,
+              data: this.datadefRef.datadef.name
+            }
+          };
+        }
+      };
+    };
+    Step.prototype.appendResponseBranch = function(_arg) {
+      var criterion, step;
+      criterion = _arg.criterion, step = _arg.step;
+      return this.responseBranches.push({
+        criterion: criterion,
+        step: step,
+        toHash: function() {
+          return {
+            criterion: this.criterion,
+            step: this.step.getUrl()
+          };
+        }
+      });
     };
     Step.prototype.getPaneKey = function(numPanes, index) {
       if (numPanes === 1) {
@@ -1013,22 +1208,58 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         return "bottom";
       }
     };
+    Step.prototype.makeNonFinal = function() {
+      var _ref;
+      if ((_ref = this.submitButtonTitle) == null) {
+        this.submitButtonTitle = "OK";
+      }
+      this.isFinalStep = false;
+      return delete this.nextButtonShouldSubmit;
+    };
     Step.prototype.toHash = function() {
-      var panesHash;
+      var branch, key, panesHash, tool, toolsHash;
       panesHash = this.panes.length === 1 ? {
         single: this.panes[0].toHash()
       } : this.panes.length === 2 ? {
         top: this.panes[0].toHash(),
         bottom: this.panes[1].toHash()
       } : void 0;
+      toolsHash = (function() {
+        var _ref, _results;
+        _ref = this.tools;
+        _results = [];
+        for (key in _ref) {
+          tool = _ref[key];
+          _results.push(tool.toHash());
+        }
+        return _results;
+      }).call(this);
+      if ((this.defaultBranch != null) || this.responseBranches.length > 0) {
+        this.makeNonFinal();
+      }
       return {
         url: this.getUrl(),
         activityPage: this.page.getUrl(),
+        beforeText: this.beforeText,
         paneConfig: this.panes.length === 2 ? 'split' : 'single',
         panes: panesHash != null ? panesHash : null,
-        isFinalStep: true,
-        nextButtonShouldSubmit: true,
-        beforeText: this.beforeText
+        tools: toolsHash.length > 0 ? toolsHash : void 0,
+        submitButtonTitle: this.submitButtonTitle,
+        defaultBranch: this.defaultBranch != null ? this.defaultBranch.getUrl() : void 0,
+        responseBranches: (function() {
+          var _i, _len, _ref, _results;
+          if (this.responseBranches.length > 0) {
+            _ref = this.responseBranches;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              branch = _ref[_i];
+              _results.push(branch.toHash());
+            }
+            return _results;
+          }
+        }).call(this),
+        isFinalStep: this.isFinalStep,
+        nextButtonShouldSubmit: this.nextButtonShouldSubmit
       };
     };
     return Step;
@@ -1142,6 +1373,99 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
       };
     };
     return Datadef;
+  })();
+}).call(this);
+
+});
+
+require.define("/runtime/tag.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var Tag;
+  exports.Tag = Tag = (function() {
+    function Tag(_arg) {
+      this.index = _arg.index;
+      this.name = "tag-" + this.index;
+    }
+    Tag.prototype.getUrl = function() {
+      return "" + (this.activity.getUrl()) + "/tags/" + this.name;
+    };
+    Tag.prototype.toHash = function() {
+      return {
+        url: this.getUrl(),
+        activity: this.activity.getUrl(),
+        name: this.name
+      };
+    };
+    return Tag;
+  })();
+}).call(this);
+
+});
+
+require.define("/runtime/annotations.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  /*
+    Annotation class and its subclasses
+  */
+  var Annotation, HighlightedPoint;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  };
+  exports.Annotation = Annotation = (function() {
+    function Annotation() {}
+    Annotation.serializeAnnotations = function(allAnnotations) {
+      var annotation, annotationsOfOneType, key, ret;
+      ret = [];
+      for (key in allAnnotations) {
+        annotationsOfOneType = allAnnotations[key];
+        ret.push({
+          type: annotationsOfOneType[0].RECORD_TYPE,
+          records: (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = annotationsOfOneType.length; _i < _len; _i++) {
+              annotation = annotationsOfOneType[_i];
+              _results.push(annotation.toHash());
+            }
+            return _results;
+          })()
+        });
+      }
+      return ret;
+    };
+    Annotation.prototype.getUrl = function() {
+      return "" + (this.activity.getUrl()) + "/annotations/" + this.name;
+    };
+    Annotation.prototype.toHash = function() {
+      return {
+        url: this.getUrl(),
+        name: this.name,
+        activity: this.activity.getUrl()
+      };
+    };
+    return Annotation;
+  })();
+  exports.HighlightedPoint = HighlightedPoint = (function() {
+    __extends(HighlightedPoint, Annotation);
+    HighlightedPoint.prototype.RECORD_TYPE = 'HighlightedPoint';
+    function HighlightedPoint(_arg) {
+      this.datadefRef = _arg.datadefRef, this.tag = _arg.tag, this.color = _arg.color, this.index = _arg.index;
+      this.name = "highlighted-point-" + this.index;
+    }
+    HighlightedPoint.prototype.toHash = function() {
+      var hash;
+      hash = HighlightedPoint.__super__.toHash.call(this);
+      hash.datadefName = this.datadefRef.datadef.name;
+      hash.tag = this.tag.getUrl();
+      hash.color = this.color;
+      return hash;
+    };
+    return HighlightedPoint;
   })();
 }).call(this);
 
