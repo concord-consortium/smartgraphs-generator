@@ -32,7 +32,9 @@
       ],
       "sequence": {
         "type": "PickAPointSequence",
-        "initialPrompt": "Click the point...",
+        "initialPrompt": {
+          "text": "Click the point..."
+        },
         "correctAnswerPoint": [4, 800],
         "hints": [
           {
