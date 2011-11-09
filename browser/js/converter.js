@@ -498,6 +498,11 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     PickAPointSequence.prototype.HIGHLIGHT_COLOR = '#1f77b4';
     function PickAPointSequence(_arg) {
       this.initialPrompt = _arg.initialPrompt, this.correctAnswerPoint = _arg.correctAnswerPoint, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect;
+      if (typeof this.initialPrompt === 'string') {
+        this.initialPrompt = {
+          text: this.initialPrompt
+        };
+      }
     }
     PickAPointSequence.prototype.appendSteps = function(runtimePage) {
       var answerableSteps, confirmCorrectStep, datadefRef, giveUpStep, graphPane, highlightedPoint, hint, hintStep, i, index, initialPromptStep, lastAnswerableStep, pane, runtimeActivity, step, steps, tablePane, tag, _i, _j, _k, _len, _len2, _len3, _len4, _len5, _ref, _ref2, _ref3, _results;
@@ -526,7 +531,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       answerableSteps = [];
       steps.push(initialPromptStep = runtimePage.appendStep());
       answerableSteps.push(initialPromptStep);
-      initialPromptStep.setBeforeText(this.initialPrompt);
+      initialPromptStep.setBeforeText(this.initialPrompt.text);
       _ref2 = this.hints;
       for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
         hint = _ref2[_i];

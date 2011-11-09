@@ -35,6 +35,7 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence
   HIGHLIGHT_COLOR: '#1f77b4'
 
   constructor: ({@initialPrompt, @correctAnswerPoint, @hints, @giveUp, @confirmCorrect}) ->
+    if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
 
   appendSteps: (runtimePage) ->
 
@@ -55,7 +56,7 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence
 
     steps.push initialPromptStep = runtimePage.appendStep()
     answerableSteps.push initialPromptStep
-    initialPromptStep.setBeforeText @initialPrompt
+    initialPromptStep.setBeforeText @initialPrompt.text
 
     for hint in @hints
       steps.push hintStep = runtimePage.appendStep()
