@@ -3,8 +3,16 @@
 exports.AuthorPage = class AuthorPage
 
   constructor: (@hash, @activity, @index) ->
-    {@name, @text, @panes, @sequence} = @hash
-    @datadefRef = null
+    {@name, @text} = @hash
+
+    @sequence = Sequence.fromHash @hash.sequence
+    @sequence.page = this
+
+    if @hash.panes?.length > 2
+      throw new Error "There cannot be more than two panes"
+
+    @panes = if @hash.panes? then (AuthorPane.fromHash(h, i) for h, i in @hash.panes) else []
+    pane.page = this for pane in @panes
 
   toRuntimePage: (runtimeActivity) ->
     runtimePage = runtimeActivity.createPage()
@@ -12,46 +20,93 @@ exports.AuthorPage = class AuthorPage
     runtimePage.setName @name
     runtimePage.setText @text
 
-    # TODO we'll want to move this logic elsewhere
-    # This assumes one step per page. We will need to rework this when there are multiple steps
-    step = runtimePage.appendStep(@sequence)
+    pane.addToPageAndActivity(runtimePage, runtimeActivity) for pane in @panes
 
-    if @panes?.length > 0
-      if @panes.length > 2 then throw new Error "There cannot be more than two panes"
-      for pane, i in @panes
-        type = pane.type
-
-        switch type
-          when 'ImagePane'           then @addImagePane step, pane, i
-          when 'PredefinedGraphPane' then @addPredefinedGraphPane step, pane, runtimeActivity, i
-          when 'TablePane'           then @addTablePane step, pane, runtimeActivity, i
-          else throw new Error "Only ImagePanes, PredefinedGraphPanes and TablePanes are supported right now"
+    @sequence.appendSteps runtimePage
 
     runtimePage
 
-  addImagePane: (step, pane, index) ->
-    {url, license, attribution} = pane
-    step.addImagePane { url, license, attribution, index }
+###
+  Sequence types
+###
 
-  addPredefinedGraphPane: (step, pane, runtimeActivity, index) ->
-    { title,
-      data,
-      xLabel, xUnits, xMin, xMax, xTicks
-      yLabel, yUnits, yMin, yMax, yTicks } = pane
+Sequence =
+  classFor: {}
 
-    xUnitsRef = runtimeActivity.getUnitRef dumbSingularize xUnits unless !xUnits
-    yUnitsRef = runtimeActivity.getUnitRef dumbSingularize yUnits unless !yUnits
+  fromHash: (hash) ->
+    SequenceClass = @classFor[hash?.type || 'NoSequence']
+    if not SequenceClass? then throw new Error "Sequence type #{hash.type} is not supported"
+    return new SequenceClass hash
 
-    xAxis = runtimeActivity.createAndAppendAxis { label: xLabel, unitRef: xUnitsRef, min: xMin, max: xMax, nSteps: xTicks }
-    yAxis = runtimeActivity.createAndAppendAxis { label: yLabel, unitRef: yUnitsRef, min: yMin, max: yMax, nSteps: yTicks }
 
-    if data?
-      @datadefRef ?= runtimeActivity.getDatadefRef @name     # @name is the page name -- just a unique key for stashing this reference
-      datadef = runtimeActivity.createDatadef { points: data, xLabel, xUnitsRef, yLabel, yUnitsRef }
-      runtimeActivity.defineDatadef @name, datadef
+Sequence.classFor['NoSequence'] = class NoSequence
 
-    step.addGraphPane { title, @datadefRef, xAxis, yAxis, index }
+  appendSteps: (runtimePage) ->
+    step = runtimePage.appendStep()
+    pane.addToStep(step) for pane in @page.panes
 
-  addTablePane: (step, pane, runtimeActivity, index) ->
-    @datadefRef ?= runtimeActivity.getDatadefRef @name      # @name is the page name
-    step.addTablePane { @datadefRef, index }
+
+Sequence.classFor['InstructionSequence'] = class InstructionSequence
+
+  constructor: ({@text}) ->
+
+  appendSteps: (runtimePage) ->
+    step = runtimePage.appendStep()
+    step.setBeforeText @text
+    pane.addToStep(step) for pane in @page.panes
+
+###
+  Pane types
+###
+
+AuthorPane =
+  classFor: {}
+
+  fromHash: (hash, index) ->
+    PaneClass = @classFor[hash.type]
+    if not PaneClass? then throw new Error "Pane type #{hash.type} is not supported"
+    return new PaneClass hash, index
+
+
+AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane
+
+  constructor: ({@title, @data, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks }, @index) ->
+
+  addToPageAndActivity: (runtimePage, runtimeActivity) ->
+    @xUnitsRef = runtimeActivity.getUnitRef dumbSingularize @xUnits if @xUnits
+    @yUnitsRef = runtimeActivity.getUnitRef dumbSingularize @yUnits if @yUnits
+
+    @xAxis = runtimeActivity.createAndAppendAxis { label: @xLabel, unitRef: @xUnitsRef, min: @xMin, max: @xMax, nSteps: @xTicks }
+    @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
+
+    if @data?
+      dataKey = "#{@page.name}-#{@index}"
+      @datadefRef = runtimeActivity.getDatadefRef dataKey
+      datadef = runtimeActivity.createDatadef { points: @data, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef }
+      runtimeActivity.defineDatadef dataKey, datadef
+
+  addToStep: (step) ->
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index }
+
+
+AuthorPane.classFor['ImagePane'] = class ImagePane
+
+  constructor: ({@url, @license, @attribution}, @index) ->
+
+  addToPageAndActivity: (runtimePage, runtimeActivity) ->
+
+  addToStep: (step) ->
+    step.addImagePane { @url, @license, @attribution, @index }
+
+
+AuthorPane.classFor['TablePane'] = class TablePane
+
+  constructor: ({}, @index) ->
+
+  addToPageAndActivity: (runtimePage, @runtimeActivity) ->
+
+  addToStep: (step) ->
+    otherPaneIndex = 1 - @index
+    dataKey = "#{@page.name}-#{otherPaneIndex}"
+    datadefRef = @runtimeActivity.getDatadefRef dataKey     # get the datadef defined in the *other* pane on this page
+    step.addTablePane { datadefRef, @index }

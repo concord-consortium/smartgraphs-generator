@@ -1,14 +1,14 @@
 exports.Step = class Step
 
-  constructor: (@sequence) ->
+  constructor: ->
     @panes = []
     # these need to be set later
     @page  = null
     @index = null
-    @beforeText = @sequence.text if @sequence?.type == "InstructionSequence"
 
   setIndex: (@index) ->
-    @index
+
+  setBeforeText: (@beforeText) ->
 
   getUrl: ->
     "#{@page.getUrl()}/step/#{@index}"

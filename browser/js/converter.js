@@ -396,113 +396,198 @@ require.define("/author/author-activity.js", function (require, module, exports,
 
 require.define("/author/author-page.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPage, dumbSingularize;
+  var AuthorPage, AuthorPane, ImagePane, InstructionSequence, NoSequence, PredefinedGraphPane, Sequence, TablePane, dumbSingularize;
   dumbSingularize = require('../singularize').dumbSingularize;
   exports.AuthorPage = AuthorPage = (function() {
     function AuthorPage(hash, activity, index) {
-      var _ref;
+      var h, i, pane, _i, _len, _ref, _ref2, _ref3;
       this.hash = hash;
       this.activity = activity;
       this.index = index;
-      _ref = this.hash, this.name = _ref.name, this.text = _ref.text, this.panes = _ref.panes, this.sequence = _ref.sequence;
-      this.datadefRef = null;
+      _ref = this.hash, this.name = _ref.name, this.text = _ref.text;
+      this.sequence = Sequence.fromHash(this.hash.sequence);
+      this.sequence.page = this;
+      if (((_ref2 = this.hash.panes) != null ? _ref2.length : void 0) > 2) {
+        throw new Error("There cannot be more than two panes");
+      }
+      this.panes = this.hash.panes != null ? (function() {
+        var _len, _ref3, _results;
+        _ref3 = this.hash.panes;
+        _results = [];
+        for (i = 0, _len = _ref3.length; i < _len; i++) {
+          h = _ref3[i];
+          _results.push(AuthorPane.fromHash(h, i));
+        }
+        return _results;
+      }).call(this) : [];
+      _ref3 = this.panes;
+      for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+        pane = _ref3[_i];
+        pane.page = this;
+      }
     }
     AuthorPage.prototype.toRuntimePage = function(runtimeActivity) {
-      var i, pane, runtimePage, step, type, _len, _ref, _ref2;
+      var pane, runtimePage, _i, _len, _ref;
       runtimePage = runtimeActivity.createPage();
       runtimePage.setName(this.name);
       runtimePage.setText(this.text);
-      step = runtimePage.appendStep(this.sequence);
-      if (((_ref = this.panes) != null ? _ref.length : void 0) > 0) {
-        if (this.panes.length > 2) {
-          throw new Error("There cannot be more than two panes");
-        }
-        _ref2 = this.panes;
-        for (i = 0, _len = _ref2.length; i < _len; i++) {
-          pane = _ref2[i];
-          type = pane.type;
-          switch (type) {
-            case 'ImagePane':
-              this.addImagePane(step, pane, i);
-              break;
-            case 'PredefinedGraphPane':
-              this.addPredefinedGraphPane(step, pane, runtimeActivity, i);
-              break;
-            case 'TablePane':
-              this.addTablePane(step, pane, runtimeActivity, i);
-              break;
-            default:
-              throw new Error("Only ImagePanes, PredefinedGraphPanes and TablePanes are supported right now");
-          }
-        }
+      _ref = this.panes;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pane = _ref[_i];
+        pane.addToPageAndActivity(runtimePage, runtimeActivity);
       }
+      this.sequence.appendSteps(runtimePage);
       return runtimePage;
     };
-    AuthorPage.prototype.addImagePane = function(step, pane, index) {
-      var attribution, license, url;
-      url = pane.url, license = pane.license, attribution = pane.attribution;
-      return step.addImagePane({
-        url: url,
-        license: license,
-        attribution: attribution,
-        index: index
-      });
-    };
-    AuthorPage.prototype.addPredefinedGraphPane = function(step, pane, runtimeActivity, index) {
-      var data, datadef, title, xAxis, xLabel, xMax, xMin, xTicks, xUnits, xUnitsRef, yAxis, yLabel, yMax, yMin, yTicks, yUnits, yUnitsRef, _ref;
-      title = pane.title, data = pane.data, xLabel = pane.xLabel, xUnits = pane.xUnits, xMin = pane.xMin, xMax = pane.xMax, xTicks = pane.xTicks, yLabel = pane.yLabel, yUnits = pane.yUnits, yMin = pane.yMin, yMax = pane.yMax, yTicks = pane.yTicks;
-      if (!!xUnits) {
-        xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(xUnits));
-      }
-      if (!!yUnits) {
-        yUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(yUnits));
-      }
-      xAxis = runtimeActivity.createAndAppendAxis({
-        label: xLabel,
-        unitRef: xUnitsRef,
-        min: xMin,
-        max: xMax,
-        nSteps: xTicks
-      });
-      yAxis = runtimeActivity.createAndAppendAxis({
-        label: yLabel,
-        unitRef: yUnitsRef,
-        min: yMin,
-        max: yMax,
-        nSteps: yTicks
-      });
-      if (data != null) {
-        if ((_ref = this.datadefRef) == null) {
-          this.datadefRef = runtimeActivity.getDatadefRef(this.name);
-        }
-        datadef = runtimeActivity.createDatadef({
-          points: data,
-          xLabel: xLabel,
-          xUnitsRef: xUnitsRef,
-          yLabel: yLabel,
-          yUnitsRef: yUnitsRef
-        });
-        runtimeActivity.defineDatadef(this.name, datadef);
-      }
-      return step.addGraphPane({
-        title: title,
-        datadefRef: this.datadefRef,
-        xAxis: xAxis,
-        yAxis: yAxis,
-        index: index
-      });
-    };
-    AuthorPage.prototype.addTablePane = function(step, pane, runtimeActivity, index) {
-      var _ref;
-      if ((_ref = this.datadefRef) == null) {
-        this.datadefRef = runtimeActivity.getDatadefRef(this.name);
-      }
-      return step.addTablePane({
-        datadefRef: this.datadefRef,
-        index: index
-      });
-    };
     return AuthorPage;
+  })();
+  /*
+    Sequence types
+  */
+  Sequence = {
+    classFor: {},
+    fromHash: function(hash) {
+      var SequenceClass;
+      SequenceClass = this.classFor[(hash != null ? hash.type : void 0) || 'NoSequence'];
+      if (!(SequenceClass != null)) {
+        throw new Error("Sequence type " + hash.type + " is not supported");
+      }
+      return new SequenceClass(hash);
+    }
+  };
+  Sequence.classFor['NoSequence'] = NoSequence = (function() {
+    function NoSequence() {}
+    NoSequence.prototype.appendSteps = function(runtimePage) {
+      var pane, step, _i, _len, _ref, _results;
+      step = runtimePage.appendStep();
+      _ref = this.page.panes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pane = _ref[_i];
+        _results.push(pane.addToStep(step));
+      }
+      return _results;
+    };
+    return NoSequence;
+  })();
+  Sequence.classFor['InstructionSequence'] = InstructionSequence = (function() {
+    function InstructionSequence(_arg) {
+      this.text = _arg.text;
+    }
+    InstructionSequence.prototype.appendSteps = function(runtimePage) {
+      var pane, step, _i, _len, _ref, _results;
+      step = runtimePage.appendStep();
+      step.setBeforeText(this.text);
+      _ref = this.page.panes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pane = _ref[_i];
+        _results.push(pane.addToStep(step));
+      }
+      return _results;
+    };
+    return InstructionSequence;
+  })();
+  /*
+    Pane types
+  */
+  AuthorPane = {
+    classFor: {},
+    fromHash: function(hash, index) {
+      var PaneClass;
+      PaneClass = this.classFor[hash.type];
+      if (!(PaneClass != null)) {
+        throw new Error("Pane type " + hash.type + " is not supported");
+      }
+      return new PaneClass(hash, index);
+    }
+  };
+  AuthorPane.classFor['PredefinedGraphPane'] = PredefinedGraphPane = (function() {
+    function PredefinedGraphPane(_arg, index) {
+      this.title = _arg.title, this.data = _arg.data, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks;
+      this.index = index;
+    }
+    PredefinedGraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
+      var dataKey, datadef;
+      if (this.xUnits) {
+        this.xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(this.xUnits));
+      }
+      if (this.yUnits) {
+        this.yUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(this.yUnits));
+      }
+      this.xAxis = runtimeActivity.createAndAppendAxis({
+        label: this.xLabel,
+        unitRef: this.xUnitsRef,
+        min: this.xMin,
+        max: this.xMax,
+        nSteps: this.xTicks
+      });
+      this.yAxis = runtimeActivity.createAndAppendAxis({
+        label: this.yLabel,
+        unitRef: this.yUnitsRef,
+        min: this.yMin,
+        max: this.yMax,
+        nSteps: this.yTicks
+      });
+      if (this.data != null) {
+        dataKey = "" + this.page.name + "-" + this.index;
+        this.datadefRef = runtimeActivity.getDatadefRef(dataKey);
+        datadef = runtimeActivity.createDatadef({
+          points: this.data,
+          xLabel: this.xLabel,
+          xUnitsRef: this.xUnitsRef,
+          yLabel: this.yLabel,
+          yUnitsRef: this.yUnitsRef
+        });
+        return runtimeActivity.defineDatadef(dataKey, datadef);
+      }
+    };
+    PredefinedGraphPane.prototype.addToStep = function(step) {
+      return step.addGraphPane({
+        title: this.title,
+        datadefRef: this.datadefRef,
+        xAxis: this.xAxis,
+        yAxis: this.yAxis,
+        index: this.index
+      });
+    };
+    return PredefinedGraphPane;
+  })();
+  AuthorPane.classFor['ImagePane'] = ImagePane = (function() {
+    function ImagePane(_arg, index) {
+      this.url = _arg.url, this.license = _arg.license, this.attribution = _arg.attribution;
+      this.index = index;
+    }
+    ImagePane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {};
+    ImagePane.prototype.addToStep = function(step) {
+      return step.addImagePane({
+        url: this.url,
+        license: this.license,
+        attribution: this.attribution,
+        index: this.index
+      });
+    };
+    return ImagePane;
+  })();
+  AuthorPane.classFor['TablePane'] = TablePane = (function() {
+    function TablePane(_arg, index) {
+      _arg;
+      this.index = index;
+    }
+    TablePane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
+      this.runtimeActivity = runtimeActivity;
+    };
+    TablePane.prototype.addToStep = function(step) {
+      var dataKey, datadefRef, otherPaneIndex;
+      otherPaneIndex = 1 - this.index;
+      dataKey = "" + this.page.name + "-" + otherPaneIndex;
+      datadefRef = this.runtimeActivity.getDatadefRef(dataKey);
+      return step.addTablePane({
+        datadefRef: datadefRef,
+        index: this.index
+      });
+    };
+    return TablePane;
   })();
 }).call(this);
 
@@ -589,9 +674,9 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       page.activity = this;
       return page;
     };
-    RuntimeActivity.prototype.createStep = function(sequence) {
+    RuntimeActivity.prototype.createStep = function() {
       var step;
-      step = new Step(sequence);
+      step = new Step;
       step.activity = this;
       return step;
     };
@@ -817,9 +902,9 @@ require.define("/runtime/runtime-page.js", function (require, module, exports, _
     RuntimePage.prototype.getUrl = function() {
       return "" + (this.activity.getUrl()) + "/page/" + this.index + "-" + (slugify(this.name));
     };
-    RuntimePage.prototype.appendStep = function(sequence) {
+    RuntimePage.prototype.appendStep = function() {
       var step;
-      this.steps.push(step = this.activity.createStep(sequence));
+      this.steps.push(step = this.activity.createStep());
       step.page = this;
       step.setIndex(this.steps.length);
       return step;
@@ -855,19 +940,16 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     (function() {
   var Step;
   exports.Step = Step = (function() {
-    function Step(sequence) {
-      var _ref;
-      this.sequence = sequence;
+    function Step() {
       this.panes = [];
       this.page = null;
       this.index = null;
-      if (((_ref = this.sequence) != null ? _ref.type : void 0) === "InstructionSequence") {
-        this.beforeText = this.sequence.text;
-      }
     }
     Step.prototype.setIndex = function(index) {
       this.index = index;
-      return this.index;
+    };
+    Step.prototype.setBeforeText = function(beforeText) {
+      this.beforeText = beforeText;
     };
     Step.prototype.getUrl = function() {
       return "" + (this.page.getUrl()) + "/step/" + this.index;

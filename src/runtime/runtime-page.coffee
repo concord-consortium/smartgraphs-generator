@@ -2,10 +2,10 @@
 
 exports.RuntimePage = class RuntimePage
 
-  constructor: () ->
-    @steps   = []
+  constructor: ->
+    @steps = []
     # need to be set
-    @index    = null
+    @index = null
 
   setText: (@introText) ->
     @introText
@@ -19,8 +19,8 @@ exports.RuntimePage = class RuntimePage
   getUrl: ->
     "#{@activity.getUrl()}/page/#{@index}-#{slugify @name}"
 
-  appendStep: (sequence) ->
-    @steps.push step = @activity.createStep(sequence)
+  appendStep: ->
+    @steps.push step = @activity.createStep()
     step.page  = this
     step.setIndex @steps.length
     step
