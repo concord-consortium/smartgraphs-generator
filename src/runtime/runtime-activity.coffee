@@ -18,7 +18,8 @@
 {RuntimeUnit} = require './runtime-unit'
 {Datadef}     = require './datadef'
 {Tag}         = require './tag'
-{Annotation, HighlightedPoint} = require './annotations'
+
+{Annotation, HighlightedPoint, SegmentOverlay} = require './annotations'
 
 exports.RuntimeActivity = class RuntimeActivity
 
@@ -34,7 +35,8 @@ exports.RuntimeActivity = class RuntimeActivity
     @nDatadefs   = 0
 
     @annotations  = {}
-    @nAnnotations = 0
+    @nHighlightedPoints = 0
+    @nSegmentOverlays = 0
 
     @tags      = []
     @nTags     = 0
@@ -107,11 +109,18 @@ exports.RuntimeActivity = class RuntimeActivity
     tag
 
   createAndAppendHighlightedPoint: ({ datadefRef, tag, color }) ->
-    point = new HighlightedPoint { datadefRef, tag, color, index: ++@nAnnotations }
+    point = new HighlightedPoint { datadefRef, tag, color, index: ++@nHighlightedPoints }
     point.activity = this
     @annotations.highlightedPoints ?= []
     @annotations.highlightedPoints.push point
     point
+
+  createAndAppendSegmentOverlay: ({ datadefRef, color, xMin, xMax }) ->
+    overlay = new SegmentOverlay { datadefRef, color, xMin, xMax, index: ++@nSegmentOverlays }
+    overlay.activity = this
+    @annotations.segmentOverlays ?= []
+    @annotations.segmentOverlays.push overlay
+    overlay
 
   appendPage: (page) ->
     @pages.push page

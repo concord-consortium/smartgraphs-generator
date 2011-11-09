@@ -449,6 +449,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var AuthorPane, InstructionSequence, NoSequence, PickAPointSequence, Sequence;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   AuthorPane = require('./author-panes').AuthorPane;
   Sequence = exports.Sequence = {
     classFor: {},
@@ -505,7 +506,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       }
     }
     PickAPointSequence.prototype.appendSteps = function(runtimePage) {
-      var answerableSteps, confirmCorrectStep, datadefRef, giveUpStep, graphPane, highlightedPoint, hint, hintStep, i, index, initialPromptStep, lastAnswerableStep, pane, runtimeActivity, step, steps, tablePane, tag, _i, _j, _k, _len, _len2, _len3, _len4, _len5, _ref, _ref2, _ref3, _results;
+      var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, datadefRef, giveUpStep, graphPane, highlightedPoint, i, index, lastAnswerableStep, pane, runtimeActivity, step, steps, tablePane, tag, _i, _len, _len2, _len3, _ref, _ref2, _results;
       _ref = this.page.panes || [];
       for (i = 0, _len = _ref.length; i < _len; i++) {
         pane = _ref[i];
@@ -529,31 +530,54 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       });
       steps = [];
       answerableSteps = [];
-      steps.push(initialPromptStep = runtimePage.appendStep());
-      answerableSteps.push(initialPromptStep);
-      initialPromptStep.setBeforeText(this.initialPrompt.text);
-      _ref2 = this.hints;
-      for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
-        hint = _ref2[_i];
-        steps.push(hintStep = runtimePage.appendStep());
-        answerableSteps.push(hintStep);
-        hintStep.setBeforeText(hint.text);
-      }
-      steps.push(giveUpStep = runtimePage.appendStep());
-      giveUpStep.setBeforeText(this.giveUp.text);
-      steps.push(confirmCorrectStep = runtimePage.appendStep());
-      confirmCorrectStep.setBeforeText(this.confirmCorrect.text);
-      for (_j = 0, _len3 = steps.length; _j < _len3; _j++) {
-        step = steps[_j];
-        _ref3 = this.page.panes;
-        for (_k = 0, _len4 = _ref3.length; _k < _len4; _k++) {
-          pane = _ref3[_k];
+      addPanesAndFeedbackToStep = __bind(function(_arg) {
+        var color, from, overlay, pane, prompt, step, xMax, xMin, _i, _j, _len2, _len3, _ref2, _ref3, _ref4, _results;
+        step = _arg.step, from = _arg.from;
+        _ref2 = this.page.panes;
+        for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
+          pane = _ref2[_i];
           pane.addToStep(step);
         }
+        step.setBeforeText(from.text);
+        _ref4 = (_ref3 = from.visualPrompts) != null ? _ref3 : [];
+        _results = [];
+        for (_j = 0, _len3 = _ref4.length; _j < _len3; _j++) {
+          prompt = _ref4[_j];
+          _results.push(prompt.type === 'RangeVisualPrompt' ? ((color = prompt.color, xMin = prompt.xMin, xMax = prompt.xMax, prompt), xMin != null ? xMin : xMin = -Infinity, xMax != null ? xMax : xMax = Infinity, overlay = runtimeActivity.createAndAppendSegmentOverlay({
+            datadefRef: datadefRef,
+            color: color,
+            xMin: xMin,
+            xMax: xMax
+          }), step.addAnnotationToPane({
+            annotation: overlay,
+            index: graphPane.index
+          })) : void 0);
+        }
+        return _results;
+      }, this);
+      _ref2 = [this.initialPrompt].concat(this.hints);
+      for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
+        answerableInfo = _ref2[_i];
+        steps.push(step = runtimePage.appendStep());
+        answerableSteps.push(step);
+        addPanesAndFeedbackToStep({
+          step: step,
+          from: answerableInfo
+        });
       }
+      steps.push(giveUpStep = runtimePage.appendStep());
+      addPanesAndFeedbackToStep({
+        step: giveUpStep,
+        from: this.giveUp
+      });
+      steps.push(confirmCorrectStep = runtimePage.appendStep());
+      addPanesAndFeedbackToStep({
+        step: confirmCorrectStep,
+        from: this.confirmCorrect
+      });
       lastAnswerableStep = answerableSteps[answerableSteps.length - 1];
       _results = [];
-      for (index = 0, _len5 = answerableSteps.length; index < _len5; index++) {
+      for (index = 0, _len3 = answerableSteps.length; index < _len3; index++) {
         step = answerableSteps[index];
         if (graphPane != null) {
           step.addAnnotationToPane({
@@ -737,7 +761,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
-  var Annotation, Axis, Datadef, HighlightedPoint, RuntimeActivity, RuntimePage, RuntimeUnit, Step, Tag, slugify, _ref;
+  var Annotation, Axis, Datadef, HighlightedPoint, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref;
   slugify = require('../slugify').slugify;
   RuntimePage = require('./runtime-page').RuntimePage;
   Step = require('./step').Step;
@@ -745,7 +769,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
   RuntimeUnit = require('./runtime-unit').RuntimeUnit;
   Datadef = require('./datadef').Datadef;
   Tag = require('./tag').Tag;
-  _ref = require('./annotations'), Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint;
+  _ref = require('./annotations'), Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint, SegmentOverlay = _ref.SegmentOverlay;
   exports.RuntimeActivity = RuntimeActivity = (function() {
     function RuntimeActivity(owner, name) {
       this.owner = owner;
@@ -758,7 +782,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.datadefRefs = {};
       this.nDatadefs = 0;
       this.annotations = {};
-      this.nAnnotations = 0;
+      this.nHighlightedPoints = 0;
+      this.nSegmentOverlays = 0;
       this.tags = [];
       this.nTags = 0;
     }
@@ -879,7 +904,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         datadefRef: datadefRef,
         tag: tag,
         color: color,
-        index: ++this.nAnnotations
+        index: ++this.nHighlightedPoints
       });
       point.activity = this;
       if ((_ref2 = (_base = this.annotations).highlightedPoints) == null) {
@@ -887,6 +912,23 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       }
       this.annotations.highlightedPoints.push(point);
       return point;
+    };
+    RuntimeActivity.prototype.createAndAppendSegmentOverlay = function(_arg) {
+      var color, datadefRef, overlay, xMax, xMin, _base, _ref2;
+      datadefRef = _arg.datadefRef, color = _arg.color, xMin = _arg.xMin, xMax = _arg.xMax;
+      overlay = new SegmentOverlay({
+        datadefRef: datadefRef,
+        color: color,
+        xMin: xMin,
+        xMax: xMax,
+        index: ++this.nSegmentOverlays
+      });
+      overlay.activity = this;
+      if ((_ref2 = (_base = this.annotations).segmentOverlays) == null) {
+        _base.segmentOverlays = [];
+      }
+      this.annotations.segmentOverlays.push(overlay);
+      return overlay;
     };
     RuntimeActivity.prototype.appendPage = function(page) {
       this.pages.push(page);
@@ -1414,7 +1456,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
   /*
     Annotation class and its subclasses
   */
-  var Annotation, HighlightedPoint;
+  var Annotation, HighlightedPoint, SegmentOverlay;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -1473,6 +1515,42 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
       return hash;
     };
     return HighlightedPoint;
+  })();
+  exports.SegmentOverlay = SegmentOverlay = (function() {
+    __extends(SegmentOverlay, Annotation);
+    SegmentOverlay.prototype.RECORD_TYPE = 'SegmentOverlay';
+    function SegmentOverlay(_arg) {
+      this.datadefRef = _arg.datadefRef, this.color = _arg.color, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.index = _arg.index;
+      this.name = "segment-overlay-" + this.index;
+    }
+    SegmentOverlay.prototype.toHash = function() {
+      var hash, isUnboundedLeft, isUnboundedRight, x1, x2;
+      x1 = x2 = isUnboundedLeft = isUnboundedRight = void 0;
+      if (this.xMin === -Infinity) {
+        isUnboundedLeft = true;
+        if (this.xMax === Infinity) {
+          isUnboundedRight = true;
+        } else {
+          x1 = this.xMax;
+        }
+      } else {
+        x1 = this.xMin;
+        if (this.xMax === Infinity) {
+          isUnboundedRight = true;
+        } else {
+          x2 = this.xMax;
+        }
+      }
+      hash = SegmentOverlay.__super__.toHash.call(this);
+      hash.datadefName = this.datadefRef.datadef.name;
+      hash.color = this.color;
+      hash.x1Record = x1;
+      hash.x2Record = x2;
+      hash.isUnboundedLeft = isUnboundedLeft;
+      hash.isUnboundedRight = isUnboundedRight;
+      return hash;
+    };
+    return SegmentOverlay;
   })();
 }).call(this);
 

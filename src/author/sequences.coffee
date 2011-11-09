@@ -54,23 +54,29 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence
     steps = []
     answerableSteps = []
 
-    steps.push initialPromptStep = runtimePage.appendStep()
-    answerableSteps.push initialPromptStep
-    initialPromptStep.setBeforeText @initialPrompt.text
+    addPanesAndFeedbackToStep = ({ step, from }) =>
+      pane.addToStep(step) for pane in @page.panes
+      step.setBeforeText from.text
 
-    for hint in @hints
-      steps.push hintStep = runtimePage.appendStep()
-      answerableSteps.push hintStep
-      hintStep.setBeforeText hint.text
+      for prompt in from.visualPrompts ? []
+        if prompt.type is 'RangeVisualPrompt'
+          { color, xMin, xMax } = prompt
+          xMin ?= -Infinity
+          xMax ?= Infinity
+          overlay = runtimeActivity.createAndAppendSegmentOverlay { datadefRef, color, xMin, xMax }
+
+          step.addAnnotationToPane { annotation: overlay, index: graphPane.index }
+
+    for answerableInfo in [@initialPrompt].concat @hints
+      steps.push step = runtimePage.appendStep()
+      answerableSteps.push step
+      addPanesAndFeedbackToStep { step, from: answerableInfo }
 
     steps.push giveUpStep = runtimePage.appendStep()
-    giveUpStep.setBeforeText @giveUp.text
+    addPanesAndFeedbackToStep { step: giveUpStep, from: @giveUp }
 
     steps.push confirmCorrectStep = runtimePage.appendStep()
-    confirmCorrectStep.setBeforeText @confirmCorrect.text
-
-    for step in steps
-      pane.addToStep(step) for pane in @page.panes
+    addPanesAndFeedbackToStep { step: confirmCorrectStep, from: @confirmCorrect }
 
     lastAnswerableStep = answerableSteps[answerableSteps.length-1]
 

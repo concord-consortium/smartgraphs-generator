@@ -36,3 +36,38 @@ exports.HighlightedPoint = class HighlightedPoint extends Annotation
     hash.color       = @color
 
     hash
+
+
+exports.SegmentOverlay = class SegmentOverlay extends Annotation
+
+  RECORD_TYPE: 'SegmentOverlay'
+
+  constructor: ({ @datadefRef, @color, @xMin, @xMax, @index }) ->
+    @name = "segment-overlay-#{@index}"
+
+  toHash: ->
+
+    x1 = x2 = isUnboundedLeft = isUnboundedRight = undefined
+
+    if @xMin is -Infinity
+      isUnboundedLeft = true
+      if @xMax is Infinity
+        isUnboundedRight = true
+      else
+        x1 = @xMax
+    else
+      x1 = @xMin
+      if @xMax is Infinity
+        isUnboundedRight = true
+      else
+        x2 = @xMax
+
+    hash = super()
+    hash.datadefName = @datadefRef.datadef.name
+    hash.color       = @color
+    hash.x1Record    = x1
+    hash.x2Record    = x2
+    hash.isUnboundedLeft  = isUnboundedLeft
+    hash.isUnboundedRight = isUnboundedRight
+
+    hash
