@@ -62,7 +62,7 @@
                 "type": "RangeVisualPrompt",
                 "name": "Unbounded right",
                 "xMin": 4,
-                "color": "0000ff"
+                "color": "#0000ff"
               }
             ]
           }
