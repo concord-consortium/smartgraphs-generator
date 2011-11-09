@@ -11,8 +11,8 @@ exports.AuthorPage = class AuthorPage
     if @hash.panes?.length > 2
       throw new Error "There cannot be more than two panes"
 
-    @panes = if @hash.panes? then (AuthorPane.fromHash(h, i) for h, i in @hash.panes) else []
-    pane.page = this for pane in @panes
+    @panes = if @hash.panes? then (AuthorPane.fromHash h for h in @hash.panes) else []
+    [pane.page, pane.index] = [this, index] for pane, index in @panes
 
   toRuntimePage: (runtimeActivity) ->
     runtimePage = runtimeActivity.createPage()
@@ -127,15 +127,15 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence
 AuthorPane =
   classFor: {}
 
-  fromHash: (hash, index) ->
+  fromHash: (hash) ->
     PaneClass = @classFor[hash.type]
     if not PaneClass? then throw new Error "Pane type #{hash.type} is not supported"
-    return new PaneClass hash, index
+    return new PaneClass hash
 
 
 AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane
 
-  constructor: ({@title, @data, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks }, @index) ->
+  constructor: ({@title, @data, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks }) ->
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
     @xUnitsRef = runtimeActivity.getUnitRef dumbSingularize @xUnits if @xUnits
@@ -156,7 +156,7 @@ AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane
 
 AuthorPane.classFor['ImagePane'] = class ImagePane
 
-  constructor: ({@url, @license, @attribution}, @index) ->
+  constructor: ({@url, @license, @attribution}) ->
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
 
@@ -165,8 +165,6 @@ AuthorPane.classFor['ImagePane'] = class ImagePane
 
 
 AuthorPane.classFor['TablePane'] = class TablePane
-
-  constructor: ({}, @index) ->
 
   addToPageAndActivity: (runtimePage, @runtimeActivity) ->
 
