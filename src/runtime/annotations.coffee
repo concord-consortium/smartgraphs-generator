@@ -47,27 +47,19 @@ exports.SegmentOverlay = class SegmentOverlay extends Annotation
 
   toHash: ->
 
-    x1 = x2 = isUnboundedLeft = isUnboundedRight = undefined
-
     if @xMin is -Infinity
-      isUnboundedLeft = true
-      if @xMax is Infinity
-        isUnboundedRight = true
-      else
-        x1 = @xMax
-    else
+      x1 = @xMax unless @xMax is Infinity
+
+    if @xMin isnt -Infinity
       x1 = @xMin
-      if @xMax is Infinity
-        isUnboundedRight = true
-      else
-        x2 = @xMax
+      x2 = @xMax unless @xMax is Infinity
 
     hash = super()
     hash.datadefName = @datadefRef.datadef.name
     hash.color       = @color
     hash.x1Record    = x1
     hash.x2Record    = x2
-    hash.isUnboundedLeft  = isUnboundedLeft
-    hash.isUnboundedRight = isUnboundedRight
+    hash.isUnboundedLeft  = true if @xMin is -Infinity
+    hash.isUnboundedRight = true if @xMax is Infinity
 
     hash

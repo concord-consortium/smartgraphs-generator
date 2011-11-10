@@ -1524,20 +1524,15 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
       this.name = "segment-overlay-" + this.index;
     }
     SegmentOverlay.prototype.toHash = function() {
-      var hash, isUnboundedLeft, isUnboundedRight, x1, x2;
-      x1 = x2 = isUnboundedLeft = isUnboundedRight = void 0;
+      var hash, x1, x2;
       if (this.xMin === -Infinity) {
-        isUnboundedLeft = true;
-        if (this.xMax === Infinity) {
-          isUnboundedRight = true;
-        } else {
+        if (this.xMax !== Infinity) {
           x1 = this.xMax;
         }
-      } else {
+      }
+      if (this.xMin !== -Infinity) {
         x1 = this.xMin;
-        if (this.xMax === Infinity) {
-          isUnboundedRight = true;
-        } else {
+        if (this.xMax !== Infinity) {
           x2 = this.xMax;
         }
       }
@@ -1546,8 +1541,12 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
       hash.color = this.color;
       hash.x1Record = x1;
       hash.x2Record = x2;
-      hash.isUnboundedLeft = isUnboundedLeft;
-      hash.isUnboundedRight = isUnboundedRight;
+      if (this.xMin === -Infinity) {
+        hash.isUnboundedLeft = true;
+      }
+      if (this.xMax === Infinity) {
+        hash.isUnboundedRight = true;
+      }
       return hash;
     };
     return SegmentOverlay;
