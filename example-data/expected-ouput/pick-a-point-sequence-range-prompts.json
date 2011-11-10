@@ -43,7 +43,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["highlighted-point-1"],
+          "annotations": ["segment-overlay-1", "highlighted-point-1"],
           "data": [
             "datadef-1"
           ]
@@ -84,7 +84,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["segment-overlay-1", "highlighted-point-1"],
+          "annotations": ["segment-overlay-2", "highlighted-point-1"],
           "data": [
             "datadef-1"
           ]
@@ -125,7 +125,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["segment-overlay-2", "segment-overlay-3", "highlighted-point-1"],
+          "annotations": ["segment-overlay-3", "segment-overlay-4", "highlighted-point-1"],
           "data": [
             "datadef-1"
           ]
@@ -166,7 +166,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": [],
+          "annotations": ["segment-overlay-5"],
           "data": [
             "datadef-1"
           ]
@@ -191,7 +191,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": [],
+          "annotations": ["segment-overlay-6"],
           "data": [
             "datadef-1"
           ]
@@ -290,13 +290,22 @@
           "name": "segment-overlay-1",
           "activity": "/shared/pick-a-point-sequence",
           "datadefName": "datadef-1",
+          "color": "#000000",
+          "x1Record": 1,
+          "x2Record": 2
+        },
+        {
+          "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-2",
+          "name": "segment-overlay-2",
+          "activity": "/shared/pick-a-point-sequence",
+          "datadefName": "datadef-1",
           "color": "#ff0000",
           "x1Record": 1,
           "x2Record": 3
         },
         {
-          "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-2",
-          "name": "segment-overlay-2",
+          "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-3",
+          "name": "segment-overlay-3",
           "activity": "/shared/pick-a-point-sequence",
           "datadefName": "datadef-1",
           "color": "#00ff00",
@@ -304,13 +313,31 @@
           "x1Record": 3
         },
         {
-          "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-3",
-          "name": "segment-overlay-3",
+          "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-4",
+          "name": "segment-overlay-4",
           "activity": "/shared/pick-a-point-sequence",
           "datadefName": "datadef-1",
           "color": "#0000ff",
           "isUnboundedRight": true,
           "x1Record": 4
+        },
+        {
+          "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-5",
+          "name": "segment-overlay-5",
+          "activity": "/shared/pick-a-point-sequence",
+          "datadefName": "datadef-1",
+          "color": "#000000",
+          "x1Record": 1,
+          "x2Record": 2
+        },
+        {
+          "url": "/shared/pick-a-point-sequence/annotations/segment-overlay-6",
+          "name": "segment-overlay-6",
+          "activity": "/shared/pick-a-point-sequence",
+          "datadefName": "datadef-1",
+          "color": "#ffffff",
+          "x1Record": 1,
+          "x2Record": 2
         }
       ]
     }

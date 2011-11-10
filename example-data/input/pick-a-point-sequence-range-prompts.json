@@ -33,7 +33,16 @@
       "sequence": {
         "type": "PickAPointSequence",
         "initialPrompt": {
-          "text": "Click the point..."
+          "text": "Click the point...",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#000000"
+            }
+          ]
         },
         "correctAnswerPoint": [4, 800],
         "hints": [
@@ -70,10 +79,28 @@
           }
         ],
         "giveUp": {
-          "text": "If you look carefully, ...."
+          "text": "If you look carefully, ....",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#000000"
+            }
+          ]
         },
         "confirmCorrect": {
-          "text": "Four minutes into her run ...."
+          "text": "Four minutes into her run ....",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#ffffff"
+            }
+          ]
         }
       }
     }
