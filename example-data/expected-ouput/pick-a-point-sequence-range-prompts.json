@@ -84,7 +84,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["highlighted-point-1", "segment-overlay-1"],
+          "annotations": ["segment-overlay-1", "highlighted-point-1"],
           "data": [
             "datadef-1"
           ]
@@ -125,7 +125,7 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["highlighted-point-1", "segment-overlay-2", "segment-overlay-3"],
+          "annotations": ["segment-overlay-2", "segment-overlay-3", "highlighted-point-1"],
           "data": [
             "datadef-1"
           ]
