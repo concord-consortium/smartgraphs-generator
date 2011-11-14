@@ -19,3 +19,7 @@ describe "the runtime schema", ->
           report = env.validate(activity, schema)
           expect(report.errors.length).toBe(0)
 
+          ## uncomment to help debug schema
+          # if report.errors.length > 0
+          #   console.log "=========== #{exampleFile} ==========="
+          #   console.log report.errors

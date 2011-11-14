@@ -202,7 +202,7 @@
                 "criterion": {
                   "type": "array",
                   "items": {
-                    "type": ["string", "number"]
+                    "type": ["string", "number", "array"]
                   }
                 },
                 "step": {
