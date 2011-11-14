@@ -1,4 +1,4 @@
-{JSV} = require 'jsv'
+{JSV} = require 'JSV'
 fs        = require 'fs'
 path      = require 'path'
 exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data');
