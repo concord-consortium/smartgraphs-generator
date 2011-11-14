@@ -1,0 +1,39 @@
+{
+  "type": "Activity",
+  "name": "Sensor Graph",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Graph",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "SensorGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yUnits": "meters",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xUnits": "minutes",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10
+        }
+      ]
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "m"
+    }
+  ]
+}
