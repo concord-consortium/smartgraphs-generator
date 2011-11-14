@@ -1,0 +1,57 @@
+{
+  "type": "Activity",
+  "name": "Numeric Sequence",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "data": [
+            [1,200],
+            [2,400],
+            [3,600],
+            [4,800]
+          ]
+        },
+        {
+          "type": "TablePane"
+        }
+      ],
+      "sequence": {
+        "type": "NumericSequence",
+        "initialPrompt": {
+          "text": "<p>What is the x-coordinate at the 3-time unit mark?</p>"
+        },
+        "correctAnswer": 600.0,
+        "giveUp": {
+          "text": "<p>Take a closer look, it's 600 units of distance.</p>"
+        },
+        "confirmCorrect": {
+          "text": "<p>That's right: it's 600 units of distance.</p>"
+        },
+        "hints": [
+          {
+            "name": "Hint 1",
+            "text": "<p>Hint: ask yourself, which is the y-axis and which is the x-axis?</p> <p>What is the x-coordinate of the point at the 3-time unit mark?</p>"
+          },
+          {
+            "name": "Hint 2",
+            "text": "<p>Hint: Where is the \"3-time-unit mark\" on the y-axis?</p> <p>The horizontal position of the point you're looking for is located at this mark. What is the x-coordinate of the point at the 3-time unit mark?</p>"
+          }
+        ]
+      }
+    }
+  ]
+}
