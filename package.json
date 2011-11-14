@@ -7,7 +7,8 @@
     "coffee-script": "~1.1.2",
     "jitter": "~1.1.0",
     "jasmine-node": "~1.0.12",
-    "browserify": "~1.7.1"
+    "browserify": "~1.7.1",
+    "JSV": "3.5.0"
   },
   "engines": {
     "node": ">= 0.4.0"

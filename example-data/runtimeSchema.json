@@ -1,0 +1,362 @@
+{
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "_rev": {
+      "type": "number"
+    },
+    "data_format_version": {
+      "type": "number"
+    },
+    "activity": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "pages": {
+          "type": "array"
+        },
+        "axes": {
+          "type": "array"
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "activity": {
+            "type": "string"
+          },
+          "index": {
+            "type": "number"
+          },
+          "introText": {
+            "type": "string"
+          },
+          "steps": {
+            "type": "array"
+          },
+          "firstStep": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "activityPage": {
+            "type": "string"
+          },
+          "beforeText": {
+            "type": "string"
+          },
+          "paneConfig": {
+            "type": "string",
+            "enum": ["split", "single"]
+          },
+          "panes": {
+            "type": ["object", "null"],
+            "properties": {
+              "top": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["graph", "table", "image"]
+                  },
+                  "title": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "xAxis": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "yAxis": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "annotations": {
+                    "type": "array"
+                  },
+                  "data": {
+                    "type": ["string", "array"]
+                  }
+                }
+              },
+              "bottom": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["graph", "table", "image"]
+                  },
+                  "title": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "xAxis": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "yAxis": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "annotations": {
+                    "type": "array"
+                  },
+                  "data": {
+                    "type": ["string", "array"]
+                  }
+                }
+              },
+              "single": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["graph", "table", "image"]
+                  },
+                  "title": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "xAxis": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "yAxis": {
+                    "type": "string",
+                    "optional": true
+                  },
+                  "annotations": {
+                    "type": "array"
+                  },
+                  "data": {
+                    "type": ["string", "array"]
+                  }
+                }
+              }
+            }
+          },
+          "tools": {
+            "type": "array",
+            "optional": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "setup": {
+                  "type": "object",
+                  "properties": {
+                    "tag": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "submitButtonTitle": {
+            "type": "string",
+            "optional": true
+          },
+          "defaultBranch": {
+            "type": "string",
+            "optional": true
+          },
+          "responseBranches": {
+            "type": "array",
+            "optional": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "criterion": {
+                  "type": "array",
+                  "items": {
+                    "type": ["string", "number"]
+                  }
+                },
+                "step": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "isFinalStep": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "responseTemplates": {
+      "type": "array"
+    },
+    "axes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          },
+          "nSteps": {
+            "type": "number"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "datadefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["UnorderedDataPoints"]
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "activity": {
+                  "type": "string"
+                },
+                "xLabel": {
+                  "type": "string"
+                },
+                "xShortLabel": {
+                  "type": "string"
+                },
+                "yLabel": {
+                  "type": "string"
+                },
+                "yShortLabel": {
+                  "type": "string"
+                },
+                "points": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array"
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["HighlightedPoint", "SegmentOverlay"]
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "activity": {
+                  "type": "string"
+                },
+                "datadefName": {
+                  "type": "string"
+                },
+                "tag": {
+                  "type": "string",
+                  "optional": true
+                },
+                "color": {
+                  "type": "string"
+                },
+                "x1Record": {
+                  "type": "number",
+                  "optional": true
+                },
+                "x2Record": {
+                  "type": "number",
+                  "optional": true
+                },
+                "isUnboundedLeft": {
+                  "type": "boolean",
+                  "optional": true
+                },
+                "isUnboundedRight": {
+                  "type": "boolean",
+                  "optional": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "variables": {
+      "type": "array"
+    },
+    "units": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}
