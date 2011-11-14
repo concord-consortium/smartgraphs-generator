@@ -18,6 +18,10 @@ exports.Step = class Step
 
   setDefaultBranch: (@defaultBranch) ->
 
+  setSubmissibilityCriterion: (@submissibilityCriterion) ->
+
+  setResponseTemplate: (@responseTemplate) ->
+
   getUrl: ->
     "#{@page.getUrl()}/step/#{@index}"
 
@@ -104,15 +108,17 @@ exports.Step = class Step
       this.makeNonFinal()
 
     return {
-      url:                    this.getUrl()
-      activityPage:           @page.getUrl()
-      beforeText:             @beforeText
-      paneConfig:             if  @panes.length == 2 then 'split' else 'single',
-      panes:                  panesHash ? null
-      tools:                  toolsHash if toolsHash.length > 0
-      submitButtonTitle:      @submitButtonTitle
-      defaultBranch:          @defaultBranch.getUrl() if @defaultBranch?
-      responseBranches:       branch.toHash() for branch in @responseBranches if @responseBranches.length > 0
-      isFinalStep:            @isFinalStep
-      nextButtonShouldSubmit: @nextButtonShouldSubmit
+      url:                     this.getUrl()
+      activityPage:            @page.getUrl()
+      beforeText:              @beforeText
+      paneConfig:              if  @panes.length == 2 then 'split' else 'single',
+      panes:                   panesHash ? null
+      tools:                   toolsHash if toolsHash.length > 0
+      submitButtonTitle:       @submitButtonTitle
+      defaultBranch:           @defaultBranch.getUrl() if @defaultBranch?
+      responseTemplate:        @responseTemplate.getUrl() if @responseTemplate?
+      submissibilityCriterion: @submissibilityCriterion ? undefined
+      responseBranches:        branch.toHash() for branch in @responseBranches if @responseBranches.length > 0
+      isFinalStep:             @isFinalStep
+      nextButtonShouldSubmit:  @nextButtonShouldSubmit
     }

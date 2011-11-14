@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-  
+
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-  
+
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-  
+
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-  
+
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -448,7 +448,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, InstructionSequence, NoSequence, PickAPointSequence, Sequence;
+  var AuthorPane, InstructionSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   AuthorPane = require('./author-panes').AuthorPane;
   Sequence = exports.Sequence = {
@@ -606,6 +606,68 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     };
     return PickAPointSequence;
   })();
+  Sequence.classFor['NumericSequence'] = NumericSequence = (function() {
+    NumericSequence.prototype.HIGHLIGHT_COLOR = '#1f77b4';
+    function NumericSequence(_arg) {
+      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect;
+      if (typeof this.initialPrompt === 'string') {
+        this.initialPrompt = {
+          text: this.initialPrompt
+        };
+      }
+    }
+    NumericSequence.prototype.appendSteps = function(runtimePage) {
+      var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, giveUpStep, index, lastAnswerableStep, runtimeActivity, step, steps, _i, _len, _len2, _ref, _results;
+      runtimeActivity = runtimePage.activity;
+      runtimeActivity.createAndAppendResponseTemplate("NumericResponseTemplate");
+      steps = [];
+      answerableSteps = [];
+      addPanesAndFeedbackToStep = __bind(function(_arg) {
+        var from, pane, step, _i, _len, _ref;
+        step = _arg.step, from = _arg.from;
+        _ref = this.page.panes;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          pane = _ref[_i];
+          pane.addToStep(step);
+        }
+        return step.setBeforeText(from.text);
+      }, this);
+      _ref = [this.initialPrompt].concat(this.hints);
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        answerableInfo = _ref[_i];
+        steps.push(step = runtimePage.appendStep());
+        answerableSteps.push(step);
+        addPanesAndFeedbackToStep({
+          step: step,
+          from: answerableInfo
+        });
+      }
+      steps.push(giveUpStep = runtimePage.appendStep());
+      addPanesAndFeedbackToStep({
+        step: giveUpStep,
+        from: this.giveUp
+      });
+      steps.push(confirmCorrectStep = runtimePage.appendStep());
+      addPanesAndFeedbackToStep({
+        step: confirmCorrectStep,
+        from: this.confirmCorrect
+      });
+      lastAnswerableStep = answerableSteps[answerableSteps.length - 1];
+      _results = [];
+      for (index = 0, _len2 = answerableSteps.length; index < _len2; index++) {
+        step = answerableSteps[index];
+        step.setSubmitButtonTitle("Check My Answer");
+        step.setSubmissibilityCriterion(["isNumeric", ["responseField", 1]]);
+        step.appendResponseBranch({
+          criterion: ["=", ["responseField", 1], this.correctAnswer],
+          step: confirmCorrectStep
+        });
+        _results.push(step === lastAnswerableStep ? step.setDefaultBranch(giveUpStep) : step.setDefaultBranch(answerableSteps[index + 1]));
+      }
+      return _results;
+    };
+    return NumericSequence;
+  })();
 }).call(this);
 
 });
@@ -751,17 +813,18 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-  
+
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-  
+
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
-  var Annotation, Axis, Datadef, HighlightedPoint, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref;
+  var Annotation, Axis, Datadef, HighlightedPoint, ResponseTemplateCollection, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref;
+  var __hasProp = Object.prototype.hasOwnProperty;
   slugify = require('../slugify').slugify;
   RuntimePage = require('./runtime-page').RuntimePage;
   Step = require('./step').Step;
@@ -770,6 +833,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
   Datadef = require('./datadef').Datadef;
   Tag = require('./tag').Tag;
   _ref = require('./annotations'), Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint, SegmentOverlay = _ref.SegmentOverlay;
+  ResponseTemplateCollection = require('./responseTemplates').ResponseTemplateCollection;
   exports.RuntimeActivity = RuntimeActivity = (function() {
     function RuntimeActivity(owner, name) {
       this.owner = owner;
@@ -786,6 +850,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.nSegmentOverlays = 0;
       this.tags = [];
       this.nTags = 0;
+      this.responseTemplates = {};
     }
     RuntimeActivity.prototype.getUrl = function() {
       return "/" + this.owner + "/" + (slugify(this.name));
@@ -930,16 +995,32 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.annotations.segmentOverlays.push(overlay);
       return overlay;
     };
+    RuntimeActivity.prototype.createAndAppendResponseTemplate = function(type) {
+      var responseTemplate, templateClazz;
+      templateClazz = ResponseTemplateCollection.classFor[type];
+      if (!!this.responseTemplates[type]) {
+        return this.responseTemplates[type];
+      }
+      responseTemplate = new templateClazz;
+      responseTemplate.activity = this;
+      this.responseTemplates[type] = responseTemplate;
+      return responseTemplate;
+    };
     RuntimeActivity.prototype.appendPage = function(page) {
       this.pages.push(page);
       page.setIndex(this.pages.length);
       return page;
     };
     RuntimeActivity.prototype.toHash = function() {
-      var flatten, key, page, step, tag, url;
+      var flatten, i, key, page, step, tag, template, url, _ref2;
+      _ref2 = this.responseTemplates;
+      for (template in _ref2) {
+        if (!__hasProp.call(_ref2, template)) continue;
+        debugger;
+      }
       flatten = function(arrays) {
-        var _ref2;
-        return (_ref2 = []).concat.apply(_ref2, arrays);
+        var _ref3;
+        return (_ref3 = []).concat.apply(_ref3, arrays);
       };
       return {
         _id: "" + (slugify(this.name)) + ".df6",
@@ -950,11 +1031,11 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           url: this.getUrl(),
           owner: this.owner,
           pages: (function() {
-            var _i, _len, _ref2, _results;
-            _ref2 = this.pages;
+            var _i, _len, _ref3, _results;
+            _ref3 = this.pages;
             _results = [];
-            for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-              page = _ref2[_i];
+            for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+              page = _ref3[_i];
               _results.push(page.getUrl());
             }
             return _results;
@@ -969,27 +1050,27 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           }).call(this)
         },
         pages: (function() {
-          var _i, _len, _ref2, _results;
-          _ref2 = this.pages;
+          var _i, _len, _ref3, _results;
+          _ref3 = this.pages;
           _results = [];
-          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-            page = _ref2[_i];
+          for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+            page = _ref3[_i];
             _results.push(page.toHash());
           }
           return _results;
         }).call(this),
         steps: flatten((function() {
-          var _i, _len, _ref2, _results;
-          _ref2 = this.pages;
+          var _i, _len, _ref3, _results;
+          _ref3 = this.pages;
           _results = [];
-          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-            page = _ref2[_i];
+          for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+            page = _ref3[_i];
             _results.push((function() {
-              var _j, _len2, _ref3, _results2;
-              _ref3 = page.steps;
+              var _j, _len2, _ref4, _results2;
+              _ref4 = page.steps;
               _results2 = [];
-              for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
-                step = _ref3[_j];
+              for (_j = 0, _len2 = _ref4.length; _j < _len2; _j++) {
+                step = _ref4[_j];
                 _results2.push(step.toHash());
               }
               return _results2;
@@ -997,7 +1078,17 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           }
           return _results;
         }).call(this)),
-        responseTemplates: [],
+        responseTemplates: (function() {
+          var _ref3, _results;
+          _ref3 = this.responseTemplates;
+          _results = [];
+          for (i in _ref3) {
+            if (!__hasProp.call(_ref3, i)) continue;
+            template = _ref3[i];
+            _results.push(template.toHash());
+          }
+          return _results;
+        }).call(this),
         axes: (function() {
           var _results;
           _results = [];
@@ -1015,11 +1106,11 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           return _results;
         }).call(this)),
         tags: (function() {
-          var _i, _len, _ref2, _results;
-          _ref2 = this.tags;
+          var _i, _len, _ref3, _results;
+          _ref3 = this.tags;
           _results = [];
-          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-            tag = _ref2[_i];
+          for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+            tag = _ref3[_i];
             _results.push(tag.toHash());
           }
           return _results;
@@ -1136,6 +1227,9 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
     Step.prototype.setDefaultBranch = function(defaultBranch) {
       this.defaultBranch = defaultBranch;
+    };
+    Step.prototype.setSubmissibilityCriterion = function(submissibilityCriterion) {
+      this.submissibilityCriterion = submissibilityCriterion;
     };
     Step.prototype.getUrl = function() {
       return "" + (this.page.getUrl()) + "/step/" + this.index;
@@ -1266,7 +1360,7 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       return delete this.nextButtonShouldSubmit;
     };
     Step.prototype.toHash = function() {
-      var branch, key, panesHash, tool, toolsHash;
+      var branch, key, panesHash, tool, toolsHash, _ref;
       panesHash = this.panes.length === 1 ? {
         single: this.panes[0].toHash()
       } : this.panes.length === 2 ? {
@@ -1295,13 +1389,14 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         tools: toolsHash.length > 0 ? toolsHash : void 0,
         submitButtonTitle: this.submitButtonTitle,
         defaultBranch: this.defaultBranch != null ? this.defaultBranch.getUrl() : void 0,
+        submissibilityCriterion: (_ref = this.submissibilityCriterion) != null ? _ref : void 0,
         responseBranches: (function() {
-          var _i, _len, _ref, _results;
+          var _i, _len, _ref2, _results;
           if (this.responseBranches.length > 0) {
-            _ref = this.responseBranches;
+            _ref2 = this.responseBranches;
             _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              branch = _ref[_i];
+            for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+              branch = _ref2[_i];
               _results.push(branch.toHash());
             }
             return _results;
@@ -1550,6 +1645,52 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
       return hash;
     };
     return SegmentOverlay;
+  })();
+}).call(this);
+
+});
+
+require.define("/runtime/responseTemplates.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var NumericResponseTemplate, ResponseTemplate, ResponseTemplateCollection;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  };
+  ResponseTemplateCollection = exports.ResponseTemplateCollection = {
+    classFor: {}
+  };
+  ResponseTemplate = (function() {
+    function ResponseTemplate() {}
+    ResponseTemplate.prototype.getUrl = function() {
+      return "" + (this.activity.getUrl()) + "/response-templates/" + this.name;
+    };
+    ResponseTemplate.prototype.toHash = function() {
+      return {
+        url: this.getUrl()
+      };
+    };
+    return ResponseTemplate;
+  })();
+  ResponseTemplateCollection.classFor['NumericResponseTemplate'] = NumericResponseTemplate = (function() {
+    __extends(NumericResponseTemplate, ResponseTemplate);
+    function NumericResponseTemplate() {
+      this.name = "numeric";
+    }
+    NumericResponseTemplate.prototype.toHash = function() {
+      var hash;
+      hash = NumericResponseTemplate.__super__.toHash.call(this);
+      hash.templateString = "";
+      hash.fieldTypes = ["numeric"];
+      hash.fieldChoicesList = [null];
+      hash.initialValues = [""];
+      return hash;
+    };
+    return NumericResponseTemplate;
   })();
 }).call(this);
 

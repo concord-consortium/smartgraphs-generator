@@ -96,3 +96,52 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence
         step.setDefaultBranch giveUpStep
       else
         step.setDefaultBranch answerableSteps[index+1]
+
+Sequence.classFor['NumericSequence'] = class NumericSequence
+
+  HIGHLIGHT_COLOR: '#1f77b4'
+
+  constructor: ({@initialPrompt, @correctAnswer, @hints, @giveUp, @confirmCorrect}) ->
+    if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
+
+  appendSteps: (runtimePage) ->
+
+    runtimeActivity = runtimePage.activity
+
+    responseTemplate = runtimeActivity.createAndAppendResponseTemplate "NumericResponseTemplate"
+
+    steps = []
+    answerableSteps = []
+
+    addPanesAndFeedbackToStep = ({ step, from }) =>
+      pane.addToStep(step) for pane in @page.panes
+      step.setBeforeText from.text
+
+    for answerableInfo in [@initialPrompt].concat @hints
+      steps.push step = runtimePage.appendStep()
+      answerableSteps.push step
+      addPanesAndFeedbackToStep { step, from: answerableInfo }
+
+    steps.push giveUpStep = runtimePage.appendStep()
+    addPanesAndFeedbackToStep { step: giveUpStep, from: @giveUp }
+
+    steps.push confirmCorrectStep = runtimePage.appendStep()
+    addPanesAndFeedbackToStep { step: confirmCorrectStep, from: @confirmCorrect }
+
+    lastAnswerableStep = answerableSteps[answerableSteps.length-1]
+
+    for step, index in answerableSteps
+
+      step.setSubmitButtonTitle "Check My Answer"
+      step.setSubmissibilityCriterion ["isNumeric", ["responseField", 1]]
+      step.setResponseTemplate responseTemplate
+
+      step.appendResponseBranch {
+        criterion: ["=",["responseField", 1], @correctAnswer]
+        step: confirmCorrectStep
+      }
+
+      if step is lastAnswerableStep
+        step.setDefaultBranch giveUpStep
+      else
+        step.setDefaultBranch answerableSteps[index+1]

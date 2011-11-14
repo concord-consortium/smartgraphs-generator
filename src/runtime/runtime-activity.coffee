@@ -20,6 +20,7 @@
 {Tag}         = require './tag'
 
 {Annotation, HighlightedPoint, SegmentOverlay} = require './annotations'
+{ResponseTemplateCollection} = require './responseTemplates'
 
 exports.RuntimeActivity = class RuntimeActivity
 
@@ -40,6 +41,8 @@ exports.RuntimeActivity = class RuntimeActivity
 
     @tags      = []
     @nTags     = 0
+
+    @responseTemplates = {}
 
 
   getUrl: ->
@@ -122,12 +125,23 @@ exports.RuntimeActivity = class RuntimeActivity
     @annotations.segmentOverlays.push overlay
     overlay
 
+  createAndAppendResponseTemplate: (type) ->
+    templateClazz = ResponseTemplateCollection.classFor[type]
+    return @responseTemplates[type] unless !@responseTemplates[type]
+
+    responseTemplate = new templateClazz
+    responseTemplate.activity = this
+    @responseTemplates[type] = responseTemplate
+    responseTemplate
+
   appendPage: (page) ->
     @pages.push page
     page.setIndex @pages.length
     page
 
   toHash: ->
+    for own template of @responseTemplates
+      debugger
     flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args);
 
     _id: "#{slugify @name}.df6"
@@ -144,7 +158,7 @@ exports.RuntimeActivity = class RuntimeActivity
     pages: page.toHash() for page in @pages
     steps: flatten ((step.toHash() for step in page.steps) for page in @pages)
 
-    responseTemplates: []
+    responseTemplates: template.toHash() for own i, template of @responseTemplates
     axes:              @axes[url].toHash() for url of @axes
     datadefs:          Datadef.serializeDatadefs(@datadefRefs[key].datadef for key of @datadefRefs)
     tags:              tag.toHash() for tag in @tags
