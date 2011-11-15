@@ -448,8 +448,15 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, InstructionSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var AuthorPane, CorrectableSequenceWithFeedback, InstructionSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  };
   AuthorPane = require('./author-panes').AuthorPane;
   Sequence = exports.Sequence = {
     classFor: {},
@@ -495,18 +502,38 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     };
     return InstructionSequence;
   })();
-  Sequence.classFor['PickAPointSequence'] = PickAPointSequence = (function() {
-    PickAPointSequence.prototype.HIGHLIGHT_COLOR = '#1f77b4';
-    function PickAPointSequence(_arg) {
-      this.initialPrompt = _arg.initialPrompt, this.correctAnswerPoint = _arg.correctAnswerPoint, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect;
+  CorrectableSequenceWithFeedback = (function() {
+    CorrectableSequenceWithFeedback.prototype.HIGHLIGHT_COLOR = '#1f77b4';
+    function CorrectableSequenceWithFeedback(_arg) {
+      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect;
       if (typeof this.initialPrompt === 'string') {
         this.initialPrompt = {
           text: this.initialPrompt
         };
       }
     }
-    PickAPointSequence.prototype.appendSteps = function(runtimePage) {
-      var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, datadefRef, giveUpStep, graphPane, highlightedPoint, i, index, lastAnswerableStep, pane, runtimeActivity, step, steps, tablePane, tag, _i, _len, _len2, _len3, _ref, _ref2, _results;
+    CorrectableSequenceWithFeedback.prototype.requiresGraphOrTable = function() {
+      return hasVisualPrompts() || needsGraphData();
+    };
+    CorrectableSequenceWithFeedback.prototype.needsGraphData = function() {
+      return false;
+    };
+    CorrectableSequenceWithFeedback.prototype.hasVisualPrompts = function() {
+      var allFeedback, _i, _len, _ref, _ref2;
+      _ref = [this.initialPrompt, this.giveUp, this.confirmCorrect].concat(this.hints);
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        allFeedback = _ref[_i];
+        if (((_ref2 = answerableInfo.visualPrompts) != null ? _ref2 : []).length > 0) {
+          return true;
+        }
+      }
+      return false;
+    };
+    CorrectableSequenceWithFeedback.prototype.getAnswerableStepCriterion = function() {
+      return [];
+    };
+    CorrectableSequenceWithFeedback.prototype.actualAppendSteps = function(runtimePage, stepModifier) {
+      var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, giveUpStep, graphPane, i, index, lastAnswerableStep, pane, runtimeActivity, step, steps, tablePane, _i, _len, _len2, _len3, _ref, _ref2, _results;
       _ref = this.page.panes || [];
       for (i = 0, _len = _ref.length; i < _len; i++) {
         pane = _ref[i];
@@ -517,17 +544,11 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
           tablePane = pane;
         }
       }
-      if (!(graphPane != null) && !(tablePane != null)) {
-        throw new Error("PickAPointSequence requires at least one graph or table pane");
+      if (requiresGraphOrTable && !(graphPane != null) && !(tablePane != null)) {
+        throw new Error("Sequence requires at least one graph or table pane");
       }
       runtimeActivity = runtimePage.activity;
-      datadefRef = runtimeActivity.getDatadefRef("" + this.page.index + "-" + graphPane.index);
-      tag = runtimeActivity.createAndAppendTag();
-      highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint({
-        datadefRef: datadefRef,
-        tag: tag,
-        color: this.HIGHLIGHT_COLOR
-      });
+      this.datadefRef = runtimeActivity.getDatadefRef("" + this.page.index + "-" + graphPane.index);
       steps = [];
       answerableSteps = [];
       addPanesAndFeedbackToStep = __bind(function(_arg) {
@@ -591,80 +612,61 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
             index: tablePane.index
           });
         }
-        step.addTaggingTool({
-          tag: tag,
-          datadefRef: datadefRef
-        });
+        stepModifier(step);
         step.setSubmitButtonTitle("Check My Answer");
         step.appendResponseBranch({
-          criterion: ["coordinates=", tag.name, this.correctAnswerPoint[0], this.correctAnswerPoint[1]],
+          criterion: getAnswerableStepCriterion(),
           step: confirmCorrectStep
         });
         _results.push(step === lastAnswerableStep ? step.setDefaultBranch(giveUpStep) : step.setDefaultBranch(answerableSteps[index + 1]));
       }
       return _results;
     };
+    return CorrectableSequenceWithFeedback;
+  })();
+  Sequence.classFor['PickAPointSequence'] = PickAPointSequence = (function() {
+    __extends(PickAPointSequence, CorrectableSequenceWithFeedback);
+    function PickAPointSequence() {
+      PickAPointSequence.__super__.constructor.apply(this, arguments);
+    }
+    PickAPointSequence.prototype.needsGraphData = function() {
+      return true;
+    };
+    PickAPointSequence.prototype.getAnswerableStepCriterion = function() {
+      return ["coordinates=", this.tag.name, this.correctAnswer[0], this.correctAnswer[1]];
+    };
+    PickAPointSequence.prototype.appendSteps = function(runtimePage) {
+      var highlightedPoint, runtimeActivity, stepModifier;
+      runtimeActivity = runtimePage.activity;
+      this.tag = runtimeActivity.createAndAppendTag();
+      highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint({
+        datadefRef: this.datadefRef,
+        tag: this.tag,
+        color: this.HIGHLIGHT_COLOR
+      });
+      stepModifier = function(step) {
+        return step.addTaggingTool({
+          tag: this.tag,
+          datadefRef: this.datadefRef
+        });
+      };
+      return actualAppendSteps(runtimePage, stepModifier);
+    };
     return PickAPointSequence;
   })();
   Sequence.classFor['NumericSequence'] = NumericSequence = (function() {
-    NumericSequence.prototype.HIGHLIGHT_COLOR = '#1f77b4';
-    function NumericSequence(_arg) {
-      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect;
-      if (typeof this.initialPrompt === 'string') {
-        this.initialPrompt = {
-          text: this.initialPrompt
-        };
-      }
-    }
+    function NumericSequence() {}
+    NumericSequence.prototype.getAnswerableStepCriterion = function() {
+      return ["=", ["responseField", 1], this.correctAnswer];
+    };
     NumericSequence.prototype.appendSteps = function(runtimePage) {
-      var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, giveUpStep, index, lastAnswerableStep, runtimeActivity, step, steps, _i, _len, _len2, _ref, _results;
+      var responseTemplate, runtimeActivity, stepModifier;
       runtimeActivity = runtimePage.activity;
-      runtimeActivity.createAndAppendResponseTemplate("NumericResponseTemplate");
-      steps = [];
-      answerableSteps = [];
-      addPanesAndFeedbackToStep = __bind(function(_arg) {
-        var from, pane, step, _i, _len, _ref;
-        step = _arg.step, from = _arg.from;
-        _ref = this.page.panes;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          pane = _ref[_i];
-          pane.addToStep(step);
-        }
-        return step.setBeforeText(from.text);
-      }, this);
-      _ref = [this.initialPrompt].concat(this.hints);
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        answerableInfo = _ref[_i];
-        steps.push(step = runtimePage.appendStep());
-        answerableSteps.push(step);
-        addPanesAndFeedbackToStep({
-          step: step,
-          from: answerableInfo
-        });
-      }
-      steps.push(giveUpStep = runtimePage.appendStep());
-      addPanesAndFeedbackToStep({
-        step: giveUpStep,
-        from: this.giveUp
-      });
-      steps.push(confirmCorrectStep = runtimePage.appendStep());
-      addPanesAndFeedbackToStep({
-        step: confirmCorrectStep,
-        from: this.confirmCorrect
-      });
-      lastAnswerableStep = answerableSteps[answerableSteps.length - 1];
-      _results = [];
-      for (index = 0, _len2 = answerableSteps.length; index < _len2; index++) {
-        step = answerableSteps[index];
-        step.setSubmitButtonTitle("Check My Answer");
+      responseTemplate = runtimeActivity.createAndAppendResponseTemplate("NumericResponseTemplate");
+      return stepModifier = function(step) {
         step.setSubmissibilityCriterion(["isNumeric", ["responseField", 1]]);
-        step.appendResponseBranch({
-          criterion: ["=", ["responseField", 1], this.correctAnswer],
-          step: confirmCorrectStep
-        });
-        _results.push(step === lastAnswerableStep ? step.setDefaultBranch(giveUpStep) : step.setDefaultBranch(answerableSteps[index + 1]));
-      }
-      return _results;
+        return step.setResponseTemplate(responseTemplate);
+      };
     };
     return NumericSequence;
   })();
@@ -1231,6 +1233,9 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     Step.prototype.setSubmissibilityCriterion = function(submissibilityCriterion) {
       this.submissibilityCriterion = submissibilityCriterion;
     };
+    Step.prototype.setResponseTemplate = function(responseTemplate) {
+      this.responseTemplate = responseTemplate;
+    };
     Step.prototype.getUrl = function() {
       return "" + (this.page.getUrl()) + "/step/" + this.index;
     };
@@ -1389,6 +1394,7 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         tools: toolsHash.length > 0 ? toolsHash : void 0,
         submitButtonTitle: this.submitButtonTitle,
         defaultBranch: this.defaultBranch != null ? this.defaultBranch.getUrl() : void 0,
+        responseTemplate: this.responseTemplate != null ? this.responseTemplate.getUrl() : void 0,
         submissibilityCriterion: (_ref = this.submissibilityCriterion) != null ? _ref : void 0,
         responseBranches: (function() {
           var _i, _len, _ref2, _results;

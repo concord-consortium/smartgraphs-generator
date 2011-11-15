@@ -5,7 +5,7 @@ Sequence = exports.Sequence =
   classFor: {}
 
   fromHash: (hash) ->
-    SequenceClass = @classFor[hash?.type || 'NoSequence']
+    SequenceClass = @classFor[hash.type ? 'NoSequence']
     if not SequenceClass? then throw new Error "Sequence type #{hash.type} is not supported"
     return new SequenceClass hash
 
@@ -15,6 +15,8 @@ Sequence = exports.Sequence =
 
 Sequence.classFor['NoSequence'] = class NoSequence
 
+  constructor: ({@page}) ->
+
   appendSteps: (runtimePage) ->
     step = runtimePage.appendStep()
     pane.addToStep(step) for pane in @page.panes
@@ -22,7 +24,7 @@ Sequence.classFor['NoSequence'] = class NoSequence
 
 Sequence.classFor['InstructionSequence'] = class InstructionSequence
 
-  constructor: ({@text}) ->
+  constructor: ({@text, @page}) ->
 
   appendSteps: (runtimePage) ->
     step = runtimePage.appendStep()
@@ -32,8 +34,12 @@ Sequence.classFor['InstructionSequence'] = class InstructionSequence
 class CorrectableSequenceWithFeedback
   HIGHLIGHT_COLOR: '#1f77b4'
 
-  constructor: ({@initialPrompt, @correctAnswer, @hints, @giveUp, @confirmCorrect}) ->
+  constructor: ({@initialPrompt, @correctAnswer, @correctAnswerPoint, @hints, @giveUp, @confirmCorrect, @page}) ->
     if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
+
+    for pane, i in @page.panes || []
+      @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
+      @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
 
   requiresGraphOrTable: () ->
     return hasVisualPrompts() || needsGraphData()
@@ -50,15 +56,14 @@ class CorrectableSequenceWithFeedback
   getAnswerableStepCriterion: () ->
     return []
 
-  actualAppendSteps: (runtimePage, stepModifier) ->
-    for pane, i in @page.panes || []
-      graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
-      tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
+  getDataDefRef: (runtimeActivity) ->
+    runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}"
 
-    if requiresGraphOrTable and not graphPane? and not tablePane? then throw new Error "Sequence requires at least one graph or table pane"
+  actualAppendSteps: (runtimePage, stepModifier) ->
+    if @requiresGraphOrTable and not @graphPane? and not @tablePane? then throw new Error "Sequence requires at least one graph or table pane"
 
     runtimeActivity = runtimePage.activity
-    @datadefRef = runtimeActivity.getDatadefRef "#{@page.index}-#{graphPane.index}"
+    @datadefRef = @getDataDefRef runtimeActivity
 
     steps = []
     answerableSteps = []
@@ -72,9 +77,9 @@ class CorrectableSequenceWithFeedback
           { color, xMin, xMax } = prompt
           xMin ?= -Infinity
           xMax ?= Infinity
-          overlay = runtimeActivity.createAndAppendSegmentOverlay { datadefRef, color, xMin, xMax }
+          overlay = runtimeActivity.createAndAppendSegmentOverlay { @datadefRef, color, xMin, xMax }
 
-          step.addAnnotationToPane { annotation: overlay, index: graphPane.index }
+          step.addAnnotationToPane { annotation: overlay, index: @graphPane.index }
 
     for answerableInfo in [@initialPrompt].concat @hints
       steps.push step = runtimePage.appendStep()
@@ -90,15 +95,13 @@ class CorrectableSequenceWithFeedback
     lastAnswerableStep = answerableSteps[answerableSteps.length-1]
 
     for step, index in answerableSteps
-      if graphPane? then step.addAnnotationToPane { annotation: highlightedPoint, index: graphPane.index }
-      if tablePane? then step.addAnnotationToPane { annotation: highlightedPoint, index: tablePane.index }
 
       stepModifier(step)
 
       step.setSubmitButtonTitle "Check My Answer"
 
       step.appendResponseBranch {
-        criterion: getAnswerableStepCriterion()
+        criterion: @getAnswerableStepCriterion()
         step: confirmCorrectStep
       }
 
@@ -109,24 +112,26 @@ class CorrectableSequenceWithFeedback
 
 
 Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends CorrectableSequenceWithFeedback
-  needsGraphData: () ->
+  requiresGraphOrTable: () ->
     return true
 
   getAnswerableStepCriterion: () ->
-    return ["coordinates=", @tag.name, @correctAnswer[0], @correctAnswer[1]]
+    return ["coordinates=", @tag.name, @correctAnswerPoint[0], @correctAnswerPoint[1]]
 
   appendSteps: (runtimePage) ->
-
     runtimeActivity = runtimePage.activity
+    datadefRef = @getDataDefRef runtimeActivity
     @tag = runtimeActivity.createAndAppendTag()
-    highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint { @datadefRef, @tag, color: @HIGHLIGHT_COLOR }
+    @highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint { datadefRef, @tag, color: @HIGHLIGHT_COLOR }
 
-    stepModifier = (step) ->
+    stepModifier = (step) =>
       step.addTaggingTool { @tag, @datadefRef }
+      if @graphPane? then step.addAnnotationToPane { annotation: @highlightedPoint, index: @graphPane.index }
+      if @tablePane? then step.addAnnotationToPane { annotation: @highlightedPoint, index: @tablePane.index }
 
-    actualAppendSteps(runtimePage, stepModifier)
+    @actualAppendSteps(runtimePage, stepModifier)
 
-Sequence.classFor['NumericSequence'] = class NumericSequence
+Sequence.classFor['NumericSequence'] = class NumericSequence extends CorrectableSequenceWithFeedback
   getAnswerableStepCriterion: () ->
     return ["=",["responseField", 1], @correctAnswer]
 
@@ -135,7 +140,8 @@ Sequence.classFor['NumericSequence'] = class NumericSequence
     runtimeActivity = runtimePage.activity
     responseTemplate = runtimeActivity.createAndAppendResponseTemplate "NumericResponseTemplate"
 
-    stepModifier = (step) ->
+    stepModifier = (step) =>
       step.setSubmissibilityCriterion ["isNumeric", ["responseField", 1]]
       step.setResponseTemplate responseTemplate
 
+    @actualAppendSteps(runtimePage, stepModifier)
