@@ -6,14 +6,15 @@ exports.AuthorPage = class AuthorPage
   constructor: (@hash, @activity, @index) ->
     {@name, @text} = @hash
 
-    @sequence = Sequence.fromHash @hash.sequence
-    @sequence.page = this
-
     if @hash.panes?.length > 2
       throw new Error "There cannot be more than two panes"
 
     @panes = if @hash.panes? then (AuthorPane.fromHash h for h in @hash.panes) else []
     [pane.page, pane.index] = [this, index] for pane, index in @panes
+
+    sequence = @hash.sequence ? {}
+    sequence.page = this
+    @sequence = Sequence.fromHash sequence
 
   toRuntimePage: (runtimeActivity) ->
     runtimePage = runtimeActivity.createPage()
