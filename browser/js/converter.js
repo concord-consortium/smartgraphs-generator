@@ -23,33 +23,33 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-
+        
         if (require._core[x]) return x;
         var path = require.modules.path();
         var y = cwd || '.';
-
+        
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-
+        
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-
+        
         throw new Error("Cannot find module '" + x + "'");
-
+        
         function loadAsFileSync (x) {
             if (require.modules[x]) {
                 return x;
             }
-
+            
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-
+        
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = x + '/package.json';
@@ -69,10 +69,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-
+            
             return loadAsFileSync(x + '/index');
         }
-
+        
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -82,23 +82,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-
+            
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-
+        
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-
+            
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-
+            
             return dirs;
         }
     };
@@ -114,9 +114,9 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-
+    
     var keys = Object_keys(require.modules);
-
+    
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -134,7 +134,7 @@ require.define = function (filename, fn) {
         ? ''
         : require.modules.path().dirname(filename)
     ;
-
+    
     var require_ = function (file) {
         return require(file, dirname)
     };
@@ -144,7 +144,7 @@ require.define = function (filename, fn) {
     require_.modules = require.modules;
     require_.define = require.define;
     var module_ = { exports : {} };
-
+    
     require.modules[filename] = function () {
         require.modules[filename]._cached = module_.exports;
         fn.call(
@@ -272,7 +272,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-
+  
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -527,7 +527,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       }
     }
     CorrectableSequenceWithFeedback.prototype.requiresGraphOrTable = function() {
-      return hasVisualPrompts() || needsGraphData();
+      return this.hasVisualPrompts() || this.needsGraphData();
     };
     CorrectableSequenceWithFeedback.prototype.needsGraphData = function() {
       return false;
@@ -547,11 +547,14 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       return [];
     };
     CorrectableSequenceWithFeedback.prototype.getDataDefRef = function(runtimeActivity) {
+      if (this.graphPane == null) {
+        return null;
+      }
       return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
     };
     CorrectableSequenceWithFeedback.prototype.appendStepsWithModifier = function(runtimePage, modifyForSequenceType) {
       var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, giveUpStep, index, lastAnswerableStep, runtimeActivity, step, steps, _i, _len, _len2, _ref, _results;
-      if (this.requiresGraphOrTable && !(this.graphPane != null) && !(this.tablePane != null)) {
+      if (this.requiresGraphOrTable() && !(this.graphPane != null) && !(this.tablePane != null)) {
         throw new Error("Sequence requires at least one graph or table pane");
       }
       runtimeActivity = runtimePage.activity;
@@ -1026,15 +1029,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return page;
     };
     RuntimeActivity.prototype.toHash = function() {
-      var flatten, i, key, page, step, tag, template, url, _ref2;
-      _ref2 = this.responseTemplates;
-      for (template in _ref2) {
-        if (!__hasProp.call(_ref2, template)) continue;
-        debugger;
-      }
+      var flatten, i, key, page, step, tag, template, url;
       flatten = function(arrays) {
-        var _ref3;
-        return (_ref3 = []).concat.apply(_ref3, arrays);
+        var _ref2;
+        return (_ref2 = []).concat.apply(_ref2, arrays);
       };
       return {
         _id: "" + (slugify(this.name)) + ".df6",
@@ -1045,11 +1043,11 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           url: this.getUrl(),
           owner: this.owner,
           pages: (function() {
-            var _i, _len, _ref3, _results;
-            _ref3 = this.pages;
+            var _i, _len, _ref2, _results;
+            _ref2 = this.pages;
             _results = [];
-            for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-              page = _ref3[_i];
+            for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+              page = _ref2[_i];
               _results.push(page.getUrl());
             }
             return _results;
@@ -1064,27 +1062,27 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           }).call(this)
         },
         pages: (function() {
-          var _i, _len, _ref3, _results;
-          _ref3 = this.pages;
+          var _i, _len, _ref2, _results;
+          _ref2 = this.pages;
           _results = [];
-          for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-            page = _ref3[_i];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            page = _ref2[_i];
             _results.push(page.toHash());
           }
           return _results;
         }).call(this),
         steps: flatten((function() {
-          var _i, _len, _ref3, _results;
-          _ref3 = this.pages;
+          var _i, _len, _ref2, _results;
+          _ref2 = this.pages;
           _results = [];
-          for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-            page = _ref3[_i];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            page = _ref2[_i];
             _results.push((function() {
-              var _j, _len2, _ref4, _results2;
-              _ref4 = page.steps;
+              var _j, _len2, _ref3, _results2;
+              _ref3 = page.steps;
               _results2 = [];
-              for (_j = 0, _len2 = _ref4.length; _j < _len2; _j++) {
-                step = _ref4[_j];
+              for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
+                step = _ref3[_j];
                 _results2.push(step.toHash());
               }
               return _results2;
@@ -1093,12 +1091,12 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           return _results;
         }).call(this)),
         responseTemplates: (function() {
-          var _ref3, _results;
-          _ref3 = this.responseTemplates;
+          var _ref2, _results;
+          _ref2 = this.responseTemplates;
           _results = [];
-          for (i in _ref3) {
-            if (!__hasProp.call(_ref3, i)) continue;
-            template = _ref3[i];
+          for (i in _ref2) {
+            if (!__hasProp.call(_ref2, i)) continue;
+            template = _ref2[i];
             _results.push(template.toHash());
           }
           return _results;
@@ -1120,11 +1118,11 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           return _results;
         }).call(this)),
         tags: (function() {
-          var _i, _len, _ref3, _results;
-          _ref3 = this.tags;
+          var _i, _len, _ref2, _results;
+          _ref2 = this.tags;
           _results = [];
-          for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-            tag = _ref3[_i];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            tag = _ref2[_i];
             _results.push(tag.toHash());
           }
           return _results;

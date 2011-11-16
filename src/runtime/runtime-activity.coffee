@@ -140,8 +140,6 @@ exports.RuntimeActivity = class RuntimeActivity
     page
 
   toHash: ->
-    for own template of @responseTemplates
-      debugger
     flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args);
 
     _id: "#{slugify @name}.df6"
