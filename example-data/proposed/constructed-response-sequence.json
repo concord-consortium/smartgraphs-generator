@@ -17,12 +17,7 @@
       ],
       "sequence": {
         "type": "ConstructedResponseSequence",
-        "initialPrompt": "Write some stuff...",
-        "responses": [
-          {
-            "type": "ConstructedResponse"
-          }
-        ]
+        "initialPrompt": "Write some stuff..."
       }
     },
     {
@@ -40,17 +35,8 @@
       ],
       "sequence": {
         "type": "ConstructedResponseSequence",
-        "initialPrompt": "Please write your name in the first box, and your favorite food in the second.",
-        "responses": [
-          {
-            "type": "ConstructedResponse",
-            "initialContent": "My name is..."
-          },
-          {
-            "type": "ConstructedResponse",
-            "initialContent": "My favorite food is..."
-          }
-        ]
+        "initialPrompt": "What is your name?",
+        "initialContent": "My name is...",
       }
     }
   ]
