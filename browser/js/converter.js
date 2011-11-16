@@ -691,7 +691,15 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, ImagePane, PredefinedGraphPane, TablePane, dumbSingularize;
+  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, SensorGraphPane, TablePane, dumbSingularize;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  };
   dumbSingularize = require('../singularize').dumbSingularize;
   AuthorPane = exports.AuthorPane = {
     classFor: {},
@@ -704,11 +712,11 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       return new PaneClass(hash);
     }
   };
-  AuthorPane.classFor['PredefinedGraphPane'] = PredefinedGraphPane = (function() {
-    function PredefinedGraphPane(_arg) {
-      this.title = _arg.title, this.data = _arg.data, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks;
+  GraphPane = (function() {
+    function GraphPane(_arg) {
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks;
     }
-    PredefinedGraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
+    GraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
       var dataKey, datadef;
       if (this.xUnits) {
         this.xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(this.xUnits));
@@ -743,7 +751,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         return runtimeActivity.defineDatadef(dataKey, datadef);
       }
     };
-    PredefinedGraphPane.prototype.addToStep = function(step) {
+    GraphPane.prototype.addToStep = function(step) {
       return step.addGraphPane({
         title: this.title,
         datadefRef: this.datadefRef,
@@ -752,7 +760,30 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         index: this.index
       });
     };
+    return GraphPane;
+  })();
+  AuthorPane.classFor['PredefinedGraphPane'] = PredefinedGraphPane = (function() {
+    __extends(PredefinedGraphPane, GraphPane);
+    function PredefinedGraphPane(_arg) {
+      this.data = _arg.data;
+      PredefinedGraphPane.__super__.constructor.apply(this, arguments);
+    }
     return PredefinedGraphPane;
+  })();
+  AuthorPane.classFor['SensorGraphPane'] = SensorGraphPane = (function() {
+    __extends(SensorGraphPane, GraphPane);
+    function SensorGraphPane() {
+      SensorGraphPane.__super__.constructor.apply(this, arguments);
+      this.data = [];
+    }
+    SensorGraphPane.prototype.addToStep = function(step) {
+      SensorGraphPane.__super__.addToStep.apply(this, arguments);
+      return step.addSensorTool({
+        index: this.index,
+        datadefRef: this.datadefRef
+      });
+    };
+    return SensorGraphPane;
   })();
   AuthorPane.classFor['ImagePane'] = ImagePane = (function() {
     function ImagePane(_arg) {
@@ -1343,6 +1374,24 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         }
       };
     };
+    Step.prototype.addSensorTool = function(_arg) {
+      var datadefRef, index;
+      index = _arg.index, datadefRef = _arg.datadefRef;
+      return this.tools['sensor'] = {
+        index: index,
+        panes: this.panes,
+        datadefRef: datadefRef,
+        toHash: function() {
+          return {
+            name: 'sensor',
+            setup: {
+              controlsPane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
+              data: this.datadefRef.datadef.name
+            }
+          };
+        }
+      };
+    };
     Step.prototype.appendResponseBranch = function(_arg) {
       var criterion, step;
       criterion = _arg.criterion, step = _arg.step;
@@ -1356,15 +1405,6 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
           };
         }
       });
-    };
-    Step.prototype.getPaneKey = function(numPanes, index) {
-      if (numPanes === 1) {
-        return "single";
-      } else if (index === 0) {
-        return "top";
-      } else {
-        return "bottom";
-      }
     };
     Step.prototype.makeNonFinal = function() {
       var _ref;

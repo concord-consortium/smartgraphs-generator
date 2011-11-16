@@ -10,9 +10,10 @@ AuthorPane = exports.AuthorPane =
     return new PaneClass hash
 
 
-AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane
 
-  constructor: ({@title, @data, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks }) ->
+class GraphPane
+
+  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks }) ->
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
     @xUnitsRef = runtimeActivity.getUnitRef dumbSingularize @xUnits if @xUnits
@@ -29,6 +30,23 @@ AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane
 
   addToStep: (step) ->
     step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index }
+
+
+AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends GraphPane
+
+  constructor: ({@data}) ->
+    super
+
+
+AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
+
+  constructor: ->
+    super
+    @data = []
+
+  addToStep: (step) ->
+    super
+    step.addSensorTool { @index, @datadefRef }
 
 
 AuthorPane.classFor['ImagePane'] = class ImagePane
@@ -50,3 +68,6 @@ AuthorPane.classFor['TablePane'] = class TablePane
     dataKey = "#{@page.index}-#{otherPaneIndex}"
     datadefRef = @runtimeActivity.getDatadefRef dataKey     # get the datadef defined in the *other* pane on this page
     step.addTablePane { datadefRef, @index }
+
+
+

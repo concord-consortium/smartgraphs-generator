@@ -76,6 +76,18 @@ exports.Step = class Step
           data: @datadefRef.datadef.name
     }
 
+  addSensorTool: ({ index, datadefRef }) ->
+    @tools['sensor'] = {
+      index,
+      panes: @panes,
+      datadefRef,
+      toHash: ->
+        name: 'sensor'
+        setup:
+          controlsPane: if @panes.length == 1 then 'single' else if @index == 0 then 'top' else 'bottom'
+          data:         @datadefRef.datadef.name
+    }
+
   appendResponseBranch: ({ criterion, step }) ->
     @responseBranches.push {
       criterion,
@@ -84,9 +96,6 @@ exports.Step = class Step
         criterion: @criterion
         step:      @step.getUrl()
     }
-
-  getPaneKey: (numPanes, index) ->
-    if numPanes == 1 then "single" else if index == 0 then "top" else "bottom"
 
   makeNonFinal: ->
     @submitButtonTitle ?= "OK"     # the default, unless overridden
