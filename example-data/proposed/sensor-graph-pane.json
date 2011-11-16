@@ -1,25 +1,25 @@
 {
   "type": "Activity",
-  "name": "Sensor Graph",
+  "name": "Sensor Graph Activity",
   "pages": [
     {
       "type": "Page",
-      "name": "Graph",
-      "text": "in this activity....",
+      "name": "Sensor graph page",
+      "text": "In this activity, you'll walk back and forth in front of the sensor.",
       "panes": [
         {
           "type": "SensorGraphPane",
-          "title": "Position vs. Time",
+          "title": "Back and Forth",
           "yLabel": "Position",
-          "yUnits": "meters",
-          "yMin": 0,
-          "yMax": 2000,
-          "yTicks": 10,
+          "yUnits": "Distance",
+          "yMin": 0.0,
+          "yMax": 5.0,
           "xLabel": "Time",
-          "xUnits": "minutes",
-          "xMin": 0,
-          "xMax": 10,
-          "xTicks": 10
+          "xUnits": "Time",
+          "xMin": 0.0,
+          "xMax": 20.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0
         }
       ]
     }
@@ -27,12 +27,12 @@
   "units": [
     {
       "type": "Unit",
-      "name": "meters",
-      "abbreviation": "m"
+      "name": "Time",
+      "abbreviation": "s"
     },
     {
       "type": "Unit",
-      "name": "minutes",
+      "name": "Distance",
       "abbreviation": "m"
     }
   ]
