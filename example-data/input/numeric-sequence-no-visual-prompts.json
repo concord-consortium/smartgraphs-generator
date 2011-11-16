@@ -6,29 +6,7 @@
       "type": "Page",
       "name": "Introduction",
       "text": "in this activity....",
-      "panes": [
-        {
-          "type": "PredefinedGraphPane",
-          "title": "Position vs. Time",
-          "yLabel": "Position",
-          "yMin": 0,
-          "yMax": 2000,
-          "yTicks": 10,
-          "xLabel": "Time",
-          "xMin": 0,
-          "xMax": 10,
-          "xTicks": 10,
-          "data": [
-            [1,200],
-            [2,400],
-            [3,600],
-            [4,800]
-          ]
-        },
-        {
-          "type": "TablePane"
-        }
-      ],
+      "panes": [],
       "sequence": {
         "type": "NumericSequence",
         "initialPrompt": {
