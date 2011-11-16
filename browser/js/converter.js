@@ -543,7 +543,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       }
       return false;
     };
-    CorrectableSequenceWithFeedback.prototype.getAnswerableStepCriterion = function() {
+    CorrectableSequenceWithFeedback.prototype.getCriterion = function() {
       return [];
     };
     CorrectableSequenceWithFeedback.prototype.getDataDefRef = function(runtimeActivity) {

@@ -54,7 +54,7 @@ class CorrectableSequenceWithFeedback
       return true if feedback.visualPrompts?.length > 0
     false
 
-  getAnswerableStepCriterion: ->
+  getCriterion: ->
     []
 
   getDataDefRef: (runtimeActivity) ->
