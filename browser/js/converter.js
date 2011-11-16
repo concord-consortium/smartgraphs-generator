@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-
+  
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-
+  
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-
+  
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-
+  
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -401,13 +401,11 @@ require.define("/author/author-page.js", function (require, module, exports, __d
   AuthorPane = require('./author-panes').AuthorPane;
   exports.AuthorPage = AuthorPage = (function() {
     function AuthorPage(hash, activity, index) {
-      var h, pane, _len, _ref, _ref2, _ref3, _ref4;
+      var h, pane, sequence, _len, _ref, _ref2, _ref3, _ref4, _ref5;
       this.hash = hash;
       this.activity = activity;
       this.index = index;
       _ref = this.hash, this.name = _ref.name, this.text = _ref.text;
-      this.sequence = Sequence.fromHash(this.hash.sequence);
-      this.sequence.page = this;
       if (((_ref2 = this.hash.panes) != null ? _ref2.length : void 0) > 2) {
         throw new Error("There cannot be more than two panes");
       }
@@ -426,6 +424,9 @@ require.define("/author/author-page.js", function (require, module, exports, __d
         pane = _ref3[index];
         _ref4 = [this, index], pane.page = _ref4[0], pane.index = _ref4[1];
       }
+      sequence = (_ref5 = this.hash.sequence) != null ? _ref5 : {};
+      sequence.page = this;
+      this.sequence = Sequence.fromHash(sequence);
     }
     AuthorPage.prototype.toRuntimePage = function(runtimeActivity) {
       var pane, runtimePage, _i, _len, _ref;
@@ -461,8 +462,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   Sequence = exports.Sequence = {
     classFor: {},
     fromHash: function(hash) {
-      var SequenceClass;
-      SequenceClass = this.classFor[(hash != null ? hash.type : void 0) || 'NoSequence'];
+      var SequenceClass, _ref;
+      SequenceClass = this.classFor[(_ref = hash.type) != null ? _ref : 'NoSequence'];
       if (!(SequenceClass != null)) {
         throw new Error("Sequence type " + hash.type + " is not supported");
       }
@@ -470,7 +471,9 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     }
   };
   Sequence.classFor['NoSequence'] = NoSequence = (function() {
-    function NoSequence() {}
+    function NoSequence(_arg) {
+      this.page = _arg.page;
+    }
     NoSequence.prototype.appendSteps = function(runtimePage) {
       var pane, step, _i, _len, _ref, _results;
       step = runtimePage.appendStep();
@@ -486,7 +489,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   })();
   Sequence.classFor['InstructionSequence'] = InstructionSequence = (function() {
     function InstructionSequence(_arg) {
-      this.text = _arg.text;
+      this.text = _arg.text, this.page = _arg.page;
     }
     InstructionSequence.prototype.appendSteps = function(runtimePage) {
       var pane, step, _i, _len, _ref, _results;
@@ -505,11 +508,22 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   CorrectableSequenceWithFeedback = (function() {
     CorrectableSequenceWithFeedback.prototype.HIGHLIGHT_COLOR = '#1f77b4';
     function CorrectableSequenceWithFeedback(_arg) {
-      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect;
+      var i, pane, _len, _ref;
+      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.correctAnswerPoint = _arg.correctAnswerPoint, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
       if (typeof this.initialPrompt === 'string') {
         this.initialPrompt = {
           text: this.initialPrompt
         };
+      }
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor['PredefinedGraphPane']) {
+          this.graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor['TablePane']) {
+          this.tablePane = pane;
+        }
       }
     }
     CorrectableSequenceWithFeedback.prototype.requiresGraphOrTable = function() {
@@ -532,53 +546,46 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     CorrectableSequenceWithFeedback.prototype.getAnswerableStepCriterion = function() {
       return [];
     };
+    CorrectableSequenceWithFeedback.prototype.getDataDefRef = function(runtimeActivity) {
+      return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
+    };
     CorrectableSequenceWithFeedback.prototype.actualAppendSteps = function(runtimePage, stepModifier) {
-      var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, giveUpStep, graphPane, i, index, lastAnswerableStep, pane, runtimeActivity, step, steps, tablePane, _i, _len, _len2, _len3, _ref, _ref2, _results;
-      _ref = this.page.panes || [];
-      for (i = 0, _len = _ref.length; i < _len; i++) {
-        pane = _ref[i];
-        if (pane instanceof AuthorPane.classFor['PredefinedGraphPane']) {
-          graphPane = pane;
-        }
-        if (pane instanceof AuthorPane.classFor['TablePane']) {
-          tablePane = pane;
-        }
-      }
-      if (requiresGraphOrTable && !(graphPane != null) && !(tablePane != null)) {
+      var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, giveUpStep, index, lastAnswerableStep, runtimeActivity, step, steps, _i, _len, _len2, _ref, _results;
+      if (this.requiresGraphOrTable && !(this.graphPane != null) && !(this.tablePane != null)) {
         throw new Error("Sequence requires at least one graph or table pane");
       }
       runtimeActivity = runtimePage.activity;
-      this.datadefRef = runtimeActivity.getDatadefRef("" + this.page.index + "-" + graphPane.index);
+      this.datadefRef = this.getDataDefRef(runtimeActivity);
       steps = [];
       answerableSteps = [];
       addPanesAndFeedbackToStep = __bind(function(_arg) {
-        var color, from, overlay, pane, prompt, step, xMax, xMin, _i, _j, _len2, _len3, _ref2, _ref3, _ref4, _results;
+        var color, from, overlay, pane, prompt, step, xMax, xMin, _i, _j, _len, _len2, _ref, _ref2, _ref3, _results;
         step = _arg.step, from = _arg.from;
-        _ref2 = this.page.panes;
-        for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
-          pane = _ref2[_i];
+        _ref = this.page.panes;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          pane = _ref[_i];
           pane.addToStep(step);
         }
         step.setBeforeText(from.text);
-        _ref4 = (_ref3 = from.visualPrompts) != null ? _ref3 : [];
+        _ref3 = (_ref2 = from.visualPrompts) != null ? _ref2 : [];
         _results = [];
-        for (_j = 0, _len3 = _ref4.length; _j < _len3; _j++) {
-          prompt = _ref4[_j];
+        for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
+          prompt = _ref3[_j];
           _results.push(prompt.type === 'RangeVisualPrompt' ? ((color = prompt.color, xMin = prompt.xMin, xMax = prompt.xMax, prompt), xMin != null ? xMin : xMin = -Infinity, xMax != null ? xMax : xMax = Infinity, overlay = runtimeActivity.createAndAppendSegmentOverlay({
-            datadefRef: datadefRef,
+            datadefRef: this.datadefRef,
             color: color,
             xMin: xMin,
             xMax: xMax
           }), step.addAnnotationToPane({
             annotation: overlay,
-            index: graphPane.index
+            index: this.graphPane.index
           })) : void 0);
         }
         return _results;
       }, this);
-      _ref2 = [this.initialPrompt].concat(this.hints);
-      for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
-        answerableInfo = _ref2[_i];
+      _ref = [this.initialPrompt].concat(this.hints);
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        answerableInfo = _ref[_i];
         steps.push(step = runtimePage.appendStep());
         answerableSteps.push(step);
         addPanesAndFeedbackToStep({
@@ -598,24 +605,12 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       });
       lastAnswerableStep = answerableSteps[answerableSteps.length - 1];
       _results = [];
-      for (index = 0, _len3 = answerableSteps.length; index < _len3; index++) {
+      for (index = 0, _len2 = answerableSteps.length; index < _len2; index++) {
         step = answerableSteps[index];
-        if (graphPane != null) {
-          step.addAnnotationToPane({
-            annotation: highlightedPoint,
-            index: graphPane.index
-          });
-        }
-        if (tablePane != null) {
-          step.addAnnotationToPane({
-            annotation: highlightedPoint,
-            index: tablePane.index
-          });
-        }
         stepModifier(step);
         step.setSubmitButtonTitle("Check My Answer");
         step.appendResponseBranch({
-          criterion: getAnswerableStepCriterion(),
+          criterion: this.getAnswerableStepCriterion(),
           step: confirmCorrectStep
         });
         _results.push(step === lastAnswerableStep ? step.setDefaultBranch(giveUpStep) : step.setDefaultBranch(answerableSteps[index + 1]));
@@ -629,33 +624,49 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     function PickAPointSequence() {
       PickAPointSequence.__super__.constructor.apply(this, arguments);
     }
-    PickAPointSequence.prototype.needsGraphData = function() {
+    PickAPointSequence.prototype.requiresGraphOrTable = function() {
       return true;
     };
     PickAPointSequence.prototype.getAnswerableStepCriterion = function() {
-      return ["coordinates=", this.tag.name, this.correctAnswer[0], this.correctAnswer[1]];
+      return ["coordinates=", this.tag.name, this.correctAnswerPoint[0], this.correctAnswerPoint[1]];
     };
     PickAPointSequence.prototype.appendSteps = function(runtimePage) {
-      var highlightedPoint, runtimeActivity, stepModifier;
+      var datadefRef, runtimeActivity, stepModifier;
       runtimeActivity = runtimePage.activity;
+      datadefRef = this.getDataDefRef(runtimeActivity);
       this.tag = runtimeActivity.createAndAppendTag();
-      highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint({
-        datadefRef: this.datadefRef,
+      this.highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint({
+        datadefRef: datadefRef,
         tag: this.tag,
         color: this.HIGHLIGHT_COLOR
       });
-      stepModifier = function(step) {
-        return step.addTaggingTool({
+      stepModifier = __bind(function(step) {
+        step.addTaggingTool({
           tag: this.tag,
           datadefRef: this.datadefRef
         });
-      };
-      return actualAppendSteps(runtimePage, stepModifier);
+        if (this.graphPane != null) {
+          step.addAnnotationToPane({
+            annotation: this.highlightedPoint,
+            index: this.graphPane.index
+          });
+        }
+        if (this.tablePane != null) {
+          return step.addAnnotationToPane({
+            annotation: this.highlightedPoint,
+            index: this.tablePane.index
+          });
+        }
+      }, this);
+      return this.actualAppendSteps(runtimePage, stepModifier);
     };
     return PickAPointSequence;
   })();
   Sequence.classFor['NumericSequence'] = NumericSequence = (function() {
-    function NumericSequence() {}
+    __extends(NumericSequence, CorrectableSequenceWithFeedback);
+    function NumericSequence() {
+      NumericSequence.__super__.constructor.apply(this, arguments);
+    }
     NumericSequence.prototype.getAnswerableStepCriterion = function() {
       return ["=", ["responseField", 1], this.correctAnswer];
     };
@@ -663,10 +674,11 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       var responseTemplate, runtimeActivity, stepModifier;
       runtimeActivity = runtimePage.activity;
       responseTemplate = runtimeActivity.createAndAppendResponseTemplate("NumericResponseTemplate");
-      return stepModifier = function(step) {
+      stepModifier = __bind(function(step) {
         step.setSubmissibilityCriterion(["isNumeric", ["responseField", 1]]);
         return step.setResponseTemplate(responseTemplate);
-      };
+      }, this);
+      return this.actualAppendSteps(runtimePage, stepModifier);
     };
     return NumericSequence;
   })();
@@ -815,13 +827,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-
+  
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-
+  
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
