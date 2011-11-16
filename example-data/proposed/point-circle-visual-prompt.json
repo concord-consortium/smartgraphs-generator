@@ -1,0 +1,305 @@
+{
+  "type": "Activity",
+  "name": "Point Circles",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Pick a point",
+      "text": "Pick a point page.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Graph",
+          "yLabel": "Light",
+          "yUnits": "Intensity",
+          "yMin": 0.0,
+          "yMax": 11.0,
+          "xLabel": "Time",
+          "xUnits": "Time (s)",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 1.0,
+          "xTicks": 1.0,
+          "data": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              1.0,
+              2.0
+            ],
+            [
+              2.0,
+              3.0
+            ],
+            [
+              3.0,
+              4.0
+            ],
+            [
+              4.0,
+              5.0
+            ],
+            [
+              5.0,
+              6.0
+            ],
+            [
+              6.0,
+              7.0
+            ],
+            [
+              7.0,
+              8.0
+            ],
+            [
+              8.0,
+              9.0
+            ],
+            [
+              9.0,
+              10.0
+            ],
+            [
+              10.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "sequence": {
+        "type": "PickAPointSequence",
+        "initialPrompt": {
+          "text": "Pick the top point",
+          "visualPrompts": [
+            {
+              "type": "PointCircleVisualPrompt",
+              "name": "Circle 6,7",
+              "point": [
+                6.0,
+                7.0
+              ],
+              "color": "red"
+            }
+          ]
+        },
+        "correctAnswerPoint": [
+          7.0,
+          8.0
+        ],
+        "giveUp": {
+          "text": "It was 7,8",
+          "visualPrompts": [
+            {
+              "type": "PointCircleVisualPrompt",
+              "name": "Circle 7,8 (red)",
+              "point": [
+                7.0,
+                8.0
+              ],
+              "color": "red"
+            }
+          ]
+        },
+        "confirmCorrect": {
+          "text": "That's right!",
+          "visualPrompts": [
+            {
+              "type": "PointCircleVisualPrompt",
+              "name": "Circle 7,8",
+              "point": [
+                7.0,
+                8.0
+              ],
+              "color": "green"
+            }
+          ]
+        },
+        "hints": [
+          {
+            "name": "Hint 1",
+            "text": "That's not quite right. It's definitely not the highlighted point.",
+            "visualPrompts": [
+              {
+                "type": "PointCircleVisualPrompt",
+                "name": "Circle 3,4",
+                "point": [
+                  3.0,
+                  4.0
+                ],
+                "color": "blue"
+              }
+            ]
+          },
+          {
+            "name": "Hint 2",
+            "text": "It's definitely not any of these points either.",
+            "visualPrompts": [
+              {
+                "type": "PointCircleVisualPrompt",
+                "name": "1,2",
+                "point": [
+                  1.0,
+                  2.0
+                ],
+                "color": "yellow"
+              },
+              {
+                "type": "PointCircleVisualPrompt",
+                "name": "2,3",
+                "point": [
+                  2.0,
+                  3.0
+                ],
+                "color": "yellow"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Page",
+      "name": "Numeric",
+      "text": "Numeric page.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Graph",
+          "yLabel": "Light",
+          "yUnits": "Intensity",
+          "yMin": 0.0,
+          "yMax": 11.0,
+          "xLabel": "Time",
+          "xUnits": "Time (s)",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 1.0,
+          "xTicks": 1.0,
+          "data": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              1.0,
+              2.0
+            ],
+            [
+              2.0,
+              3.0
+            ],
+            [
+              3.0,
+              4.0
+            ],
+            [
+              4.0,
+              5.0
+            ],
+            [
+              5.0,
+              6.0
+            ],
+            [
+              6.0,
+              7.0
+            ],
+            [
+              7.0,
+              8.0
+            ],
+            [
+              8.0,
+              9.0
+            ],
+            [
+              9.0,
+              10.0
+            ],
+            [
+              10.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "sequence": {
+        "type": "NumericSequence",
+        "initialPrompt": {
+          "text": "Enter a number between 1 and 6",
+          "visualPrompts": [
+            {
+              "type": "PointCircleVisualPrompt",
+              "name": "5,6",
+              "point": [
+                5.0,
+                6.0
+              ],
+              "color": "black"
+            }
+          ]
+        },
+        "correctAnswer": 4.0,
+        "giveUp": {
+          "text": "Nope, it was 4",
+          "visualPrompts": [
+            {
+              "type": "PointCircleVisualPrompt",
+              "name": "Good",
+              "point": [
+                4.0,
+                5.0
+              ],
+              "color": "grey"
+            }
+          ]
+        },
+        "confirmCorrect": {
+          "text": "Yep, it was 4!",
+          "visualPrompts": [
+            {
+              "type": "PointCircleVisualPrompt",
+              "name": "4,5",
+              "point": [
+                4.0,
+                5.0
+              ],
+              "color": "blue"
+            }
+          ]
+        },
+        "hints": [
+          {
+            "name": "Hint 1",
+            "text": "It's in the middle",
+            "visualPrompts": [
+              {
+                "type": "PointCircleVisualPrompt",
+                "name": "3,4",
+                "point": [
+                  3.0,
+                  4.0
+                ],
+                "color": "red"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time (s)",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Intensity",
+      "abbreviation": "lux"
+    }
+  ]
+}
