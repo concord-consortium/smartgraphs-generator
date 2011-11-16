@@ -1,0 +1,57 @@
+{
+  "type": "Activity",
+  "name": "Constructed Responses",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "First",
+      "text": "First page text...",
+      "panes": [
+        {
+          "type": "ImagePane",
+          "name": "Concord",
+          "url": "http://www.concord.org/sites/all/themes/cc/img/css/bg-footer-home.png",
+          "license": "",
+          "attribution": ""
+        }
+      ],
+      "sequence": {
+        "type": "ConstructedResponseSequence",
+        "initialPrompt": "Write some stuff...",
+        "responses": [
+          {
+            "type": "ConstructedResponse"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Page",
+      "name": "Second",
+      "text": "Second page text...",
+      "panes": [
+        {
+          "type": "ImagePane",
+          "name": "Concord",
+          "url": "http://www.concord.org/sites/all/themes/cc/img/css/bg-footer-home.png",
+          "license": "",
+          "attribution": ""
+        }
+      ],
+      "sequence": {
+        "type": "ConstructedResponseSequence",
+        "initialPrompt": "Please write your name in the first box, and your favorite food in the second.",
+        "responses": [
+          {
+            "type": "ConstructedResponse",
+            "initialContent": "My name is..."
+          },
+          {
+            "type": "ConstructedResponse",
+            "initialContent": "My favorite food is..."
+          }
+        ]
+      }
+    }
+  ]
+}
