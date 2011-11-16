@@ -43,13 +43,13 @@ class CorrectableSequenceWithFeedback
       @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
       @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
 
-  requiresGraphOrTable: ->
-    @hasVisualPrompts() || @needsGraphData()
+  getRequiresGraphOrTable: ->
+    @getHasVisualPrompts() || @getNeedsGraphData()
 
-  needsGraphData: ->
+  getNeedsGraphData: ->
     false
 
-  hasVisualPrompts: ->
+  getHasVisualPrompts: ->
     for feedback in @hints.concat @initialPrompt, @giveUp, @confirmCorrect
       return true if feedback.visualPrompts?.length > 0
     false
@@ -62,7 +62,7 @@ class CorrectableSequenceWithFeedback
     runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}"
 
   appendStepsWithModifier: (runtimePage, modifyForSequenceType) ->
-    if @requiresGraphOrTable() and not @graphPane? and not @tablePane? then throw new Error "Sequence requires at least one graph or table pane"
+    if @getRequiresGraphOrTable() and not @graphPane? and not @tablePane? then throw new Error "Sequence requires at least one graph or table pane"
 
     runtimeActivity = runtimePage.activity
     @datadefRef = @getDataDefRef runtimeActivity
@@ -115,7 +115,7 @@ class CorrectableSequenceWithFeedback
 
 Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends CorrectableSequenceWithFeedback
 
-  requiresGraphOrTable: ->
+  getRequiresGraphOrTable: ->
     true
 
   getCriterion: ->

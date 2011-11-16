@@ -23,33 +23,33 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-        
+
         if (require._core[x]) return x;
         var path = require.modules.path();
         var y = cwd || '.';
-        
+
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-        
+
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-        
+
         throw new Error("Cannot find module '" + x + "'");
-        
+
         function loadAsFileSync (x) {
             if (require.modules[x]) {
                 return x;
             }
-            
+
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-        
+
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = x + '/package.json';
@@ -69,10 +69,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-            
+
             return loadAsFileSync(x + '/index');
         }
-        
+
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -82,23 +82,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-            
+
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-        
+
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-            
+
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-            
+
             return dirs;
         }
     };
@@ -114,9 +114,9 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-    
+
     var keys = Object_keys(require.modules);
-    
+
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -134,7 +134,7 @@ require.define = function (filename, fn) {
         ? ''
         : require.modules.path().dirname(filename)
     ;
-    
+
     var require_ = function (file) {
         return require(file, dirname)
     };
@@ -144,7 +144,7 @@ require.define = function (filename, fn) {
     require_.modules = require.modules;
     require_.define = require.define;
     var module_ = { exports : {} };
-    
+
     require.modules[filename] = function () {
         require.modules[filename]._cached = module_.exports;
         fn.call(
@@ -272,7 +272,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-  
+
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -526,13 +526,13 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
         }
       }
     }
-    CorrectableSequenceWithFeedback.prototype.requiresGraphOrTable = function() {
-      return this.hasVisualPrompts() || this.needsGraphData();
+    CorrectableSequenceWithFeedback.prototype.getRequiresGraphOrTable = function() {
+      return this.getHasVisualPrompts() || this.getNeedsGraphData();
     };
-    CorrectableSequenceWithFeedback.prototype.needsGraphData = function() {
+    CorrectableSequenceWithFeedback.prototype.getNeedsGraphData = function() {
       return false;
     };
-    CorrectableSequenceWithFeedback.prototype.hasVisualPrompts = function() {
+    CorrectableSequenceWithFeedback.prototype.getHasVisualPrompts = function() {
       var feedback, _i, _len, _ref, _ref2;
       _ref = this.hints.concat(this.initialPrompt, this.giveUp, this.confirmCorrect);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -554,7 +554,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     };
     CorrectableSequenceWithFeedback.prototype.appendStepsWithModifier = function(runtimePage, modifyForSequenceType) {
       var addPanesAndFeedbackToStep, answerableInfo, answerableSteps, confirmCorrectStep, giveUpStep, index, lastAnswerableStep, runtimeActivity, step, steps, _i, _len, _len2, _ref, _results;
-      if (this.requiresGraphOrTable() && !(this.graphPane != null) && !(this.tablePane != null)) {
+      if (this.getRequiresGraphOrTable() && !(this.graphPane != null) && !(this.tablePane != null)) {
         throw new Error("Sequence requires at least one graph or table pane");
       }
       runtimeActivity = runtimePage.activity;
@@ -627,7 +627,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     function PickAPointSequence() {
       PickAPointSequence.__super__.constructor.apply(this, arguments);
     }
-    PickAPointSequence.prototype.requiresGraphOrTable = function() {
+    PickAPointSequence.prototype.getRequiresGraphOrTable = function() {
       return true;
     };
     PickAPointSequence.prototype.getCriterion = function() {
