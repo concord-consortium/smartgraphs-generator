@@ -303,7 +303,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["HighlightedPoint", "SegmentOverlay"]
+            "enum": ["HighlightedPoint", "SegmentOverlay", "CircledPoint"]
           },
           "records": {
             "type": "array",
