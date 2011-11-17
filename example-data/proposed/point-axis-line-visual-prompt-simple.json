@@ -1,0 +1,112 @@
+{
+  "type": "Activity",
+  "name": "Pick A Point Sequence",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "data": [
+            [1,200],
+            [2,400],
+            [3,600],
+            [4,800],
+            [5,1000]
+          ]
+        },
+        {
+          "type": "TablePane"
+        }
+      ],
+      "sequence": {
+        "type": "PickAPointSequence",
+        "initialPrompt": {
+          "text": "Click the point...",
+          "visualPrompts": [
+            {
+              "type": "PointAxisLineVisualPrompt",
+              "name": "1 to 2",
+              "point": [
+                1,
+                200
+              ],
+              "color": "red",
+              "axis": "x_axis"
+            }
+          ]
+        },
+        "correctAnswerPoint": [4, 800],
+        "hints": [
+          {
+            "name": "1st wrong answer",
+            "text": "Look at the graph...",
+            "visualPrompts": [
+              {
+                "type": "PointAxisLineVisualPrompt",
+                "name": "1 to 3",
+                "point": [
+                  2,
+                  400
+                ],
+                "color": "#ff0000",
+                "axis": "y_axis"
+              },
+              {
+                "type": "PointAxisLineVisualPrompt",
+                "name": "1 to 3",
+                "point": [
+                  3,
+                  600
+                ],
+                "color": "#00ff00",
+                "axis": "x_axis"
+              }
+            ]
+          }
+        ],
+        "giveUp": {
+          "text": "If you look carefully, ....",
+          "visualPrompts": [
+            {
+              "type": "PointAxisLineVisualPrompt",
+              "name": "1 to 2",
+              "point": [
+                4,
+                800
+              ],
+              "color": "#000000",
+              "axis": "y_axis"
+            }
+          ]
+        },
+        "confirmCorrect": {
+          "text": "Four minutes into her run ....",
+          "visualPrompts": [
+            {
+              "type": "PointAxisLineVisualPrompt",
+              "name": "1 to 2",
+              "point": [
+                5,
+                1000
+              ],
+              "color": "#ffffff",
+              "axis": "x_axis"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
