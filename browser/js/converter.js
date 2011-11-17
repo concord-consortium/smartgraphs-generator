@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-  
+
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-  
+
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-  
+
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-  
+
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -562,7 +562,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       steps = [];
       answerableSteps = [];
       addPanesAndFeedbackToStep = __bind(function(_arg) {
-        var color, from, pane, prompt, step, xMax, xMin, _i, _j, _len, _len2, _ref, _ref2, _ref3, _results;
+        var from, pane, prompt, promptHash, step, _i, _j, _len, _len2, _ref, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results;
         step = _arg.step, from = _arg.from;
         _ref = this.page.panes;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -574,15 +574,23 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
         _results = [];
         for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
           prompt = _ref3[_j];
-          _results.push(prompt.type === 'RangeVisualPrompt' ? ((color = prompt.color, xMin = prompt.xMin, xMax = prompt.xMax, prompt), xMin != null ? xMin : xMin = -Infinity, xMax != null ? xMax : xMax = Infinity, step.addAnnotationToPane({
-            annotation: runtimeActivity.createAndAppendSegmentOverlay({
-              datadefRef: this.datadefRef,
-              color: color,
-              xMin: xMin,
-              xMax: xMax
-            }),
+          promptHash = {
+            datadefRef: this.datadefRef,
+            color: prompt.color,
+            x: (_ref4 = (_ref5 = prompt.point) != null ? _ref5[0] : void 0) != null ? _ref4 : void 0,
+            y: (_ref6 = (_ref7 = prompt.point) != null ? _ref7[1] : void 0) != null ? _ref6 : void 0
+          };
+          if (prompt.type === 'RangeVisualPrompt') {
+            promptHash.type = "SegmentOverlay";
+            promptHash.xMin = (_ref8 = prompt.xMin) != null ? _ref8 : -Infinity;
+            promptHash.xMax = (_ref9 = prompt.xMax) != null ? _ref9 : Infinity;
+          } else if (prompt.type === 'PointCircleVisualPrompt') {
+            promptHash.type = "CircledPoint";
+          }
+          _results.push(step.addAnnotationToPane({
+            annotation: runtimeActivity.createAndAppendAnnotation(promptHash),
             index: this.graphPane.index
-          })) : void 0);
+          }));
         }
         return _results;
       }, this);
@@ -638,7 +646,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       runtimeActivity = runtimePage.activity;
       datadefRef = this.getDataDefRef(runtimeActivity);
       this.tag = runtimeActivity.createAndAppendTag();
-      this.highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint({
+      this.highlightedPoint = runtimeActivity.createAndAppendAnnotation({
+        type: "HighlightedPoint",
         datadefRef: datadefRef,
         tag: this.tag,
         color: this.HIGHLIGHT_COLOR
@@ -861,17 +870,17 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-  
+
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-  
+
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
-  var Annotation, Axis, Datadef, HighlightedPoint, ResponseTemplateCollection, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref;
+  var Annotation, AnnotationCollection, Axis, Datadef, HighlightedPoint, ResponseTemplateCollection, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref;
   var __hasProp = Object.prototype.hasOwnProperty;
   slugify = require('../slugify').slugify;
   RuntimePage = require('./runtime-page').RuntimePage;
@@ -880,7 +889,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
   RuntimeUnit = require('./runtime-unit').RuntimeUnit;
   Datadef = require('./datadef').Datadef;
   Tag = require('./tag').Tag;
-  _ref = require('./annotations'), Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint, SegmentOverlay = _ref.SegmentOverlay;
+  _ref = require('./annotations'), AnnotationCollection = _ref.AnnotationCollection, Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint, SegmentOverlay = _ref.SegmentOverlay;
   ResponseTemplateCollection = require('./responseTemplates').ResponseTemplateCollection;
   exports.RuntimeActivity = RuntimeActivity = (function() {
     function RuntimeActivity(owner, name) {
@@ -894,8 +903,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.datadefRefs = {};
       this.nDatadefs = 0;
       this.annotations = {};
-      this.nHighlightedPoints = 0;
-      this.nSegmentOverlays = 0;
+      this.annotationCounts = {};
       this.tags = [];
       this.nTags = 0;
       this.responseTemplates = {};
@@ -1010,38 +1018,30 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.tags.push(tag);
       return tag;
     };
-    RuntimeActivity.prototype.createAndAppendHighlightedPoint = function(_arg) {
-      var color, datadefRef, point, tag, _base, _ref2;
-      datadefRef = _arg.datadefRef, tag = _arg.tag, color = _arg.color;
-      point = new HighlightedPoint({
+    RuntimeActivity.prototype.createAndAppendAnnotation = function(_arg) {
+      var annotation, annotationClazz, color, datadefRef, tag, type, x, xMax, xMin, y, _base, _base2, _ref2, _ref3;
+      type = _arg.type, datadefRef = _arg.datadefRef, tag = _arg.tag, color = _arg.color, x = _arg.x, y = _arg.y, xMin = _arg.xMin, xMax = _arg.xMax;
+      annotationClazz = AnnotationCollection.classFor[type];
+      if ((_ref2 = (_base = this.annotationCounts)[type]) == null) {
+        _base[type] = 0;
+      }
+      annotation = new annotationClazz({
+        type: type,
         datadefRef: datadefRef,
         tag: tag,
         color: color,
-        index: ++this.nHighlightedPoints
-      });
-      point.activity = this;
-      if ((_ref2 = (_base = this.annotations).highlightedPoints) == null) {
-        _base.highlightedPoints = [];
-      }
-      this.annotations.highlightedPoints.push(point);
-      return point;
-    };
-    RuntimeActivity.prototype.createAndAppendSegmentOverlay = function(_arg) {
-      var color, datadefRef, overlay, xMax, xMin, _base, _ref2;
-      datadefRef = _arg.datadefRef, color = _arg.color, xMin = _arg.xMin, xMax = _arg.xMax;
-      overlay = new SegmentOverlay({
-        datadefRef: datadefRef,
-        color: color,
+        x: x,
+        y: y,
         xMin: xMin,
         xMax: xMax,
-        index: ++this.nSegmentOverlays
+        index: ++this.annotationCounts[type]
       });
-      overlay.activity = this;
-      if ((_ref2 = (_base = this.annotations).segmentOverlays) == null) {
-        _base.segmentOverlays = [];
+      annotation.activity = this;
+      if ((_ref3 = (_base2 = this.annotations)[type]) == null) {
+        _base2[type] = [];
       }
-      this.annotations.segmentOverlays.push(overlay);
-      return overlay;
+      this.annotations[type].push(annotation);
+      return annotation;
     };
     RuntimeActivity.prototype.createAndAppendResponseTemplate = function(type) {
       var responseTemplate, templateClazz;
@@ -1607,7 +1607,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
   /*
     Annotation class and its subclasses
   */
-  var Annotation, HighlightedPoint, SegmentOverlay;
+  var Annotation, AnnotationCollection, CircledPoint, HighlightedPoint, SegmentOverlay;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -1615,6 +1615,9 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
     child.prototype = new ctor;
     child.__super__ = parent.prototype;
     return child;
+  };
+  AnnotationCollection = exports.AnnotationCollection = {
+    classFor: {}
   };
   exports.Annotation = Annotation = (function() {
     function Annotation() {}
@@ -1650,7 +1653,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
     };
     return Annotation;
   })();
-  exports.HighlightedPoint = HighlightedPoint = (function() {
+  AnnotationCollection.classFor["HighlightedPoint"] = exports.HighlightedPoint = HighlightedPoint = (function() {
     __extends(HighlightedPoint, Annotation);
     HighlightedPoint.prototype.RECORD_TYPE = 'HighlightedPoint';
     function HighlightedPoint(_arg) {
@@ -1667,7 +1670,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
     };
     return HighlightedPoint;
   })();
-  exports.SegmentOverlay = SegmentOverlay = (function() {
+  AnnotationCollection.classFor["SegmentOverlay"] = exports.SegmentOverlay = SegmentOverlay = (function() {
     __extends(SegmentOverlay, Annotation);
     SegmentOverlay.prototype.RECORD_TYPE = 'SegmentOverlay';
     function SegmentOverlay(_arg) {
@@ -1701,6 +1704,24 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
       return hash;
     };
     return SegmentOverlay;
+  })();
+  AnnotationCollection.classFor["CircledPoint"] = exports.CircledPoint = CircledPoint = (function() {
+    __extends(CircledPoint, Annotation);
+    CircledPoint.prototype.RECORD_TYPE = 'CircledPoint';
+    function CircledPoint(_arg) {
+      this.datadefRef = _arg.datadefRef, this.color = _arg.color, this.x = _arg.x, this.y = _arg.y, this.index = _arg.index;
+      this.name = "circled-point-" + this.index;
+    }
+    CircledPoint.prototype.toHash = function() {
+      var hash;
+      hash = CircledPoint.__super__.toHash.call(this);
+      hash.datadefName = this.datadefRef.datadef.name;
+      hash.color = this.color;
+      hash.xRecord = this.x;
+      hash.yRecord = this.y;
+      return hash;
+    };
+    return CircledPoint;
   })();
 }).call(this);
 

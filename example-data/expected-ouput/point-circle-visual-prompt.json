@@ -1,0 +1,666 @@
+{
+  "_id": "point-circles.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Point Circles",
+    "url": "/shared/point-circles",
+    "owner": "shared",
+    "pages": [
+      "/shared/point-circles/page/1-pick-a-point",
+      "/shared/point-circles/page/2-numeric"
+    ],
+    "axes": [
+      "/shared/point-circles/axes/1",
+      "/shared/point-circles/axes/2",
+      "/shared/point-circles/axes/3",
+      "/shared/point-circles/axes/4"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Pick a point",
+      "url": "/shared/point-circles/page/1-pick-a-point",
+      "activity": "/shared/point-circles",
+      "index": 1,
+      "introText": "Pick a point page.",
+      "steps": [
+        "/shared/point-circles/page/1-pick-a-point/step/1",
+        "/shared/point-circles/page/1-pick-a-point/step/2",
+        "/shared/point-circles/page/1-pick-a-point/step/3",
+        "/shared/point-circles/page/1-pick-a-point/step/4",
+        "/shared/point-circles/page/1-pick-a-point/step/5"
+      ],
+      "firstStep": "/shared/point-circles/page/1-pick-a-point/step/1"
+    },
+    {
+      "name": "Numeric",
+      "url": "/shared/point-circles/page/2-numeric",
+      "activity": "/shared/point-circles",
+      "index": 2,
+      "introText": "Numeric page.",
+      "steps": [
+        "/shared/point-circles/page/2-numeric/step/1",
+        "/shared/point-circles/page/2-numeric/step/2",
+        "/shared/point-circles/page/2-numeric/step/3",
+        "/shared/point-circles/page/2-numeric/step/4"
+      ],
+      "firstStep": "/shared/point-circles/page/2-numeric/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/point-circles/page/1-pick-a-point/step/1",
+      "activityPage": "/shared/point-circles/page/1-pick-a-point",
+      "beforeText": "Pick the top point",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/1",
+          "yAxis": "/shared/point-circles/axes/2",
+          "annotations": [
+            "circled-point-1",
+            "highlighted-point-1"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "tag-1",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/point-circles/page/1-pick-a-point/step/2",
+      "responseBranches": [
+        {
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            7,
+            8
+          ],
+          "step": "/shared/point-circles/page/1-pick-a-point/step/5"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/point-circles/page/1-pick-a-point/step/2",
+      "activityPage": "/shared/point-circles/page/1-pick-a-point",
+      "beforeText": "That's not quite right. It's definitely not the highlighted point.",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/1",
+          "yAxis": "/shared/point-circles/axes/2",
+          "annotations": [
+            "circled-point-2",
+            "highlighted-point-1"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "tag-1",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/point-circles/page/1-pick-a-point/step/3",
+      "responseBranches": [
+        {
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            7,
+            8
+          ],
+          "step": "/shared/point-circles/page/1-pick-a-point/step/5"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/point-circles/page/1-pick-a-point/step/3",
+      "activityPage": "/shared/point-circles/page/1-pick-a-point",
+      "beforeText": "It's definitely not any of these points either.",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/1",
+          "yAxis": "/shared/point-circles/axes/2",
+          "annotations": [
+            "circled-point-3",
+            "circled-point-4",
+            "highlighted-point-1"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "tag-1",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/point-circles/page/1-pick-a-point/step/4",
+      "responseBranches": [
+        {
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            7,
+            8
+          ],
+          "step": "/shared/point-circles/page/1-pick-a-point/step/5"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/point-circles/page/1-pick-a-point/step/4",
+      "activityPage": "/shared/point-circles/page/1-pick-a-point",
+      "beforeText": "It was 7,8",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/1",
+          "yAxis": "/shared/point-circles/axes/2",
+          "annotations": [
+            "circled-point-5"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    },
+    {
+      "url": "/shared/point-circles/page/1-pick-a-point/step/5",
+      "activityPage": "/shared/point-circles/page/1-pick-a-point",
+      "beforeText": "That's right!",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/1",
+          "yAxis": "/shared/point-circles/axes/2",
+          "annotations": [
+            "circled-point-6"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    },
+    {
+      "url": "/shared/point-circles/page/2-numeric/step/1",
+      "activityPage": "/shared/point-circles/page/2-numeric",
+      "beforeText": "Enter a number between 1 and 6",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/3",
+          "yAxis": "/shared/point-circles/axes/4",
+          "annotations": [
+            "circled-point-7"
+          ],
+          "data": [
+            "datadef-2"
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/point-circles/page/2-numeric/step/2",
+      "responseTemplate": "/shared/point-circles/response-templates/numeric",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            4
+          ],
+          "step": "/shared/point-circles/page/2-numeric/step/4"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/point-circles/page/2-numeric/step/2",
+      "activityPage": "/shared/point-circles/page/2-numeric",
+      "beforeText": "It's in the middle",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/3",
+          "yAxis": "/shared/point-circles/axes/4",
+          "annotations": [
+            "circled-point-8"
+          ],
+          "data": [
+            "datadef-2"
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/point-circles/page/2-numeric/step/3",
+      "responseTemplate": "/shared/point-circles/response-templates/numeric",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            4
+          ],
+          "step": "/shared/point-circles/page/2-numeric/step/4"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/point-circles/page/2-numeric/step/3",
+      "activityPage": "/shared/point-circles/page/2-numeric",
+      "beforeText": "Nope, it was 4",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/3",
+          "yAxis": "/shared/point-circles/axes/4",
+          "annotations": [
+            "circled-point-9"
+          ],
+          "data": [
+            "datadef-2"
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    },
+    {
+      "url": "/shared/point-circles/page/2-numeric/step/4",
+      "activityPage": "/shared/point-circles/page/2-numeric",
+      "beforeText": "Yep, it was 4!",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Graph",
+          "xAxis": "/shared/point-circles/axes/3",
+          "yAxis": "/shared/point-circles/axes/4",
+          "annotations": [
+            "circled-point-10"
+          ],
+          "data": [
+            "datadef-2"
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [
+    {
+      "url": "/shared/point-circles/response-templates/numeric",
+      "templateString": "",
+      "fieldTypes": [
+        "numeric"
+      ],
+      "fieldChoicesList": [
+        null
+      ],
+      "initialValues": [
+        ""
+      ]
+    }
+  ],
+  "axes": [
+    {
+      "url": "/shared/point-circles/axes/1",
+      "units": "/shared/point-circles/units/Time (s)",
+      "min": 0,
+      "max": 10,
+      "nSteps": 1,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/point-circles/axes/2",
+      "units": "/shared/point-circles/units/Intensity",
+      "min": 0,
+      "max": 11,
+      "nSteps": 1,
+      "label": "Light"
+    },
+    {
+      "url": "/shared/point-circles/axes/3",
+      "units": "/shared/point-circles/units/Time (s)",
+      "min": 0,
+      "max": 10,
+      "nSteps": 1,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/point-circles/axes/4",
+      "units": "/shared/point-circles/units/Intensity",
+      "min": 0,
+      "max": 11,
+      "nSteps": 1,
+      "label": "Light"
+    }
+  ],
+  "datadefs": [
+    {
+      "type": "UnorderedDataPoints",
+      "records": [
+        {
+          "url": "/shared/point-circles/datadefs/datadef-1",
+          "name": "datadef-1",
+          "activity": "/shared/point-circles",
+          "xUnits": "/shared/point-circles/units/Time (s)",
+          "xLabel": "Time",
+          "xShortLabel": "Time",
+          "yUnits": "/shared/point-circles/units/Intensity",
+          "yLabel": "Light",
+          "yShortLabel": "Light",
+          "points": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              11
+            ]
+          ]
+        },
+        {
+          "url": "/shared/point-circles/datadefs/datadef-2",
+          "name": "datadef-2",
+          "activity": "/shared/point-circles",
+          "xUnits": "/shared/point-circles/units/Time (s)",
+          "xLabel": "Time",
+          "xShortLabel": "Time",
+          "yUnits": "/shared/point-circles/units/Intensity",
+          "yLabel": "Light",
+          "yShortLabel": "Light",
+          "points": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              11
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "url": "/shared/point-circles/tags/tag-1",
+      "activity": "/shared/point-circles",
+      "name": "tag-1"
+    }
+  ],
+  "annotations": [
+    {
+      "type": "HighlightedPoint",
+      "records": [
+        {
+          "url": "/shared/point-circles/annotations/highlighted-point-1",
+          "name": "highlighted-point-1",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-1",
+          "tag": "/shared/point-circles/tags/tag-1",
+          "color": "#1f77b4"
+        }
+      ]
+    },
+    {
+      "type": "CircledPoint",
+      "records": [
+        {
+          "url": "/shared/point-circles/annotations/circled-point-1",
+          "name": "circled-point-1",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-1",
+          "color": "red",
+          "xRecord": 6,
+          "yRecord": 7
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-2",
+          "name": "circled-point-2",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-1",
+          "color": "blue",
+          "xRecord": 3,
+          "yRecord": 4
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-3",
+          "name": "circled-point-3",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-1",
+          "color": "yellow",
+          "xRecord": 1,
+          "yRecord": 2
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-4",
+          "name": "circled-point-4",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-1",
+          "color": "yellow",
+          "xRecord": 2,
+          "yRecord": 3
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-5",
+          "name": "circled-point-5",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-1",
+          "color": "red",
+          "xRecord": 7,
+          "yRecord": 8
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-6",
+          "name": "circled-point-6",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-1",
+          "color": "green",
+          "xRecord": 7,
+          "yRecord": 8
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-7",
+          "name": "circled-point-7",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-2",
+          "color": "black",
+          "xRecord": 5,
+          "yRecord": 6
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-8",
+          "name": "circled-point-8",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-2",
+          "color": "red",
+          "xRecord": 3,
+          "yRecord": 4
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-9",
+          "name": "circled-point-9",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-2",
+          "color": "grey",
+          "xRecord": 4,
+          "yRecord": 5
+        },
+        {
+          "url": "/shared/point-circles/annotations/circled-point-10",
+          "name": "circled-point-10",
+          "activity": "/shared/point-circles",
+          "datadefName": "datadef-2",
+          "color": "blue",
+          "xRecord": 4,
+          "yRecord": 5
+        }
+      ]
+    }
+  ],
+  "variables": [],
+  "units": [
+    {
+      "url": "/shared/point-circles/units/Time (s)",
+      "activity": "/shared/point-circles",
+      "name": "Time (s)",
+      "abbreviation": "s",
+      "pluralName": "Time (s)"
+    },
+    {
+      "url": "/shared/point-circles/units/Intensity",
+      "activity": "/shared/point-circles",
+      "name": "Intensity",
+      "abbreviation": "lux",
+      "pluralName": "Intensity"
+    }
+  ]
+}
