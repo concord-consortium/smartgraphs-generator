@@ -247,7 +247,7 @@
       },
       "submitButtonTitle": "Check My Answer",
       "defaultBranch": "/shared/point-circles/page/2-numeric/step/2",
-      "responseTemplate": "/shared/point-circles/response-templates/numeric",
+      "responseTemplate": "/shared/point-circles/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -291,7 +291,7 @@
       },
       "submitButtonTitle": "Check My Answer",
       "defaultBranch": "/shared/point-circles/page/2-numeric/step/3",
-      "responseTemplate": "/shared/point-circles/response-templates/numeric",
+      "responseTemplate": "/shared/point-circles/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -361,7 +361,7 @@
   ],
   "responseTemplates": [
     {
-      "url": "/shared/point-circles/response-templates/numeric",
+      "url": "/shared/point-circles/response-templates/numeric-1",
       "templateString": "",
       "fieldTypes": [
         "numeric"

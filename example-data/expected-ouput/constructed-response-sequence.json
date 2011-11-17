@@ -37,7 +37,7 @@
             "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
           }
         },
-      "responseTemplate": "/shared/marias-run/response-templates/open",
+      "responseTemplate": "/shared/marias-run/response-templates/open-1",
       "submissibilityCriterion": ["textLengthIsAtLeast", 1, ["responseField", 1]],
       "isFinalStep": true,
       "nextButtonShouldSubmit": true
@@ -45,7 +45,7 @@
   ],
   "responseTemplates": [
     {
-      "url": "/shared/marias-run/response-templates/open",
+      "url": "/shared/marias-run/response-templates/open-1",
       "templateString": "",
       "fieldTypes": [
         "textarea"

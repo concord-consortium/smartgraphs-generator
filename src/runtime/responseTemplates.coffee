@@ -6,36 +6,27 @@ ResponseTemplateCollection = exports.ResponseTemplateCollection =
 class ResponseTemplate
 
   getUrl: ->
-    "#{@activity.getUrl()}/response-templates/#{@name}"
+    "#{@activity.getUrl()}/response-templates/#{@name}-#{@number}"
 
   toHash: ->
     url:         @getUrl()
+    templateString: ""
+    fieldChoicesList: [null]
+    initialValues: @initialValues
+    fieldTypes: @fieldTypes
 
 
 ResponseTemplateCollection.classFor['NumericResponseTemplate'] =  class NumericResponseTemplate extends ResponseTemplate
 
-  constructor: (@initialValues = [""]) ->
+  constructor: (@number, @initialValues = [""]) ->
+    super()
     @name = "numeric"
-
-  toHash: ->
-    hash = super()
-    hash.templateString = ""
-    hash.fieldTypes = ["numeric"]
-    hash.fieldChoicesList = [null]
-    hash.initialValues = @initialValues
-
-    hash
+    @fieldTypes = ("numeric" for val in @initialValues)
 
 ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] =  class NumericResponseTemplate extends ResponseTemplate
 
-  constructor: (@initialValues = [""]) ->
+  constructor: (@number, @initialValues = [""]) ->
+    super()
     @name = "open"
+    @fieldTypes = ("textarea" for val in @initialValues)
 
-  toHash: ->
-    hash = super()
-    hash.templateString = ""
-    hash.fieldTypes = ["textarea"]
-    hash.fieldChoicesList = [null]
-    hash.initialValues = @initialValues
-
-    hash

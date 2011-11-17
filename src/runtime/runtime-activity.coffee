@@ -42,6 +42,7 @@ exports.RuntimeActivity = class RuntimeActivity
     @nTags     = 0
 
     @responseTemplates = {}
+    @responseTemplatesCounts = {}
 
 
   getUrl: ->
@@ -123,7 +124,10 @@ exports.RuntimeActivity = class RuntimeActivity
     templateClazz = ResponseTemplateCollection.classFor[type]
     return @responseTemplates[[type, initialValues]] unless !@responseTemplates[[type, initialValues]]
 
-    responseTemplate = new templateClazz initialValues
+    @responseTemplatesCounts[type] ?= 0
+    count = ++@responseTemplatesCounts[type]
+
+    responseTemplate = new templateClazz count, initialValues
     responseTemplate.activity = this
     @responseTemplates[[type, initialValues]] = responseTemplate
     responseTemplate
