@@ -111,7 +111,7 @@ class CorrectableSequenceWithFeedback
           annotation: runtimeActivity.createAndAppendAnnotation promptHash
           index:      @graphPane.index
 
-    for answerableInfo in [@initialPrompt].concat @hints
+    for answerableInfo in (if @hints then [@initialPrompt].concat @hints else [@initialPrompt])
       steps.push step = runtimePage.appendStep()
       answerableSteps.push step
       addPanesAndFeedbackToStep { step, from: answerableInfo }
