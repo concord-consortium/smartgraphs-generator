@@ -83,7 +83,7 @@ class CorrectableSequenceWithFeedback
           xMax ?= Infinity
 
           step.addAnnotationToPane
-            annotation: runtimeActivity.createAndAppendSegmentOverlay { @datadefRef, color, xMin, xMax }
+            annotation: runtimeActivity.createAndAppendAnnotation { type: "SegmentOverlay", @datadefRef, color, xMin, xMax }
             index:      @graphPane.index
 
     for answerableInfo in [@initialPrompt].concat @hints
@@ -125,7 +125,7 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends Corre
     runtimeActivity = runtimePage.activity
     datadefRef = @getDataDefRef runtimeActivity
     @tag = runtimeActivity.createAndAppendTag()
-    @highlightedPoint = runtimeActivity.createAndAppendHighlightedPoint { datadefRef, @tag, color: @HIGHLIGHT_COLOR }
+    @highlightedPoint = runtimeActivity.createAndAppendAnnotation { type: "HighlightedPoint", datadefRef, @tag, color: @HIGHLIGHT_COLOR }
 
     modifierForSequenceType = (step) =>
       step.addTaggingTool { @tag, @datadefRef }

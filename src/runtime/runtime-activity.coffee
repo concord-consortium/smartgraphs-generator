@@ -19,7 +19,7 @@
 {Datadef}     = require './datadef'
 {Tag}         = require './tag'
 
-{Annotation, HighlightedPoint, SegmentOverlay} = require './annotations'
+{AnnotationCollection, Annotation, HighlightedPoint, SegmentOverlay} = require './annotations'
 {ResponseTemplateCollection} = require './responseTemplates'
 
 exports.RuntimeActivity = class RuntimeActivity
@@ -36,8 +36,7 @@ exports.RuntimeActivity = class RuntimeActivity
     @nDatadefs   = 0
 
     @annotations  = {}
-    @nHighlightedPoints = 0
-    @nSegmentOverlays = 0
+    @annotationCounts = {}      # {"HighlightedPoints": 3, "SegmentOverlays": 6}
 
     @tags      = []
     @nTags     = 0
@@ -111,19 +110,14 @@ exports.RuntimeActivity = class RuntimeActivity
     @tags.push tag
     tag
 
-  createAndAppendHighlightedPoint: ({ datadefRef, tag, color }) ->
-    point = new HighlightedPoint { datadefRef, tag, color, index: ++@nHighlightedPoints }
-    point.activity = this
-    @annotations.highlightedPoints ?= []
-    @annotations.highlightedPoints.push point
-    point
-
-  createAndAppendSegmentOverlay: ({ datadefRef, color, xMin, xMax }) ->
-    overlay = new SegmentOverlay { datadefRef, color, xMin, xMax, index: ++@nSegmentOverlays }
-    overlay.activity = this
-    @annotations.segmentOverlays ?= []
-    @annotations.segmentOverlays.push overlay
-    overlay
+  createAndAppendAnnotation: ({type, datadefRef, tag, color, x, y, xMin, xMax}) ->
+    annotationClazz = AnnotationCollection.classFor[type]
+    @annotationCounts[type] ?= 0
+    annotation = new annotationClazz {type, datadefRef, tag, color, x, y, xMin, xMax, index: ++@annotationCounts[type]}
+    annotation.activity = this
+    @annotations[type] ?= []
+    @annotations[type].push annotation
+    annotation
 
   createAndAppendResponseTemplate: (type) ->
     templateClazz = ResponseTemplateCollection.classFor[type]

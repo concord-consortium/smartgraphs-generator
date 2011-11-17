@@ -2,6 +2,12 @@
   Annotation class and its subclasses
 ###
 
+AnnotationCollection = exports.AnnotationCollection =
+
+  classFor: {}
+
+
+
 exports.Annotation = class Annotation
 
   @serializeAnnotations = (allAnnotations) ->
@@ -22,7 +28,7 @@ exports.Annotation = class Annotation
     activity:    @activity.getUrl()
 
 
-exports.HighlightedPoint = class HighlightedPoint extends Annotation
+AnnotationCollection.classFor["HighlightedPoint"] = exports.HighlightedPoint = class HighlightedPoint extends Annotation
 
   RECORD_TYPE: 'HighlightedPoint'
 
@@ -38,7 +44,7 @@ exports.HighlightedPoint = class HighlightedPoint extends Annotation
     hash
 
 
-exports.SegmentOverlay = class SegmentOverlay extends Annotation
+AnnotationCollection.classFor["SegmentOverlay"] = exports.SegmentOverlay = class SegmentOverlay extends Annotation
 
   RECORD_TYPE: 'SegmentOverlay'
 
