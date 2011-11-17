@@ -77,14 +77,22 @@ class CorrectableSequenceWithFeedback
       step.setBeforeText from.text
 
       for prompt in from.visualPrompts ? []
-        if prompt.type is 'RangeVisualPrompt'
-          { color, xMin, xMax } = prompt
-          xMin ?= -Infinity
-          xMax ?= Infinity
+        promptHash =
+          datadefRef: @datadefRef
+          color:      prompt.color
+          x:          prompt.point?[0] ? undefined
+          y:          prompt.point?[1] ? undefined
 
-          step.addAnnotationToPane
-            annotation: runtimeActivity.createAndAppendAnnotation { type: "SegmentOverlay", @datadefRef, color, xMin, xMax }
-            index:      @graphPane.index
+        if prompt.type is 'RangeVisualPrompt'
+          promptHash.type = "SegmentOverlay"
+          promptHash.xMin = prompt.xMin ? -Infinity
+          promptHash.xMax = prompt.xMax ? Infinity
+        else if prompt.type is 'PointCircleVisualPrompt'
+          promptHash.type = "CircledPoint"
+
+        step.addAnnotationToPane
+          annotation: runtimeActivity.createAndAppendAnnotation promptHash
+          index:      @graphPane.index
 
     for answerableInfo in [@initialPrompt].concat @hints
       steps.push step = runtimePage.appendStep()

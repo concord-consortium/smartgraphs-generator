@@ -69,3 +69,19 @@ AnnotationCollection.classFor["SegmentOverlay"] = exports.SegmentOverlay = class
     hash.isUnboundedRight = true if @xMax is Infinity
 
     hash
+
+AnnotationCollection.classFor["CircledPoint"] = exports.CircledPoint = class CircledPoint extends Annotation
+
+  RECORD_TYPE: 'CircledPoint'
+
+  constructor: ({ @datadefRef, @color, @x, @y, @index }) ->
+    @name = "circled-point-#{@index}"
+
+  toHash: ->
+    hash = super()
+    hash.datadefName = @datadefRef.datadef.name
+    hash.color       = @color
+    hash.xRecord    = @x
+    hash.yRecord    = @y
+
+    hash
