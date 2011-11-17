@@ -32,6 +32,23 @@ Sequence.classFor['InstructionSequence'] = class InstructionSequence
     pane.addToStep(step) for pane in @page.panes
 
 
+Sequence.classFor['ConstructedResponseSequence'] = class InstructionSequence
+
+  constructor: ({@initialPrompt, @initialContent, @page}) ->
+
+  appendSteps: (runtimePage) ->
+    runtimeActivity = runtimePage.activity
+    responseTemplate = runtimeActivity.createAndAppendResponseTemplate "ConstructedResponseTemplate", [@initialContent]
+
+    step = runtimePage.appendStep()
+
+    step.setBeforeText @initialPrompt
+    step.setSubmissibilityCriterion ["textLengthIsAtLeast", 1, ["responseField", 1]]
+    step.setResponseTemplate responseTemplate
+
+    pane.addToStep(step) for pane in @page.panes
+
+
 class CorrectableSequenceWithFeedback
 
   HIGHLIGHT_COLOR: '#1f77b4'

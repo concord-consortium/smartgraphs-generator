@@ -1,0 +1,67 @@
+{
+  "_id": "marias-run.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Maria’s Run",
+    "url": "/shared/marias-run",
+    "owner": "shared",
+    "pages": [
+      "/shared/marias-run/page/1-introduction"
+    ],
+    "axes": []
+  },
+  "pages": [
+    {
+      "name": "Introduction",
+      "url": "/shared/marias-run/page/1-introduction",
+      "activity": "/shared/marias-run",
+      "index": 1,
+      "introText": "In this activity....",
+      "steps": [
+        "/shared/marias-run/page/1-introduction/step/1"
+      ],
+      "firstStep": "/shared/marias-run/page/1-introduction/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/marias-run/page/1-introduction/step/1",
+      "activityPage": "/shared/marias-run/page/1-introduction",
+      "beforeText": "What is your name?",
+      "paneConfig": "single",
+      "panes": {
+          "single": {
+            "type": "image",
+            "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+            "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
+          }
+        },
+      "responseTemplate": "/shared/marias-run/response-templates/open",
+      "submissibilityCriterion": ["textLengthIsAtLeast", 1, ["responseField", 1]],
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [
+    {
+      "url": "/shared/marias-run/response-templates/open",
+      "templateString": "",
+      "fieldTypes": [
+        "textarea"
+      ],
+      "fieldChoicesList": [
+        null
+      ],
+      "initialValues": [
+        "My name is..."
+      ]
+    }
+  ],
+  "axes": [],
+  "datadefs": [],
+  "tags": [],
+  "annotations": [],
+  "variables": [],
+  "units": []
+}

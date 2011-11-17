@@ -119,13 +119,13 @@ exports.RuntimeActivity = class RuntimeActivity
     @annotations[type].push annotation
     annotation
 
-  createAndAppendResponseTemplate: (type) ->
+  createAndAppendResponseTemplate: (type, initialValues = [""]) ->
     templateClazz = ResponseTemplateCollection.classFor[type]
-    return @responseTemplates[type] unless !@responseTemplates[type]
+    return @responseTemplates[[type, initialValues]] unless !@responseTemplates[[type, initialValues]]
 
-    responseTemplate = new templateClazz
+    responseTemplate = new templateClazz initialValues
     responseTemplate.activity = this
-    @responseTemplates[type] = responseTemplate
+    @responseTemplates[[type, initialValues]] = responseTemplate
     responseTemplate
 
   appendPage: (page) ->

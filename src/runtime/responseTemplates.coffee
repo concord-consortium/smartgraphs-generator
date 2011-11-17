@@ -14,7 +14,7 @@ class ResponseTemplate
 
 ResponseTemplateCollection.classFor['NumericResponseTemplate'] =  class NumericResponseTemplate extends ResponseTemplate
 
-  constructor: () ->
+  constructor: (@initialValues = [""]) ->
     @name = "numeric"
 
   toHash: ->
@@ -22,6 +22,20 @@ ResponseTemplateCollection.classFor['NumericResponseTemplate'] =  class NumericR
     hash.templateString = ""
     hash.fieldTypes = ["numeric"]
     hash.fieldChoicesList = [null]
-    hash.initialValues = [""]
+    hash.initialValues = @initialValues
+
+    hash
+
+ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] =  class NumericResponseTemplate extends ResponseTemplate
+
+  constructor: (@initialValues = [""]) ->
+    @name = "open"
+
+  toHash: ->
+    hash = super()
+    hash.templateString = ""
+    hash.fieldTypes = ["textarea"]
+    hash.fieldChoicesList = [null]
+    hash.initialValues = @initialValues
 
     hash
