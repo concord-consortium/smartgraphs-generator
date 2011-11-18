@@ -303,7 +303,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["HighlightedPoint", "SegmentOverlay", "CircledPoint"]
+            "enum": ["HighlightedPoint", "SegmentOverlay", "CircledPoint", "LineToAxis"]
           },
           "records": {
             "type": "array",
@@ -327,13 +327,22 @@
                   "optional": true
                 },
                 "color": {
-                  "type": "string"
+                  "type": "string",
+                  "optional": true
                 },
                 "x1Record": {
                   "type": "number",
                   "optional": true
                 },
                 "x2Record": {
+                  "type": "number",
+                  "optional": true
+                },
+                "xRecord": {
+                  "type": "number",
+                  "optional": true
+                },
+                "yRecord": {
                   "type": "number",
                   "optional": true
                 },
