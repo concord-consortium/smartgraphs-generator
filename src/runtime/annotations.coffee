@@ -85,3 +85,20 @@ AnnotationCollection.classFor["PointCircleVisualPrompt"] = exports.PointCircleVi
     hash.yRecord    = @y
 
     hash
+
+AnnotationCollection.classFor["PointAxisLineVisualPrompt"] = exports.PointAxisLineVisualPrompt = class PointAxisLineVisualPrompt extends Annotation
+
+  RECORD_TYPE: 'LineToAxis'
+
+  constructor: ({ @datadefRef, @color, @x, @y, @axis, @index }) ->
+    @name = "line-to-axis-#{@index}"
+
+  toHash: ->
+    hash = super()
+    hash.datadefName = @datadefRef.datadef.name
+    hash.color       = @color
+    hash.xRecord    = @x
+    hash.yRecord    = @y
+    hash.axis       = @axis
+
+    hash

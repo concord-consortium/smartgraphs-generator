@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-  
+
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-  
+
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-  
+
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-  
+
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -584,7 +584,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       steps = [];
       answerableSteps = [];
       addPanesAndFeedbackToStep = __bind(function(_arg) {
-        var from, pane, prompt, promptHash, step, _i, _j, _len, _len2, _ref, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results;
+        var from, pane, prompt, promptHash, step, _i, _j, _len, _len2, _ref, _ref10, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results;
         step = _arg.step, from = _arg.from;
         _ref = this.page.panes;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -597,18 +597,15 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
         for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
           prompt = _ref3[_j];
           promptHash = {
+            type: prompt.type,
             datadefRef: this.datadefRef,
             color: prompt.color,
             x: (_ref4 = (_ref5 = prompt.point) != null ? _ref5[0] : void 0) != null ? _ref4 : void 0,
-            y: (_ref6 = (_ref7 = prompt.point) != null ? _ref7[1] : void 0) != null ? _ref6 : void 0
+            y: (_ref6 = (_ref7 = prompt.point) != null ? _ref7[1] : void 0) != null ? _ref6 : void 0,
+            xMin: (_ref8 = prompt.xMin) != null ? _ref8 : -Infinity,
+            xMax: (_ref9 = prompt.xMax) != null ? _ref9 : Infinity,
+            axis: (_ref10 = prompt.axis) != null ? _ref10.replace("_axis", "") : void 0
           };
-          if (prompt.type === 'RangeVisualPrompt') {
-            promptHash.type = "SegmentOverlay";
-            promptHash.xMin = (_ref8 = prompt.xMin) != null ? _ref8 : -Infinity;
-            promptHash.xMax = (_ref9 = prompt.xMax) != null ? _ref9 : Infinity;
-          } else if (prompt.type === 'PointCircleVisualPrompt') {
-            promptHash.type = "CircledPoint";
-          }
           _results.push(step.addAnnotationToPane({
             annotation: runtimeActivity.createAndAppendAnnotation(promptHash),
             index: this.graphPane.index
@@ -892,13 +889,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-  
+
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-  
+
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
@@ -1041,24 +1038,15 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.tags.push(tag);
       return tag;
     };
-    RuntimeActivity.prototype.createAndAppendAnnotation = function(_arg) {
-      var annotation, annotationClazz, color, datadefRef, tag, type, x, xMax, xMin, y, _base, _base2, _ref2, _ref3;
-      type = _arg.type, datadefRef = _arg.datadefRef, tag = _arg.tag, color = _arg.color, x = _arg.x, y = _arg.y, xMin = _arg.xMin, xMax = _arg.xMax;
+    RuntimeActivity.prototype.createAndAppendAnnotation = function(hash) {
+      var annotation, annotationClazz, type, _base, _base2, _ref2, _ref3;
+      type = hash.type;
       annotationClazz = AnnotationCollection.classFor[type];
       if ((_ref2 = (_base = this.annotationCounts)[type]) == null) {
         _base[type] = 0;
       }
-      annotation = new annotationClazz({
-        type: type,
-        datadefRef: datadefRef,
-        tag: tag,
-        color: color,
-        x: x,
-        y: y,
-        xMin: xMin,
-        xMax: xMax,
-        index: ++this.annotationCounts[type]
-      });
+      hash.index = ++this.annotationCounts[type];
+      annotation = new annotationClazz(hash);
       annotation.activity = this;
       if ((_ref3 = (_base2 = this.annotations)[type]) == null) {
         _base2[type] = [];
@@ -1637,7 +1625,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
   /*
     Annotation class and its subclasses
   */
-  var Annotation, AnnotationCollection, CircledPoint, HighlightedPoint, SegmentOverlay;
+  var Annotation, AnnotationCollection, HighlightedPoint, PointAxisLineVisualPrompt, PointCircleVisualPrompt, RangeVisualPrompt;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -1700,14 +1688,14 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
     };
     return HighlightedPoint;
   })();
-  AnnotationCollection.classFor["SegmentOverlay"] = exports.SegmentOverlay = SegmentOverlay = (function() {
-    __extends(SegmentOverlay, Annotation);
-    SegmentOverlay.prototype.RECORD_TYPE = 'SegmentOverlay';
-    function SegmentOverlay(_arg) {
+  AnnotationCollection.classFor["RangeVisualPrompt"] = exports.RangeVisualPrompt = RangeVisualPrompt = (function() {
+    __extends(RangeVisualPrompt, Annotation);
+    RangeVisualPrompt.prototype.RECORD_TYPE = 'SegmentOverlay';
+    function RangeVisualPrompt(_arg) {
       this.datadefRef = _arg.datadefRef, this.color = _arg.color, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.index = _arg.index;
       this.name = "segment-overlay-" + this.index;
     }
-    SegmentOverlay.prototype.toHash = function() {
+    RangeVisualPrompt.prototype.toHash = function() {
       var hash, x1, x2;
       if (this.xMin === -Infinity) {
         if (this.xMax !== Infinity) {
@@ -1720,7 +1708,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
           x2 = this.xMax;
         }
       }
-      hash = SegmentOverlay.__super__.toHash.call(this);
+      hash = RangeVisualPrompt.__super__.toHash.call(this);
       hash.datadefName = this.datadefRef.datadef.name;
       hash.color = this.color;
       hash.x1Record = x1;
@@ -1733,25 +1721,44 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
       }
       return hash;
     };
-    return SegmentOverlay;
+    return RangeVisualPrompt;
   })();
-  AnnotationCollection.classFor["CircledPoint"] = exports.CircledPoint = CircledPoint = (function() {
-    __extends(CircledPoint, Annotation);
-    CircledPoint.prototype.RECORD_TYPE = 'CircledPoint';
-    function CircledPoint(_arg) {
+  AnnotationCollection.classFor["PointCircleVisualPrompt"] = exports.PointCircleVisualPrompt = PointCircleVisualPrompt = (function() {
+    __extends(PointCircleVisualPrompt, Annotation);
+    PointCircleVisualPrompt.prototype.RECORD_TYPE = 'CircledPoint';
+    function PointCircleVisualPrompt(_arg) {
       this.datadefRef = _arg.datadefRef, this.color = _arg.color, this.x = _arg.x, this.y = _arg.y, this.index = _arg.index;
       this.name = "circled-point-" + this.index;
     }
-    CircledPoint.prototype.toHash = function() {
+    PointCircleVisualPrompt.prototype.toHash = function() {
       var hash;
-      hash = CircledPoint.__super__.toHash.call(this);
+      hash = PointCircleVisualPrompt.__super__.toHash.call(this);
       hash.datadefName = this.datadefRef.datadef.name;
       hash.color = this.color;
       hash.xRecord = this.x;
       hash.yRecord = this.y;
       return hash;
     };
-    return CircledPoint;
+    return PointCircleVisualPrompt;
+  })();
+  AnnotationCollection.classFor["PointAxisLineVisualPrompt"] = exports.PointAxisLineVisualPrompt = PointAxisLineVisualPrompt = (function() {
+    __extends(PointAxisLineVisualPrompt, Annotation);
+    PointAxisLineVisualPrompt.prototype.RECORD_TYPE = 'LineToAxis';
+    function PointAxisLineVisualPrompt(_arg) {
+      this.datadefRef = _arg.datadefRef, this.color = _arg.color, this.x = _arg.x, this.y = _arg.y, this.axis = _arg.axis, this.index = _arg.index;
+      this.name = "line-to-axis-" + this.index;
+    }
+    PointAxisLineVisualPrompt.prototype.toHash = function() {
+      var hash;
+      hash = PointAxisLineVisualPrompt.__super__.toHash.call(this);
+      hash.datadefName = this.datadefRef.datadef.name;
+      hash.color = this.color;
+      hash.xRecord = this.x;
+      hash.yRecord = this.y;
+      hash.axis = this.axis;
+      return hash;
+    };
+    return PointAxisLineVisualPrompt;
   })();
 }).call(this);
 

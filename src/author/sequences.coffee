@@ -102,6 +102,7 @@ class CorrectableSequenceWithFeedback
           y:          prompt.point?[1] ? undefined
           xMin:       prompt.xMin ? -Infinity
           xMax:       prompt.xMax ? Infinity
+          axis:       prompt.axis?.replace "_axis", ""
 
         step.addAnnotationToPane
           annotation: runtimeActivity.createAndAppendAnnotation promptHash
