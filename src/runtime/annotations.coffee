@@ -44,7 +44,7 @@ AnnotationCollection.classFor["HighlightedPoint"] = exports.HighlightedPoint = c
     hash
 
 
-AnnotationCollection.classFor["SegmentOverlay"] = exports.SegmentOverlay = class SegmentOverlay extends Annotation
+AnnotationCollection.classFor["RangeVisualPrompt"] = exports.RangeVisualPrompt = class RangeVisualPrompt extends Annotation
 
   RECORD_TYPE: 'SegmentOverlay'
 
@@ -70,7 +70,7 @@ AnnotationCollection.classFor["SegmentOverlay"] = exports.SegmentOverlay = class
 
     hash
 
-AnnotationCollection.classFor["CircledPoint"] = exports.CircledPoint = class CircledPoint extends Annotation
+AnnotationCollection.classFor["PointCircleVisualPrompt"] = exports.PointCircleVisualPrompt = class PointCircleVisualPrompt extends Annotation
 
   RECORD_TYPE: 'CircledPoint'
 

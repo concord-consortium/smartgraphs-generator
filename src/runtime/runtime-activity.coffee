@@ -111,10 +111,12 @@ exports.RuntimeActivity = class RuntimeActivity
     @tags.push tag
     tag
 
-  createAndAppendAnnotation: ({type, datadefRef, tag, color, x, y, xMin, xMax}) ->
+  createAndAppendAnnotation: (hash) ->
+    {type} = hash
     annotationClazz = AnnotationCollection.classFor[type]
     @annotationCounts[type] ?= 0
-    annotation = new annotationClazz {type, datadefRef, tag, color, x, y, xMin, xMax, index: ++@annotationCounts[type]}
+    hash.index = ++@annotationCounts[type]
+    annotation = new annotationClazz hash
     annotation.activity = this
     @annotations[type] ?= []
     @annotations[type].push annotation

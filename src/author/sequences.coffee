@@ -95,17 +95,13 @@ class CorrectableSequenceWithFeedback
 
       for prompt in from.visualPrompts ? []
         promptHash =
+          type:       prompt.type
           datadefRef: @datadefRef
           color:      prompt.color
           x:          prompt.point?[0] ? undefined
           y:          prompt.point?[1] ? undefined
-
-        if prompt.type is 'RangeVisualPrompt'
-          promptHash.type = "SegmentOverlay"
-          promptHash.xMin = prompt.xMin ? -Infinity
-          promptHash.xMax = prompt.xMax ? Infinity
-        else if prompt.type is 'PointCircleVisualPrompt'
-          promptHash.type = "CircledPoint"
+          xMin:       prompt.xMin ? -Infinity
+          xMax:       prompt.xMax ? Infinity
 
         step.addAnnotationToPane
           annotation: runtimeActivity.createAndAppendAnnotation promptHash
