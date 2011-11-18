@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-
+  
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-
+  
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-
+  
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-
+  
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -505,6 +505,28 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     };
     return InstructionSequence;
   })();
+  Sequence.classFor['ConstructedResponseSequence'] = InstructionSequence = (function() {
+    function InstructionSequence(_arg) {
+      this.initialPrompt = _arg.initialPrompt, this.initialContent = _arg.initialContent, this.page = _arg.page;
+    }
+    InstructionSequence.prototype.appendSteps = function(runtimePage) {
+      var pane, responseTemplate, runtimeActivity, step, _i, _len, _ref, _results;
+      runtimeActivity = runtimePage.activity;
+      responseTemplate = runtimeActivity.createAndAppendResponseTemplate("ConstructedResponseTemplate", [this.initialContent]);
+      step = runtimePage.appendStep();
+      step.setBeforeText(this.initialPrompt);
+      step.setSubmissibilityCriterion(["textLengthIsAtLeast", 1, ["responseField", 1]]);
+      step.setResponseTemplate(responseTemplate);
+      _ref = this.page.panes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pane = _ref[_i];
+        _results.push(pane.addToStep(step));
+      }
+      return _results;
+    };
+    return InstructionSequence;
+  })();
   CorrectableSequenceWithFeedback = (function() {
     CorrectableSequenceWithFeedback.prototype.HIGHLIGHT_COLOR = '#1f77b4';
     function CorrectableSequenceWithFeedback(_arg) {
@@ -594,7 +616,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
         }
         return _results;
       }, this);
-      _ref = [this.initialPrompt].concat(this.hints);
+      _ref = (this.hints ? [this.initialPrompt].concat(this.hints) : [this.initialPrompt]);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         answerableInfo = _ref[_i];
         steps.push(step = runtimePage.appendStep());
@@ -870,13 +892,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-
+  
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-
+  
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
@@ -907,6 +929,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.tags = [];
       this.nTags = 0;
       this.responseTemplates = {};
+      this.responseTemplatesCounts = {};
     }
     RuntimeActivity.prototype.getUrl = function() {
       return "/" + this.owner + "/" + (slugify(this.name));
@@ -1043,15 +1066,22 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.annotations[type].push(annotation);
       return annotation;
     };
-    RuntimeActivity.prototype.createAndAppendResponseTemplate = function(type) {
-      var responseTemplate, templateClazz;
-      templateClazz = ResponseTemplateCollection.classFor[type];
-      if (!!this.responseTemplates[type]) {
-        return this.responseTemplates[type];
+    RuntimeActivity.prototype.createAndAppendResponseTemplate = function(type, initialValues) {
+      var count, responseTemplate, templateClazz, _base, _ref2;
+      if (initialValues == null) {
+        initialValues = [""];
       }
-      responseTemplate = new templateClazz;
+      templateClazz = ResponseTemplateCollection.classFor[type];
+      if (!!this.responseTemplates[[type, initialValues]]) {
+        return this.responseTemplates[[type, initialValues]];
+      }
+      if ((_ref2 = (_base = this.responseTemplatesCounts)[type]) == null) {
+        _base[type] = 0;
+      }
+      count = ++this.responseTemplatesCounts[type];
+      responseTemplate = new templateClazz(count, initialValues);
       responseTemplate.activity = this;
-      this.responseTemplates[type] = responseTemplate;
+      this.responseTemplates[[type, initialValues]] = responseTemplate;
       return responseTemplate;
     };
     RuntimeActivity.prototype.appendPage = function(page) {
@@ -1744,29 +1774,59 @@ require.define("/runtime/responseTemplates.js", function (require, module, expor
   ResponseTemplate = (function() {
     function ResponseTemplate() {}
     ResponseTemplate.prototype.getUrl = function() {
-      return "" + (this.activity.getUrl()) + "/response-templates/" + this.name;
+      return "" + (this.activity.getUrl()) + "/response-templates/" + this.name + "-" + this.number;
     };
     ResponseTemplate.prototype.toHash = function() {
       return {
-        url: this.getUrl()
+        url: this.getUrl(),
+        templateString: "",
+        fieldChoicesList: [null],
+        initialValues: this.initialValues,
+        fieldTypes: this.fieldTypes
       };
     };
     return ResponseTemplate;
   })();
   ResponseTemplateCollection.classFor['NumericResponseTemplate'] = NumericResponseTemplate = (function() {
     __extends(NumericResponseTemplate, ResponseTemplate);
-    function NumericResponseTemplate() {
+    function NumericResponseTemplate(number, initialValues) {
+      var val;
+      this.number = number;
+      this.initialValues = initialValues != null ? initialValues : [""];
+      NumericResponseTemplate.__super__.constructor.call(this);
       this.name = "numeric";
+      this.fieldTypes = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.initialValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          val = _ref[_i];
+          _results.push("numeric");
+        }
+        return _results;
+      }).call(this);
     }
-    NumericResponseTemplate.prototype.toHash = function() {
-      var hash;
-      hash = NumericResponseTemplate.__super__.toHash.call(this);
-      hash.templateString = "";
-      hash.fieldTypes = ["numeric"];
-      hash.fieldChoicesList = [null];
-      hash.initialValues = [""];
-      return hash;
-    };
+    return NumericResponseTemplate;
+  })();
+  ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] = NumericResponseTemplate = (function() {
+    __extends(NumericResponseTemplate, ResponseTemplate);
+    function NumericResponseTemplate(number, initialValues) {
+      var val;
+      this.number = number;
+      this.initialValues = initialValues != null ? initialValues : [""];
+      NumericResponseTemplate.__super__.constructor.call(this);
+      this.name = "open";
+      this.fieldTypes = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.initialValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          val = _ref[_i];
+          _results.push("textarea");
+        }
+        return _results;
+      }).call(this);
+    }
     return NumericResponseTemplate;
   })();
 }).call(this);
