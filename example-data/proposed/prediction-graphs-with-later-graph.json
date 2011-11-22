@@ -41,7 +41,7 @@
           "xMax": 20.0,
           "yTicks": 10.0,
           "xTicks": 10.0,
-          "includeDataFrom": ["page/1/pane/1"]
+          "includeAnnotationsFrom": ["page/1/pane/1"]
         }
       ]
     }
