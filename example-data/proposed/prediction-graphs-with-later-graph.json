@@ -1,0 +1,61 @@
+{
+  "type": "Activity",
+  "name": "Prediction Graph Activity",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Prediction graph page",
+      "text": "In this activity, you'll make a prediction, then take sensor data",
+      "panes": [
+        {
+          "type": "PredictionGraphPane",
+          "title": "Back and Forth",
+          "yLabel": "Position",
+          "yUnits": "Distance",
+          "yMin": 0.0,
+          "yMax": 5.0,
+          "xLabel": "Time",
+          "xUnits": "Time",
+          "xMin": 0.0,
+          "xMax": 20.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0
+        }
+      ]
+    },
+    {
+      "type": "Page",
+      "name": "Sensor graph page",
+      "text": "Now you can see your prediction pane, and plot sensor data on top",
+      "panes": [
+        {
+          "type": "PredictionGraphPane",
+          "title": "Back and Forth",
+          "yLabel": "Position",
+          "yUnits": "Distance",
+          "yMin": 0.0,
+          "yMax": 5.0,
+          "xLabel": "Time",
+          "xUnits": "Time",
+          "xMin": 0.0,
+          "xMax": 20.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "includeDataFrom": ["page/1/pane/1"]
+        }
+      ]
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Distance",
+      "abbreviation": "m"
+    }
+  ]
+}

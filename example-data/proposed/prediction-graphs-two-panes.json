@@ -1,0 +1,53 @@
+{
+  "type": "Activity",
+  "name": "Prediction Graph 2-Step Activity",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Prediction graph 2-step page",
+      "text": "In this activity, you'll make two predictions, one after the other",
+      "panes": [
+        {
+          "type": "PredictionGraphPane",
+          "title": "Back and Forth",
+          "yLabel": "Position",
+          "yUnits": "Distance",
+          "yMin": 0.0,
+          "yMax": 5.0,
+          "xLabel": "Time",
+          "xUnits": "Time",
+          "xMin": 0.0,
+          "xMax": 20.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0
+        },
+        {
+          "type": "PredictionGraphPane",
+          "title": "Back and Forth 2",
+          "yLabel": "Position",
+          "yUnits": "Distance",
+          "yMin": 0.0,
+          "yMax": 5.0,
+          "xLabel": "Time",
+          "xUnits": "Time",
+          "xMin": 0.0,
+          "xMax": 20.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0
+        }
+      ]
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Distance",
+      "abbreviation": "m"
+    }
+  ]
+}
