@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-
+  
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-
+  
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-
+  
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-
+  
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -449,15 +449,15 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, CorrectableSequenceWithFeedback, InstructionSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
     ctor.prototype = parent.prototype;
     child.prototype = new ctor;
     child.__super__ = parent.prototype;
     return child;
-  };
+  }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   AuthorPane = require('./author-panes').AuthorPane;
   Sequence = exports.Sequence = {
     classFor: {},
@@ -472,44 +472,50 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   };
   Sequence.classFor['NoSequence'] = NoSequence = (function() {
     function NoSequence(_arg) {
+      var i, pane, _len, _ref;
       this.page = _arg.page;
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor['PredictionGraphPane']) {
+          this.predictionPane = pane;
+        }
+      }
     }
     NoSequence.prototype.appendSteps = function(runtimePage) {
-      var pane, step, _i, _len, _ref, _results;
+      var pane, step, _i, _len, _ref;
       step = runtimePage.appendStep();
       _ref = this.page.panes;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         pane = _ref[_i];
-        _results.push(pane.addToStep(step));
+        pane.addToStep(step);
       }
-      return _results;
+      if (this.predictionPane != null) {
+        step.setSubmissibilityCriterion([">=", ["sketchLength", this.predictionPane.annotation.name], 0.2]);
+        step.setSubmissibilityDependsOn(["annotation", this.predictionPane.annotation.name]);
+      }
+      return step;
     };
     return NoSequence;
   })();
   Sequence.classFor['InstructionSequence'] = InstructionSequence = (function() {
+    __extends(InstructionSequence, NoSequence);
     function InstructionSequence(_arg) {
       this.text = _arg.text, this.page = _arg.page;
+      InstructionSequence.__super__.constructor.apply(this, arguments);
     }
     InstructionSequence.prototype.appendSteps = function(runtimePage) {
-      var pane, step, _i, _len, _ref, _results;
-      step = runtimePage.appendStep();
-      step.setBeforeText(this.text);
-      _ref = this.page.panes;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pane = _ref[_i];
-        _results.push(pane.addToStep(step));
-      }
-      return _results;
+      var step;
+      step = InstructionSequence.__super__.appendSteps.apply(this, arguments);
+      return step.setBeforeText(this.text);
     };
     return InstructionSequence;
   })();
-  Sequence.classFor['ConstructedResponseSequence'] = InstructionSequence = (function() {
-    function InstructionSequence(_arg) {
+  Sequence.classFor['ConstructedResponseSequence'] = ConstructedResponseSequence = (function() {
+    function ConstructedResponseSequence(_arg) {
       this.initialPrompt = _arg.initialPrompt, this.initialContent = _arg.initialContent, this.page = _arg.page;
     }
-    InstructionSequence.prototype.appendSteps = function(runtimePage) {
+    ConstructedResponseSequence.prototype.appendSteps = function(runtimePage) {
       var pane, responseTemplate, runtimeActivity, step, _i, _len, _ref, _results;
       runtimeActivity = runtimePage.activity;
       responseTemplate = runtimeActivity.createAndAppendResponseTemplate("ConstructedResponseTemplate", [this.initialContent]);
@@ -525,13 +531,13 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       }
       return _results;
     };
-    return InstructionSequence;
+    return ConstructedResponseSequence;
   })();
   CorrectableSequenceWithFeedback = (function() {
     CorrectableSequenceWithFeedback.prototype.HIGHLIGHT_COLOR = '#1f77b4';
     function CorrectableSequenceWithFeedback(_arg) {
       var i, pane, _len, _ref;
-      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.correctAnswerPoint = _arg.correctAnswerPoint, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
+      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.correctAnswerPoint = _arg.correctAnswerPoint, this.correctAnswerRange = _arg.correctAnswerRange, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
       if (typeof this.initialPrompt === 'string') {
         this.initialPrompt = {
           text: this.initialPrompt
@@ -658,7 +664,10 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       return true;
     };
     PickAPointSequence.prototype.getCriterion = function() {
-      return ["coordinates=", this.tag.name, this.correctAnswerPoint[0], this.correctAnswerPoint[1]];
+      if (this.correctAnswerPoint != null) {
+        return ["coordinates=", this.tag.name, this.correctAnswerPoint[0], this.correctAnswerPoint[1]];
+      }
+      return ["coordinatesInRange", this.tag.name, this.correctAnswerRange.xMin, this.correctAnswerRange.yMin, this.correctAnswerRange.xMax, this.correctAnswerRange.yMax];
     };
     PickAPointSequence.prototype.appendSteps = function(runtimePage) {
       var datadefRef, modifierForSequenceType, runtimeActivity;
@@ -719,7 +728,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, SensorGraphPane, TablePane, dumbSingularize;
+  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -813,6 +822,31 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     };
     return SensorGraphPane;
   })();
+  AuthorPane.classFor['PredictionGraphPane'] = PredictionGraphPane = (function() {
+    __extends(PredictionGraphPane, GraphPane);
+    function PredictionGraphPane() {
+      PredictionGraphPane.__super__.constructor.apply(this, arguments);
+    }
+    PredictionGraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
+      PredictionGraphPane.__super__.addToPageAndActivity.apply(this, arguments);
+      return this.annotation = runtimeActivity.createAndAppendAnnotation({
+        type: 'FreehandSketch'
+      });
+    };
+    PredictionGraphPane.prototype.addToStep = function(step) {
+      PredictionGraphPane.__super__.addToStep.apply(this, arguments);
+      step.addPredictionTool({
+        index: this.index,
+        datadefRef: this.datadefRef,
+        annotation: this.annotation
+      });
+      return step.addAnnotationToPane({
+        index: this.index,
+        annotation: this.annotation
+      });
+    };
+    return PredictionGraphPane;
+  })();
   AuthorPane.classFor['ImagePane'] = ImagePane = (function() {
     function ImagePane(_arg) {
       this.url = _arg.url, this.license = _arg.license, this.attribution = _arg.attribution;
@@ -889,13 +923,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-
+  
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-
+  
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
@@ -1292,6 +1326,9 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     Step.prototype.setSubmissibilityCriterion = function(submissibilityCriterion) {
       this.submissibilityCriterion = submissibilityCriterion;
     };
+    Step.prototype.setSubmissibilityDependsOn = function(submissibilityDependsOn) {
+      this.submissibilityDependsOn = submissibilityDependsOn;
+    };
     Step.prototype.setResponseTemplate = function(responseTemplate) {
       this.responseTemplate = responseTemplate;
     };
@@ -1410,6 +1447,25 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         }
       };
     };
+    Step.prototype.addPredictionTool = function(_arg) {
+      var annotation, datadefRef, index;
+      index = _arg.index, datadefRef = _arg.datadefRef, annotation = _arg.annotation;
+      return this.tools['prediction'] = {
+        index: index,
+        panes: this.panes,
+        datadefRef: datadefRef,
+        toHash: function() {
+          return {
+            name: 'prediction',
+            setup: {
+              pane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
+              uiBehavior: 'freehand',
+              annotationName: annotation.name
+            }
+          };
+        }
+      };
+    };
     Step.prototype.appendResponseBranch = function(_arg) {
       var criterion, step;
       criterion = _arg.criterion, step = _arg.step;
@@ -1433,7 +1489,7 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       return delete this.nextButtonShouldSubmit;
     };
     Step.prototype.toHash = function() {
-      var branch, key, panesHash, tool, toolsHash, _ref;
+      var branch, key, panesHash, tool, toolsHash, _ref, _ref2;
       panesHash = this.panes.length === 1 ? {
         single: this.panes[0].toHash()
       } : this.panes.length === 2 ? {
@@ -1464,13 +1520,14 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         defaultBranch: this.defaultBranch != null ? this.defaultBranch.getUrl() : void 0,
         responseTemplate: this.responseTemplate != null ? this.responseTemplate.getUrl() : void 0,
         submissibilityCriterion: (_ref = this.submissibilityCriterion) != null ? _ref : void 0,
+        submissibilityDependsOn: (_ref2 = this.submissibilityDependsOn) != null ? _ref2 : void 0,
         responseBranches: (function() {
-          var _i, _len, _ref2, _results;
+          var _i, _len, _ref3, _results;
           if (this.responseBranches.length > 0) {
-            _ref2 = this.responseBranches;
+            _ref3 = this.responseBranches;
             _results = [];
-            for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-              branch = _ref2[_i];
+            for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+              branch = _ref3[_i];
               _results.push(branch.toHash());
             }
             return _results;
@@ -1625,7 +1682,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
   /*
     Annotation class and its subclasses
   */
-  var Annotation, AnnotationCollection, HighlightedPoint, PointAxisLineVisualPrompt, PointCircleVisualPrompt, RangeVisualPrompt;
+  var Annotation, AnnotationCollection, FreehandSketch, HighlightedPoint, PointAxisLineVisualPrompt, PointCircleVisualPrompt, RangeVisualPrompt;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -1759,6 +1816,22 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
       return hash;
     };
     return PointAxisLineVisualPrompt;
+  })();
+  AnnotationCollection.classFor["FreehandSketch"] = exports.FreehandSketch = FreehandSketch = (function() {
+    __extends(FreehandSketch, Annotation);
+    FreehandSketch.prototype.RECORD_TYPE = 'FreehandSketch';
+    function FreehandSketch(_arg) {
+      this.index = _arg.index;
+      this.name = "freehand-sketch-" + this.index;
+    }
+    FreehandSketch.prototype.toHash = function() {
+      var hash;
+      hash = FreehandSketch.__super__.toHash.call(this);
+      hash.color = '#CC0000';
+      hash.points = [];
+      return hash;
+    };
+    return FreehandSketch;
   })();
 }).call(this);
 
