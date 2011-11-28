@@ -38,7 +38,7 @@ Sequence.classFor['InstructionSequence'] = class InstructionSequence
     pane.addToStep(step) for pane in @page.panes
 
 
-Sequence.classFor['ConstructedResponseSequence'] = class InstructionSequence
+Sequence.classFor['ConstructedResponseSequence'] = class ConstructedResponseSequence
 
   constructor: ({@initialPrompt, @initialContent, @page}) ->
 
