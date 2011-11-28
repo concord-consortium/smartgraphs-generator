@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-
+  
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-
+  
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-
+  
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-
+  
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -729,7 +729,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
     ctor.prototype = parent.prototype;
@@ -751,7 +751,18 @@ require.define("/author/author-panes.js", function (require, module, exports, __
   };
   GraphPane = (function() {
     function GraphPane(_arg) {
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks;
+      var includeAnnotationsFrom;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom;
+      this.annotationSources = includeAnnotationsFrom != null ? includeAnnotationsFrom.map(function(source) {
+        var page, pane, _ref;
+        _ref = (source.match(/^page\/(\d)+\/pane\/(\d)+$/)).slice(1, 3).map(function(s) {
+          return parseInt(s, 10) - 1;
+        }), page = _ref[0], pane = _ref[1];
+        return {
+          page: page,
+          pane: pane
+        };
+      }) : void 0;
     }
     GraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
       var dataKey, datadef;
@@ -789,13 +800,30 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       }
     };
     GraphPane.prototype.addToStep = function(step) {
-      return step.addGraphPane({
+      var _ref;
+      step.addGraphPane({
         title: this.title,
         datadefRef: this.datadefRef,
         xAxis: this.xAxis,
         yAxis: this.yAxis,
         index: this.index
       });
+      return (_ref = this.annotationSources) != null ? _ref.forEach(__bind(function(source) {
+        var page, pages, pane;
+        pages = this.page.activity.pages;
+        page = pages[source.page];
+        pane = page != null ? page.panes[source.pane] : void 0;
+        if (!(page != null)) {
+          throw new Error("When attempting to include annotations from pane " + (pane + 1) + " of page " + (page + 1) + ", couldn't find the page.");
+        }
+        if (!(pane != null)) {
+          throw new Error("When attempting to include annotations from pane " + (pane + 1) + " of page " + (page + 1) + ", couldn't find the pane.");
+        }
+        if (!(pane.annotation != null)) {
+          throw new Error("When attempting to include annotations from pane " + (pane + 1) + " of page " + (page + 1) + ", couldn't find the annotation.");
+        }
+        return step.addAnnotationToPane(pane, pane.annotation);
+      }, this)) : void 0;
     };
     return GraphPane;
   })();
@@ -927,13 +955,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-
+  
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-
+  
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */

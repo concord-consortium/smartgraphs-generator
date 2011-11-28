@@ -10,10 +10,12 @@ AuthorPane = exports.AuthorPane =
     return new PaneClass hash
 
 
-
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks }) ->
+  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks, includeAnnotationsFrom }) ->
+    @annotationSources = includeAnnotationsFrom?.map (source) ->
+      [page, pane] = (source.match /^page\/(\d)+\/pane\/(\d)+$/)[1..2].map (s) -> parseInt(s, 10) - 1
+      { page, pane }
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
     @xUnitsRef = runtimeActivity.getUnitRef dumbSingularize @xUnits if @xUnits
@@ -30,6 +32,22 @@ class GraphPane
 
   addToStep: (step) ->
     step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index }
+
+    @annotationSources?.forEach (source) =>
+      pages = @page.activity.pages
+      page = pages[source.page]
+      pane = page?.panes[source.pane]
+
+      if not page?
+        throw new Error "When attempting to include annotations from pane #{pane+1} of page #{page+1}, couldn't find the page."
+
+      if not pane?
+        throw new Error "When attempting to include annotations from pane #{pane+1} of page #{page+1}, couldn't find the pane."
+
+      if not pane.annotation?
+        throw new Error "When attempting to include annotations from pane #{pane+1} of page #{page+1}, couldn't find the annotation."
+
+      step.addAnnotationToPane pane, pane.annotation
 
 
 AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends GraphPane
@@ -48,6 +66,7 @@ AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
     super
     step.addSensorTool { @index, @datadefRef }
 
+
 AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends GraphPane
 
   constructor: ({@predictionType})->
@@ -61,7 +80,7 @@ AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends G
     super
     uiBehavior = if @predictionType is "continuous_curves" then "freehand" else "extend"
     step.addPredictionTool { @index, @datadefRef,  @annotation, uiBehavior }
-    step.addAnnotationToPane {index: @index, annotation: @annotation}
+    step.addAnnotationToPane { @index, @annotation }
 
 
 AuthorPane.classFor['ImagePane'] = class ImagePane
