@@ -1,0 +1,117 @@
+{
+  "_id": "prediction-graph-activity.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Prediction Graph Activity",
+    "url": "/shared/prediction-graph-activity",
+    "owner": "shared",
+    "pages": [
+      "/shared/prediction-graph-activity/page/1-prediction-graph-page"
+    ],
+    "axes": [
+      "/shared/prediction-graph-activity/axes/1",
+      "/shared/prediction-graph-activity/axes/2"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Prediction graph page",
+      "url": "/shared/prediction-graph-activity/page/1-prediction-graph-page",
+      "activity": "/shared/prediction-graph-activity",
+      "index": 1,
+      "introText": "In this activity, you'll make a prediction",
+      "steps": [
+        "/shared/prediction-graph-activity/page/1-prediction-graph-page/step/1"
+      ],
+      "firstStep": "/shared/prediction-graph-activity/page/1-prediction-graph-page/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/prediction-graph-activity/page/1-prediction-graph-page/step/1",
+      "activityPage": "/shared/prediction-graph-activity/page/1-prediction-graph-page",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Back and Forth",
+          "xAxis": "/shared/prediction-graph-activity/axes/1",
+          "yAxis": "/shared/prediction-graph-activity/axes/2",
+          "data": [],
+          "annotations": ["freehand-sketch-1"]
+        }
+      },
+      "isFinalStep": true,
+      "tools": [
+        {
+          "name": "prediction",
+          "setup": {
+            "pane": "single",
+            "uiBehavior": "freehand",
+            "annotationName": "freehand-sketch-1"
+          }
+        }
+      ],
+      "submissibilityDependsOn": ["annotation", "freehand-sketch-1"],
+      "submissibilityCriterion": [">=", ["sketchLength", "freehand-sketch-1"], 0.2],
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "units": [
+    {
+      "url": "/shared/prediction-graph-activity/units/Time",
+      "activity": "/shared/prediction-graph-activity",
+      "name": "Time",
+      "abbreviation": "s",
+      "pluralName": "Time"
+    },
+    {
+      "url": "/shared/prediction-graph-activity/units/Distance",
+      "activity": "/shared/prediction-graph-activity",
+      "name": "Distance",
+      "abbreviation": "m",
+      "pluralName": "Distance"
+    }
+  ],
+  "axes": [
+    {
+      "url": "/shared/prediction-graph-activity/axes/1",
+      "units": "/shared/prediction-graph-activity/units/Time",
+      "min": 0,
+      "max": 20,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/prediction-graph-activity/axes/2",
+      "units": "/shared/prediction-graph-activity/units/Distance",
+      "min": 0,
+      "max": 5,
+      "nSteps": 10,
+      "label": "Position"
+    }
+  ],
+  "responseTemplates": [
+  ],
+  "tags": [
+  ],
+  "variables": [
+  ],
+  "datadefs": [
+  ],
+  "annotations": [
+    {
+      "type": "FreehandSketch",
+      "records": [
+        {
+          "url": "/shared/prediction-graph-activity/annotations/freehand-sketch-1",
+          "name": "freehand-sketch-1",
+          "activity": "/shared/prediction-graph-activity",
+          "color": "#CC0000",
+          "points": []
+        }
+      ]
+    }
+  ]
+}
