@@ -1,0 +1,203 @@
+{
+  "_id": "sensor-graph-on-top-of-prediction-graph.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Sensor Graph on top of Prediction Graph",
+    "url": "/shared/sensor-graph-on-top-of-prediction-graph",
+    "owner": "shared",
+    "pages": [
+      "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page",
+      "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page"
+    ],
+    "axes": [
+      "/shared/sensor-graph-on-top-of-prediction-graph/axes/1",
+      "/shared/sensor-graph-on-top-of-prediction-graph/axes/2",
+      "/shared/sensor-graph-on-top-of-prediction-graph/axes/3",
+      "/shared/sensor-graph-on-top-of-prediction-graph/axes/4"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Prediction graph page",
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page",
+      "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
+      "index": 1,
+      "introText": "In this activity, you'll make a prediction, then take sensor data",
+      "steps": [
+        "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page/step/1"
+      ],
+      "firstStep": "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page/step/1"
+    },
+    {
+      "name": "Sensor graph page",
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page",
+      "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
+      "index": 2,
+      "introText": "Now you can see your prediction pane, and plot sensor data on top",
+      "steps": [
+        "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page/step/1"
+      ],
+      "firstStep": "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page/step/1",
+      "activityPage": "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Back and Forth",
+          "xAxis": "/shared/sensor-graph-on-top-of-prediction-graph/axes/1",
+          "yAxis": "/shared/sensor-graph-on-top-of-prediction-graph/axes/2",
+          "annotations": [
+            "freehand-sketch-1"
+          ],
+          "data": []
+        }
+      },
+      "tools": [
+        {
+          "name": "prediction",
+          "setup": {
+            "pane": "single",
+            "uiBehavior": "freehand",
+            "annotationName": "freehand-sketch-1"
+          }
+        }
+      ],
+      "submissibilityCriterion": [
+        ">=",
+        [
+          "sketchLength",
+          "freehand-sketch-1"
+        ],
+        0.2
+      ],
+      "submissibilityDependsOn": [
+        "annotation",
+        "freehand-sketch-1"
+      ],
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    },
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page/step/1",
+      "activityPage": "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Back and Forth",
+          "xAxis": "/shared/sensor-graph-on-top-of-prediction-graph/axes/3",
+          "yAxis": "/shared/sensor-graph-on-top-of-prediction-graph/axes/4",
+          "annotations": [
+            "freehand-sketch-1"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "sensor",
+          "setup": {
+            "controlsPane": "single",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [],
+  "axes": [
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/axes/1",
+      "units": "/shared/sensor-graph-on-top-of-prediction-graph/units/Seconds",
+      "min": 0,
+      "max": 20,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/axes/2",
+      "units": "/shared/sensor-graph-on-top-of-prediction-graph/units/Meters",
+      "min": 0,
+      "max": 5,
+      "nSteps": 10,
+      "label": "Position"
+    },
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/axes/3",
+      "units": "/shared/sensor-graph-on-top-of-prediction-graph/units/Seconds",
+      "min": 0,
+      "max": 20,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/axes/4",
+      "units": "/shared/sensor-graph-on-top-of-prediction-graph/units/Meters",
+      "min": 0,
+      "max": 5,
+      "nSteps": 10,
+      "label": "Position"
+    }
+  ],
+  "datadefs": [
+    {
+      "type": "UnorderedDataPoints",
+      "records": [
+        {
+          "url": "/shared/sensor-graph-on-top-of-prediction-graph/datadefs/datadef-1",
+          "name": "datadef-1",
+          "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
+          "xUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Seconds",
+          "xLabel": "Time",
+          "xShortLabel": "Time",
+          "yUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Meters",
+          "yLabel": "Position",
+          "yShortLabel": "Position",
+          "points": []
+        }
+      ]
+    }
+  ],
+  "tags": [],
+  "annotations": [
+    {
+      "type": "FreehandSketch",
+      "records": [
+        {
+          "url": "/shared/sensor-graph-on-top-of-prediction-graph/annotations/freehand-sketch-1",
+          "name": "freehand-sketch-1",
+          "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
+          "color": "#CC0000",
+          "points": []
+        }
+      ]
+    }
+  ],
+  "variables": [],
+  "units": [
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/units/Seconds",
+      "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
+      "name": "Second",
+      "abbreviation": "s",
+      "pluralName": "Seconds"
+    },
+    {
+      "url": "/shared/sensor-graph-on-top-of-prediction-graph/units/Meters",
+      "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
+      "name": "Meter",
+      "abbreviation": "m",
+      "pluralName": "Meters"
+    }
+  ]
+}
