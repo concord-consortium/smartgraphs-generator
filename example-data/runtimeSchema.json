@@ -303,7 +303,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["HighlightedPoint", "SegmentOverlay", "CircledPoint", "LineToAxis"]
+            "enum": ["HighlightedPoint", "SegmentOverlay", "CircledPoint", "LineToAxis", "FreehandSketch"]
           },
           "records": {
             "type": "array",
