@@ -822,7 +822,10 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         if (!(pane.annotation != null)) {
           throw new Error("When attempting to include annotations from pane " + (pane + 1) + " of page " + (page + 1) + ", couldn't find the annotation.");
         }
-        return step.addAnnotationToPane(pane, pane.annotation);
+        return step.addAnnotationToPane({
+          index: source.pane,
+          annotation: pane.annotation
+        });
       }, this)) : void 0;
     };
     return GraphPane;
