@@ -50,7 +50,7 @@ AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 
 AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends GraphPane
 
-  constructor: ->
+  constructor: ({@predictionType})->
     super
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
@@ -59,7 +59,8 @@ AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends G
 
   addToStep: (step) ->
     super
-    step.addPredictionTool { @index, @datadefRef,  @annotation }
+    uiBehavior = if @predictionType is "continuous_curves" then "freehand" else "extend"
+    step.addPredictionTool { @index, @datadefRef,  @annotation, uiBehavior }
     step.addAnnotationToPane {index: @index, annotation: @annotation}
 
 

@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-  
+
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-  
+
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-  
+
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-  
+
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -824,7 +824,8 @@ require.define("/author/author-panes.js", function (require, module, exports, __
   })();
   AuthorPane.classFor['PredictionGraphPane'] = PredictionGraphPane = (function() {
     __extends(PredictionGraphPane, GraphPane);
-    function PredictionGraphPane() {
+    function PredictionGraphPane(_arg) {
+      this.predictionType = _arg.predictionType;
       PredictionGraphPane.__super__.constructor.apply(this, arguments);
     }
     PredictionGraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
@@ -834,11 +835,14 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       });
     };
     PredictionGraphPane.prototype.addToStep = function(step) {
+      var uiBehavior;
       PredictionGraphPane.__super__.addToStep.apply(this, arguments);
+      uiBehavior = this.predictionType === "continuous_curves" ? "freehand" : "extend";
       step.addPredictionTool({
         index: this.index,
         datadefRef: this.datadefRef,
-        annotation: this.annotation
+        annotation: this.annotation,
+        uiBehavior: uiBehavior
       });
       return step.addAnnotationToPane({
         index: this.index,
@@ -923,13 +927,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-  
+
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-  
+
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
@@ -1448,8 +1452,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       };
     };
     Step.prototype.addPredictionTool = function(_arg) {
-      var annotation, datadefRef, index;
-      index = _arg.index, datadefRef = _arg.datadefRef, annotation = _arg.annotation;
+      var annotation, datadefRef, index, uiBehavior;
+      index = _arg.index, datadefRef = _arg.datadefRef, annotation = _arg.annotation, uiBehavior = _arg.uiBehavior;
       return this.tools['prediction'] = {
         index: index,
         panes: this.panes,
@@ -1459,7 +1463,7 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
             name: 'prediction',
             setup: {
               pane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
-              uiBehavior: 'freehand',
+              uiBehavior: uiBehavior,
               annotationName: annotation.name
             }
           };

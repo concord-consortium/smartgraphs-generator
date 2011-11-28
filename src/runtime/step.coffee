@@ -90,7 +90,7 @@ exports.Step = class Step
           data:         @datadefRef.datadef.name
     }
 
-  addPredictionTool: ({ index, datadefRef, annotation }) ->
+  addPredictionTool: ({ index, datadefRef, annotation, uiBehavior }) ->
     @tools['prediction'] = {
       index,
       panes: @panes,
@@ -99,7 +99,7 @@ exports.Step = class Step
         name: 'prediction'
         setup:
           pane: if @panes.length == 1 then 'single' else if @index == 0 then 'top' else 'bottom'
-          uiBehavior: 'freehand'
+          uiBehavior: uiBehavior
           annotationName: annotation.name
     }
 
