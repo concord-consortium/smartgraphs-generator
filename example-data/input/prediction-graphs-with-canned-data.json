@@ -5,7 +5,7 @@
     {
       "type": "Page",
       "name": "Prediction graph page",
-      "text": "In this activity, you'll see some canned datam, and make a prediction below it",
+      "text": "In this activity, you'll see some canned data, and make a prediction below it",
       "panes": [
         {
           "type": "PredefinedGraphPane",
