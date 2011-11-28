@@ -19,7 +19,8 @@
           "xMin": 0.0,
           "xMax": 20.0,
           "yTicks": 10.0,
-          "xTicks": 10.0
+          "xTicks": 10.0,
+          "predictionType": "continuous_curves"
         }
       ],
       "sequence": {
