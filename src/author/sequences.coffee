@@ -16,10 +16,16 @@ Sequence = exports.Sequence =
 Sequence.classFor['NoSequence'] = class NoSequence
 
   constructor: ({@page}) ->
+    for pane, i in @page.panes || []
+      @predictionPane = pane if pane instanceof AuthorPane.classFor['PredictionGraphPane']
 
   appendSteps: (runtimePage) ->
     step = runtimePage.appendStep()
     pane.addToStep(step) for pane in @page.panes
+
+    if @predictionPane?
+      step.setSubmissibilityCriterion [">=", ["sketchLength", @predictionPane.annotation.name], 0.2]
+      step.setSubmissibilityDependsOn ["annotation", @predictionPane.annotation.name]
 
 
 Sequence.classFor['InstructionSequence'] = class InstructionSequence

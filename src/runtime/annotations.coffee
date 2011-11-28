@@ -102,3 +102,17 @@ AnnotationCollection.classFor["PointAxisLineVisualPrompt"] = exports.PointAxisLi
     hash.axis       = @axis
 
     hash
+
+AnnotationCollection.classFor["FreehandSketch"] = exports.FreehandSketch = class FreehandSketch extends Annotation
+
+  RECORD_TYPE: 'FreehandSketch'
+
+  constructor: ({ @index }) ->
+    @name = "freehand-sketch-#{@index}"
+
+  toHash: ->
+    hash = super()
+    hash.color       = '#CC0000'
+    hash.points      = []
+
+    hash

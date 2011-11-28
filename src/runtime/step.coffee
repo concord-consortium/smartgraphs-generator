@@ -20,6 +20,8 @@ exports.Step = class Step
 
   setSubmissibilityCriterion: (@submissibilityCriterion) ->
 
+  setSubmissibilityDependsOn: (@submissibilityDependsOn) ->
+
   setResponseTemplate: (@responseTemplate) ->
 
   getUrl: ->
@@ -88,6 +90,19 @@ exports.Step = class Step
           data:         @datadefRef.datadef.name
     }
 
+  addPredictionTool: ({ index, datadefRef, annotation }) ->
+    @tools['prediction'] = {
+      index,
+      panes: @panes,
+      datadefRef,
+      toHash: ->
+        name: 'prediction'
+        setup:
+          pane: if @panes.length == 1 then 'single' else if @index == 0 then 'top' else 'bottom'
+          uiBehavior: 'freehand'
+          annotationName: annotation.name
+    }
+
   appendResponseBranch: ({ criterion, step }) ->
     @responseBranches.push {
       criterion,
@@ -127,6 +142,7 @@ exports.Step = class Step
       defaultBranch:           @defaultBranch.getUrl() if @defaultBranch?
       responseTemplate:        @responseTemplate.getUrl() if @responseTemplate?
       submissibilityCriterion: @submissibilityCriterion ? undefined
+      submissibilityDependsOn: @submissibilityDependsOn ? undefined
       responseBranches:        branch.toHash() for branch in @responseBranches if @responseBranches.length > 0
       isFinalStep:             @isFinalStep
       nextButtonShouldSubmit:  @nextButtonShouldSubmit

@@ -48,6 +48,20 @@ AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
     super
     step.addSensorTool { @index, @datadefRef }
 
+AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends GraphPane
+
+  constructor: ->
+    super
+
+  addToPageAndActivity: (runtimePage, runtimeActivity) ->
+    super
+    @annotation = runtimeActivity.createAndAppendAnnotation {type: 'FreehandSketch'}
+
+  addToStep: (step) ->
+    super
+    step.addPredictionTool { @index, @datadefRef,  @annotation }
+    step.addAnnotationToPane {index: 0, annotation: @annotation}
+
 
 AuthorPane.classFor['ImagePane'] = class ImagePane
 
