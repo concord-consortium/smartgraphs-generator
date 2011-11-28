@@ -60,7 +60,7 @@ class CorrectableSequenceWithFeedback
 
   HIGHLIGHT_COLOR: '#1f77b4'
 
-  constructor: ({@initialPrompt, @correctAnswer, @correctAnswerPoint, @hints, @giveUp, @confirmCorrect, @page}) ->
+  constructor: ({@initialPrompt, @correctAnswer, @correctAnswerPoint, @correctAnswerRange, @hints, @giveUp, @confirmCorrect, @page}) ->
     if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
 
     for pane, i in @page.panes || []
@@ -148,7 +148,8 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends Corre
     true
 
   getCriterion: ->
-    ["coordinates=", @tag.name, @correctAnswerPoint[0], @correctAnswerPoint[1]]
+    return ["coordinates=", @tag.name, @correctAnswerPoint[0], @correctAnswerPoint[1]] if @correctAnswerPoint?
+    return ["coordinatesInRange", @tag.name, @correctAnswerRange.xMin, @correctAnswerRange.yMin, @correctAnswerRange.xMax, @correctAnswerRange.yMax]
 
   appendSteps: (runtimePage) ->
     runtimeActivity = runtimePage.activity
