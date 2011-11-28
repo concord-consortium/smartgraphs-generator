@@ -1,0 +1,43 @@
+{
+  "type": "Activity",
+  "name": "Prediction Graph Activity",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Prediction graph page",
+      "text": "In this activity, you'll make a prediction",
+      "panes": [
+        {
+          "type": "PredictionGraphPane",
+          "title": "Back and Forth",
+          "yLabel": "Position",
+          "yUnits": "Distance",
+          "yMin": 0.0,
+          "yMax": 5.0,
+          "xLabel": "Time",
+          "xUnits": "Time",
+          "xMin": 0.0,
+          "xMax": 20.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0
+        }
+      ],
+      "sequence": {
+        "type": "InstructionSequence",
+        "text": "Draw a prediction"
+      }
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Distance",
+      "abbreviation": "m"
+    }
+  ]
+}

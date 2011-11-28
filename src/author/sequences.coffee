@@ -27,15 +27,16 @@ Sequence.classFor['NoSequence'] = class NoSequence
       step.setSubmissibilityCriterion [">=", ["sketchLength", @predictionPane.annotation.name], 0.2]
       step.setSubmissibilityDependsOn ["annotation", @predictionPane.annotation.name]
 
+    step
 
-Sequence.classFor['InstructionSequence'] = class InstructionSequence
+Sequence.classFor['InstructionSequence'] = class InstructionSequence extends NoSequence
 
   constructor: ({@text, @page}) ->
+    super
 
   appendSteps: (runtimePage) ->
-    step = runtimePage.appendStep()
+    step = super
     step.setBeforeText @text
-    pane.addToStep(step) for pane in @page.panes
 
 
 Sequence.classFor['ConstructedResponseSequence'] = class ConstructedResponseSequence
