@@ -1,0 +1,50 @@
+{
+  "type": "Activity",
+  "name": "Pick A Point Sequence",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "data": [
+            [1,200],
+            [2,400],
+            [3,600],
+            [4,800]
+          ]
+        },
+        {
+          "type": "TablePane"
+        }
+      ],
+      "sequence": {
+        "type": "PickAPointSequence",
+        "initialPrompt": "Click the point...",
+        "correctAnswerRange": {
+          "xMin": 2,
+          "yMin": 400,
+          "xMax": 3,
+          "yMax": 600
+        },
+        "giveUp": {
+          "text": "If you look carefully, ...."
+        },
+        "confirmCorrect": {
+          "text": "Four minutes into her run ...."
+        }
+      }
+    }
+  ]
+}
