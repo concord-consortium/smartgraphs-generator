@@ -60,7 +60,7 @@ AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends G
   addToStep: (step) ->
     super
     step.addPredictionTool { @index, @datadefRef,  @annotation }
-    step.addAnnotationToPane {index: 0, annotation: @annotation}
+    step.addAnnotationToPane {index: @index, annotation: @annotation}
 
 
 AuthorPane.classFor['ImagePane'] = class ImagePane
