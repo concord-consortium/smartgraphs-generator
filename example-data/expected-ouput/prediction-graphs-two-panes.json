@@ -1,0 +1,189 @@
+{
+  "_id": "prediction-graph-2_step-activity.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Prediction Graph 2-Step Activity",
+    "url": "/shared/prediction-graph-2_step-activity",
+    "owner": "shared",
+    "pages": [
+      "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page"
+    ],
+    "axes": [
+      "/shared/prediction-graph-2_step-activity/axes/1",
+      "/shared/prediction-graph-2_step-activity/axes/2",
+      "/shared/prediction-graph-2_step-activity/axes/3",
+      "/shared/prediction-graph-2_step-activity/axes/4"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Prediction graph 2-step page",
+      "url": "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page",
+      "activity": "/shared/prediction-graph-2_step-activity",
+      "index": 1,
+      "introText": "In this activity, you'll make two predictions, one after the other",
+      "steps": [
+        "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page/step/1",
+        "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page/step/2"
+      ],
+      "firstStep": "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page/step/1"
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page/step/1",
+      "activityPage": "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Back and Forth",
+          "xAxis": "/shared/prediction-graph-2_step-activity/axes/1",
+          "yAxis": "/shared/prediction-graph-2_step-activity/axes/2",
+          "data": [],
+          "annotations": ["freehand-sketch-1"]
+        },
+        "bottom": {
+          "type": "graph",
+          "title": "Back and Forth 2",
+          "xAxis": "/shared/prediction-graph-2_step-activity/axes/3",
+          "yAxis": "/shared/prediction-graph-2_step-activity/axes/4",
+          "data": [],
+          "annotations": []
+        }
+      },
+      "isFinalStep": false,
+      "tools": [
+        {
+          "name": "prediction",
+          "setup": {
+            "pane": "top",
+            "uiBehavior": "freehand",
+            "annotationName": "freehand-sketch-1"
+          }
+        }
+      ],
+      "submissibilityDependsOn": ["annotation", "freehand-sketch-1"],
+      "submissibilityCriterion": [">=", ["sketchLength", "freehand-sketch-1"], 0.2],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page/step/2"
+    },
+    {
+      "url": "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page/step/2",
+      "activityPage": "/shared/prediction-graph-2_step-activity/page/1-prediction-graph-2_step-page",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Back and Forth",
+          "xAxis": "/shared/prediction-graph-2_step-activity/axes/1",
+          "yAxis": "/shared/prediction-graph-2_step-activity/axes/2",
+          "data": [],
+          "annotations": ["freehand-sketch-1"]
+        },
+        "bottom": {
+          "type": "graph",
+          "title": "Back and Forth 2",
+          "xAxis": "/shared/prediction-graph-2_step-activity/axes/3",
+          "yAxis": "/shared/prediction-graph-2_step-activity/axes/4",
+          "data": [],
+          "annotations": ["freehand-sketch-2"]
+        }
+      },
+      "isFinalStep": true,
+      "tools": [
+        {
+          "name": "prediction",
+          "setup": {
+            "pane": "bottom",
+            "uiBehavior": "freehand",
+            "annotationName": "freehand-sketch-2"
+          }
+        }
+      ],
+      "submissibilityDependsOn": ["annotation", "freehand-sketch-2"],
+      "submissibilityCriterion": [">=", ["sketchLength", "freehand-sketch-2"], 0.2],
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "units": [
+    {
+      "url": "/shared/prediction-graph-2_step-activity/units/Time",
+      "activity": "/shared/prediction-graph-2_step-activity",
+      "name": "Time",
+      "abbreviation": "s",
+      "pluralName": "Time"
+    },
+    {
+      "url": "/shared/prediction-graph-2_step-activity/units/Distance",
+      "activity": "/shared/prediction-graph-2_step-activity",
+      "name": "Distance",
+      "abbreviation": "m",
+      "pluralName": "Distance"
+    }
+  ],
+  "axes": [
+    {
+      "url": "/shared/prediction-graph-2_step-activity/axes/1",
+      "units": "/shared/prediction-graph-2_step-activity/units/Time",
+      "min": 0,
+      "max": 20,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/prediction-graph-2_step-activity/axes/2",
+      "units": "/shared/prediction-graph-2_step-activity/units/Distance",
+      "min": 0,
+      "max": 5,
+      "nSteps": 10,
+      "label": "Position"
+    },
+    {
+      "url": "/shared/prediction-graph-2_step-activity/axes/3",
+      "units": "/shared/prediction-graph-2_step-activity/units/Time",
+      "min": 0,
+      "max": 20,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/prediction-graph-2_step-activity/axes/4",
+      "units": "/shared/prediction-graph-2_step-activity/units/Distance",
+      "min": 0,
+      "max": 5,
+      "nSteps": 10,
+      "label": "Position"
+    }
+  ],
+  "responseTemplates": [
+  ],
+  "tags": [
+  ],
+  "variables": [
+  ],
+  "datadefs": [
+  ],
+  "annotations": [
+    {
+      "type": "FreehandSketch",
+      "records": [
+        {
+          "url": "/shared/prediction-graph-2_step-activity/annotations/freehand-sketch-1",
+          "name": "freehand-sketch-1",
+          "activity": "/shared/prediction-graph-2_step-activity",
+          "color": "#CC0000",
+          "points": []
+        },
+        {
+          "url": "/shared/prediction-graph-2_step-activity/annotations/freehand-sketch-2",
+          "name": "freehand-sketch-2",
+          "activity": "/shared/prediction-graph-2_step-activity",
+          "color": "#CC0000",
+          "points": []
+        }
+      ]
+    }
+  ]
+}
