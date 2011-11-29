@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-  
+
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-  
+
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-  
+
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-  
+
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -474,27 +474,41 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     function NoSequence(_arg) {
       var i, pane, _len, _ref;
       this.page = _arg.page;
+      this.predictionPanes = [];
       _ref = this.page.panes || [];
       for (i = 0, _len = _ref.length; i < _len; i++) {
         pane = _ref[i];
         if (pane instanceof AuthorPane.classFor['PredictionGraphPane']) {
-          this.predictionPane = pane;
+          this.predictionPanes.push(pane);
         }
       }
     }
     NoSequence.prototype.appendSteps = function(runtimePage) {
-      var pane, step, _i, _len, _ref;
-      step = runtimePage.appendStep();
-      _ref = this.page.panes;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pane = _ref[_i];
-        pane.addToStep(step);
+      var i, isActiveInputPane, n, numSteps, pane, previousAnnotation, step, steps, _len, _ref;
+      steps = [];
+      numSteps = this.predictionPanes.length || 1;
+      for (n = 0; 0 <= numSteps ? n < numSteps : n > numSteps; 0 <= numSteps ? n++ : n--) {
+        step = runtimePage.appendStep();
+        if (n !== 0) {
+          steps[n - 1].setDefaultBranch(step);
+        }
+        _ref = this.page.panes;
+        for (i = 0, _len = _ref.length; i < _len; i++) {
+          pane = _ref[i];
+          isActiveInputPane = (i === n) || (this.predictionPanes.length === 1);
+          previousAnnotation = !isActiveInputPane && i === 0 ? this.page.panes[0].annotation : void 0;
+          pane.addToStep(step, {
+            isActiveInputPane: isActiveInputPane,
+            previousAnnotation: previousAnnotation
+          });
+        }
+        if (this.predictionPanes[n] != null) {
+          step.setSubmissibilityCriterion([">=", ["sketchLength", this.predictionPanes[n].annotation.name], 0.2]);
+          step.setSubmissibilityDependsOn(["annotation", this.predictionPanes[n].annotation.name]);
+        }
+        steps.push(step);
       }
-      if (this.predictionPane != null) {
-        step.setSubmissibilityCriterion([">=", ["sketchLength", this.predictionPane.annotation.name], 0.2]);
-        step.setSubmissibilityDependsOn(["annotation", this.predictionPane.annotation.name]);
-      }
-      return step;
+      return steps;
     };
     return NoSequence;
   })();
@@ -505,9 +519,14 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       InstructionSequence.__super__.constructor.apply(this, arguments);
     }
     InstructionSequence.prototype.appendSteps = function(runtimePage) {
-      var step;
-      step = InstructionSequence.__super__.appendSteps.apply(this, arguments);
-      return step.setBeforeText(this.text);
+      var step, steps, _i, _len, _results;
+      steps = InstructionSequence.__super__.appendSteps.apply(this, arguments);
+      _results = [];
+      for (_i = 0, _len = steps.length; _i < _len; _i++) {
+        step = steps[_i];
+        _results.push(step.setBeforeText(this.text));
+      }
+      return _results;
     };
     return InstructionSequence;
   })();
@@ -865,20 +884,29 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         type: 'FreehandSketch'
       });
     };
-    PredictionGraphPane.prototype.addToStep = function(step) {
-      var uiBehavior;
+    PredictionGraphPane.prototype.addToStep = function(step, _arg) {
+      var isActiveInputPane, previousAnnotation, uiBehavior;
+      isActiveInputPane = _arg.isActiveInputPane, previousAnnotation = _arg.previousAnnotation;
       PredictionGraphPane.__super__.addToStep.apply(this, arguments);
-      uiBehavior = this.predictionType === "continuous_curves" ? "freehand" : "extend";
-      step.addPredictionTool({
-        index: this.index,
-        datadefRef: this.datadefRef,
-        annotation: this.annotation,
-        uiBehavior: uiBehavior
-      });
-      return step.addAnnotationToPane({
-        index: this.index,
-        annotation: this.annotation
-      });
+      if (isActiveInputPane) {
+        uiBehavior = this.predictionType === "continuous_curves" ? "freehand" : "extend";
+        step.addPredictionTool({
+          index: this.index,
+          datadefRef: this.datadefRef,
+          annotation: this.annotation,
+          uiBehavior: uiBehavior
+        });
+        step.addAnnotationToPane({
+          index: this.index,
+          annotation: this.annotation
+        });
+      }
+      if (previousAnnotation) {
+        return step.addAnnotationToPane({
+          index: this.index,
+          annotation: previousAnnotation
+        });
+      }
     };
     return PredictionGraphPane;
   })();
@@ -958,13 +986,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-  
+
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-  
+
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
