@@ -16,18 +16,30 @@ Sequence = exports.Sequence =
 Sequence.classFor['NoSequence'] = class NoSequence
 
   constructor: ({@page}) ->
+    @predictionPanes = []               # TODO: should support sensor panes as well (generic "input" panes)
     for pane, i in @page.panes || []
-      @predictionPane = pane if pane instanceof AuthorPane.classFor['PredictionGraphPane']
+      @predictionPanes.push(pane) if pane instanceof AuthorPane.classFor['PredictionGraphPane']
 
+  # NoSequence will normally append a single step, unless there are multiple panes requiring user input
   appendSteps: (runtimePage) ->
-    step = runtimePage.appendStep()
-    pane.addToStep(step) for pane in @page.panes
+    steps = []
+    numSteps =  @predictionPanes.length or 1
 
-    if @predictionPane?
-      step.setSubmissibilityCriterion [">=", ["sketchLength", @predictionPane.annotation.name], 0.2]
-      step.setSubmissibilityDependsOn ["annotation", @predictionPane.annotation.name]
+    for n in [0...numSteps]
+      step = runtimePage.appendStep()
+      steps[n-1].setDefaultBranch step unless n is 0
 
-    step
+      for pane, i in @page.panes
+        isActiveInputPane = (i is n) or (@predictionPanes.length is 1)
+        previousAnnotation = if (!isActiveInputPane and i is 0) then @page.panes[0].annotation
+        pane.addToStep(step, {isActiveInputPane, previousAnnotation})
+
+      if @predictionPanes[n]?
+        step.setSubmissibilityCriterion [">=", ["sketchLength", @predictionPanes[n].annotation.name], 0.2]
+        step.setSubmissibilityDependsOn ["annotation", @predictionPanes[n].annotation.name]
+      steps.push step
+
+    steps
 
 Sequence.classFor['InstructionSequence'] = class InstructionSequence extends NoSequence
 
@@ -35,8 +47,9 @@ Sequence.classFor['InstructionSequence'] = class InstructionSequence extends NoS
     super
 
   appendSteps: (runtimePage) ->
-    step = super
-    step.setBeforeText @text
+    steps = super
+    for step in steps
+      step.setBeforeText @text
 
 
 Sequence.classFor['ConstructedResponseSequence'] = class ConstructedResponseSequence
