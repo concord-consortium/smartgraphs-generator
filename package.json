@@ -1,6 +1,7 @@
-{ "name" : "smartgraphs-generator",
-  "version" : "0.0.2",
-  "dependencies" : {
+{
+  "name": "smartgraphs-generator",
+  "version": "0.0.3",
+  "dependencies": {
     "commander": "~0.2.1"
   },
   "devDependencies": {
@@ -14,7 +15,8 @@
     "node": ">= 0.4.0"
   },
   "bin": {
-    "pizza"      : "./bin/pizza",
-    "sg-convert" : "./bin/sg-convert"
-  }
+    "pizza": "./bin/pizza",
+    "sg-convert": "./bin/sg-convert"
+  },
+  "optionalDependencies": {}
 }
