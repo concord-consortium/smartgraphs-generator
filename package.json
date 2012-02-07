@@ -4,7 +4,7 @@
     "commander": "~0.2.1"
   },
   "devDependencies": {
-    "coffee-script": "~1.1.2",
+    "coffee-script": "~1.2.0",
     "jitter": "~1.1.0",
     "jasmine-node": "~1.0.12",
     "browserify": "~1.7.1",

@@ -23,33 +23,33 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-
+        
         if (require._core[x]) return x;
         var path = require.modules.path();
         var y = cwd || '.';
-
+        
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-
+        
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-
+        
         throw new Error("Cannot find module '" + x + "'");
-
+        
         function loadAsFileSync (x) {
             if (require.modules[x]) {
                 return x;
             }
-
+            
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-
+        
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = x + '/package.json';
@@ -69,10 +69,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-
+            
             return loadAsFileSync(x + '/index');
         }
-
+        
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -82,23 +82,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-
+            
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-
+        
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-
+            
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-
+            
             return dirs;
         }
     };
@@ -114,9 +114,9 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-
+    
     var keys = Object_keys(require.modules);
-
+    
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -134,7 +134,7 @@ require.define = function (filename, fn) {
         ? ''
         : require.modules.path().dirname(filename)
     ;
-
+    
     var require_ = function (file) {
         return require(file, dirname)
     };
@@ -144,7 +144,7 @@ require.define = function (filename, fn) {
     require_.modules = require.modules;
     require_.define = require.define;
     var module_ = { exports : {} };
-
+    
     require.modules[filename] = function () {
         require.modules[filename]._cached = module_.exports;
         fn.call(
@@ -272,7 +272,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-
+  
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -323,17 +323,17 @@ require.define("/author/author-activity.js", function (require, module, exports,
     (function() {
   /*
     "Activity" object in author forat.
-
+  
     This class is built from an input hash (in the 'semantic JSON' format) and instantiates and manages child objects
     which represent the different model objects of the semantic JSON format.
-
+  
     The various subtypes of pages will know how to call 'builder' methods on the runtime.* classes to insert elements as
     needed.
-
+  
     For example, an author.sensorPage would have to know to call methods like RuntimeActivity.addGraph and
     RuntimeActivity.addDataset, as well as mehods such as, perhaps, RuntimeActivity.appendPage, RuntimePage.appendStep,
     and Step.addTool('sensor')
-
+  
     The complexity of processing the input tree and deciding which builder methods on the runtime Page, runtime Step, etc
     to call mostly belong here. We expect there will be a largish and growing number of classes and subclasses in the
     author/ group, and that the runtime/ classes mostly just need to help keep the 'accounting' straight when the author/
@@ -948,10 +948,12 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
 require.define("/singularize.js", function (require, module, exports, __dirname, __filename) {
     (function() {
+
   exports.dumbSingularize = function(str) {
     var _ref;
     return ((_ref = str.match(/(.*)s$/)) != null ? _ref[1] : void 0) || str;
   };
+
 }).call(this);
 
 });
@@ -986,13 +988,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     (function() {
   /*
     Output "Activity" object.
-
+  
     This class maintains a set of child objects that represent something close to the output "Smartgraphs runtime JSON"
     format and has a toHash method to generate that format. (However, this class will likely maintain model objects that
     aren't explicitly represented in the final output hash or in the Smartgraphs runtime; for example, having an
     runtime/Graph class makes sense, even though the output hash is 'denormalized' and doesn't have an explicit
     representation of a Graph)
-
+  
     Mostly, this class and the classes of its contained child objects implement builder methods that the author/* objects
     know how to call.
   */
@@ -1293,12 +1295,14 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
 
 require.define("/slugify.js", function (require, module, exports, __dirname, __filename) {
     (function() {
+
   exports.slugify = function(text) {
     text = text.replace(/[^-a-zA-Z0-9,&\s]+/ig, '');
     text = text.replace(/-/gi, "_");
     text = text.replace(/\s/gi, "-");
     return text.toLowerCase();
   };
+
 }).call(this);
 
 });
@@ -1979,10 +1983,13 @@ require.define("/runtime/responseTemplates.js", function (require, module, expor
 require.define("/converter.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var AuthorActivity;
+
   AuthorActivity = require('./author/author-activity').AuthorActivity;
+
   exports.convert = function(input) {
     return new AuthorActivity(input).toRuntimeActivity().toHash();
   };
+
 }).call(this);
 
 });
