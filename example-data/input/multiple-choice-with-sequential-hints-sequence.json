@@ -45,8 +45,25 @@
         }
       ],
       "sequence": {
-        "type": "InstructionSequence",
-        "text": "<p>Which of the following choices is choice \"B\"?</p>"
+        "type": "MultipleChoiceWithSequentialHintsSequence",
+        "initialPrompt": "<p>Which of the following choices is choice \"B\"?</p>",
+        "correctAnswerIndex": 1,
+        "choices": [
+          "Choice A",
+          "Choice B",
+          "Choice C"
+        ],
+        "hints": [
+          "You can try harder than that.",
+          "I'm starting to worry about you.",
+          "C'mon, you can do it. Or so I used to think."
+        ],
+        "giveUp": {
+          "text": "Incorrect. The correct choice B is choice B."
+        },
+        "confirmCorrect": {
+          "text": "That's right. I wanted choice B, you gave it to me."
+        }
       }
     }
   ],
