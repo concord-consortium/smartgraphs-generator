@@ -47,23 +47,32 @@
       "sequence": {
         "type": "MultipleChoiceWithSequentialHintsSequence",
         "initialPrompt": "<p>Which of the following choices is choice \"B\"?</p>",
-        "correctAnswerIndex": 1,
         "choices": [
           "Choice A",
           "Choice B",
           "Choice C"
         ],
-        "hints": [
-          { "text": "You can try harder than that." },
-          { "text": "I'm starting to worry about you." },
-          { "text": "C'mon, you can do it. Or so I used to think." }
-        ],
+        "correctAnswerIndex": 1,
         "giveUp": {
           "text": "Incorrect. The correct choice B is choice B."
         },
         "confirmCorrect": {
           "text": "That's right. I wanted choice B, you gave it to me."
-        }
+        },
+        "hints": [
+          {
+            "name": "Hint 1",
+            "text": "You can try harder than that."
+          },
+          {
+            "name": "Hint 2",
+            "text": "I'm starting to worry about you."
+          },
+          {
+            "name": "Hint 3",
+            "text": "C'mon, you can do it. Or so I used to think."
+          }
+        ]
       }
     }
   ],
