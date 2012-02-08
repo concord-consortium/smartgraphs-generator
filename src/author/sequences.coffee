@@ -73,7 +73,7 @@ class CorrectableSequenceWithFeedback
 
   HIGHLIGHT_COLOR: '#1f77b4'
 
-  constructor: ({@initialPrompt, @correctAnswer, @correctAnswerPoint, @correctAnswerRange, @hints, @giveUp, @confirmCorrect, @page}) ->
+  constructor: ({@initialPrompt, @hints, @giveUp, @confirmCorrect, @page}) ->
     if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
 
     for pane, i in @page.panes || []
@@ -157,6 +157,9 @@ class CorrectableSequenceWithFeedback
 
 Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends CorrectableSequenceWithFeedback
 
+  constructor: ({@correctAnswerPoint, @correctAnswerRange}) ->
+    super arguments...
+
   getRequiresGraphOrTable: ->
     true
 
@@ -180,6 +183,9 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends Corre
 
 Sequence.classFor['NumericSequence'] = class NumericSequence extends CorrectableSequenceWithFeedback
 
+  constructor: ({@correctAnswer}) ->
+    super arguments...
+    
   getCriterion: ->
     ["=",["responseField", 1], @correctAnswer]
 

@@ -588,7 +588,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
     function CorrectableSequenceWithFeedback(_arg) {
       var i, pane, _len, _ref;
-      this.initialPrompt = _arg.initialPrompt, this.correctAnswer = _arg.correctAnswer, this.correctAnswerPoint = _arg.correctAnswerPoint, this.correctAnswerRange = _arg.correctAnswerRange, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
+      this.initialPrompt = _arg.initialPrompt, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
       if (typeof this.initialPrompt === 'string') {
         this.initialPrompt = {
           text: this.initialPrompt
@@ -722,7 +722,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
     __extends(PickAPointSequence, _super);
 
-    function PickAPointSequence() {
+    function PickAPointSequence(_arg) {
+      this.correctAnswerPoint = _arg.correctAnswerPoint, this.correctAnswerRange = _arg.correctAnswerRange;
       PickAPointSequence.__super__.constructor.apply(this, arguments);
     }
 
@@ -778,7 +779,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
     __extends(NumericSequence, _super);
 
-    function NumericSequence() {
+    function NumericSequence(_arg) {
+      this.correctAnswer = _arg.correctAnswer;
       NumericSequence.__super__.constructor.apply(this, arguments);
     }
 
