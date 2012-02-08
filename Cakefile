@@ -5,7 +5,7 @@ option '-q', '--quiet', "When running tests, do not use --verbose flag"
 option '-j', '--junit', "When running tests, generate a junit XML report"
 
 task 'build:js', "build the smartgraphs-generator javascript in lib/ from coffeescript in src/", buildjs = (cb) ->
-  run 'nbin/coffee', ['-c', '-o', 'lib/'].concat(srcFiles()), cb
+  run 'nbin/coffee', ['-o', 'lib/', '-c', 'src/'], cb
 
 task 'build:browser', "build the browserified javascript from javascript in lib/", buildBrowser = (cb) ->
   run 'nbin/browserify', ['lib/converter.js', '-o', 'browser/js/converter.js'], cb
@@ -19,7 +19,7 @@ task 'testpage', "build and open test page", testpage = (cb) ->
     run 'open', ['browser/testpage.html'], cb
 
 task 'watch', "watch the coffeescript source tree in src/ for changes and build javascript files into lib/", watch = (cb) ->
-  run 'nbin/jitter', ['src', 'lib'], cb
+  run 'nbin/coffee', ['-o', 'lib/', '-w', 'src/'], cb
 
 task 'test', "run all Jasmine spec tests in spec/", test = ({quiet, junit}) ->
   options = ['--coffee', 'spec']
