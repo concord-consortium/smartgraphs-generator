@@ -54,9 +54,9 @@
           "Choice C"
         ],
         "hints": [
-          "You can try harder than that.",
-          "I'm starting to worry about you.",
-          "C'mon, you can do it. Or so I used to think."
+          { "text": "You can try harder than that." },
+          { "text": "I'm starting to worry about you." },
+          { "text": "C'mon, you can do it. Or so I used to think." }
         ],
         "giveUp": {
           "text": "Incorrect. The correct choice B is choice B."
