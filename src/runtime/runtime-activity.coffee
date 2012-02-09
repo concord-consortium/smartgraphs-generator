@@ -122,16 +122,17 @@ exports.RuntimeActivity = class RuntimeActivity
     @annotations[type].push annotation
     annotation
 
-  createAndAppendResponseTemplate: (type, initialValues = [""]) ->
+  createAndAppendResponseTemplate: (type, initialValues = [""], choices) ->
     TemplateClass = ResponseTemplateCollection.classFor[type]
-    return @responseTemplates[[type, initialValues]] unless !@responseTemplates[[type, initialValues]]
+
+    key = TemplateClass.getUniqueKey initialValues, choices
+    if @responseTemplates[key] then return @responseTemplates[key]
 
     @responseTemplatesCounts[type] ?= 0
     count = ++@responseTemplatesCounts[type]
 
-    responseTemplate = new TemplateClass count, initialValues
+    @responseTemplates[key] = responseTemplate = new TemplateClass count, initialValues, choices
     responseTemplate.activity = this
-    @responseTemplates[[type, initialValues]] = responseTemplate
     responseTemplate
 
   appendPage: (page) ->

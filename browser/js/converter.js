@@ -1278,18 +1278,16 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return annotation;
     };
 
-    RuntimeActivity.prototype.createAndAppendResponseTemplate = function(type, initialValues) {
-      var TemplateClass, count, responseTemplate, _base;
+    RuntimeActivity.prototype.createAndAppendResponseTemplate = function(type, initialValues, choices) {
+      var TemplateClass, count, key, responseTemplate, _base;
       if (initialValues == null) initialValues = [""];
       TemplateClass = ResponseTemplateCollection.classFor[type];
-      if (!!this.responseTemplates[[type, initialValues]]) {
-        return this.responseTemplates[[type, initialValues]];
-      }
+      key = TemplateClass.getUniqueKey(initialValues, choices);
+      if (this.responseTemplates[key]) return this.responseTemplates[key];
       if ((_base = this.responseTemplatesCounts)[type] == null) _base[type] = 0;
       count = ++this.responseTemplatesCounts[type];
-      responseTemplate = new TemplateClass(count, initialValues);
+      this.responseTemplates[key] = responseTemplate = new TemplateClass(count, initialValues, choices);
       responseTemplate.activity = this;
-      this.responseTemplates[[type, initialValues]] = responseTemplate;
       return responseTemplate;
     };
 
@@ -2126,9 +2124,13 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
 
 require.define("/runtime/response-templates.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var ConstructedResponseTemplate, MultipleChoiceTemplate, NumericResponseTemplate, ResponseTemplate, ResponseTemplateCollection,
+  var ConstructedResponseTemplate, MultipleChoiceTemplate, NumericResponseTemplate, ResponseTemplate, ResponseTemplateCollection, join,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  join = function(name, vals) {
+    return [name].concat(vals).map(escape).join('&');
+  };
 
   ResponseTemplateCollection = exports.ResponseTemplateCollection = {
     classFor: {}
@@ -2166,18 +2168,22 @@ require.define("/runtime/response-templates.js", function (require, module, expo
       this.number = number;
       this.initialValues = initialValues != null ? initialValues : [""];
       NumericResponseTemplate.__super__.constructor.call(this);
-      this.name = "numeric";
+      this.name = 'numeric';
       this.fieldTypes = (function() {
         var _i, _len, _ref, _results;
         _ref = this.initialValues;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           val = _ref[_i];
-          _results.push("numeric");
+          _results.push('numeric');
         }
         return _results;
       }).call(this);
     }
+
+    NumericResponseTemplate.getUniqueKey = function(initialValues, choices) {
+      return join('numeric', initialValues);
+    };
 
     return NumericResponseTemplate;
 
@@ -2192,18 +2198,22 @@ require.define("/runtime/response-templates.js", function (require, module, expo
       this.number = number;
       this.initialValues = initialValues != null ? initialValues : [""];
       ConstructedResponseTemplate.__super__.constructor.call(this);
-      this.name = "open";
+      this.name = 'open';
       this.fieldTypes = (function() {
         var _i, _len, _ref, _results;
         _ref = this.initialValues;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           val = _ref[_i];
-          _results.push("textarea");
+          _results.push('textarea');
         }
         return _results;
       }).call(this);
     }
+
+    ConstructedResponseTemplate.getUniqueKey = function(initialValues, choices) {
+      return join('open', initialValues);
+    };
 
     return ConstructedResponseTemplate;
 
@@ -2220,6 +2230,10 @@ require.define("/runtime/response-templates.js", function (require, module, expo
       this.name = "multiple-choice";
       this.fieldTypes = ["multiplechoice"];
     }
+
+    MultipleChoiceTemplate.getUniqueKey = function(initialValues, choices) {
+      return join('multiple-choice', choices);
+    };
 
     return MultipleChoiceTemplate;
 
