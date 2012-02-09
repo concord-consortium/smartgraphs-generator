@@ -20,7 +20,7 @@
 {Tag}         = require './tag'
 
 {AnnotationCollection, Annotation, HighlightedPoint, SegmentOverlay} = require './annotations'
-{ResponseTemplateCollection} = require './responseTemplates'
+{ResponseTemplateCollection} = require './response-templates'
 
 exports.RuntimeActivity = class RuntimeActivity
 

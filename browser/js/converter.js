@@ -1123,7 +1123,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
 
   _ref = require('./annotations'), AnnotationCollection = _ref.AnnotationCollection, Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint, SegmentOverlay = _ref.SegmentOverlay;
 
-  ResponseTemplateCollection = require('./responseTemplates').ResponseTemplateCollection;
+  ResponseTemplateCollection = require('./response-templates').ResponseTemplateCollection;
 
   exports.RuntimeActivity = RuntimeActivity = (function() {
 
@@ -2124,7 +2124,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
 
 });
 
-require.define("/runtime/responseTemplates.js", function (require, module, exports, __dirname, __filename) {
+require.define("/runtime/response-templates.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var NumericResponseTemplate, ResponseTemplate, ResponseTemplateCollection,
     __hasProp = Object.prototype.hasOwnProperty,
