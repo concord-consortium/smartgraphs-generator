@@ -2126,7 +2126,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
 
 require.define("/runtime/response-templates.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var NumericResponseTemplate, ResponseTemplate, ResponseTemplateCollection,
+  var ConstructedResponseTemplate, MultipleChoiceTemplate, NumericResponseTemplate, ResponseTemplate, ResponseTemplateCollection,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -2143,11 +2143,12 @@ require.define("/runtime/response-templates.js", function (require, module, expo
     };
 
     ResponseTemplate.prototype.toHash = function() {
+      var _ref, _ref2;
       return {
         url: this.getUrl(),
         templateString: "",
-        fieldChoicesList: [null],
-        initialValues: this.initialValues,
+        fieldChoicesList: [(_ref = this.choices) != null ? _ref : null],
+        initialValues: (_ref2 = this.initialValues) != null ? _ref2 : [''],
         fieldTypes: this.fieldTypes
       };
     };
@@ -2182,15 +2183,15 @@ require.define("/runtime/response-templates.js", function (require, module, expo
 
   })(ResponseTemplate);
 
-  ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] = NumericResponseTemplate = (function(_super) {
+  ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] = ConstructedResponseTemplate = (function(_super) {
 
-    __extends(NumericResponseTemplate, _super);
+    __extends(ConstructedResponseTemplate, _super);
 
-    function NumericResponseTemplate(number, initialValues) {
+    function ConstructedResponseTemplate(number, initialValues) {
       var val;
       this.number = number;
       this.initialValues = initialValues != null ? initialValues : [""];
-      NumericResponseTemplate.__super__.constructor.call(this);
+      ConstructedResponseTemplate.__super__.constructor.call(this);
       this.name = "open";
       this.fieldTypes = (function() {
         var _i, _len, _ref, _results;
@@ -2204,7 +2205,23 @@ require.define("/runtime/response-templates.js", function (require, module, expo
       }).call(this);
     }
 
-    return NumericResponseTemplate;
+    return ConstructedResponseTemplate;
+
+  })(ResponseTemplate);
+
+  ResponseTemplateCollection.classFor['MultipleChoiceTemplate'] = MultipleChoiceTemplate = (function(_super) {
+
+    __extends(MultipleChoiceTemplate, _super);
+
+    function MultipleChoiceTemplate(number, choices) {
+      this.number = number;
+      this.choices = choices;
+      MultipleChoiceTemplate.__super__.constructor.call(this);
+      this.name = "multiple-choice";
+      this.fieldTypes = ["multiplechoice"];
+    }
+
+    return MultipleChoiceTemplate;
 
   })(ResponseTemplate);
 

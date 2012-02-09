@@ -9,11 +9,11 @@ class ResponseTemplate
     "#{@activity.getUrl()}/response-templates/#{@name}-#{@number}"
 
   toHash: ->
-    url:         @getUrl()
-    templateString: ""
-    fieldChoicesList: [null]
-    initialValues: @initialValues
-    fieldTypes: @fieldTypes
+    url:              @getUrl()
+    templateString:   ""
+    fieldChoicesList: [@choices ? null]
+    initialValues:    @initialValues ? ['']
+    fieldTypes:       @fieldTypes
 
 
 ResponseTemplateCollection.classFor['NumericResponseTemplate'] =  class NumericResponseTemplate extends ResponseTemplate
@@ -23,10 +23,18 @@ ResponseTemplateCollection.classFor['NumericResponseTemplate'] =  class NumericR
     @name = "numeric"
     @fieldTypes = ("numeric" for val in @initialValues)
 
-ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] =  class NumericResponseTemplate extends ResponseTemplate
+
+ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] =  class ConstructedResponseTemplate extends ResponseTemplate
 
   constructor: (@number, @initialValues = [""]) ->
     super()
     @name = "open"
     @fieldTypes = ("textarea" for val in @initialValues)
 
+
+ResponseTemplateCollection.classFor['MultipleChoiceTemplate'] =  class MultipleChoiceTemplate extends ResponseTemplate
+
+  constructor: (@number, @choices) ->
+    super()
+    @name = "multiple-choice"
+    @fieldTypes = ["multiplechoice"]
