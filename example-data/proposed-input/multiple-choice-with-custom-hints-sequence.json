@@ -1,0 +1,96 @@
+{
+  "type": "Activity",
+  "name": "Multiple Choice 2",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "First Page",
+      "text": "<p>This is an example page.</p>",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "The Graph",
+          "yLabel": "Distance",
+          "yUnits": "meters",
+          "yMin": 0.0,
+          "yMax": 100.0,
+          "xLabel": "Time",
+          "xUnits": "seconds",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "data": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              10.0
+            ],
+            [
+              2.0,
+              20.0
+            ],
+            [
+              3.0,
+              30.0
+            ],
+            [
+              4.0,
+              40.0
+            ]
+          ]
+        }
+      ],
+      "sequence": {
+        "type": "MultipleChoiceWithCustomHintsSequence",
+        "initialPrompt": "<p>Which of the following choices is choice \"B\"?</p>",
+        "choices": [
+          "Choice A",
+          "Choice B",
+          "Choice C"
+        ],
+        "correctAnswerIndex": 1,
+        "confirmCorrect": {
+          "text": "<p>That's right. I wanted choice B, you gave it to me.</p>"
+        },
+        "hints": [
+          {
+            "name": "Choice A Hint",
+            "choiceIndex": 0,
+            "text": "<p>Try to think! What is the difference between the letters A and B. Which would win in a fair fight, if Optimus Prime and Grimlock helped B? Try again.</p>"
+          },
+          {
+            "name": "Choice C Hint",
+            "choiceIndex": 2,
+            "text": "<p>Now, really. What do you think makes C like B? Ask yourself, does C have B envy? Then try again.</p>"
+          }
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    }
+  ]
+}
