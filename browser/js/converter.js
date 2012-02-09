@@ -2223,8 +2223,9 @@ require.define("/runtime/response-templates.js", function (require, module, expo
 
     __extends(MultipleChoiceTemplate, _super);
 
-    function MultipleChoiceTemplate(number, choices) {
+    function MultipleChoiceTemplate(number, initialValues, choices) {
       this.number = number;
+      this.initialValues = initialValues;
       this.choices = choices;
       MultipleChoiceTemplate.__super__.constructor.call(this);
       this.name = "multiple-choice";

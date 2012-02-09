@@ -43,7 +43,7 @@ ResponseTemplateCollection.classFor['ConstructedResponseTemplate'] =  class Cons
 
 ResponseTemplateCollection.classFor['MultipleChoiceTemplate'] =  class MultipleChoiceTemplate extends ResponseTemplate
 
-  constructor: (@number, @choices) ->
+  constructor: (@number, @initialValues, @choices) ->
     super()
     @name = "multiple-choice"
     @fieldTypes = ["multiplechoice"]
