@@ -107,7 +107,7 @@
           "step": "/shared/multiple-choice-2/page/1-first-page/step/3"
         }
       ],
-      "defaultBranch": "/shared/multiple-choice-2/page/1-first-page/step/1",
+      "defaultBranch": "/shared/multiple-choice-2/page/1-first-page/step/2",
       "isFinalStep": false
     },
 
@@ -147,7 +147,7 @@
           "step": "/shared/multiple-choice-2/page/1-first-page/step/3"
         }
       ],
-      "defaultBranch": "/shared/multiple-choice-2/page/1-first-page/step/1",
+      "defaultBranch": "/shared/multiple-choice-2/page/1-first-page/step/3",
       "isFinalStep": false
     },
 
