@@ -113,23 +113,23 @@ exports.RuntimeActivity = class RuntimeActivity
 
   createAndAppendAnnotation: (hash) ->
     {type} = hash
-    annotationClass = AnnotationCollection.classFor[type]
+    AnnotationClass = AnnotationCollection.classFor[type]
     @annotationCounts[type] ?= 0
     hash.index = ++@annotationCounts[type]
-    annotation = new annotationClass hash
+    annotation = new AnnotationClass hash
     annotation.activity = this
     @annotations[type] ?= []
     @annotations[type].push annotation
     annotation
 
   createAndAppendResponseTemplate: (type, initialValues = [""]) ->
-    templateClass = ResponseTemplateCollection.classFor[type]
+    TemplateClass = ResponseTemplateCollection.classFor[type]
     return @responseTemplates[[type, initialValues]] unless !@responseTemplates[[type, initialValues]]
 
     @responseTemplatesCounts[type] ?= 0
     count = ++@responseTemplatesCounts[type]
 
-    responseTemplate = new templateClass count, initialValues
+    responseTemplate = new TemplateClass count, initialValues
     responseTemplate.activity = this
     @responseTemplates[[type, initialValues]] = responseTemplate
     responseTemplate
