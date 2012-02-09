@@ -78,9 +78,6 @@ Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = class MultipleChoic
     indexed = []
     indexed[hint.choiceIndex] = hint for hint in @hints
     @orderedHints = (hint for hint in indexed when hint?)
-    
-  getCriterionForCorrectAnswer: ->
-    @getCriterionForChoice @correctAnswerIndex
 
   getCriterionForChoice: (choiceIndex) ->
     ["=", ["responseField", 1], 1 + choiceIndex]
@@ -89,33 +86,31 @@ Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = class MultipleChoic
     runtimeActivity = runtimePage.activity
     responseTemplate = runtimeActivity.createAndAppendResponseTemplate 'MultipleChoiceTemplate', [''], @choices
 
-    addPanesAndFeedbackToStep = ({ step, from }) =>
-      pane.addToStep step for pane in @page.panes
-      step.setBeforeText from.text
-
     steps = []
     answerableSteps = []
     hintStepsByChoiceIndex = []
 
     # make the steps
-    for answerableInfo in [@initialPrompt].concat @orderedHints
-      steps.push step = runtimePage.appendStep()
-      answerableSteps.push step
-      hintStepsByChoiceIndex[answerableInfo.choiceIndex] = step unless answerableInfo is @initialPrompt
-      
-      addPanesAndFeedbackToStep { step, from: answerableInfo }
+    for stepInfo in [@initialPrompt].concat(@orderedHints).concat [@confirmCorrect]
+      step = runtimePage.appendStep()
 
-    steps.push confirmCorrectStep = runtimePage.appendStep()
-    addPanesAndFeedbackToStep { step: confirmCorrectStep, from: @confirmCorrect }
-    
-    # add branching to the answerable steps
+      steps.push step
+      answerableSteps.push step unless stepInfo is @confirmCorrect
+      hintStepsByChoiceIndex[stepInfo.choiceIndex] = step unless stepInfo is @initialPrompt or stepInfo is @confirmCorrect
+      confirmCorrectStep = step if stepInfo is @confirmCorrect
+      
+      pane.addToStep step for pane in @page.panes
+      step.setBeforeText stepInfo.text
+
+
+    # add branching, submit button, & multiple choice template to the answerable steps
     for step, index in answerableSteps
       step.setSubmitButtonTitle "Check My Answer"
       step.setSubmissibilityCriterion ["isNumeric", ["responseField", 1]]
       step.setResponseTemplate responseTemplate
       
       step.appendResponseBranch
-        criterion: @getCriterionForCorrectAnswer()
+        criterion: @getCriterionForChoice @correctAnswerIndex
         step:      confirmCorrectStep
         
       for hint in @orderedHints
