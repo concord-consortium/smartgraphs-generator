@@ -1266,12 +1266,12 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createAndAppendAnnotation = function(hash) {
-      var annotation, annotationClazz, type, _base, _base2;
+      var annotation, annotationClass, type, _base, _base2;
       type = hash.type;
-      annotationClazz = AnnotationCollection.classFor[type];
+      annotationClass = AnnotationCollection.classFor[type];
       if ((_base = this.annotationCounts)[type] == null) _base[type] = 0;
       hash.index = ++this.annotationCounts[type];
-      annotation = new annotationClazz(hash);
+      annotation = new annotationClass(hash);
       annotation.activity = this;
       if ((_base2 = this.annotations)[type] == null) _base2[type] = [];
       this.annotations[type].push(annotation);
@@ -1279,15 +1279,15 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createAndAppendResponseTemplate = function(type, initialValues) {
-      var count, responseTemplate, templateClazz, _base;
+      var count, responseTemplate, templateClass, _base;
       if (initialValues == null) initialValues = [""];
-      templateClazz = ResponseTemplateCollection.classFor[type];
+      templateClass = ResponseTemplateCollection.classFor[type];
       if (!!this.responseTemplates[[type, initialValues]]) {
         return this.responseTemplates[[type, initialValues]];
       }
       if ((_base = this.responseTemplatesCounts)[type] == null) _base[type] = 0;
       count = ++this.responseTemplatesCounts[type];
-      responseTemplate = new templateClazz(count, initialValues);
+      responseTemplate = new templateClass(count, initialValues);
       responseTemplate.activity = this;
       this.responseTemplates[[type, initialValues]] = responseTemplate;
       return responseTemplate;
