@@ -69,6 +69,63 @@ Sequence.classFor['ConstructedResponseSequence'] = class ConstructedResponseSequ
     pane.addToStep(step) for pane in @page.panes
 
 
+Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = class MultipleChoiceWithCustomHintsSequence
+
+  constructor: ({@initialPrompt, @choices, @correctAnswerIndex, @hints, @confirmCorrect,  @page}) ->
+    if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
+    
+    # FIXME? Underscore would be handy here.
+    indexed = []
+    indexed[hint.choiceIndex] = hint for hint in @hints
+    @orderedHints = (hint for hint in indexed when hint?)
+    
+  getCriterionForCorrectAnswer: ->
+    @getCriterionForChoice @correctAnswerIndex
+
+  getCriterionForChoice: (choiceIndex) ->
+    ["=", ["responseField", 1], 1 + choiceIndex]
+
+  appendSteps: (runtimePage) ->
+    runtimeActivity = runtimePage.activity
+    responseTemplate = runtimeActivity.createAndAppendResponseTemplate 'MultipleChoiceTemplate', [''], @choices
+
+    addPanesAndFeedbackToStep = ({ step, from }) =>
+      pane.addToStep step for pane in @page.panes
+      step.setBeforeText from.text
+
+    steps = []
+    answerableSteps = []
+    hintStepsByChoiceIndex = []
+
+    # make the steps
+    for answerableInfo in [@initialPrompt].concat @orderedHints
+      steps.push step = runtimePage.appendStep()
+      answerableSteps.push step
+      hintStepsByChoiceIndex[answerableInfo.choiceIndex] = step unless answerableInfo is @initialPrompt
+      
+      addPanesAndFeedbackToStep { step, from: answerableInfo }
+
+    steps.push confirmCorrectStep = runtimePage.appendStep()
+    addPanesAndFeedbackToStep { step: confirmCorrectStep, from: @confirmCorrect }
+    
+    # add branching to the answerable steps
+    for step, index in answerableSteps
+      step.setSubmitButtonTitle "Check My Answer"
+      step.setSubmissibilityCriterion ["isNumeric", ["responseField", 1]]
+      step.setResponseTemplate responseTemplate
+      
+      step.appendResponseBranch
+        criterion: @getCriterionForCorrectAnswer()
+        step:      confirmCorrectStep
+        
+      for hint in @orderedHints
+        step.appendResponseBranch
+          criterion: @getCriterionForChoice hint.choiceIndex
+          step:      hintStepsByChoiceIndex[hint.choiceIndex]
+          
+      step.setDefaultBranch step    # shouldn't be possible, but do *something* in the event the response isn't an expected response
+  
+
 class CorrectableSequenceWithFeedback
 
   HIGHLIGHT_COLOR: '#1f77b4'
