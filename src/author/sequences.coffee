@@ -198,3 +198,22 @@ Sequence.classFor['NumericSequence'] = class NumericSequence extends Correctable
       step.setResponseTemplate responseTemplate
 
     @appendStepsWithModifier runtimePage, modifierForSequenceType
+    
+
+Sequence.classFor['MultipleChoiceWithSequentialHintsSequence'] = class MultipleChoiceWithSequentialHintsSequence extends CorrectableSequenceWithFeedback
+  
+  constructor: ({@correctAnswerIndex, @choices}) ->
+    super arguments...
+  
+  getCriterion: ->
+    ["=",["responseField", 1], 1 + @correctAnswerIndex]
+  
+  appendSteps: (runtimePage) ->
+    runtimeActivity = runtimePage.activity
+    responseTemplate = runtimeActivity.createAndAppendResponseTemplate 'MultipleChoiceTemplate', [''], @choices
+    
+    modifierForSequenceType = (step) =>
+      step.setSubmissibilityCriterion ["isNumeric", ["responseField", 1]]
+      step.setResponseTemplate responseTemplate
+
+    @appendStepsWithModifier runtimePage, modifierForSequenceType

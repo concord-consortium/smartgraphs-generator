@@ -468,7 +468,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence,
+  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -801,6 +801,35 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     };
 
     return NumericSequence;
+
+  })(CorrectableSequenceWithFeedback);
+
+  Sequence.classFor['MultipleChoiceWithSequentialHintsSequence'] = MultipleChoiceWithSequentialHintsSequence = (function(_super) {
+
+    __extends(MultipleChoiceWithSequentialHintsSequence, _super);
+
+    function MultipleChoiceWithSequentialHintsSequence(_arg) {
+      this.correctAnswerIndex = _arg.correctAnswerIndex, this.choices = _arg.choices;
+      MultipleChoiceWithSequentialHintsSequence.__super__.constructor.apply(this, arguments);
+    }
+
+    MultipleChoiceWithSequentialHintsSequence.prototype.getCriterion = function() {
+      return ["=", ["responseField", 1], 1 + this.correctAnswerIndex];
+    };
+
+    MultipleChoiceWithSequentialHintsSequence.prototype.appendSteps = function(runtimePage) {
+      var modifierForSequenceType, responseTemplate, runtimeActivity,
+        _this = this;
+      runtimeActivity = runtimePage.activity;
+      responseTemplate = runtimeActivity.createAndAppendResponseTemplate('MultipleChoiceTemplate', [''], this.choices);
+      modifierForSequenceType = function(step) {
+        step.setSubmissibilityCriterion(["isNumeric", ["responseField", 1]]);
+        return step.setResponseTemplate(responseTemplate);
+      };
+      return this.appendStepsWithModifier(runtimePage, modifierForSequenceType);
+    };
+
+    return MultipleChoiceWithSequentialHintsSequence;
 
   })(CorrectableSequenceWithFeedback);
 
