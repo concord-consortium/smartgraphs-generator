@@ -468,11 +468,21 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence,
+  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, asObject,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   AuthorPane = require('./author-panes').AuthorPane;
+
+  asObject = function(s) {
+    if (typeof s === 'string') {
+      return {
+        text: s
+      };
+    } else {
+      return s;
+    }
+  };
 
   Sequence = exports.Sequence = {
     classFor: {},
@@ -559,6 +569,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
     function ConstructedResponseSequence(_arg) {
       this.initialPrompt = _arg.initialPrompt, this.initialContent = _arg.initialContent, this.page = _arg.page;
+      this.initialPrompt = asObject(this.initialPrompt);
     }
 
     ConstructedResponseSequence.prototype.appendSteps = function(runtimePage) {
@@ -566,7 +577,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       runtimeActivity = runtimePage.activity;
       responseTemplate = runtimeActivity.createAndAppendResponseTemplate("ConstructedResponseTemplate", [this.initialContent]);
       step = runtimePage.appendStep();
-      step.setBeforeText(this.initialPrompt);
+      step.setBeforeText(this.initialPrompt.text);
       step.setSubmissibilityCriterion(["textLengthIsAtLeast", 1, ["responseField", 1]]);
       step.setResponseTemplate(responseTemplate);
       _ref = this.page.panes;
@@ -585,17 +596,13 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = MultipleChoiceWithCustomHintsSequence = (function() {
 
     function MultipleChoiceWithCustomHintsSequence(_arg) {
-      var hint, indexed, _i, _len, _ref;
+      var hint, indexed, _i, _len, _ref, _ref2;
       this.initialPrompt = _arg.initialPrompt, this.choices = _arg.choices, this.correctAnswerIndex = _arg.correctAnswerIndex, this.hints = _arg.hints, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
-      if (typeof this.initialPrompt === 'string') {
-        this.initialPrompt = {
-          text: this.initialPrompt
-        };
-      }
+      _ref = [this.initialPrompt, this.confirmCorrect].map(asObject), this.initialPrompt = _ref[0], this.confirmCorrect = _ref[1];
       indexed = [];
-      _ref = this.hints;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        hint = _ref[_i];
+      _ref2 = this.hints;
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        hint = _ref2[_i];
         indexed[hint.choiceIndex] = hint;
       }
       this.orderedHints = (function() {
@@ -669,16 +676,12 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     CorrectableSequenceWithFeedback.prototype.HIGHLIGHT_COLOR = '#1f77b4';
 
     function CorrectableSequenceWithFeedback(_arg) {
-      var i, pane, _len, _ref;
+      var i, pane, _len, _ref, _ref2;
       this.initialPrompt = _arg.initialPrompt, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
-      if (typeof this.initialPrompt === 'string') {
-        this.initialPrompt = {
-          text: this.initialPrompt
-        };
-      }
-      _ref = this.page.panes || [];
-      for (i = 0, _len = _ref.length; i < _len; i++) {
-        pane = _ref[i];
+      _ref = [this.initialPrompt, this.giveUp, this.confirmCorrect].map(asObject), this.initialPrompt = _ref[0], this.giveUp = _ref[1], this.confirmCorrect = _ref[2];
+      _ref2 = this.page.panes || [];
+      for (i = 0, _len = _ref2.length; i < _len; i++) {
+        pane = _ref2[i];
         if (pane instanceof AuthorPane.classFor['PredefinedGraphPane']) {
           this.graphPane = pane;
         }
