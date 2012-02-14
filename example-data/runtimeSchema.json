@@ -26,6 +26,9 @@
         },
         "axes": {
           "type": "array"
+        },
+        "authorName": {
+          "type": "string"
         }
       }
     },

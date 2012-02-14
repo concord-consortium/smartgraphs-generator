@@ -1,6 +1,7 @@
 {
   "type": "Activity",
   "name": "Maria’s Run",
+  "authorName": "The Concord Consortium SmartGraphs team. ",
   "pages": [
     {
       "type": "Page",
