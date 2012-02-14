@@ -1,5 +1,11 @@
 {AuthorPane} = require './author-panes'
 
+asObject = (s) ->
+  if typeof s is 'string' 
+    text: s
+  else
+    s
+
 Sequence = exports.Sequence =
 
   classFor: {}
@@ -55,14 +61,15 @@ Sequence.classFor['InstructionSequence'] = class InstructionSequence extends NoS
 Sequence.classFor['ConstructedResponseSequence'] = class ConstructedResponseSequence
 
   constructor: ({@initialPrompt, @initialContent, @page}) ->
-
+    @initialPrompt = asObject @initialPrompt
+    
   appendSteps: (runtimePage) ->
     runtimeActivity = runtimePage.activity
     responseTemplate = runtimeActivity.createAndAppendResponseTemplate "ConstructedResponseTemplate", [@initialContent]
 
     step = runtimePage.appendStep()
 
-    step.setBeforeText @initialPrompt
+    step.setBeforeText @initialPrompt.text
     step.setSubmissibilityCriterion ["textLengthIsAtLeast", 1, ["responseField", 1]]
     step.setResponseTemplate responseTemplate
 
@@ -72,7 +79,7 @@ Sequence.classFor['ConstructedResponseSequence'] = class ConstructedResponseSequ
 Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = class MultipleChoiceWithCustomHintsSequence
 
   constructor: ({@initialPrompt, @choices, @correctAnswerIndex, @hints, @confirmCorrect,  @page}) ->
-    if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
+    [@initialPrompt, @confirmCorrect] = [@initialPrompt, @confirmCorrect].map asObject
     
     # FIXME? Underscore would be handy here.
     indexed = []
@@ -126,8 +133,8 @@ class CorrectableSequenceWithFeedback
   HIGHLIGHT_COLOR: '#1f77b4'
 
   constructor: ({@initialPrompt, @hints, @giveUp, @confirmCorrect, @page}) ->
-    if typeof @initialPrompt is 'string' then @initialPrompt = { text: @initialPrompt } # TODO fix up the hobo app to generate a hash
-
+    [@initialPrompt, @giveUp, @confirmCorrect] = [@initialPrompt, @giveUp, @confirmCorrect].map asObject
+    
     for pane, i in @page.panes || []
       @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
       @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
