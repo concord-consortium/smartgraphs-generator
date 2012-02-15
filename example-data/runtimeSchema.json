@@ -28,7 +28,8 @@
           "type": "array"
         },
         "authorName": {
-          "type": "string"
+          "type": "string",
+          "optional": true
         }
       }
     },
