@@ -24,7 +24,7 @@
 
 exports.RuntimeActivity = class RuntimeActivity
 
-  constructor: (@owner, @name) ->
+  constructor: (@owner, @name, @authorName) ->
     @pages     = []
     @steps     = []
     @unitRefs  = {}
@@ -153,6 +153,7 @@ exports.RuntimeActivity = class RuntimeActivity
       owner: @owner
       pages: (page.getUrl() for page in @pages)
       axes:  url for url of @axes
+      authorName: @authorName
 
     pages: page.toHash() for page in @pages
     steps: flatten ((step.toHash() for step in page.steps) for page in @pages)

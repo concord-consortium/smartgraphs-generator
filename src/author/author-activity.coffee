@@ -27,13 +27,13 @@ exports.AuthorActivity = class AuthorActivity
     if @hash.type isnt 'Activity'
       throw new Error "smartgraphs-generator: AuthorActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\""
 
-    {@name,  @owner} = hash
+    {@name,  @owner, @authorName} = hash
     @owner ||= 'shared'        # until we get owner's username into the input hash
     @pages = (new AuthorPage(page, this, i + 1) for page, i in hash.pages)
     @units = (new AuthorUnit(unit, this) for unit in hash.units || [])
 
   toRuntimeActivity: ->
-    runtimeActivity = new RuntimeActivity @owner, @name
+    runtimeActivity = new RuntimeActivity @owner, @name, @authorName
     # Remember, input models call builder methods on output models. At least for now.
     runtimeActivity.appendPage page.toRuntimePage(runtimeActivity) for page in @pages
     runtimeActivity.defineUnit( (runtimeUnit = unit.toRuntimeUnit(runtimeActivity)).name, runtimeUnit ) for unit in @units

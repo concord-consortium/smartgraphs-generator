@@ -357,7 +357,7 @@ require.define("/author/author-activity.js", function (require, module, exports,
       if (this.hash.type !== 'Activity') {
         throw new Error("smartgraphs-generator: AuthorActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\"");
       }
-      this.name = hash.name, this.owner = hash.owner;
+      this.name = hash.name, this.owner = hash.owner, this.authorName = hash.authorName;
       this.owner || (this.owner = 'shared');
       this.pages = (function() {
         var _len, _ref, _results;
@@ -383,7 +383,7 @@ require.define("/author/author-activity.js", function (require, module, exports,
 
     AuthorActivity.prototype.toRuntimeActivity = function() {
       var page, runtimeActivity, runtimeUnit, unit, _i, _j, _len, _len2, _ref, _ref2;
-      runtimeActivity = new RuntimeActivity(this.owner, this.name);
+      runtimeActivity = new RuntimeActivity(this.owner, this.name, this.authorName);
       _ref = this.pages;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         page = _ref[_i];
@@ -1241,9 +1241,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
 
   exports.RuntimeActivity = RuntimeActivity = (function() {
 
-    function RuntimeActivity(owner, name) {
+    function RuntimeActivity(owner, name, authorName) {
       this.owner = owner;
       this.name = name;
+      this.authorName = authorName;
       this.pages = [];
       this.steps = [];
       this.unitRefs = {};
@@ -1442,7 +1443,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
               _results.push(url);
             }
             return _results;
-          }).call(this)
+          }).call(this),
+          authorName: this.authorName
         },
         pages: (function() {
           var _i, _len, _ref2, _results;
