@@ -1,5 +1,5 @@
-{AuthorPane} = require './author-panes'
-
+{AuthorPane}        = require './author-panes'
+{SlopeToolSequence} = require './slope_tool_sequence'
 asObject = (s) ->
   if typeof s is 'string' 
     text: s
@@ -276,3 +276,5 @@ Sequence.classFor['MultipleChoiceWithSequentialHintsSequence'] = class MultipleC
       step.setResponseTemplate responseTemplate
 
     @appendStepsWithModifier runtimePage, modifierForSequenceType
+
+Sequence.classFor['SlopeToolSequence'] = SlopeToolSequence
