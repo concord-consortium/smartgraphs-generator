@@ -91,200 +91,200 @@ class SlopeToolSequence
 
   assemble_steps: () ->
     [
-      # { ############################################
-      #   ##         1st_slope_question             ##
-      #   ############################################
-      #   name:                   "1st_slope_question"
-      #   defaultBranch:          (@studentSelectsPoints ? "select_1st_point" : "when_line_appears")
-      #   submitButtonTitle:      "Check My Answer"
-      #   responseTemplate:       "#{@response_template}/numeric"
-      #   beforeText:             @firstQuestion
-      #   substitutedExpressions: []
-      #   variableAssignments:     [
-      #     name: "student-response-field",
-      #     value: [ "responseField", 1 ] 
-      #   ]
-      #   submissibilityCriterion: [
-      #     "isNumeric", [ "responseField", 1 ] 
-      #   ]
-      #   graphAnnotations: [ "students-segment-labels" ]
-      #   tableAnnotations: [ ]
-      #   tools: [ ]
-      #   responseBranches: [
-      #     criterion: [ 
-      #       "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance 
-      #     ],
-      #     step: "confirm_correct"
-      #   ]
-      # },
-      # { ############################################
-      #   ##         select_1st_point               ##
-      #   ############################################
-      #   name:                   "select_1st_point"
-      #   defaultBranch:          "if_1st_point_wrong"
-      #   submitButtonTitle:      "OK"
-      #   beforeText:             """
-      #     #{(@firstQuestionIsSlopeQuestion ? "<p>Incorrect.</p>" : "" )} 
-      #     <p>Select a point between "#{@xMin} and #{@xMax} "#{@yUnits}".</p>
-      #     <p>Then click "OK". </p>
-      #   """
-      #   substitutedExpressions: [ "student-response-field" ]
-      #   variableAssignments:     [
-      #     name: "student-response-field",
-      #     value: [ "responseField", 1 ] 
-      #   ]
-      #   submissibilityCriterion: [
-      #     "isNumeric", [ "responseField", 1 ]
-      #   ]
-      #   graphAnnotations: [ "p1-highlight", "students-segment-labels" ]
-      #   tableAnnotations: [ "p1-highlight" ]
-      #   tools: [
-      #     name: "tagging"
-      #     setup:
-      #       tag: @pointA
-      #       data: "position-data"
-      #   ]
-      #   responseBranches: [
-      #     criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
-      #     step: "select_2nd_point"
-      #   ]
-      # },
-      # { ############################################
-      #   ##         if_1st_point_wrong             ##
-      #   ############################################
-      #   name:                   "if_1st_point_wrong"
-      #   defaultBranch:          "if_1st_point_wrong"
-      #   submitButtonTitle:      "OK"
-      #   beforeText:             """
-      #     <p>Incorrect.</p> 
-      #     <p>Select a point between "#{@xMin} and #{@xMax} "#{@yUnits}".</p>
-      #     <p>Then click "OK". </p>
-      #   """
+      { ############################################
+        ##         1st_slope_question             ##
+        ############################################
+        name:                   "1st_slope_question"
+        defaultBranch:          (@studentSelectsPoints ? "select_1st_point" : "when_line_appears")
+        submitButtonTitle:      "Check My Answer"
+        responseTemplate:       "#{@response_template}/numeric"
+        beforeText:             @firstQuestion
+        substitutedExpressions: []
+        variableAssignments:     [
+          name: "student-response-field",
+          value: [ "responseField", 1 ] 
+        ]
+        submissibilityCriterion: [
+          "isNumeric", [ "responseField", 1 ] 
+        ]
+        graphAnnotations: [ "students-segment-labels" ]
+        tableAnnotations: [ ]
+        tools: [ ]
+        responseBranches: [
+          criterion: [ 
+            "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance 
+          ],
+          step: "confirm_correct"
+        ]
+      },
+      { ############################################
+        ##         select_1st_point               ##
+        ############################################
+        name:                   "select_1st_point"
+        defaultBranch:          "if_1st_point_wrong"
+        submitButtonTitle:      "OK"
+        beforeText:             """
+          #{(@firstQuestionIsSlopeQuestion ? "<p>Incorrect.</p>" : "" )} 
+          <p>Select a point between "#{@xMin} and #{@xMax} "#{@yUnits}".</p>
+          <p>Then click "OK". </p>
+        """
+        substitutedExpressions: [ "student-response-field" ]
+        variableAssignments:     [
+          name: "student-response-field",
+          value: [ "responseField", 1 ] 
+        ]
+        submissibilityCriterion: [
+          "isNumeric", [ "responseField", 1 ]
+        ]
+        graphAnnotations: [ "p1-highlight", "students-segment-labels" ]
+        tableAnnotations: [ "p1-highlight" ]
+        tools: [
+          name: "tagging"
+          setup:
+            tag: @pointA
+            data: "position-data"
+        ]
+        responseBranches: [
+          criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
+          step: "select_2nd_point"
+        ]
+      },
+      { ############################################
+        ##         if_1st_point_wrong             ##
+        ############################################
+        name:                   "if_1st_point_wrong"
+        defaultBranch:          "if_1st_point_wrong"
+        submitButtonTitle:      "OK"
+        beforeText:             """
+          <p>Incorrect.</p> 
+          <p>Select a point between "#{@xMin} and #{@xMax} "#{@yUnits}".</p>
+          <p>Then click "OK". </p>
+        """
 
-      #   graphAnnotations: [
-      #     "p1-highlight"
-      #     "students-segment-labels"
-      #     "segment-6-9s"
-      #   ]
-      #   tableAnnotations: [ "p1-highlight" ]
-      #   tools: [
-      #     name: "tagging"
-      #     setup:
-      #       tag: @pointA
-      #       data: "position-data"
-      #   ]
-      #   responseBranches: [
-      #     criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin ], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
-      #     step: "select_2nd_point"
-      #   ]
-      # },
-      # { ############################################
-      #   ##         select_2nd_point               ##
-      #   ############################################
-      #   name:                   "select_2nd_point"
-      #   defaultBranch:          "when_line_appears"
-      #   submitButtonTitle:      "OK"
-      #   beforeText:             """
-      #     <p>Now select a second point between 
-      #     #{@xMin} and #{@xMax} #{@yUnits}.</p>
-      #     <p>Then click "OK". </p>
-      #   """
-      #   graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
-      #   tableAnnotations: [ "p1-highlight", "p2-highlight" ]
-      #   tools: [
-      #     name: "tagging"
-      #     setup:
-      #       tag: @pointB
-      #       data: "position-data"
-      #   ]
-      #   responseBranches: [
-      #     RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-      #     RBSamePoint('2nd_point_duplicate_point')
-      #     RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
-      #   ]
-      # },
-      # { ############################################
-      #   ##   2nd_point_not_adjacent_and_should_be             
-      #   ############################################
-      #   name:                   "2nd_point_not_adjacent_and_should_be"
-      #   defaultBranch:          "when_line_appears"
-      #   submitButtonTitle:      "OK"
-      #   beforeText:             """
-      #     <p> Incorrect </p>
-      #     <p> Your points should be adjacent </p>
-      #     <p>Select a second point between 
-      #     #{@xMin} and #{@xMax} #{@yUnits}.</p>
-      #     <p>Then click "OK". </p>
-      #   """
-      #   graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
-      #   tableAnnotations: [ "p1-highlight", "p2-highlight" ]
-      #   tools: [
-      #     name: "tagging"
-      #     setup:
-      #       tag: @pointB
-      #       data: "position-data"
-      #   ]
-      #   responseBranches: [
-      #     RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-      #     RBSamePoint('2nd_point_duplicate_point')
-      #     RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
-      #   ]
-      # },
-      # { ############################################
-      #   ##  2nd_point_duplicate_point             
-      #   ############################################
-      #   name:                   "2nd_point_duplicate_point"
-      #   defaultBranch:          "when_line_appears"
-      #   submitButtonTitle:      "OK"
-      #   beforeText:             """
-      #     <p> Incorrect </p>
-      #     <p> You have selected the same point twice.</p>
-      #     <p> Now select a <em>second</em> point between 
-      #     #{@xMin} and #{@xMax} #{@yUnits}.</p>
-      #     <p>Then click "OK". </p>
-      #   """
-      #   graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
-      #   tableAnnotations: [ "p1-highlight", "p2-highlight" ]
-      #   tools: [
-      #     name: "tagging"
-      #     setup:
-      #       tag: @pointB
-      #       data: "position-data"
-      #   ]
-      #   responseBranches: [
-      #     RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-      #     RBSamePoint('2nd_point_duplicate_point')
-      #     RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
-      #   ]
-      # },
-      # { ############################################
-      #   ##         2nd_point_not_in_correct_range
-      #   ############################################
-      #   name:                   "2nd_point_not_in_correct_range"
-      #   defaultBranch:          "when_line_appears"
-      #   submitButtonTitle:      "OK"    
-      #   beforeText:             """
-      #     <p> Incorrect </p>
-      #     <p> The point you have selected is not between
-      #     #{@xMin} and #{@xMax} #{@yUnits}.  Try again.</p>
-      #     <p> Select a second point <em>between 
-      #     #{@xMin} and #{@xMax} #{@yUnits}</em>.</p>
-      #     <p>Then click "OK". </p>
-      #   """
-      #   graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
-      #   tableAnnotations: [ "p1-highlight", "p2-highlight" ]
-      #   tools: [
-      #     name: "tagging"
-      #     setup:
-      #       tag: @pointB
-      #       data: "position-data"
-      #   ]
-      #   responseBranches: [
-      #     RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-      #     RBSamePoint('2nd_point_duplicate_point')
-      #     RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
-      #   ]
-      # }
+        graphAnnotations: [
+          "p1-highlight"
+          "students-segment-labels"
+          "segment-6-9s"
+        ]
+        tableAnnotations: [ "p1-highlight" ]
+        tools: [
+          name: "tagging"
+          setup:
+            tag: @pointA
+            data: "position-data"
+        ]
+        responseBranches: [
+          criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin ], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
+          step: "select_2nd_point"
+        ]
+      },
+      { ############################################
+        ##         select_2nd_point               ##
+        ############################################
+        name:                   "select_2nd_point"
+        defaultBranch:          "when_line_appears"
+        submitButtonTitle:      "OK"
+        beforeText:             """
+          <p>Now select a second point between 
+          #{@xMin} and #{@xMax} #{@yUnits}.</p>
+          <p>Then click "OK". </p>
+        """
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        tableAnnotations: [ "p1-highlight", "p2-highlight" ]
+        tools: [
+          name: "tagging"
+          setup:
+            tag: @pointB
+            data: "position-data"
+        ]
+        responseBranches: [
+          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          RBSamePoint('2nd_point_duplicate_point')
+          RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
+        ]
+      },
+      { ############################################
+        ##   2nd_point_not_adjacent_and_should_be             
+        ############################################
+        name:                   "2nd_point_not_adjacent_and_should_be"
+        defaultBranch:          "when_line_appears"
+        submitButtonTitle:      "OK"
+        beforeText:             """
+          <p> Incorrect </p>
+          <p> Your points should be adjacent </p>
+          <p>Select a second point between 
+          #{@xMin} and #{@xMax} #{@yUnits}.</p>
+          <p>Then click "OK". </p>
+        """
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        tableAnnotations: [ "p1-highlight", "p2-highlight" ]
+        tools: [
+          name: "tagging"
+          setup:
+            tag: @pointB
+            data: "position-data"
+        ]
+        responseBranches: [
+          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          RBSamePoint('2nd_point_duplicate_point')
+          RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
+        ]
+      },
+      { ############################################
+        ##  2nd_point_duplicate_point             
+        ############################################
+        name:                   "2nd_point_duplicate_point"
+        defaultBranch:          "when_line_appears"
+        submitButtonTitle:      "OK"
+        beforeText:             """
+          <p> Incorrect </p>
+          <p> You have selected the same point twice.</p>
+          <p> Now select a <em>second</em> point between 
+          #{@xMin} and #{@xMax} #{@yUnits}.</p>
+          <p>Then click "OK". </p>
+        """
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        tableAnnotations: [ "p1-highlight", "p2-highlight" ]
+        tools: [
+          name: "tagging"
+          setup:
+            tag: @pointB
+            data: "position-data"
+        ]
+        responseBranches: [
+          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          RBSamePoint('2nd_point_duplicate_point')
+          RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
+        ]
+      },
+      { ############################################
+        ##         2nd_point_not_in_correct_range
+        ############################################
+        name:                   "2nd_point_not_in_correct_range"
+        defaultBranch:          "when_line_appears"
+        submitButtonTitle:      "OK"    
+        beforeText:             """
+          <p> Incorrect </p>
+          <p> The point you have selected is not between
+          #{@xMin} and #{@xMax} #{@yUnits}.  Try again.</p>
+          <p> Select a second point <em>between 
+          #{@xMin} and #{@xMax} #{@yUnits}</em>.</p>
+          <p>Then click "OK". </p>
+        """
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        tableAnnotations: [ "p1-highlight", "p2-highlight" ]
+        tools: [
+          name: "tagging"
+          setup:
+            tag: @pointB
+            data: "position-data"
+        ]
+        responseBranches: [
+          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          RBSamePoint('2nd_point_duplicate_point')
+          RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
+        ]
+      }
       {
         name:                   "when_line_appears"
         defaultBranch:          "slope_wrong_1"
