@@ -32,8 +32,8 @@ AnnotationCollection.classFor["HighlightedPoint"] = exports.HighlightedPoint = c
 
   RECORD_TYPE: 'HighlightedPoint'
 
-  constructor: ({ @datadefRef, @tag, @color, @index}) ->
-    @name = "highlighted-point-#{@index}"
+  constructor: ({ @datadefRef, @tag, @color, @index, @name}) ->
+    @name ?= "highlighted-point-#{@index}"
 
   toHash: ->
     hash = super()
@@ -116,3 +116,40 @@ AnnotationCollection.classFor["FreehandSketch"] = exports.FreehandSketch = class
     hash.points      = []
 
     hash
+
+annotations = [
+
+]
+class SimpleAnnotation extends Annotation
+  RECORD_TYPE: 'SimpleAnnotation'
+  namePrefix:  'rise-and-run'
+  constructor: ({@index, @datadefRef, @p1Tag, @p2Tag, @color, @name}) ->
+    @name ?= "#{@namePrefix}#{@index}"
+
+  toHash: ->
+    hash = super()
+    hash.color = @color
+    hash.datadefName = @datadefRef.datadef.name
+    hash.p1Tag = @p1Tag.getUrl()
+    hash.p2Tag = @p2Tag.getUrl()
+    hash
+
+AnnotationCollection.classFor["RunArrow"] = exports.RunArrow = class RunArrow extends SimpleAnnotation
+  RECORD_TYPE: 'RunArrow'
+  namePrefix:  'run-arrow'
+
+AnnotationCollection.classFor["RiseArrow"] = exports.RiseArrow = class RiseArrow extends SimpleAnnotation
+  RECORD_TYPE: 'RiseArrow'
+  namePrefix:  'rise-arrow'
+
+AnnotationCollection.classFor["RunBracket"] = exports.RunBracket = class RunBracket extends SimpleAnnotation
+  RECORD_TYPE: 'RunBracket'
+  namePrefix:  'run-bracket'
+
+AnnotationCollection.classFor["RiseBracket"] = exports.RiseBracket = class RiseBracket extends SimpleAnnotation
+  RECORD_TYPE: 'RiseBracket'
+  namePrefix:  'rise-bracket'
+
+AnnotationCollection.classFor["LineThroughPoints"] = exports.LineThroughPoints = class LineThroughPoints extends SimpleAnnotation
+  RECORD_TYPE: 'LineThroughPoints'
+  namePrefix:  'line-throughpoints'

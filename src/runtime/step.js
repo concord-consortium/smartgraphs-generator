@@ -233,7 +233,7 @@
     };
 
     Step.prototype.toHash = function() {
-      var branch, key, panesHash, tool, toolsHash, _ref, _ref2, _ref3, _ref4;
+      var branch, key, panesHash, tool, toolsHash, _ref, _ref2;
       panesHash = this.panes.length === 1 ? {
         single: this.panes[0].toHash()
       } : this.panes.length === 2 ? {
@@ -278,9 +278,7 @@
           }
         }).call(this),
         isFinalStep: this.isFinalStep,
-        nextButtonShouldSubmit: this.nextButtonShouldSubmit,
-        variableAssignments: (_ref3 = this.variableAssignments) != null ? _ref3 : void 0,
-        substitutedExpressions: (_ref4 = this.substitutedExpressions) != null ? _ref4 : void 0
+        nextButtonShouldSubmit: this.nextButtonShouldSubmit
       };
     };
 

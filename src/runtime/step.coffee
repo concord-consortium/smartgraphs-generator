@@ -45,12 +45,14 @@ exports.Step = class Step
       xAxis,
       yAxis,
       annotations: [],
+      highlightedAnnotations: [],
       toHash: ->
         type:        'graph'
         title:       @title
         xAxis:       @xAxis.getUrl()
         yAxis:       @yAxis.getUrl()
         annotations: annotation.name for annotation in @annotations
+        highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
         data:        if @datadefRef? then [@datadefRef.datadef.name] else []
     }
 
@@ -58,14 +60,19 @@ exports.Step = class Step
     @panes[index] = {
       datadefRef,
       annotations: [],
+      highlightedAnnotations: [],
       toHash: ->
         type:         'table'
         data:         @datadefRef.datadef.name
         annotations:  annotation.name for annotation in @annotations
+        highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
     }
 
   addAnnotationToPane: ({ annotation, index }) ->
     @panes[index].annotations.push annotation
+
+  addHighlightedAnnotationToPane:({ annotation, index }) ->
+    @panes[index].highlightedAnnotations.push annotation
 
   addTaggingTool: ({ tag, datadefRef }) ->
     @tools['tagging'] = {
@@ -146,4 +153,6 @@ exports.Step = class Step
       responseBranches:        branch.toHash() for branch in @responseBranches if @responseBranches.length > 0
       isFinalStep:             @isFinalStep
       nextButtonShouldSubmit:  @nextButtonShouldSubmit
+      variableAssignments:     @variableAssignments    ? undefined
+      substitutedExpressions:  @substitutedExpressions ? undefined
     }
