@@ -1,5 +1,5 @@
-{AuthorPane}        = require './author-panes'
-{SlopeToolSequence} = require './slope_tool_sequence'
+{AuthorPane}          = require './author-panes'
+{SlopeToolSequence}   = require './slope_tool_sequence'
 asObject = (s) ->
   if typeof s is 'string' 
     text: s

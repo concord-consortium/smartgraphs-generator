@@ -1,5 +1,6 @@
+{AuthorPane}          = require './author-panes'
 # TODO: we could extend CorrectableSequenceWithFeedback
-class SlopeToolSequence
+exports.SlopeToolSequence = class SlopeToolSequence
 
   RBNotAdjacent: (dest, pointA=@pointA, pointB=@pointB) ->
     {
@@ -42,19 +43,13 @@ class SlopeToolSequence
     }) ->
       @pointA = 'first-point'
       @pointB = 'second-point'
-      # TODO: lookup the graph units up in the runtime page.
-      @yUnits = 'Meters'
-      @xUnits = 'Seconds'
-      @yAxis  = 'Position'
-      @xAxis  = 'Time'
-
+      @runtimeStepsByName = {}
       @slope = (@yMax - @yMin) / (@xMax - @xMin)
+
       for pane, i in @page.panes || []
         @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
         @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
-    
-      # sequential list of declarative steps
-      @steps = this.assemble_steps()
+
 
   getRequiresGraphOrTable: () ->
     true
@@ -69,25 +64,86 @@ class SlopeToolSequence
     return null unless @graphPane?
     runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}"
   
-  appendStep: (runtimePage, name) ->
-    step = runtimePage.appendStep()
-    step.panes = @panes
-    @stepsByName[name] = step
-    step
+  setupStep: ({runtimePage, stepdef}) ->
+    step = @runtimeStepsByName[stepdef.name]
+    step.addGraphPane
+      title: @graphPane.title
+      datadefRef: @getDataDefRef(runtimePage.activity)
+      xAxis: @xAxis
+      yAxis: @yAxis
+      index: @graphPane.index
+    step.addTablePane
+      datadefRef: @getDataDefRef(runtimePage.activity)
+      index: @tablePane.index
+    
+    step.beforeText = stepdef.beforeText
 
-  addAnnotations: (step,name) ->
-    annotations
-    step.addAnnotationToPane
+    for annotation in stepdef.graphAnnotations || []
+      if @annotations[annotation]
+        step.addAnnotationToPane
+          annotation: @annotations[annotation]
+          index:      @graphPane.index
+      else
+        console.log("no annotation found for #{annotation}")
+
+    for annotation in stepdef.tableAnnotations || []
+      if @annotations[annotation]
+        step.addAnnotationToPane
+          annotation: @annotations[annotation]
+          index:      @tablePane.index
+      else
+        console.log("no annotation found for #{annotation}")
+    
+    step.defaultBranch = @runtimeStepsByName[stepdef.defaultBranch]
+    # step.tools        = stepdef.tools # TODO make better
+
+    for response_def in stepdef.responseBranches || []
+      step.appendResponseBranch
+        criterion: response_def.criterion
+        step: @runtimeStepsByName[response_def.step]
 
   appendSteps: (runtimePage) ->
-    for name in @stepNames
-      step = appendStep(runtimePage,name)
-      @addAnnotations(step,name)
-      @addTools(step,name)
-  
+    # sequential list of declarative steps
+    # TODO: lookup the graph units up in the runtime page.
+    @yUnits   = @graphPane.yUnits
+    @xUnits   = @graphPane.xUnits
+    @yAxis    = @graphPane.yAxis
+    @xAxis    = @graphPane.xAxis
+    @stepDefs = this.assemble_steps()
+    
+    runtimeActivity = runtimePage.activity
+    datadefRef      = @getDataDefRef runtimeActivity
+    
+    @annotations = {}
+    @firstPoint     = runtimeActivity.createAndAppendTag()
+    @firstPoint.name = "p1-highlight"
+    
+
+    @secondPoint    = runtimeActivity.createAndAppendTag()
+    @secondPoint.name = "p2-highlight"
+    
+    for point in [@firstPoint, @secondPoint]
+      @annotations[point.name] = runtimeActivity.createAndAppendAnnotation
+        type: "HighlightedPoint"
+        datadefRef: datadefRef 
+        tag: point
+
+    console.log(@annotations)
+
+    @slopeLine = runtimeActivity.crateAndAppendAnnotation
+
+    for stepdef in @stepDefs
+      runtimeStep = runtimePage.appendStep()
+      @runtimeStepsByName[stepdef.name] = runtimeStep
+
+    for stepdef in @stepDefs
+      @setupStep
+        stepdef: stepdef
+        runtimePage: runtimePage
+
   lineAppearsQuestion: () ->
-    @firstQuestionIsSlopeQuestion ? @firstQuestion : 
-      "What was the #{@slopeVariableName} between the two points in #{@yUnits} per #{@xUnits}?"
+    return @firstQuestion if @firstQuestionIsSlopeQuestion
+    return "What was the #{@slopeVariableName} between the two points in #{@yUnits} per #{@xUnits}?"
 
   assemble_steps: () ->
     [
@@ -107,7 +163,7 @@ class SlopeToolSequence
         submissibilityCriterion: [
           "isNumeric", [ "responseField", 1 ] 
         ]
-        graphAnnotations: [ "students-segment-labels" ]
+        graphAnnotations: [ ]
         tableAnnotations: [ ]
         tools: [ ]
         responseBranches: [
@@ -136,13 +192,13 @@ class SlopeToolSequence
         submissibilityCriterion: [
           "isNumeric", [ "responseField", 1 ]
         ]
-        graphAnnotations: [ "p1-highlight", "students-segment-labels" ]
+        graphAnnotations: [ "p1-highlight",]
         tableAnnotations: [ "p1-highlight" ]
         tools: [
           name: "tagging"
           setup:
             tag: @pointA
-            data: "position-data"
+            data: "slope-tool-data"
         ]
         responseBranches: [
           criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
@@ -163,7 +219,6 @@ class SlopeToolSequence
 
         graphAnnotations: [
           "p1-highlight"
-          "students-segment-labels"
           "segment-6-9s"
         ]
         tableAnnotations: [ "p1-highlight" ]
@@ -171,7 +226,7 @@ class SlopeToolSequence
           name: "tagging"
           setup:
             tag: @pointA
-            data: "position-data"
+            data: "slope-tool-data"
         ]
         responseBranches: [
           criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin ], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
@@ -189,18 +244,18 @@ class SlopeToolSequence
           #{@xMin} and #{@xMax} #{@yUnits}.</p>
           <p>Then click "OK". </p>
         """
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         tools: [
           name: "tagging"
           setup:
             tag: @pointB
-            data: "position-data"
+            data: "slope-tool-data"
         ]
         responseBranches: [
-          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-          RBSamePoint('2nd_point_duplicate_point')
-          RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
+          @RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          @RBSamePoint('2nd_point_duplicate_point')
+          @RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
         ]
       },
       { ############################################
@@ -216,18 +271,18 @@ class SlopeToolSequence
           #{@xMin} and #{@xMax} #{@yUnits}.</p>
           <p>Then click "OK". </p>
         """
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         tools: [
           name: "tagging"
           setup:
             tag: @pointB
-            data: "position-data"
+            data: "slope-tool-data"
         ]
         responseBranches: [
-          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-          RBSamePoint('2nd_point_duplicate_point')
-          RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
+          @RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          @RBSamePoint('2nd_point_duplicate_point')
+          @RBPointNotWithinRange('2nd_point_not_in_correct_range',@pointB)
         ]
       },
       { ############################################
@@ -243,18 +298,18 @@ class SlopeToolSequence
           #{@xMin} and #{@xMax} #{@yUnits}.</p>
           <p>Then click "OK". </p>
         """
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         tools: [
           name: "tagging"
           setup:
             tag: @pointB
-            data: "position-data"
+            data: "slope-tool-data"
         ]
         responseBranches: [
-          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-          RBSamePoint('2nd_point_duplicate_point')
-          RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
+          @RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          @RBSamePoint('2nd_point_duplicate_point')
+          @RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
         ]
       },
       { ############################################
@@ -271,18 +326,18 @@ class SlopeToolSequence
           #{@xMin} and #{@xMax} #{@yUnits}</em>.</p>
           <p>Then click "OK". </p>
         """
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         tools: [
           name: "tagging"
           setup:
             tag: @pointB
-            data: "position-data"
+            data: "slope-tool-data"
         ]
         responseBranches: [
-          RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
-          RBSamePoint('2nd_point_duplicate_point')
-          RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
+          @RBNotAdjacent('2nd_point_not_adjacent_and_should_be')
+          @RBSamePoint('2nd_point_duplicate_point')
+          @RBPointNotWithinRange('2nd_point_not_in_correct_range', @pointB)
         ]
       }
       {
@@ -300,7 +355,7 @@ class SlopeToolSequence
           value: [ "responseField", 1 ] 
         ]
         submissibilityCriterion: [ "isNumeric", [ "responseField", 1 ]]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels", "slope-line" ]      
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line" ]      
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         responseBranches: [
           criterion: [ "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance]
@@ -329,7 +384,7 @@ class SlopeToolSequence
           value: [ "responseField", 1 ] 
         ]
         submissibilityCriterion: [ "isNumeric", [ "responseField", 1 ]]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels", "slope-line" ]      
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line" ]      
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         responseBranches: [
           criterion: [ "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance]
@@ -354,7 +409,7 @@ class SlopeToolSequence
           value: [ "responseField", 1 ] 
         ]
         submissibilityCriterion: [ "isNumeric", [ "responseField", 1 ] ]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels", "slope-line" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
 
         responseBranches: [
@@ -383,12 +438,12 @@ class SlopeToolSequence
         submissibilityCriterion: [
           "isNumeric", [ "responseField", 1 ] 
         ]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels"
+        graphAnnotations: [ "p1-highlight", "p2-highlight" ]
         highLightedGraphAnnotations: [ "rise-arrow" ]
         tableAnnotations: ["p1-highlight", "p2-highlight"]
         highLightedTableAnnotations: [ "rise-bracket" ]
         responseBranches: [
-          criterion: [ "withinAbsTolerance", [ "delta", "y", [ "slopeToolOrder", @pointA, @pointB ] ], [ "responseField", 1 ], @tolerance ] ],
+          criterion: [ "withinAbsTolerance", [ "delta", "y", [ "slopeToolOrder", @pointA, @pointB ] ], [ "responseField", 1 ], @tolerance ],
           step: "ask_for_run"
         ]
       },
@@ -414,7 +469,7 @@ class SlopeToolSequence
           "change-y"
           "change-y-units"
         ]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels"]
+        graphAnnotations: [ "p1-highlight", "p2-highlight"]
         highLightedGraphAnnotations: [ "rise-arrow" ]
         tableAnnotations: ["p1-highlight", "p2-highlight"]
         highLightedTableAnnotations: [ "rise-bracket" ]
@@ -436,7 +491,7 @@ class SlopeToolSequence
           value: [ "responseField", 1 ] 
         ]
         submissibilityCriterion: [ "isNumeric", [ "responseField", 1 ] ]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels", "slope-line", "rise-arrow" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight",  "slope-line", "rise-arrow" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
 
         responseBranches: [
@@ -462,7 +517,7 @@ class SlopeToolSequence
           value: [ "responseField", 1 ] 
         ]
         submissibilityCriterion: [ "isNumeric", [ "responseField", 1 ] ]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels", "slope-line", "rise-arrow" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line", "rise-arrow" ]
         highLightedGraphAnnotations: [ "run-arrow" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         highLightedTableAnnotations: [ "run-bracket" ]
@@ -485,7 +540,7 @@ class SlopeToolSequence
           or <b>%@</b> %@.</p>"
         """
         substitutedExpressions: [ "end-time", "start-time", "change-x", "change-x-units" ]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels", "slope-line", "rise-arrow" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line", "rise-arrow" ]
         highLightedGraphAnnotations: [ "run-arrow" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         highLightedTableAnnotations: [ "run-bracket" ]
@@ -515,7 +570,7 @@ class SlopeToolSequence
           value: [ "responseField", 1 ] 
         ]
         submissibilityCriterion: [ "isNumeric", [ "responseField", 1 ] ]
-        graphAnnotations: [ "p1-highlight", "p2-highlight", "students-segment-labels", "slope-line" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         responseBranches: [
           criterion: [ 
@@ -558,7 +613,7 @@ class SlopeToolSequence
           value: [ "responseField", 1 ] 
         ]
         submissibilityCriterion: [ "isNumeric", [ "responseField", 1 ] ]
-        graphAnnotations: [ "p1-highlight", "p2-?brhighlight", "students-segment-labels", "slope-line" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
         responseBranches: [
           criterion: [ 
@@ -590,7 +645,7 @@ class SlopeToolSequence
           "change-x"
           "answer-units" 
         ]
-        graphAnnotations: [ "p1-highlight", "p2-?brhighlight", "students-segment-labels", "slope-line" ]
+        graphAnnotations: [ "p1-highlight", "p2-highlight", "slope-line" ]
         tableAnnotations: [ "p1-highlight", "p2-highlight" ]
       },
       { ############################################

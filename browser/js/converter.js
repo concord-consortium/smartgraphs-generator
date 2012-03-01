@@ -468,11 +468,13 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, asObject,
+  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, SlopeToolSequence, asObject,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   AuthorPane = require('./author-panes').AuthorPane;
+
+  SlopeToolSequence = require('./slope_tool_sequence').SlopeToolSequence;
 
   asObject = function(s) {
     if (typeof s === 'string') {
@@ -918,6 +920,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
   })(CorrectableSequenceWithFeedback);
 
+  Sequence.classFor['SlopeToolSequence'] = SlopeToolSequence;
+
 }).call(this);
 
 });
@@ -1164,6 +1168,561 @@ require.define("/singularize.js", function (require, module, exports, __dirname,
     var _ref;
     return ((_ref = str.match(/(.*)s$/)) != null ? _ref[1] : void 0) || str;
   };
+
+}).call(this);
+
+});
+
+require.define("/author/slope_tool_sequence.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var AuthorPane, SlopeToolSequence;
+
+  AuthorPane = require('./author-panes').AuthorPane;
+
+  exports.SlopeToolSequence = SlopeToolSequence = (function() {
+
+    SlopeToolSequence.prototype.RBNotAdjacent = function(dest, pointA, pointB) {
+      if (pointA == null) pointA = this.pointA;
+      if (pointB == null) pointB = this.pointB;
+      return {
+        criterion: ["=", ["absDiff", ["indexInDataset", pointA], ["indexInDataset", pointB], 1]],
+        step: dest
+      };
+    };
+
+    SlopeToolSequence.prototype.RBSamePoint = function(dest, pointA, pointB) {
+      if (pointA == null) pointA = this.pointA;
+      if (pointB == null) pointB = this.pointB;
+      return {
+        criterion: ['samePoint', pointA, pointB],
+        step: dest
+      };
+    };
+
+    SlopeToolSequence.prototype.RBPointNotWithinRange = function(dest, pointName, axis, max, min) {
+      if (pointName == null) pointName = this.pointA;
+      if (axis == null) axis = 'x';
+      if (max == null) max = this.xMax;
+      if (min == null) min = this.xMin;
+      return {
+        criterion: ["or", ["<=", ["coord", axis, pointName], min], [">=", ["coord", axis, pointName], max]],
+        step: dest
+      };
+    };
+
+    function SlopeToolSequence(_arg) {
+      var i, pane, _len, _ref;
+      this.firstQuestionIsSlopeQuestion = _arg.firstQuestionIsSlopeQuestion, this.studentSelectsPoints = _arg.studentSelectsPoints, this.selectedPointsMustBeAdjacent = _arg.selectedPointsMustBeAdjacent, this.studentMustSelectEndpointsOfRange = _arg.studentMustSelectEndpointsOfRange, this.slopeVariableName = _arg.slopeVariableName, this.firstQuestion = _arg.firstQuestion, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.tolerance = _arg.tolerance, this.page = _arg.page;
+      this.pointA = 'first-point';
+      this.pointB = 'second-point';
+      this.runtimeStepsByName = {};
+      this.slope = (this.yMax - this.yMin) / (this.xMax - this.xMin);
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor['PredefinedGraphPane']) {
+          this.graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor['TablePane']) {
+          this.tablePane = pane;
+        }
+      }
+    }
+
+    SlopeToolSequence.prototype.getRequiresGraphOrTable = function() {
+      return true;
+    };
+
+    SlopeToolSequence.prototype.getNeedsGraphData = function() {
+      return true;
+    };
+
+    SlopeToolSequence.prototype.getHasVisualPrompts = function() {
+      return true;
+    };
+
+    SlopeToolSequence.prototype.getDataDefRef = function(runtimeActivity) {
+      if (this.graphPane == null) return null;
+      return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
+    };
+
+    SlopeToolSequence.prototype.setupStep = function(_arg) {
+      var annotation, response_def, runtimePage, step, stepdef, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _results;
+      runtimePage = _arg.runtimePage, stepdef = _arg.stepdef;
+      step = this.runtimeStepsByName[stepdef.name];
+      step.addGraphPane({
+        title: this.graphPane.title,
+        datadefRef: this.getDataDefRef(runtimePage.activity),
+        xAxis: this.xAxis,
+        yAxis: this.yAxis,
+        index: this.graphPane.index
+      });
+      step.addTablePane({
+        datadefRef: this.getDataDefRef(runtimePage.activity),
+        index: this.tablePane.index
+      });
+      step.beforeText = stepdef.beforeText;
+      _ref = stepdef.graphAnnotations || [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        annotation = _ref[_i];
+        if (this.annotations[annotation]) {
+          step.addAnnotationToPane({
+            annotation: this.annotations[annotation],
+            index: this.graphPane.index
+          });
+        } else {
+          console.log("no annotation found for " + annotation);
+        }
+      }
+      _ref2 = stepdef.tableAnnotations || [];
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        annotation = _ref2[_j];
+        if (this.annotations[annotation]) {
+          step.addAnnotationToPane({
+            annotation: this.annotations[annotation],
+            index: this.tablePane.index
+          });
+        } else {
+          console.log("no annotation found for " + annotation);
+        }
+      }
+      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      _ref3 = stepdef.responseBranches || [];
+      _results = [];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        response_def = _ref3[_k];
+        _results.push(step.appendResponseBranch({
+          criterion: response_def.criterion,
+          step: this.runtimeStepsByName[response_def.step]
+        }));
+      }
+      return _results;
+    };
+
+    SlopeToolSequence.prototype.appendSteps = function(runtimePage) {
+      var datadefRef, point, runtimeActivity, runtimeStep, stepdef, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _results;
+      this.yUnits = this.graphPane.yUnits;
+      this.xUnits = this.graphPane.xUnits;
+      this.yAxis = this.graphPane.yAxis;
+      this.xAxis = this.graphPane.xAxis;
+      this.stepDefs = this.assemble_steps();
+      runtimeActivity = runtimePage.activity;
+      datadefRef = this.getDataDefRef(runtimeActivity);
+      this.annotations = {};
+      this.firstPoint = runtimeActivity.createAndAppendTag();
+      this.firstPoint.name = "p1-highlight";
+      this.secondPoint = runtimeActivity.createAndAppendTag();
+      this.secondPoint.name = "p2-highlight";
+      _ref = [this.firstPoint, this.secondPoint];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        point = _ref[_i];
+        this.annotations[point.name] = runtimeActivity.createAndAppendAnnotation({
+          type: "HighlightedPoint",
+          datadefRef: datadefRef,
+          tag: point
+        });
+      }
+      console.log(this.annotations);
+      this.slopeLine = runtimeActivity.crateAndAppendAnnotation;
+      _ref2 = this.stepDefs;
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        stepdef = _ref2[_j];
+        runtimeStep = runtimePage.appendStep();
+        this.runtimeStepsByName[stepdef.name] = runtimeStep;
+      }
+      _ref3 = this.stepDefs;
+      _results = [];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        stepdef = _ref3[_k];
+        _results.push(this.setupStep({
+          stepdef: stepdef,
+          runtimePage: runtimePage
+        }));
+      }
+      return _results;
+    };
+
+    SlopeToolSequence.prototype.lineAppearsQuestion = function() {
+      if (this.firstQuestionIsSlopeQuestion) return this.firstQuestion;
+      return "What was the " + this.slopeVariableName + " between the two points in " + this.yUnits + " per " + this.xUnits + "?";
+    };
+
+    SlopeToolSequence.prototype.assemble_steps = function() {
+      var _ref, _ref2;
+      return [
+        {
+          name: "1st_slope_question",
+          defaultBranch: (_ref = this.studentSelectsPoints) != null ? _ref : {
+            "select_1st_point": "when_line_appears"
+          },
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: this.firstQuestion,
+          substitutedExpressions: [],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: [],
+          tableAnnotations: [],
+          tools: [],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
+              step: "confirm_correct"
+            }
+          ]
+        }, {
+          name: "select_1st_point",
+          defaultBranch: "if_1st_point_wrong",
+          submitButtonTitle: "OK",
+          beforeText: "" + ((_ref2 = this.firstQuestionIsSlopeQuestion) != null ? _ref2 : {
+            "<p>Incorrect.</p>": ""
+          }) + " \n<p>Select a point between \"" + this.xMin + " and " + this.xMax + " \"" + this.yUnits + "\".</p>\n<p>Then click \"OK\". </p>",
+          substitutedExpressions: ["student-response-field"],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight"],
+          tableAnnotations: ["p1-highlight"],
+          tools: [
+            {
+              name: "tagging",
+              setup: {
+                tag: this.pointA,
+                data: "slope-tool-data"
+              }
+            }
+          ],
+          responseBranches: [
+            {
+              criterion: ["and", [">=", ["coord", "x", this.pointA], this.xMin], ["<=", ["coord", "x", this.pointA], this.xMax]],
+              step: "select_2nd_point"
+            }
+          ]
+        }, {
+          name: "if_1st_point_wrong",
+          defaultBranch: "if_1st_point_wrong",
+          submitButtonTitle: "OK",
+          beforeText: "<p>Incorrect.</p> \n<p>Select a point between \"" + this.xMin + " and " + this.xMax + " \"" + this.yUnits + "\".</p>\n<p>Then click \"OK\". </p>",
+          graphAnnotations: ["p1-highlight", "segment-6-9s"],
+          tableAnnotations: ["p1-highlight"],
+          tools: [
+            {
+              name: "tagging",
+              setup: {
+                tag: this.pointA,
+                data: "slope-tool-data"
+              }
+            }
+          ],
+          responseBranches: [
+            {
+              criterion: ["and", [">=", ["coord", "x", this.pointA], this.xMin], ["<=", ["coord", "x", this.pointA], this.xMax]],
+              step: "select_2nd_point"
+            }
+          ]
+        }, {
+          name: "select_2nd_point",
+          defaultBranch: "when_line_appears",
+          submitButtonTitle: "OK",
+          beforeText: "<p>Now select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".</p>\n<p>Then click \"OK\". </p>",
+          graphAnnotations: ["p1-highlight", "p2-highlight"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          tools: [
+            {
+              name: "tagging",
+              setup: {
+                tag: this.pointB,
+                data: "slope-tool-data"
+              }
+            }
+          ],
+          responseBranches: [this.RBNotAdjacent('2nd_point_not_adjacent_and_should_be'), this.RBSamePoint('2nd_point_duplicate_point'), this.RBPointNotWithinRange('2nd_point_not_in_correct_range', this.pointB)]
+        }, {
+          name: "2nd_point_not_adjacent_and_should_be",
+          defaultBranch: "when_line_appears",
+          submitButtonTitle: "OK",
+          beforeText: "<p> Incorrect </p>\n<p> Your points should be adjacent </p>\n<p>Select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".</p>\n<p>Then click \"OK\". </p>",
+          graphAnnotations: ["p1-highlight", "p2-highlight"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          tools: [
+            {
+              name: "tagging",
+              setup: {
+                tag: this.pointB,
+                data: "slope-tool-data"
+              }
+            }
+          ],
+          responseBranches: [this.RBNotAdjacent('2nd_point_not_adjacent_and_should_be'), this.RBSamePoint('2nd_point_duplicate_point'), this.RBPointNotWithinRange('2nd_point_not_in_correct_range', this.pointB)]
+        }, {
+          name: "2nd_point_duplicate_point",
+          defaultBranch: "when_line_appears",
+          submitButtonTitle: "OK",
+          beforeText: "<p> Incorrect </p>\n<p> You have selected the same point twice.</p>\n<p> Now select a <em>second</em> point between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".</p>\n<p>Then click \"OK\". </p>",
+          graphAnnotations: ["p1-highlight", "p2-highlight"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          tools: [
+            {
+              name: "tagging",
+              setup: {
+                tag: this.pointB,
+                data: "slope-tool-data"
+              }
+            }
+          ],
+          responseBranches: [this.RBNotAdjacent('2nd_point_not_adjacent_and_should_be'), this.RBSamePoint('2nd_point_duplicate_point'), this.RBPointNotWithinRange('2nd_point_not_in_correct_range', this.pointB)]
+        }, {
+          name: "2nd_point_not_in_correct_range",
+          defaultBranch: "when_line_appears",
+          submitButtonTitle: "OK",
+          beforeText: "<p> Incorrect </p>\n<p> The point you have selected is not between\n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".  Try again.</p>\n<p> Select a second point <em>between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + "</em>.</p>\n<p>Then click \"OK\". </p>",
+          graphAnnotations: ["p1-highlight", "p2-highlight"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          tools: [
+            {
+              name: "tagging",
+              setup: {
+                tag: this.pointB,
+                data: "slope-tool-data"
+              }
+            }
+          ],
+          responseBranches: [this.RBNotAdjacent('2nd_point_not_adjacent_and_should_be'), this.RBSamePoint('2nd_point_duplicate_point'), this.RBPointNotWithinRange('2nd_point_not_in_correct_range', this.pointB)]
+        }, {
+          name: "when_line_appears",
+          defaultBranch: "slope_wrong_1",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p> Here is the line connecting the two points </p>\n<p> " + (this.lineAppearsQuestion()) + " </p>",
+          substitutedExpressions: [],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
+              step: "confirm_correct"
+            }
+          ]
+        }, {
+          name: "slope_wrong_1",
+          defaultBranch: "slope_wrong_ask_for_rise",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p>Incorrect.</p>\n<p>Hint: recall that the slope is \nthe change in \n" + this.yAxis + "\n divided by the change in \n" + this.xAxis + ".",
+          substitutedExpressions: [],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
+              step: "confirm_correct"
+            }
+          ]
+        }, {
+          name: "slope_wrong_ask_for_rise",
+          defaultBranch: "",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.yAxis + " between the two points in " + this.yUnits + "?</p>\n<p>Hint: Look at the graph. </p>",
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["delta", "y", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+              step: "ask_for_run"
+            }
+          ]
+        }, {
+          name: "if_rise_wrong_1",
+          defaultBranch: "if_rise_wrong_2",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p>Incorrect.</p>\n<p>Hint: Look at the table and the graph </p>",
+          substitutedExpressions: [],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight"],
+          highLightedGraphAnnotations: ["rise-arrow"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          highLightedTableAnnotations: ["rise-bracket"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["delta", "y", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+              step: "ask_for_run"
+            }
+          ]
+        }, {
+          name: "if_rise_wrong_2",
+          defaultBranch: "ask_for_run",
+          submitButtonTitle: "Continue",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p><b>Incorrect.</b></p>\n<p>The change in " + this + "\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b> %@.</p>",
+          substitutedExpressions: ["end-position", "start-position", "change-y", "change-y-units"],
+          graphAnnotations: ["p1-highlight", "p2-highlight"],
+          highLightedGraphAnnotations: ["rise-arrow"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          highLightedTableAnnotations: ["rise-bracket"]
+        }, {
+          name: "ask_for_run",
+          defaultBranch: "if_run_wrong_1",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p>What was the change in\n" + this.xAxis + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph. </p>",
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line", "rise-arrow"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["delta", "x", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+              step: "ask_for_slope"
+            }
+          ]
+        }, {
+          name: "if_run_wrong_1",
+          defaultBranch: "if_run_wrong_2",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.xAxis + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph. </p>",
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line", "rise-arrow"],
+          highLightedGraphAnnotations: ["run-arrow"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          highLightedTableAnnotations: ["run-bracket"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["delta", "x", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+              step: "ask_for_slope"
+            }
+          ]
+        }, {
+          name: "if_run_wrong_2",
+          defaultBranch: "ask_for_slope",
+          submitButtonTitle: "Continue",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p><b>Incorrect.</b></p>\n<p>The change in " + this.xUnits + " \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b> %@.</p>\"",
+          substitutedExpressions: ["end-time", "start-time", "change-x", "change-x-units"],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line", "rise-arrow"],
+          highLightedGraphAnnotations: ["run-arrow"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          highLightedTableAnnotations: ["run-bracket"]
+        }, {
+          name: "ask_for_slope",
+          defaultBranch: "slope_wrong_1",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p>If the change in " + this.yAxix + " is %@ %@\n  and the change in " + this.xAxis + " is %@ %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.yUnits + " / " + this.xUnits + " ? </p>",
+          substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units"],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
+              step: "confirm_correct"
+            }
+          ]
+        }, {
+          name: "slope_wrong_1",
+          defaultBranch: "give_up_slope_calculation",
+          submitButtonTitle: "Check My Answer",
+          responseTemplate: "" + this.response_template + "/numeric",
+          beforeText: "<p><b>Incorrect</b></p>\n<p>\n  If the change in " + this.yAxix + " is <b>%@</b> %@\n  and the change in " + this.xAxis + " is <b>%@</b> %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.yUnits + " / " + this.xUnits + " ?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in " + this.yAxis + " \n  <b>devided by</b> \n  the change in " + this.xAxis + "\n</p>",
+          substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units"],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ],
+          submissibilityCriterion: ["isNumeric", ["responseField", 1]],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"],
+          responseBranches: [
+            {
+              criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
+              step: "confirm_correct"
+            }
+          ]
+        }, {
+          name: "give_up_slope_calculation",
+          isFinalStep: true,
+          hideSubmitButton: true,
+          beforeText: "<p><b>Incorrect.</b></p>\n<p>If the change in " + this.yAxis + " is <b>%@</b> %@ \nand the change in " + this.xAxis + " is <b>%@</b> %@, \nthe " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@.</p>",
+          substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units", "change-y", "change-x", "answer-units"],
+          graphAnnotations: ["p1-highlight", "p2-highlight", "slope-line"],
+          tableAnnotations: ["p1-highlight", "p2-highlight"]
+        }, {
+          name: "confirm_correct",
+          isFinalStep: true,
+          hideSubmitButton: true,
+          beforeText: "<p><b>Correct!.</b></p>\n<p>The " + this.slopeVariableName + " is \n<b>%@</b> \n<divided by <b>%@</b>, \nor <b>%@</b> %@.</p>",
+          substitutedExpressions: ["student-response-field", "answer-units"],
+          variableAssignments: [
+            {
+              name: "student-response-field",
+              value: ["responseField", 1]
+            }
+          ]
+        }
+      ];
+    };
+
+    return SlopeToolSequence;
+
+  })();
 
 }).call(this);
 
