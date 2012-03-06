@@ -473,10 +473,10 @@ exports.SlopeToolSequence = class SlopeToolSequence
       name:                   "if_rise_wrong_2"
       defaultBranch:          "ask_for_run"
       submitButtonTitle:      "Continue"
-      responseTemplate:       "#{@response_template}/numeric"
+      
       beforeText:             """
         <p><b>Incorrect.</b></p>
-        <p>The change in #{@yUnits}
+        <p>The change in #{@yUnits} is
         <b>%@</b> - <b>%@</b>, 
         or <b>%@</b> %@.</p>
       """
@@ -548,7 +548,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       name:                   "if_run_wrong_2"
       defaultBranch:          "ask_for_slope"
       submitButtonTitle:      "Continue"
-      responseTemplate:       "#{@response_template}/numeric"
+      
       beforeText:             """
         <p><b>Incorrect.</b></p>
         <p>The change in #{@xUnits} 
