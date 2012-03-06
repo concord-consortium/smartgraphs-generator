@@ -10,3 +10,6 @@ exports.Tag = class Tag
     url:         @getUrl()
     activity:    @activity.getUrl()
     name:        @name
+    datadefName: @datadefName
+    x:           @x
+    y:           @y
