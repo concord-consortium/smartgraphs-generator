@@ -1203,8 +1203,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     };
 
     SlopeToolSequence.prototype.not_adjacent = function(dest, pointA, pointB) {
-      if (pointA == null) pointA = this.pointA;
-      if (pointB == null) pointB = this.pointB;
+      if (pointA == null) pointA = this.firstPoint.name;
+      if (pointB == null) pointB = this.secondPoint.name;
       return {
         criterion: ["!=", ["absDiff", ["indexInDataset", pointA], ["indexInDataset", pointB]], 1],
         step: dest
@@ -1212,8 +1212,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     };
 
     SlopeToolSequence.prototype.same_point = function(dest, pointA, pointB) {
-      if (pointA == null) pointA = this.pointA;
-      if (pointB == null) pointB = this.pointB;
+      if (pointA == null) pointA = this.firstPoint.name;
+      if (pointB == null) pointB = this.secondPoint.name;
       return {
         criterion: ['samePoint', pointA, pointB],
         step: dest
@@ -1221,7 +1221,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     };
 
     SlopeToolSequence.prototype.point_not_in_range = function(dest, pointName, axis, max, min) {
-      if (pointName == null) pointName = this.pointA;
+      if (pointName == null) pointName = this.firstPoint.name;
       if (axis == null) axis = 'x';
       if (max == null) max = this.xMax;
       if (min == null) min = this.xMin;
@@ -1231,6 +1231,11 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       };
     };
 
+    SlopeToolSequence.prototype.first_slope_default_branch = function() {
+      if (this.studentSelectsPoints) return "select_first_point";
+      return "when_line_appears";
+    };
+
     SlopeToolSequence.prototype.second_point_response_branches = function() {
       var results;
       results = [];
@@ -1238,15 +1243,22 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         results.push(this.not_adjacent('second_point_not_adjacent_and_should_be'));
       }
       results.push(this.same_point('second_point_duplicate_point'));
-      results.push(this.point_not_in_range('second_point_not_in_correct_range', this.pointB));
+      results.push(this.point_not_in_range('second_point_not_in_correct_range', this.secondPoint.name));
       return results;
+    };
+
+    SlopeToolSequence.prototype.check_correct_slope = function() {
+      return [
+        {
+          criterion: ["withinAbsTolerance", ["responseField", 1], ["slope", this.firstPoint.name, this.secondPoint.name], this.tolerance],
+          step: "confirm_correct"
+        }
+      ];
     };
 
     function SlopeToolSequence(_arg) {
       var i, pane, _len, _ref;
       this.firstQuestionIsSlopeQuestion = _arg.firstQuestionIsSlopeQuestion, this.studentSelectsPoints = _arg.studentSelectsPoints, this.selectedPointsMustBeAdjacent = _arg.selectedPointsMustBeAdjacent, this.studentMustSelectEndpointsOfRange = _arg.studentMustSelectEndpointsOfRange, this.slopeVariableName = _arg.slopeVariableName, this.firstQuestion = _arg.firstQuestion, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.tolerance = _arg.tolerance, this.page = _arg.page;
-      this.pointA = 'first-point';
-      this.pointB = 'second-point';
       this.runtimeStepsByName = {};
       this.slope = (this.yMax - this.yMin) / (this.xMax - this.xMin);
       this.steps = [];
@@ -1375,9 +1387,17 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       this.tags = {};
       this.annotations = {};
       this.firstPoint = runtimeActivity.createAndAppendTag();
-      this.firstPoint.name = this.pointA;
+      this.firstPoint.name = 'first-point';
+      this.firstPoint.datadefName = datadefRef.name;
       this.secondPoint = runtimeActivity.createAndAppendTag();
-      this.secondPoint.name = this.pointB;
+      this.secondPoint.name = 'second-point';
+      this.firstPoint.datadefName = datadefRef.name;
+      if (!this.studentSelectsPoints) {
+        this.firstPoint.x = this.xMin;
+        this.firstPoint.y = this.yMin;
+        this.secondPoint.x = this.xMax;
+        this.secondPoint.y = this.yMax;
+      }
       runtimePage.addSlopeVars(this.firstPoint, this.secondPoint);
       _ref = [this.firstPoint, this.secondPoint];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1449,7 +1469,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     SlopeToolSequence.prototype.first_slope_question = function() {
       return {
         name: "first_slope_question",
-        defaultBranch: "select_first_point",
+        defaultBranch: this.first_slope_default_branch(),
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
         beforeText: this.firstQuestion,
@@ -1459,12 +1479,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         graphAnnotations: [],
         tableAnnotations: [],
         tools: [],
-        responseBranches: [
-          {
-            criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
-            step: "confirm_correct"
-          }
-        ]
+        responseBranches: this.check_correct_slope()
       };
     };
 
@@ -1478,12 +1493,12 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name],
         tools: [
           {
-            tag: this.pointA
+            tag: this.firstPoint.name
           }
         ],
         responseBranches: [
           {
-            criterion: ["and", [">=", ["coord", "x", this.pointA], this.xMin], ["<=", ["coord", "x", this.pointA], this.xMax]],
+            criterion: ["and", [">=", ["coord", "x", this.firstPoint.name], this.xMin], ["<=", ["coord", "x", this.firstPoint.name], this.xMax]],
             step: "select_second_point"
           }
         ]
@@ -1500,12 +1515,12 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name],
         tools: [
           {
-            tag: this.pointA
+            tag: this.firstPoint.name
           }
         ],
         responseBranches: [
           {
-            criterion: ["and", [">=", ["coord", "x", this.pointA], this.xMin], ["<=", ["coord", "x", this.pointA], this.xMax]],
+            criterion: ["and", [">=", ["coord", "x", this.firstPoint.name], this.xMin], ["<=", ["coord", "x", this.firstPoint.name], this.xMax]],
             step: "select_second_point"
           }
         ]
@@ -1522,7 +1537,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
           {
-            tag: this.pointB
+            tag: this.secondPoint.name
           }
         ],
         responseBranches: this.second_point_response_branches()
@@ -1539,7 +1554,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
           {
-            tag: this.pointB
+            tag: this.secondPoint.name
           }
         ],
         responseBranches: this.second_point_response_branches()
@@ -1556,7 +1571,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
           {
-            tag: this.pointB
+            tag: this.secondPoint.name
           }
         ],
         responseBranches: this.second_point_response_branches()
@@ -1573,7 +1588,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
           {
-            tag: this.pointB
+            tag: this.secondPoint.name
           }
         ],
         responseBranches: this.second_point_response_branches()
@@ -1586,18 +1601,13 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "slope_wrong_0",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p> Here is the line connecting the two points </p>\n<p> " + (this.lineAppearsQuestion()) + " </p>",
+        beforeText: "<p> Here is the line connecting the two points. </p>\n<p> " + (this.lineAppearsQuestion()) + " </p>",
         substitutedExpressions: [],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
-        responseBranches: [
-          {
-            criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
-            step: "confirm_correct"
-          }
-        ]
+        responseBranches: this.check_correct_slope()
       };
     };
 
@@ -1613,12 +1623,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
-        responseBranches: [
-          {
-            criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
-            step: "confirm_correct"
-          }
-        ]
+        responseBranches: this.check_correct_slope()
       };
     };
 
@@ -1635,7 +1640,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         responseBranches: [
           {
-            criterion: ["withinAbsTolerance", ["delta", "y", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+            criterion: ["withinAbsTolerance", ["delta", "y", ["slopeToolOrder", this.firstPoint.name, this.secondPoint.name]], ["responseField", 1], this.tolerance],
             step: "ask_for_run"
           }
         ]
@@ -1658,7 +1663,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         highLightedTableAnnotations: ["rise-bracket"],
         responseBranches: [
           {
-            criterion: ["withinAbsTolerance", ["delta", "y", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+            criterion: ["withinAbsTolerance", ["delta", "y", ["slopeToolOrder", this.firstPoint.name, this.secondPoint.name]], ["responseField", 1], this.tolerance],
             step: "ask_for_run"
           }
         ]
@@ -1692,7 +1697,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         responseBranches: [
           {
-            criterion: ["withinAbsTolerance", ["delta", "x", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+            criterion: ["withinAbsTolerance", ["delta", "x", ["slopeToolOrder", this.firstPoint.name, this.secondPoint.name]], ["responseField", 1], this.tolerance],
             step: "ask_for_slope"
           }
         ]
@@ -1714,7 +1719,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         highLightedTableAnnotations: ["run-bracket"],
         responseBranches: [
           {
-            criterion: ["withinAbsTolerance", ["delta", "x", ["slopeToolOrder", this.pointA, this.pointB]], ["responseField", 1], this.tolerance],
+            criterion: ["withinAbsTolerance", ["delta", "x", ["slopeToolOrder", this.firstPoint.name, this.secondPoint.name]], ["responseField", 1], this.tolerance],
             step: "ask_for_slope"
           }
         ]
@@ -1747,12 +1752,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
-        responseBranches: [
-          {
-            criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
-            step: "confirm_correct"
-          }
-        ]
+        responseBranches: this.check_correct_slope()
       };
     };
 
@@ -1768,12 +1768,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
-        responseBranches: [
-          {
-            criterion: ["withinAbsTolerance", ["responseField", 1], this.slope, this.tolerance],
-            step: "confirm_correct"
-          }
-        ]
+        responseBranches: this.check_correct_slope()
       };
     };
 
@@ -1800,19 +1795,30 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       };
     };
 
-    SlopeToolSequence.prototype.all_steps = function() {
-      return [this.first_slope_question, this.select_first_point, this.if_first_point_wrong, this.select_second_point, this.second_point_not_adjacent_and_should_be, this.second_point_duplicate_point, this.second_point_not_in_correct_range, this.when_line_appears, this.slope_wrong_0, this.slope_wrong_ask_for_rise, this.if_rise_wrong_1, this.if_rise_wrong_2, this.ask_for_run, this.if_run_wrong_1, this.if_run_wrong_2, this.ask_for_slope, this.slope_wrong_1, this.give_up_slope_calculation, this.confirm_correct];
-    };
-
     SlopeToolSequence.prototype.assemble_steps = function() {
-      var step, _i, _len, _ref, _results;
-      _ref = this.all_steps();
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        step = _ref[_i];
-        _results.push(this.steps.push(step.call(this)));
+      if (this.firstQuestionIsSlopeQuestion) {
+        this.steps.push(this.first_slope_question());
       }
-      return _results;
+      if (this.studentSelectsPoints) {
+        this.steps.push(this.select_first_point());
+        this.steps.push(this.if_first_point_wrong());
+        this.steps.push(this.select_second_point());
+        this.steps.push(this.second_point_not_adjacent_and_should_be());
+        this.steps.push(this.second_point_duplicate_point());
+        this.steps.push(this.second_point_not_in_correct_range());
+      }
+      this.steps.push(this.when_line_appears());
+      this.steps.push(this.slope_wrong_0());
+      this.steps.push(this.slope_wrong_ask_for_rise());
+      this.steps.push(this.if_rise_wrong_1());
+      this.steps.push(this.if_rise_wrong_2());
+      this.steps.push(this.ask_for_run());
+      this.steps.push(this.if_run_wrong_1());
+      this.steps.push(this.if_run_wrong_2());
+      this.steps.push(this.ask_for_slope());
+      this.steps.push(this.slope_wrong_1());
+      this.steps.push(this.give_up_slope_calculation());
+      return this.steps.push(this.confirm_correct());
     };
 
     return SlopeToolSequence;
@@ -2834,7 +2840,10 @@ require.define("/runtime/tag.js", function (require, module, exports, __dirname,
       return {
         url: this.getUrl(),
         activity: this.activity.getUrl(),
-        name: this.name
+        name: this.name,
+        datadefName: this.datadefName,
+        x: this.x,
+        y: this.y
       };
     };
 
