@@ -22,7 +22,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
   require_numeric_input: (dest) ->
     [ "isNumeric", [ "responseField", 1 ] ]
 
-  not_adjacent: (dest, pointA=@pointA, pointB=@pointB) ->
+  not_adjacent: (dest, pointA=@firstPoint.name, pointB=@secondPoint.name) ->
     {
       criterion:
         ["!=", 
@@ -35,25 +35,36 @@ exports.SlopeToolSequence = class SlopeToolSequence
       step: dest
     }
 
-  same_point: (dest, pointA=@pointA, pointB=@pointB) ->
+  same_point: (dest, pointA=@firstPoint.name, pointB=@secondPoint.name) ->
     { 
       criterion: ['samePoint', pointA, pointB ]
       step: dest
     }
 
-  point_not_in_range: (dest, pointName=@pointA, axis='x', max=@xMax, min=@xMin) ->
+  point_not_in_range: (dest, pointName=@firstPoint.name, axis='x', max=@xMax, min=@xMin) ->
     {
       criterion: [ "or", [ "<=", [ "coord", axis, pointName ], min ], [ ">=", [ "coord", axis, pointName ], max ] ]
       step: dest
     }
+
+  first_slope_default_branch: ->
+    if @studentSelectsPoints
+      return "select_first_point"
+    return "when_line_appears"
 
   second_point_response_branches: ->
     results = []
     if @selectedPointsMustBeAdjacent
       results.push(@not_adjacent('second_point_not_adjacent_and_should_be')) 
     results.push(@same_point('second_point_duplicate_point'))
-    results.push(@point_not_in_range('second_point_not_in_correct_range',@pointB))
+    results.push(@point_not_in_range('second_point_not_in_correct_range',@secondPoint.name))
     results
+
+  check_correct_slope: ->
+    [
+      criterion: [ "withinAbsTolerance", [ "responseField", 1 ], ["slope", @firstPoint.name, @secondPoint.name], @tolerance]
+      step: "confirm_correct"
+    ]
 
   constructor: ({
     @firstQuestionIsSlopeQuestion,
@@ -69,8 +80,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
     @tolerance,
     @page
     }) ->
-      @pointA = 'first-point'
-      @pointB = 'second-point'
+
       @runtimeStepsByName = {}
       @slope = (@yMax - @yMin) / (@xMax - @xMin)
       @steps=[]
@@ -151,8 +161,6 @@ exports.SlopeToolSequence = class SlopeToolSequence
         step: @runtimeStepsByName[response_def.step]
 
   appendSteps: (runtimePage) ->
-    # sequential list of declarative steps
-    # TODO: lookup the graph units up in the runtime page.
     @yUnits   = @graphPane.yUnits
     @xUnits   = @graphPane.xUnits
     @yAxis    = @graphPane.yAxis
@@ -165,14 +173,21 @@ exports.SlopeToolSequence = class SlopeToolSequence
     @annotations = {}
     
     @firstPoint     = runtimeActivity.createAndAppendTag()
-    @firstPoint.name = @pointA
+    @firstPoint.name = 'first-point'
+    @firstPoint.datadefName = datadefRef.name
     
     @secondPoint    = runtimeActivity.createAndAppendTag()
-    @secondPoint.name = @pointB
+    @secondPoint.name = 'second-point'
+    @firstPoint.datadefName = datadefRef.name
+
+    unless @studentSelectsPoints
+      @firstPoint.x = @xMin
+      @firstPoint.y = @yMin
+      @secondPoint.x = @xMax
+      @secondPoint.y = @yMax
 
     runtimePage.addSlopeVars(@firstPoint,@secondPoint)
 
-    
     for point in [@firstPoint,@secondPoint]
       color = "#ff7f0e"
       color = "#1f77b4" if @firstPoint is point
@@ -222,7 +237,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       ##         first_slope_question             ##
       ############################################
       name:                   "first_slope_question"
-      defaultBranch:          "select_first_point"
+      defaultBranch:          @first_slope_default_branch()
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             @firstQuestion
@@ -232,12 +247,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       graphAnnotations: [ ]
       tableAnnotations: [ ]
       tools: [ ]
-      responseBranches: [
-        criterion: [ 
-          "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance 
-        ],
-        step: "confirm_correct"
-      ]
+      responseBranches: @check_correct_slope()
+
     }
 
   select_first_point: ->
@@ -251,9 +262,9 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
       graphAnnotations: [ "#{@firstPoint.name}",]
       tableAnnotations: [ "#{@firstPoint.name}" ]
-      tools:            [ tag: @pointA ]
+      tools:            [ tag: @firstPoint.name ]
       responseBranches: [
-        criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
+        criterion: [ "and", [ ">=", [ "coord", "x", @firstPoint.name ], @xMin], [ "<=", [ "coord", "x", @firstPoint.name ], @xMax ] ]
         step: "select_second_point"
       ]
     }
@@ -273,10 +284,10 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
       graphAnnotations: [ "#{@firstPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}" ]
-      tools:            [ tag: @pointA          ]
+      tools:            [ tag: @firstPoint.name          ]
 
       responseBranches: [
-        criterion: [ "and", [ ">=", [ "coord", "x", @pointA ], @xMin ], [ "<=", [ "coord", "x", @pointA ], @xMax ] ]
+        criterion: [ "and", [ ">=", [ "coord", "x", @firstPoint.name], @xMin ], [ "<=", [ "coord", "x", @firstPoint.name ], @xMax ] ]
         step: "select_second_point"
       ]
     }
@@ -295,7 +306,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
-      tools:            [ tag: @pointB                                  ]
+      tools:            [ tag: @secondPoint.name                               ]
       responseBranches: @second_point_response_branches()
     }
 
@@ -315,7 +326,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
-      tools:            [ tag: @pointB                                  ]
+      tools:            [ tag: @secondPoint.name                                 ]
       responseBranches:  @second_point_response_branches()
       
     }
@@ -336,7 +347,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
-      tools:            [ tag: @pointB                                  ] 
+      tools:            [ tag: @secondPoint.name                                  ] 
       responseBranches: @second_point_response_branches()
     }
 
@@ -357,7 +368,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
-      tools:            [ tag: @pointB                                  ]
+      tools:            [ tag: @secondPoint.name                                  ]
       responseBranches: @second_point_response_branches()
     }
 
@@ -370,7 +381,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
-        <p> Here is the line connecting the two points </p>
+        <p> Here is the line connecting the two points. </p>
         <p> #{@lineAppearsQuestion()} </p>
       """
       substitutedExpressions: []
@@ -380,10 +391,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]      
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}"               ]
 
-      responseBranches: [
-        criterion: [ "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance]
-        step: "confirm_correct"
-      ]
+      responseBranches: @check_correct_slope()
     }
 
   slope_wrong_0: ->
@@ -406,10 +414,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]      
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
-      responseBranches: [
-        criterion: [ "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance]
-        step: "confirm_correct"
-      ]
+      responseBranches: @check_correct_slope()
     }
 
   slope_wrong_ask_for_rise: ->
@@ -433,7 +438,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
 
       responseBranches: [
-        criterion: [ "withinAbsTolerance", [ "delta", "y", [ "slopeToolOrder", @pointA, @pointB ] ], [ "responseField", 1 ], @tolerance ] 
+        criterion: [ "withinAbsTolerance", [ "delta", "y", [ "slopeToolOrder", @firstPoint.name, @secondPoint.name ] ], [ "responseField", 1 ], @tolerance ] 
         step: "ask_for_run"
       ]
     }
@@ -460,7 +465,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       highLightedTableAnnotations: [ "rise-bracket" ]
 
       responseBranches: [
-        criterion: [ "withinAbsTolerance", [ "delta", "y", [ "slopeToolOrder", @pointA, @pointB ] ], [ "responseField", 1 ], @tolerance ],
+        criterion: [ "withinAbsTolerance", [ "delta", "y", [ "slopeToolOrder", @firstPoint.name, @secondPoint.name ] ], [ "responseField", 1 ], @tolerance ],
         step: "ask_for_run"
       ]
     }
@@ -508,7 +513,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
 
       responseBranches: [
-        criterion: [ "withinAbsTolerance", [ "delta", "x", [ "slopeToolOrder", @pointA, @pointB ] ], [ "responseField", 1 ], @tolerance]
+        criterion: [ "withinAbsTolerance", [ "delta", "x", [ "slopeToolOrder", @firstPoint.name, @secondPoint.name ] ], [ "responseField", 1 ], @tolerance]
         step: "ask_for_slope"
       ]
     }
@@ -536,7 +541,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       highLightedGraphAnnotations: [ "run-arrow"   ]
       highLightedTableAnnotations: [ "run-bracket" ]
       responseBranches: [
-        criterion: [ "withinAbsTolerance", [ "delta", "x", [ "slopeToolOrder", @pointA, @pointB ] ], [ "responseField", 1 ], @tolerance]
+        criterion: [ "withinAbsTolerance", [ "delta", "x", [ "slopeToolOrder", @firstPoint.name, @secondPoint.name ] ], [ "responseField", 1 ], @tolerance]
         step: "ask_for_slope"
       ]
     }
@@ -583,12 +588,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submissibilityCriterion: @require_numeric_input()
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
-      responseBranches: [
-        criterion: [ 
-          "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance
-        ],
-        step: "confirm_correct"
-      ]
+      responseBranches: @check_correct_slope()
     }
 
   slope_wrong_1: ->
@@ -621,10 +621,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
-      responseBranches: [
-        criterion: [ "withinAbsTolerance", [ "responseField", 1 ], @slope, @tolerance]
-        step: "confirm_correct"
-      ]
+      responseBranches: @check_correct_slope()
     }
 
   give_up_slope_calculation: ->
@@ -674,28 +671,31 @@ exports.SlopeToolSequence = class SlopeToolSequence
     }
   
 
-  all_steps: ->
-    [
-      @first_slope_question
-      @select_first_point
-      @if_first_point_wrong
-      @select_second_point
-      @second_point_not_adjacent_and_should_be
-      @second_point_duplicate_point
-      @second_point_not_in_correct_range
-      @when_line_appears
-      @slope_wrong_0
-      @slope_wrong_ask_for_rise
-      @if_rise_wrong_1
-      @if_rise_wrong_2
-      @ask_for_run
-      @if_run_wrong_1
-      @if_run_wrong_2
-      @ask_for_slope
-      @slope_wrong_1
-      @give_up_slope_calculation
-      @confirm_correct
-    ]
-
   assemble_steps: ->
-    @steps.push(step.call(this)) for step in @all_steps()
+    
+    #cases A and C
+    @steps.push(@first_slope_question()) if @firstQuestionIsSlopeQuestion
+
+    #cases A and B
+    if @studentSelectsPoints
+      @steps.push(@select_first_point())
+      @steps.push(@if_first_point_wrong())
+      @steps.push(@select_second_point())
+      @steps.push(@second_point_not_adjacent_and_should_be())
+      @steps.push(@second_point_duplicate_point())
+      @steps.push(@second_point_not_in_correct_range())
+
+    #All cases
+    @steps.push(@when_line_appears())
+    @steps.push(@slope_wrong_0())
+    @steps.push(@slope_wrong_ask_for_rise())
+    @steps.push(@if_rise_wrong_1())
+    @steps.push(@if_rise_wrong_2())
+    @steps.push(@ask_for_run())
+    @steps.push(@if_run_wrong_1())
+    @steps.push(@if_run_wrong_2())
+    @steps.push(@ask_for_slope())
+    @steps.push(@slope_wrong_1())
+    @steps.push(@give_up_slope_calculation())
+    @steps.push(@confirm_correct())
+    
