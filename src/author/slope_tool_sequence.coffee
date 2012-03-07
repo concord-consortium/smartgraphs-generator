@@ -461,6 +461,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
         <p>Incorrect.</p>
+        <p>What was the change in
+        #{@yAxis.label} between the two points in #{@yUnits}?</p>
         <p>Hint: Look at the table and the graph.</p>
       """
       substitutedExpressions: []

@@ -1661,7 +1661,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_rise_wrong_2",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>Hint: Look at the table and the graph.</p>",
+        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.yAxis.label + " between the two points in " + this.yUnits + "?</p>\n<p>Hint: Look at the table and the graph.</p>",
         substitutedExpressions: [],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
