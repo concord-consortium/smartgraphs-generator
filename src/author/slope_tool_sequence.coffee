@@ -619,8 +619,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       variableAssignments:     @previous_answers()
       submissibilityCriterion: @require_numeric_input()
 
-      graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
-      tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
+
+
       responseBranches: @check_correct_slope()
     }
 
@@ -662,11 +662,11 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p><b>Correct!.</b></p>
         <p>The #{@slopeVariableName} is 
-        <b>%@</b> 
-        <divided by <b>%@</b>, 
-        or <b>%@</b> %@.</p>
+        <b>%@</b> divided by <b>%@</b>, 
+        or <b>%@</b> %@ .</p>
       """
-      substitutedExpressions: ["student-response-field", "answer-units" ]
+      substitutedExpressions: ["change-y", "change-x", "student-response-field", "answer-units" ]
+      graphAnnotations:       [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       variableAssignments:    @previous_answers()
     }
   

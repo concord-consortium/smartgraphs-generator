@@ -1766,8 +1766,6 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units"],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
-        graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
-        tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         responseBranches: this.check_correct_slope()
       };
     };
@@ -1789,8 +1787,9 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "confirm_correct",
         isFinalStep: true,
         hideSubmitButton: true,
-        beforeText: "<p><b>Correct!.</b></p>\n<p>The " + this.slopeVariableName + " is \n<b>%@</b> \n<divided by <b>%@</b>, \nor <b>%@</b> %@.</p>",
-        substitutedExpressions: ["student-response-field", "answer-units"],
+        beforeText: "<p><b>Correct!.</b></p>\n<p>The " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@ .</p>",
+        substitutedExpressions: ["change-y", "change-x", "student-response-field", "answer-units"],
+        graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         variableAssignments: this.previous_answers()
       };
     };
