@@ -290,7 +290,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
       graphAnnotations: [ "#{@firstPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}" ]
-      tools:            [ tag: @firstPoint.name          ]
+      tools:            [ tag: @firstPoint.name ]
 
       responseBranches: [
         criterion: [ "and", [ ">=", [ "coord", "x", @firstPoint.name], @xMin ], [ "<=", [ "coord", "x", @firstPoint.name ], @xMax ] ]
@@ -412,7 +412,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p>Incorrect.</p>
         <p>Hint: recall that the slope is 
         the change in  #{@yAxis.label}
-        divided by the change in #{@xAxis.label}. </p>
+        divided by the change in #{@xAxis.label}.</p>
       """
       substitutedExpressions:  []
       variableAssignments:     @previous_answers()
@@ -460,14 +460,14 @@ exports.SlopeToolSequence = class SlopeToolSequence
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
         <p>Incorrect.</p>
-        <p>Hint: Look at the table and the graph </p>
+        <p>Hint: Look at the table and the graph.</p>
       """
       substitutedExpressions: []
       variableAssignments:     @previous_answers()
       submissibilityCriterion: @require_numeric_input()
 
       graphAnnotations:            [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
-      tableAnnotations:            [ "#{@firstPoint.name}", "#{@secondPoint.name}"                ]
+      tableAnnotations:            [ "#{@firstPoint.name}", "#{@secondPoint.name}"               ]
       highLightedGraphAnnotations: [ "rise-arrow"   ]
       highLightedTableAnnotations: [ "rise-bracket" ]
 
@@ -539,7 +539,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p>Incorrect.</p>
         <p>What was the change in
         #{@xAxis.label} between the two points in #{@xUnits}?</p>
-        <p>Hint: Look at the graph. </p>
+        <p>Hint: Look at the graph and the table.</p>
       """
       variableAssignments:     @previous_answers()
       submissibilityCriterion: @require_numeric_input()
@@ -589,7 +589,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p>If the change in #{@yAxis.label} is %@ %@
           and the change in #{@xAxis.label} is %@ %@ 
           then what is the #{@slopeVariableName}
-          in #{@yUnits} / #{@xUnits} ? </p>
+          in #{@yUnits} / #{@xUnits}?</p>
       """
       substitutedExpressions: [ "change-y", "change-y-units", "change-x", "change-x-units"]
 
@@ -614,21 +614,19 @@ exports.SlopeToolSequence = class SlopeToolSequence
           If the change in #{@yAxis.label} is <b>%@</b> %@
           and the change in #{@xAxis.label} is <b>%@</b> %@ 
           then what is the #{@slopeVariableName}
-          in #{@yUnits} / #{@xUnits} ?
+          in #{@yUnits} / #{@xUnits}?
         </p>
         <p>
           Hint: Remember that it is 
           the change in #{@yAxis.label} 
           <b>devided by</b> 
-          the change in #{@xAxis.label}
+          the change in #{@xAxis.label}.
         </p>
       """
       substitutedExpressions: [ "change-y", "change-y-units", "change-x", "change-x-units"]
 
       variableAssignments:     @previous_answers()
       submissibilityCriterion: @require_numeric_input()
-
-
 
       responseBranches: @check_correct_slope()
     }
@@ -646,7 +644,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         and the change in #{@xAxis.label} is <b>%@</b> %@, 
         the #{@slopeVariableName} is 
         <b>%@</b> divided by <b>%@</b>, 
-        or <b>%@</b> %@ .</p>
+        or <b>%@</b> %@.</p>
       """
       substitutedExpressions: [ 
         "change-y"
