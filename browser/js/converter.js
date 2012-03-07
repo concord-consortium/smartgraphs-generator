@@ -1624,7 +1624,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "slope_wrong_ask_for_rise",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>Hint: recall that the slope is \nthe change in  " + this.yAxis.label + "\ndivided by the change in " + this.xAxis.label + ". </p>",
+        beforeText: "<p>Incorrect.</p>\n<p>Hint: recall that the slope is \nthe change in  " + this.yAxis.label + "\ndivided by the change in " + this.xAxis.label + ".</p>",
         substitutedExpressions: [],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
@@ -1640,11 +1640,12 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_rise_wrong_1",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.yAxis.label + " between the two points in " + this.yUnits + "?</p>\n<p>Hint: Look at the graph. </p>",
+        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.yAxis.label + " between the two points in " + this.yUnits + "?</p>\n<p>Hint: Look at the graph.</p>",
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
+        highLightedGraphAnnotations: ["rise-arrow"],
         responseBranches: [
           {
             criterion: ["withinAbsTolerance", ["delta", "y", ["slopeToolOrder", this.firstPoint.name, this.secondPoint.name]], ["responseField", 1], this.tolerance],
@@ -1660,7 +1661,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_rise_wrong_2",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>Hint: Look at the table and the graph </p>",
+        beforeText: "<p>Incorrect.</p>\n<p>Hint: Look at the table and the graph.</p>",
         substitutedExpressions: [],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
@@ -1685,8 +1686,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         beforeText: "<p><b>Incorrect.</b></p>\n<p>The change in " + this.yUnits + " is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b> %@.</p>",
         substitutedExpressions: ["end-y", "start-y", "change-y", "change-y-units"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
-        highLightedGraphAnnotations: ["rise-arrow"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
+        highLightedGraphAnnotations: ["rise-arrow"],
         highLightedTableAnnotations: ["rise-bracket"]
       };
     };
@@ -1697,11 +1698,12 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_run_wrong_1",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>What was the change in\n" + this.xAxis.label + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph. </p>",
+        beforeText: "<p>What was the change in\n" + this.xAxis.label + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph.</p>",
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line", "rise-arrow"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
+        highLightedGraphAnnotations: ["run-arrow"],
         responseBranches: [
           {
             criterion: ["withinAbsTolerance", ["delta", "x", ["slopeToolOrder", this.firstPoint.name, this.secondPoint.name]], ["responseField", 1], this.tolerance],
@@ -1717,7 +1719,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_run_wrong_2",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.xAxis.label + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph. </p>",
+        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.xAxis.label + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph and the table.</p>",
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line", "rise-arrow"],
@@ -1753,7 +1755,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "slope_wrong_1",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>If the change in " + this.yAxis.label + " is %@ %@\n  and the change in " + this.xAxis.label + " is %@ %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.yUnits + " / " + this.xUnits + " ? </p>",
+        beforeText: "<p>If the change in " + this.yAxis.label + " is %@ %@\n  and the change in " + this.xAxis.label + " is %@ %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.yUnits + " / " + this.xUnits + "?</p>",
         substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units"],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
@@ -1769,7 +1771,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "give_up_slope_calculation",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p><b>Incorrect</b></p>\n<p>\n  If the change in " + this.yAxis.label + " is <b>%@</b> %@\n  and the change in " + this.xAxis.label + " is <b>%@</b> %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.yUnits + " / " + this.xUnits + " ?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in " + this.yAxis.label + " \n  <b>devided by</b> \n  the change in " + this.xAxis.label + "\n</p>",
+        beforeText: "<p><b>Incorrect</b></p>\n<p>\n  If the change in " + this.yAxis.label + " is <b>%@</b> %@\n  and the change in " + this.xAxis.label + " is <b>%@</b> %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.yUnits + " / " + this.xUnits + "?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in " + this.yAxis.label + " \n  <b>devided by</b> \n  the change in " + this.xAxis.label + ".\n</p>",
         substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units"],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
@@ -1782,7 +1784,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "give_up_slope_calculation",
         isFinalStep: true,
         hideSubmitButton: true,
-        beforeText: "<p><b>Incorrect.</b></p>\n<p>If the change in " + this.yAxis.label + " is <b>%@</b> %@ \nand the change in " + this.xAxis.label + " is <b>%@</b> %@, \nthe " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@ .</p>",
+        beforeText: "<p><b>Incorrect.</b></p>\n<p>If the change in " + this.yAxis.label + " is <b>%@</b> %@ \nand the change in " + this.xAxis.label + " is <b>%@</b> %@, \nthe " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@.</p>",
         substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units", "change-y", "change-x", "slope", "slope-units"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name]
@@ -1794,10 +1796,9 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "confirm_correct",
         isFinalStep: true,
         hideSubmitButton: true,
-        beforeText: "<p><b>Correct!.</b></p>\n<p>The " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@ .</p>",
+        beforeText: "<p><b>Correct!</b></p>\n<p>The " + this.slopeVariableName + " is <b>%@</b> %@.</p>",
         substitutedExpressions: ["change-y", "change-x", "student-response-field", "slope-units"],
-        graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
-        variableAssignments: this.previous_answers()
+        graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"]
       };
     };
 
