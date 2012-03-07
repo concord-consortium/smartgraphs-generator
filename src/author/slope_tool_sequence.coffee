@@ -410,6 +410,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
         <p>Incorrect.</p>
+        <p> #{@lineAppearsQuestion()} </p>
         <p>Hint: recall that the slope is 
         the change in  #{@yAxis.label}
         divided by the change in #{@xAxis.label}.</p>
@@ -624,6 +625,9 @@ exports.SlopeToolSequence = class SlopeToolSequence
         </p>
       """
       substitutedExpressions: [ "change-y", "change-y-units", "change-x", "change-x-units"]
+      
+      graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
+      tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
 
       variableAssignments:     @previous_answers()
       submissibilityCriterion: @require_numeric_input()
