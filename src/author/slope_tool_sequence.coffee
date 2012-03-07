@@ -653,7 +653,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         "change-y"
         "change-x"
         "slope"
-        "slope_units"
+        "slope-units"
       ]
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
