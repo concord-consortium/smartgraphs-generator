@@ -1185,7 +1185,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       var results;
       results = "";
       if (this.firstQuestionIsSlopeQuestion) results = "<p>Incorrect.</p>";
-      results = "" + results + "\n<p>Select a point between \"" + this.xMin + " and " + this.xMax + " \"" + this.yUnits + "\".</p>\n<p>Then click \"OK\". </p>";
+      results = "" + results + "\n<p>Select a point between \"" + this.xMin + " and " + this.xMax + " \"" + this.xUnits + "\".</p>\n<p>Then click \"OK\". </p>";
       return results;
     };
 
