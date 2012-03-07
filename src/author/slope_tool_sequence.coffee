@@ -668,10 +668,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       isFinalStep: true
       hideSubmitButton: true
       beforeText:             """
-        <p><b>Correct!.</b></p>
-        <p>The #{@slopeVariableName} is 
-        <b>%@</b> divided by <b>%@</b>, 
-        or <b>%@</b> %@ .</p>
+        <p><b>Correct!</b></p>
+        <p>The #{@slopeVariableName} is <b>%@</b> %@.</p>
       """
       substitutedExpressions: ["change-y", "change-x", "student-response-field", "slope-units" ]
       graphAnnotations:       [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
