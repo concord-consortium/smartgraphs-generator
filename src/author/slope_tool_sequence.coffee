@@ -276,9 +276,12 @@ exports.SlopeToolSequence = class SlopeToolSequence
       name:                   "if_first_point_wrong"
       defaultBranch:          "if_first_point_wrong"
       submitButtonTitle:      "OK"
-      beforeText:             """
-        <p>Incorrect.</p> 
-        <p>Select a point between "#{@xMin} and #{@xMax} "#{@yUnits}".</p>
+      beforeText:              """
+        <p> Incorrect </p>
+        <p> The point you have selected is not between
+        #{@xMin} and #{@xMax} #{@xUnits}.  Try again.</p>
+        <p> Select a second point <em>between 
+        #{@xMin} and #{@xMax} #{@xUnits}</em>.</p>
         <p>Then click "OK". </p>
       """
 
@@ -301,7 +304,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "OK"
       beforeText:             """
         <p>Now select a second point between 
-        #{@xMin} and #{@xMax} #{@yUnits}.</p>
+        #{@xMin} and #{@xMax} #{@xUnits}.</p>
         <p>Then click "OK". </p>
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
@@ -321,7 +324,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p> Incorrect </p>
         <p> Your points should be adjacent.</p>
         <p> Select a second point between 
-        #{@xMin} and #{@xMax} #{@yUnits}.</p>
+        #{@xMin} and #{@xMax} #{@xUnits}.</p>
         <p>Then click "OK". </p>
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
@@ -342,7 +345,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p> Incorrect </p>
         <p> You have selected the same point twice.</p>
         <p> Now select a <em>second</em> point between 
-        #{@xMin} and #{@xMax} #{@yUnits}.</p>
+        #{@xMin} and #{@xMax} #{@xUnits}.</p>
         <p>Then click "OK". </p>
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
@@ -361,9 +364,9 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p> Incorrect </p>
         <p> The point you have selected is not between
-        #{@xMin} and #{@xMax} #{@yUnits}.  Try again.</p>
+        #{@xMin} and #{@xMax} #{@xUnits}.  Try again.</p>
         <p> Select a second point <em>between 
-        #{@xMin} and #{@xMax} #{@yUnits}</em>.</p>
+        #{@xMin} and #{@xMax} #{@xUnits}</em>.</p>
         <p>Then click "OK". </p>
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
