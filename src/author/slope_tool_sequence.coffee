@@ -673,7 +673,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       """
       substitutedExpressions: ["change-y", "change-x", "student-response-field", "slope-units" ]
       graphAnnotations:       [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
-      variableAssignments:    @previous_answers()
+      # variableAssignments:    @previous_answers()
     }
   
 
