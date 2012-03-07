@@ -1247,10 +1247,17 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       return results;
     };
 
-    SlopeToolSequence.prototype.check_correct_slope = function() {
+    SlopeToolSequence.prototype.check_correct_slope = function(use_points) {
+      var slope;
+      if (use_points == null) use_points = true;
+      if (use_points) {
+        slope = ["slope", this.firstPoint.name, this.secondPoint.name];
+      } else {
+        slope = this.slope;
+      }
       return [
         {
-          criterion: ["withinAbsTolerance", ["responseField", 1], ["slope", this.firstPoint.name, this.secondPoint.name], this.tolerance],
+          criterion: ["withinAbsTolerance", ["responseField", 1], slope, this.tolerance],
           step: "confirm_correct"
         }
       ];
@@ -1479,7 +1486,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         graphAnnotations: [],
         tableAnnotations: [],
         tools: [],
-        responseBranches: this.check_correct_slope()
+        responseBranches: this.check_correct_slope(false)
       };
     };
 
@@ -1510,7 +1517,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "if_first_point_wrong",
         defaultBranch: "if_first_point_wrong",
         submitButtonTitle: "OK",
-        beforeText: "<p>Incorrect.</p> \n<p>Select a point between \"" + this.xMin + " and " + this.xMax + " \"" + this.yUnits + "\".</p>\n<p>Then click \"OK\". </p>",
+        beforeText: "<p> Incorrect </p>\n<p> The point you have selected is not between\n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".  Try again.</p>\n<p> Select a second point <em>between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + "</em>.</p>\n<p>Then click \"OK\". </p>",
         graphAnnotations: ["" + this.firstPoint.name],
         tableAnnotations: ["" + this.firstPoint.name],
         tools: [
@@ -1532,7 +1539,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "select_second_point",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p>Now select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".</p>\n<p>Then click \"OK\". </p>",
+        beforeText: "<p>Now select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".</p>\n<p>Then click \"OK\". </p>",
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
@@ -1549,7 +1556,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "second_point_not_adjacent_and_should_be",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p> Incorrect </p>\n<p> Your points should be adjacent.</p>\n<p> Select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".</p>\n<p>Then click \"OK\". </p>",
+        beforeText: "<p> Incorrect </p>\n<p> Your points should be adjacent.</p>\n<p> Select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".</p>\n<p>Then click \"OK\". </p>",
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
@@ -1566,7 +1573,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "second_point_duplicate_point",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p> Incorrect </p>\n<p> You have selected the same point twice.</p>\n<p> Now select a <em>second</em> point between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".</p>\n<p>Then click \"OK\". </p>",
+        beforeText: "<p> Incorrect </p>\n<p> You have selected the same point twice.</p>\n<p> Now select a <em>second</em> point between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".</p>\n<p>Then click \"OK\". </p>",
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
@@ -1583,7 +1590,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "second_point_not_in_correct_range",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p> Incorrect </p>\n<p> The point you have selected is not between\n" + this.xMin + " and " + this.xMax + " " + this.yUnits + ".  Try again.</p>\n<p> Select a second point <em>between \n" + this.xMin + " and " + this.xMax + " " + this.yUnits + "</em>.</p>\n<p>Then click \"OK\". </p>",
+        beforeText: "<p> Incorrect </p>\n<p> The point you have selected is not between\n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".  Try again.</p>\n<p> Select a second point <em>between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + "</em>.</p>\n<p>Then click \"OK\". </p>",
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [

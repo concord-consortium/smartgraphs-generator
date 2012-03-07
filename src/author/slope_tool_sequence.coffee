@@ -60,9 +60,13 @@ exports.SlopeToolSequence = class SlopeToolSequence
     results.push(@point_not_in_range('second_point_not_in_correct_range',@secondPoint.name))
     results
 
-  check_correct_slope: ->
+  check_correct_slope: (use_points=true) ->
+    if use_points
+      slope = ["slope", @firstPoint.name, @secondPoint.name]
+    else
+      slope = @slope # calculated in constructor
     [
-      criterion: [ "withinAbsTolerance", [ "responseField", 1 ], ["slope", @firstPoint.name, @secondPoint.name], @tolerance]
+      criterion: [ "withinAbsTolerance", [ "responseField", 1 ], slope, @tolerance]
       step: "confirm_correct"
     ]
 
@@ -247,8 +251,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       graphAnnotations: [ ]
       tableAnnotations: [ ]
       tools: [ ]
-      responseBranches: @check_correct_slope()
-
+      responseBranches: @check_correct_slope(false)
     }
 
   select_first_point: ->
