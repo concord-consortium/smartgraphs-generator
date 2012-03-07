@@ -1782,8 +1782,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "give_up_slope_calculation",
         isFinalStep: true,
         hideSubmitButton: true,
-        beforeText: "<p><b>Incorrect.</b></p>\n<p>If the change in " + this.yAxis.label + " is <b>%@</b> %@ \nand the change in " + this.xAxis.label + " is <b>%@</b> %@, \nthe " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@.</p>",
-        substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units", "change-y", "change-x", "answer-units"],
+        beforeText: "<p><b>Incorrect.</b></p>\n<p>If the change in " + this.yAxis.label + " is <b>%@</b> %@ \nand the change in " + this.xAxis.label + " is <b>%@</b> %@, \nthe " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@ .</p>",
+        substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units", "change-y", "change-x", "slope", "slope_units"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name]
       };
@@ -1795,7 +1795,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         isFinalStep: true,
         hideSubmitButton: true,
         beforeText: "<p><b>Correct!.</b></p>\n<p>The " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@ .</p>",
-        substitutedExpressions: ["change-y", "change-x", "student-response-field", "answer-units"],
+        substitutedExpressions: ["change-y", "change-x", "student-response-field", "slope-units"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         variableAssignments: this.previous_answers()
       };

@@ -643,7 +643,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         and the change in #{@xAxis.label} is <b>%@</b> %@, 
         the #{@slopeVariableName} is 
         <b>%@</b> divided by <b>%@</b>, 
-        or <b>%@</b> %@.</p>
+        or <b>%@</b> %@ .</p>
       """
       substitutedExpressions: [ 
         "change-y"
@@ -652,7 +652,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
         "change-x-units"
         "change-y"
         "change-x"
-        "answer-units" 
+        "slope"
+        "slope_units"
       ]
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
@@ -671,7 +672,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <b>%@</b> divided by <b>%@</b>, 
         or <b>%@</b> %@ .</p>
       """
-      substitutedExpressions: ["change-y", "change-x", "student-response-field", "answer-units" ]
+      substitutedExpressions: ["change-y", "change-x", "student-response-field", "slope-units" ]
       graphAnnotations:       [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       variableAssignments:    @previous_answers()
     }
