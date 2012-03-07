@@ -435,13 +435,14 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p>Incorrect.</p>
         <p>What was the change in
         #{@yAxis.label} between the two points in #{@yUnits}?</p>
-        <p>Hint: Look at the graph. </p>
+        <p>Hint: Look at the graph.</p>
       """
       variableAssignments:     @previous_answers()
       submissibilityCriterion: @require_numeric_input()
 
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
+      highLightedGraphAnnotations: [ "rise-arrow"   ]
 
       responseBranches: [
         criterion: [ "withinAbsTolerance", [ "delta", "y", [ "slopeToolOrder", @firstPoint.name, @secondPoint.name ] ], [ "responseField", 1 ], @tolerance ] 
@@ -495,8 +496,9 @@ exports.SlopeToolSequence = class SlopeToolSequence
       substitutedExpressions: [ "end-y", "start-y", "change-y", "change-y-units"]
       
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
+      tableAnnotations: ["#{@firstPoint.name}", "#{@secondPoint.name}"                ]
+
       highLightedGraphAnnotations: [ "rise-arrow" ]
-      tableAnnotations: ["#{@firstPoint.name}", "#{@secondPoint.name}"]
       highLightedTableAnnotations: [ "rise-bracket" ]
     }
 
@@ -511,12 +513,13 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p>What was the change in
         #{@xAxis.label} between the two points in #{@xUnits}?</p>
-        <p>Hint: Look at the graph. </p>
+        <p>Hint: Look at the graph.</p>
       """
       variableAssignments:     @previous_answers()
       submissibilityCriterion: @require_numeric_input()
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}",  "slope-line", "rise-arrow" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
+      highLightedGraphAnnotations: [ "run-arrow"   ]      
 
       responseBranches: [
         criterion: [ "withinAbsTolerance", [ "delta", "x", [ "slopeToolOrder", @firstPoint.name, @secondPoint.name ] ], [ "responseField", 1 ], @tolerance]
