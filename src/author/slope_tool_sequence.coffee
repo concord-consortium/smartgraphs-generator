@@ -165,11 +165,20 @@ exports.SlopeToolSequence = class SlopeToolSequence
         step: @runtimeStepsByName[response_def.step]
 
   appendSteps: (runtimePage) ->
-    @yUnits   = @graphPane.yUnits
-    @xUnits   = @graphPane.xUnits
+    @yUnits   = @graphPane.yUnits.toLowerCase()
+    @xUnits   = @graphPane.xUnits.toLowerCase()
+
+    # have to dig deep for the units abbreviation here...
+    x_units_abbr = @graphPane.xUnitsRef.unit.abbreviation
+    y_units_abbr = @graphPane.yUnitsRef.unit.abbreviation
+    @slope_units  = "#{y_units_abbr}/#{x_units_abbr}"
+
     @yAxis    = @graphPane.yAxis
     @xAxis    = @graphPane.xAxis
     
+    @x_axis_name = @xAxis.label.toLowerCase()
+    @y_axis_name = @yAxis.label.toLowerCase()
+
     runtimeActivity = runtimePage.activity
     datadefRef      = @getDataDefRef runtimeActivity
     
@@ -234,7 +243,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
   lineAppearsQuestion: ->
     return @firstQuestion if @firstQuestionIsSlopeQuestion
-    return "What was the #{@slopeVariableName} between the two points in #{@yUnits} per #{@xUnits}?"
+    return "What was the #{@slopeVariableName} between the two points in #{@slope_units}?"
 
   first_slope_question: ->
     { ############################################
@@ -283,7 +292,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p> Incorrect </p>
         <p> The point you have selected is not between
         #{@xMin} and #{@xMax} #{@xUnits}.  Try again.</p>
-        <p> Select a second point <em>between 
+        <p> Select a point <em>between 
         #{@xMin} and #{@xMax} #{@xUnits}</em>.</p>
         <p>Then click "OK". </p>
       """
@@ -412,8 +421,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
         <p>Incorrect.</p>
         <p> #{@lineAppearsQuestion()} </p>
         <p>Hint: recall that the slope is 
-        the change in  #{@yAxis.label}
-        divided by the change in #{@xAxis.label}.</p>
+        the change in  #{@y_axis_name}
+        divided by the change in #{@x_axis_name}.</p>
       """
       substitutedExpressions:  []
       variableAssignments:     @previous_answers()
@@ -435,7 +444,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p>Incorrect.</p>
         <p>What was the change in
-        #{@yAxis.label} between the two points in #{@yUnits}?</p>
+        #{@y_axis_name} between the two points in #{@yUnits}?</p>
         <p>Hint: Look at the graph.</p>
       """
       variableAssignments:     @previous_answers()
@@ -462,7 +471,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p>Incorrect.</p>
         <p>What was the change in
-        #{@yAxis.label} between the two points in #{@yUnits}?</p>
+        #{@y_axis_name} between the two points in #{@yUnits}?</p>
         <p>Hint: Look at the table and the graph.</p>
       """
       substitutedExpressions: []
@@ -515,7 +524,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
         <p>What was the change in
-        #{@xAxis.label} between the two points in #{@xUnits}?</p>
+        #{@x_axis_name} between the two points in #{@xUnits}?</p>
         <p>Hint: Look at the graph.</p>
       """
       variableAssignments:     @previous_answers()
@@ -541,7 +550,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p>Incorrect.</p>
         <p>What was the change in
-        #{@xAxis.label} between the two points in #{@xUnits}?</p>
+        #{@x_axis_name} between the two points in #{@xUnits}?</p>
         <p>Hint: Look at the graph and the table.</p>
       """
       variableAssignments:     @previous_answers()
@@ -589,10 +598,10 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
-        <p>If the change in #{@yAxis.label} is %@ %@
-          and the change in #{@xAxis.label} is %@ %@ 
+        <p>If the change in #{@y_axis_name} is %@ %@
+          and the change in #{@x_axis_name} is %@ %@ 
           then what is the #{@slopeVariableName}
-          in #{@yUnits} / #{@xUnits}?</p>
+          in #{@slope_units}?</p>
       """
       substitutedExpressions: [ "change-y", "change-y-units", "change-x", "change-x-units"]
 
@@ -614,16 +623,16 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText: """
         <p><b>Incorrect</b></p>
         <p>
-          If the change in #{@yAxis.label} is <b>%@</b> %@
-          and the change in #{@xAxis.label} is <b>%@</b> %@ 
+          If the change in #{@y_axis_name} is <b>%@</b> %@
+          and the change in #{@x_axis_name} is <b>%@</b> %@ 
           then what is the #{@slopeVariableName}
-          in #{@yUnits} / #{@xUnits}?
+          in #{@slope_units}?
         </p>
         <p>
           Hint: Remember that it is 
-          the change in #{@yAxis.label} 
-          <b>devided by</b> 
-          the change in #{@xAxis.label}.
+          the change in #{@y_axis_name} 
+          <b>divided by</b> 
+          the change in #{@x_axis_name}.
         </p>
       """
       substitutedExpressions: [ "change-y", "change-y-units", "change-x", "change-x-units"]
@@ -646,8 +655,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       hideSubmitButton: true
       beforeText:             """
         <p><b>Incorrect.</b></p>
-        <p>If the change in #{@yAxis.label} is <b>%@</b> %@ 
-        and the change in #{@xAxis.label} is <b>%@</b> %@, 
+        <p>If the change in #{@y_axis_name} is <b>%@</b> %@ 
+        and the change in #{@x_axis_name} is <b>%@</b> %@, 
         the #{@slopeVariableName} is 
         <b>%@</b> divided by <b>%@</b>, 
         or <b>%@</b> %@.</p>
