@@ -8,7 +8,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       results = "<p>Incorrect.</p>"
     results = """
       #{results}
-      <p>Select a point between "#{@xMin} and #{@xMax} "#{@xUnits}".</p>
+      <p>Select a point between #{@xMin} and #{@xMax} #{@xUnits}.</p>
       <p>Then click "OK". </p>
     """
     results
