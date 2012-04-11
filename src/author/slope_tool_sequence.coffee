@@ -680,15 +680,15 @@ exports.SlopeToolSequence = class SlopeToolSequence
       ##         confirm_correct
       ############################################
       name:                   "confirm_correct"
-      isFinalStep: true
-      hideSubmitButton: true
+      isFinalStep:            true
+      hideSubmitButton:       true
       beforeText:             """
         <p><b>Correct!</b></p>
         <p>The #{@slopeVariableName} is <b>%@</b> %@.</p>
       """
       substitutedExpressions: [ "student-response-field", "slope-units" ]
       graphAnnotations:       [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
-      # variableAssignments:    @previous_answers()
+      # variableAssignments:  @previous_answers()
     }
   
 
