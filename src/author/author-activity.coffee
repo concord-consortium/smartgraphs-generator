@@ -34,7 +34,7 @@ exports.AuthorActivity = class AuthorActivity
 
   toRuntimeActivity: ->
     runtimeActivity = new RuntimeActivity @owner, @name, @authorName
+    runtimeActivity.defineUnit( (runtimeUnit = unit.toRuntimeUnit(runtimeActivity)).name, runtimeUnit ) for unit in @units
     # Remember, input models call builder methods on output models. At least for now.
     runtimeActivity.appendPage page.toRuntimePage(runtimeActivity) for page in @pages
-    runtimeActivity.defineUnit( (runtimeUnit = unit.toRuntimeUnit(runtimeActivity)).name, runtimeUnit ) for unit in @units
     runtimeActivity
