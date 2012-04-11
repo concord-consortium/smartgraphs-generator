@@ -36,3 +36,5 @@ To install as a Node.js package (i.e., as an end user):
 
   * `npm install -g git://github.com/concord-consortium/smartgraphs-generator.git`
   * If your PATH is set up to use npm-installed executables, this will install the `sg-convert` executable to a location in your PATH. (If you skip the `-g` (`--global`) flag the executable will be installed local to your user.)
+
+  If you are developing another program that uses this library, then consider using [npm link](http://npmjs.org/doc/link.html).  Also see the [npm introduction](http://howtonode.org/introduction-to-npm).
