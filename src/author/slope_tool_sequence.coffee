@@ -84,7 +84,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
     @tolerance,
     @page
     }) ->
-
+      @precision = 2; # TODO calculate or lookup precision from DB.
       @runtimeStepsByName = {}
       @slope = (@yMax - @yMin) / (@xMax - @xMin)
       @steps=[]
@@ -210,7 +210,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       @secondPoint.x = @xMax
       @secondPoint.y = @yMax
 
-    runtimePage.addSlopeVars(@firstPoint,@secondPoint,@tolerance)
+
+    runtimePage.addSlopeVars(@firstPoint,@secondPoint,@precision)
 
     for point in [@firstPoint,@secondPoint]
       color = "#ff7f0e"
