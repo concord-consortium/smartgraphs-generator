@@ -43,7 +43,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
   point_not_in_range: (dest, pointName=@firstPoint.name, axis='x', max=@xMax, min=@xMin) ->
     {
-      criterion: [ "or", [ "<=", [ "coord", axis, pointName ], min ], [ ">=", [ "coord", axis, pointName ], max ] ]
+      criterion: [ "or", [ "<", [ "coord", axis, pointName ], min ], [ ">", [ "coord", axis, pointName ], max ] ]
       step: dest
     }
 

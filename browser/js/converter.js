@@ -1226,7 +1226,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       if (max == null) max = this.xMax;
       if (min == null) min = this.xMin;
       return {
-        criterion: ["or", ["<=", ["coord", axis, pointName], min], [">=", ["coord", axis, pointName], max]],
+        criterion: ["or", ["<", ["coord", axis, pointName], min], [">", ["coord", axis, pointName], max]],
         step: dest
       };
     };
