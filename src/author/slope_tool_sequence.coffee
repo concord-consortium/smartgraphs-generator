@@ -432,7 +432,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p>Incorrect.</p>
         <p> #{@lineAppearsQuestion()} </p>
-        <p>Hint: recall that the slope is 
+        <p>Hint: Recall that the slope is 
         the change in  #{@y_axis_name}
         divided by the change in #{@x_axis_name}.</p>
       """
