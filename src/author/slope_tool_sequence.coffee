@@ -181,8 +181,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       # have to dig deep for the units abbreviation here...
       x_units_abbr    = @graphPane.xUnitsRef.unit.abbreviation
       y_units_abbr    = @graphPane.yUnitsRef.unit.abbreviation
-      @slope_units    = "#{y_units_abbr}/#{x_units_abbr}"
-      @in_slope_units = " in #{@slope_units}"
+      @slope_units    = " #{y_units_abbr}/#{x_units_abbr}"
+      @in_slope_units = " in#{@slope_units}"
 
     @yAxis    = @graphPane.yAxis
     @xAxis    = @graphPane.xAxis
