@@ -610,9 +610,11 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
-        <p>If the change in #{@y_axis_name} is %@#{@in_yUnits}
-          and the change in #{@x_axis_name} is %@#{@in_xUnits}
-          then what is the #{@slopeVariableName}#{@in_slope_units}?</p>
+        <p>
+          If the change in #{@y_axis_name} is %@#{@yUnits}
+          and the change in #{@x_axis_name} is %@#{@xUnits}
+          then what is the #{@slopeVariableName}#{@in_slope_units}?
+        </p>
       """
       substitutedExpressions: [ "change-y", "change-x"]
 
@@ -634,8 +636,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText: """
         <p><b>Incorrect</b></p>
         <p>
-          If the change in #{@y_axis_name} is <b>%@</b>
-          and the change in #{@x_axis_name} is <b>%@</b>
+          If the change in #{@y_axis_name} is %@#{@yUnits}
+          and the change in #{@x_axis_name} is %@#{@xUnits}
           then what is the #{@slopeVariableName}#{@in_slope_units}?
         </p>
         <p>
@@ -666,8 +668,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         <p><b>Incorrect.</b></p>
         <p>
-        If the change in #{@y_axis_name} is <b>%@</b> 
-        and the change in #{@x_axis_name} is <b>%@</b>, 
+        If the change in #{@y_axis_name} is %@#{@yUnits}
+        and the change in #{@x_axis_name} is %@#{@xUnits},
         the #{@slopeVariableName} is 
         <b>%@</b> divided by <b>%@</b>, 
         or <b>%@</b>#{@slope_units}.</p>
