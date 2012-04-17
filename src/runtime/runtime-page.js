@@ -41,7 +41,7 @@
     };
 
     RuntimePage.prototype.toHash = function() {
-      var step, varariable, _ref;
+      var step, variable, _ref;
       return {
         name: this.name,
         url: this.getUrl(),
@@ -64,7 +64,7 @@
           _ref2 = this.contextVars;
           _results = [];
           for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-            varariable = _ref2[_i];
+            variable = _ref2[_i];
             _results.push(variable.toHash());
           }
           return _results;
@@ -80,9 +80,10 @@
       return this.addContextVar(new ContextVar(definition));
     };
 
-    RuntimePage.prototype.addSlopeVars = function(pointA, pointB) {
+    RuntimePage.prototype.addSlopeVars = function(pointA, pointB, tolerance) {
       var definition, _i, _len, _ref, _results;
-      _ref = this.slopeVarDefs(pointA, pointB);
+      if (tolerance == null) tolerance = 2;
+      _ref = this.slopeVarDefs(pointA, pointB, tolerance);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         definition = _ref[_i];
@@ -91,43 +92,51 @@
       return _results;
     };
 
-    RuntimePage.prototype.slopeVarDefs = function(pointA, pointB) {
+    RuntimePage.prototype.slopeVarDefs = function(pointA, pointB, tolerance) {
+      if (tolerance == null) tolerance = 2;
       return [
         {
           "name": "start-y",
-          "value": ["coord", "y", ["listItem", 1, ["slopeToolOrder", pointA.name, pointB.name]]],
+          "value": ["coord", "y", ["listItem", 1, ["slopeToolOrder", pointA.name, pointB.name]]]
+        }, {
           "name": "start-y_str",
-          "value": ["toFixedString", ["get", "start-y"], 2],
+          "value": ["toFixedString", ["get", "start-y"], tolerance]
+        }, {
           "name": "end-y",
-          "value": ["coord", "y", ["listItem", 2, ["slopeToolOrder", pointA.name, pointB.name]]],
+          "value": ["coord", "y", ["listItem", tolerance, ["slopeToolOrder", pointA.name, pointB.name]]]
+        }, {
           "name": "end-y_str",
-          "value": ["toFixedString", ["get", "end-y"], 2],
+          "value": ["toFixedString", ["get", "end-y"], tolerance]
+        }, {
           "name": "change-y",
-          "value": ["-", ["get", "end-y"], ["get", "start-y"]],
+          "value": ["-", ["get", "end-y"], ["get", "start-y"]]
+        }, {
           "name": "change-y_str",
-          "value": ["toFixedString", ["get", "change-y"], 2],
+          "value": ["toFixedString", ["get", "change-y"], tolerance]
+        }, {
           "name": "start-x",
-          "value": ["coord", "x", ["listItem", 1, ["slopeToolOrder", pointA.name, pointB.name]]],
+          "value": ["coord", "x", ["listItem", 1, ["slopeToolOrder", pointA.name, pointB.name]]]
+        }, {
           "name": "start-x_str",
-          "value": ["toFixedString", ["get", "start-x"], 2],
+          "value": ["toFixedString", ["get", "start-x"], tolerance]
+        }, {
           "name": "end-x",
-          "value": ["coord", "x", ["listItem", 2, ["slopeToolOrder", pointA.name, pointB.name]]],
+          "value": ["coord", "x", ["listItem", 2, ["slopeToolOrder", pointA.name, pointB.name]]]
+        }, {
           "name": "end-x_str",
-          "value": ["toFixedString", ["get", "end-x"], 2],
+          "value": ["toFixedString", ["get", "end-x"], tolerance]
+        }, {
           "name": "change-x",
-          "value": ["-", ["get", "end-x"], ["get", "start-x"]],
+          "value": ["-", ["get", "end-x"], ["get", "start-x"]]
+        }, {
           "name": "change-x_str",
-          "value": ["toFixedString", ["get", "change-x"], 2],
+          "value": ["toFixedString", ["get", "change-x"], tolerance]
+        }, {
           "name": "slope",
-          "value": ["/", ["get", "change-y"], ["get", "change-x"]],
+          "value": ["/", ["get", "change-y"], ["get", "change-x"]]
+        }, {
           "name": "slope_str",
-          "value": ["toFixedString", ["get", "slope"], 2],
-          "name": "change-y-units",
-          "value": ["pluralizeUnits", "/builtins/units/meters", ["get", "change-y"]],
-          "name": "change-x-units",
-          "value": ["pluralizeUnits", "/builtins/units/seconds", ["get", "change-x"]],
-          "name": "slope-units",
-          "value": ["pluralizeUnits", "/builtins/units/meters-per-second", ["get", "slope"]]
+          "value": ["toFixedString", ["get", "slope"], tolerance]
         }
       ];
     };

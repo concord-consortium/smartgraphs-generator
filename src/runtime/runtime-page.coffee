@@ -42,18 +42,18 @@ exports.RuntimePage = class RuntimePage
   addNewContextVar: (definition) -> 
     @addContextVar(new ContextVar(definition))
     
-  addSlopeVars: (pointA,pointB) ->
-    @addNewContextVar(definition) for definition in @slopeVarDefs(pointA,pointB)
+  addSlopeVars: (pointA,pointB,tolerance=2) ->
+    @addNewContextVar(definition) for definition in @slopeVarDefs(pointA,pointB,tolerance)
 
   #TODO: protect against name-space collisions
-  slopeVarDefs: (pointA, pointB) ->
+  slopeVarDefs: (pointA, pointB,tolerance=2) ->
     [{
       "name": "start-y"     
       "value": ["coord", "y", ["listItem", 1, ["slopeToolOrder", pointA.name, pointB.name]]]
       },{
      
       "name": "start-y_str"    
-      "value": ["toFixedString", ["get", "start-y"], 2]
+      "value": ["toFixedString", ["get", "start-y"], tolerance]
       },{
      
       "name": "end-y"
@@ -61,7 +61,7 @@ exports.RuntimePage = class RuntimePage
       },{
      
       "name": "end-y_str"
-      "value": ["toFixedString", ["get", "end-y"], 2]
+      "value": ["toFixedString", ["get", "end-y"], tolerance]
       },{
      
       "name": "change-y"
@@ -69,7 +69,7 @@ exports.RuntimePage = class RuntimePage
       },{
      
       "name": "change-y_str"
-      "value": ["toFixedString", ["get", "change-y"], 2]
+      "value": ["toFixedString", ["get", "change-y"], tolerance]
       },{
 
       "name": "start-x"
@@ -77,7 +77,7 @@ exports.RuntimePage = class RuntimePage
       },{
      
       "name": "start-x_str"
-      "value": ["toFixedString", ["get", "start-x"], 2]
+      "value": ["toFixedString", ["get", "start-x"], tolerance]
       },{
       
       "name": "end-x"
@@ -85,7 +85,7 @@ exports.RuntimePage = class RuntimePage
       },{
       
       "name": "end-x_str"
-      "value": ["toFixedString", ["get", "end-x"], 2]
+      "value": ["toFixedString", ["get", "end-x"], tolerance]
       },{
       
       "name": "change-x"
@@ -93,26 +93,15 @@ exports.RuntimePage = class RuntimePage
       },{
       
       "name": "change-x_str"
-      "value": ["toFixedString", ["get", "change-x"], 2]
+      "value": ["toFixedString", ["get", "change-x"], tolerance]
       },{
 
       "name": "slope"
       "value": ["/", ["get", "change-y"], ["get", "change-x"]]
       },{
 
+      # TODO: we need to compute the 
       "name": "slope_str"
-      "value": ["toFixedString", ["get", "slope"], 2] 
-      },{
-      
-      "name": "change-y-units"
-      "value": ["pluralizeUnits", "/builtins/units/meters", ["get", "change-y"]]
-      },{
-      
-      "name": "change-x-units"
-      "value": ["pluralizeUnits", "/builtins/units/seconds", ["get", "change-x"]]
-      },{
-      
-      "name": "slope-units"
-      "value": ["pluralizeUnits", "/builtins/units/meters-per-second", ["get", "slope"]]
+      "value": ["toFixedString", ["get", "slope"], tolerance] 
       }
     ]
