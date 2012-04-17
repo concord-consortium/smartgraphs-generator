@@ -42,14 +42,20 @@ exports.SlopeToolSequence = class SlopeToolSequence
     }
 
   point_not_in_range: (dest, pointName=@secondPoint.name, axis='x', max=@xMax, min=@xMin) ->
-    {
-      criterion: [ "or", [ "<", [ "coord", axis, pointName ], min ], [ ">", [ "coord", axis, pointName ], max ] ]
+    criterion = [    "or", [  "<", [ "coord", axis, pointName ], min ], [  ">", [ "coord", axis, pointName ], max ] ]
+    if @studentMustSelectEndpointsOfRange
+      criterion = [ "and", [ "!=", [ "coord", axis, pointName ], min ], [ "!=", [ "coord", axis, pointName ], max ] ]
+    return {
+      criterion: criterion
       step: dest
     }
 
   point_in_range: (dest, pointName=@firstPoint.name, axis='x', max=@xMax, min=@xMin) ->
-    {
-      criterion: [ "and", [ ">=", [ "coord", axis, pointName ], min ], [ "<=", [ "coord", axis, pointName ], max ] ]
+    criterion = [ "and", [ "=>", [ "coord", axis, pointName ], min ], ["<=", [ "coord", axis, pointName ], max ] ]
+    if @studentMustSelectEndpointsOfRange
+      criterion = ["or", [ "=" , [ "coord", axis, pointName],  min ], [ "=", [ "coord", axis, pointName ], max ] ]
+    return {
+      criterion: criterion
       step: dest
     }
 
