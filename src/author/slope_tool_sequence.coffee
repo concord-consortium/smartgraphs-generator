@@ -41,9 +41,15 @@ exports.SlopeToolSequence = class SlopeToolSequence
       step: dest
     }
 
-  point_not_in_range: (dest, pointName=@firstPoint.name, axis='x', max=@xMax, min=@xMin) ->
+  point_not_in_range: (dest, pointName=@secondPoint.name, axis='x', max=@xMax, min=@xMin) ->
     {
       criterion: [ "or", [ "<", [ "coord", axis, pointName ], min ], [ ">", [ "coord", axis, pointName ], max ] ]
+      step: dest
+    }
+
+  point_in_range: (dest, pointName=@firstPoint.name, axis='x', max=@xMax, min=@xMin) ->
+    {
+      criterion: [ "and", [ ">=", [ "coord", axis, pointName ], min ], [ "<=", [ "coord", axis, pointName ], max ] ]
       step: dest
     }
 
@@ -57,7 +63,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
     if @selectedPointsMustBeAdjacent
       results.push(@not_adjacent('second_point_not_adjacent_and_should_be')) 
     results.push(@same_point('second_point_duplicate_point'))
-    results.push(@point_not_in_range('second_point_not_in_correct_range',@secondPoint.name))
+    results.push(@point_not_in_range('second_point_not_in_correct_range'))
     results
 
   check_correct_slope: (use_points=true) ->
@@ -287,10 +293,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       graphAnnotations: [ "#{@firstPoint.name}",]
       tableAnnotations: [ "#{@firstPoint.name}" ]
       tools:            [ tag: @firstPoint.name ]
-      responseBranches: [
-        criterion: [ "and", [ ">=", [ "coord", "x", @firstPoint.name ], @xMin], [ "<=", [ "coord", "x", @firstPoint.name ], @xMax ] ]
-        step: "select_second_point"
-      ]
+      responseBranches: [ @point_in_range("select_second_point") ]
     }
 
   if_first_point_wrong: ->
@@ -313,10 +316,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       tableAnnotations: [ "#{@firstPoint.name}" ]
       tools:            [ tag: @firstPoint.name ]
 
-      responseBranches: [
-        criterion: [ "and", [ ">=", [ "coord", "x", @firstPoint.name], @xMin ], [ "<=", [ "coord", "x", @firstPoint.name ], @xMax ] ]
-        step: "select_second_point"
-      ]
+      responseBranches: [ @point_in_range("select_second_point") ]
     }
 
   select_second_point: ->
