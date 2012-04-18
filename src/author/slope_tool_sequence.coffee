@@ -22,7 +22,13 @@ exports.SlopeToolSequence = class SlopeToolSequence
     "<p><strong>Incorrect.</strong></p>"
 
   range_text: (first_point=true) ->
-    if (@studentMustSelectEndpointsOfRange)
+    if (@selectedPointsMustBeAdjacent and not first_point)
+      """
+        a second <strong><em>adjacent</em></strong> 
+        point between #{@xMin} and #{@ending_text()}.
+        
+      """
+    else if (@studentMustSelectEndpointsOfRange)
       """
         #{if first_point then "an" else "a second"} 
         <strong><em>endpoint</em></strong> of the range 
