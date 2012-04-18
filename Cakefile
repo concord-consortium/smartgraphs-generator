@@ -34,19 +34,19 @@ activity_urls = ->
   [
     {
       number: '16'
-      name: 'slope_tool_a'
+      name: 'slope-tool-a'
     },{
       number: '17'
-      name: 'slope_tool_b'
+      name: 'slope-tool-b'
     },{
       number: '18'
-      name: 'slope_tool_c'
+      name: 'slope-tool-c'
     },{
       number: '19'
-      name: 'slope_kahn_no_units'
+      name: 'slope-kahn-no-units'
     },{
       number: '22'
-      name: 'slope_average_over_range'
+      name: 'slope-average-over-range'
     }
   ]
 
