@@ -23,7 +23,8 @@
       "steps": [
         "/shared/marias-run/page/1-introduction/step/1"
       ],
-      "firstStep": "/shared/marias-run/page/1-introduction/step/1"
+      "firstStep": "/shared/marias-run/page/1-introduction/step/1",
+      "contextVars": []
     },
     {
       "name": "Where did she stop",
@@ -34,7 +35,8 @@
       "steps": [
         "/shared/marias-run/page/2-where-did-she-stop/step/1"
       ],
-      "firstStep": "/shared/marias-run/page/2-where-did-she-stop/step/1"
+      "firstStep": "/shared/marias-run/page/2-where-did-she-stop/step/1",
+      "contextVars": []
     }
   ],
   "steps": [

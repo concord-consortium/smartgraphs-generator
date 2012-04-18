@@ -28,7 +28,8 @@
         "/shared/numeric-sequence/page/1-introduction/step/4",
         "/shared/numeric-sequence/page/1-introduction/step/5"
       ],
-      "firstStep": "/shared/numeric-sequence/page/1-introduction/step/1"
+      "firstStep": "/shared/numeric-sequence/page/1-introduction/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -36,7 +37,6 @@
       "url": "/shared/numeric-sequence/page/1-introduction/step/1",
       "activityPage": "/shared/numeric-sequence/page/1-introduction",
       "beforeText": "<p>What is the x-coordinate at the 3-time unit mark?</p>",
-      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -44,7 +44,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/numeric-sequence/axes/1",
           "yAxis": "/shared/numeric-sequence/axes/2",
-          "annotations": ["segment-overlay-1"],
+          "annotations": [
+            "segment-overlay-1"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -52,25 +55,39 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "submissibilityCriterion": ["isNumeric", ["responseField", 1]],
+      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/2",
+      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
       "responseBranches": [
         {
-          "criterion": ["=", ["responseField", 1], 600],
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            600
+          ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/2",
       "isFinalStep": false
     },
     {
       "url": "/shared/numeric-sequence/page/1-introduction/step/2",
       "activityPage": "/shared/numeric-sequence/page/1-introduction",
       "beforeText": "<p>Hint: ask yourself, which is the y-axis and which is the x-axis?</p> <p>What is the x-coordinate of the point at the 3-time unit mark?</p>",
-      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -78,7 +95,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/numeric-sequence/axes/1",
           "yAxis": "/shared/numeric-sequence/axes/2",
-          "annotations": ["segment-overlay-2"],
+          "annotations": [
+            "segment-overlay-2"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -86,25 +106,39 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "submissibilityCriterion": ["isNumeric", ["responseField", 1]],
+      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/3",
+      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
       "responseBranches": [
         {
-          "criterion": ["=", ["responseField", 1], 600],
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            600
+          ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/3",
       "isFinalStep": false
     },
     {
       "url": "/shared/numeric-sequence/page/1-introduction/step/3",
       "activityPage": "/shared/numeric-sequence/page/1-introduction",
       "beforeText": "<p>Hint: Where is the \"3-time-unit mark\" on the y-axis?</p> <p>The horizontal position of the point you're looking for is located at this mark. What is the x-coordinate of the point at the 3-time unit mark?</p>",
-      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -112,7 +146,11 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/numeric-sequence/axes/1",
           "yAxis": "/shared/numeric-sequence/axes/2",
-          "annotations": ["segment-overlay-3", "segment-overlay-4"],
+          "annotations": [
+            "segment-overlay-3",
+            "segment-overlay-4"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -120,18 +158,33 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "submissibilityCriterion": ["isNumeric", ["responseField", 1]],
+      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/4",
+      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
       "responseBranches": [
         {
-          "criterion": ["=", ["responseField", 1], 600],
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            600
+          ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/4",
       "isFinalStep": false
     },
     {
@@ -145,7 +198,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/numeric-sequence/axes/1",
           "yAxis": "/shared/numeric-sequence/axes/2",
-          "annotations": ["segment-overlay-5"],
+          "annotations": [
+            "segment-overlay-5"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -153,11 +209,12 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     },
     {
       "url": "/shared/numeric-sequence/page/1-introduction/step/5",
@@ -170,7 +227,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/numeric-sequence/axes/1",
           "yAxis": "/shared/numeric-sequence/axes/2",
-          "annotations": ["segment-overlay-6"],
+          "annotations": [
+            "segment-overlay-6"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -178,20 +238,27 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     }
   ],
   "responseTemplates": [
     {
       "url": "/shared/numeric-sequence/response-templates/numeric-1",
       "templateString": "",
-      "fieldTypes": ["numeric"],
-      "fieldChoicesList": [null],
-      "initialValues": [""]
+      "fieldChoicesList": [
+        null
+      ],
+      "initialValues": [
+        ""
+      ],
+      "fieldTypes": [
+        "numeric"
+      ]
     }
   ],
   "axes": [
@@ -273,8 +340,8 @@
           "activity": "/shared/numeric-sequence",
           "datadefName": "datadef-1",
           "color": "#00ff00",
-          "isUnboundedLeft": true,
-          "x1Record": 3
+          "x1Record": 3,
+          "isUnboundedLeft": true
         },
         {
           "url": "/shared/numeric-sequence/annotations/segment-overlay-4",
@@ -282,8 +349,8 @@
           "activity": "/shared/numeric-sequence",
           "datadefName": "datadef-1",
           "color": "#0000ff",
-          "isUnboundedRight": true,
-          "x1Record": 4
+          "x1Record": 4,
+          "isUnboundedRight": true
         },
         {
           "url": "/shared/numeric-sequence/annotations/segment-overlay-5",

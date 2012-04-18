@@ -31,7 +31,8 @@
         "/shared/point-circles/page/1-pick-a-point/step/4",
         "/shared/point-circles/page/1-pick-a-point/step/5"
       ],
-      "firstStep": "/shared/point-circles/page/1-pick-a-point/step/1"
+      "firstStep": "/shared/point-circles/page/1-pick-a-point/step/1",
+      "contextVars": []
     },
     {
       "name": "Numeric",
@@ -45,7 +46,8 @@
         "/shared/point-circles/page/2-numeric/step/3",
         "/shared/point-circles/page/2-numeric/step/4"
       ],
-      "firstStep": "/shared/point-circles/page/2-numeric/step/1"
+      "firstStep": "/shared/point-circles/page/2-numeric/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -64,6 +66,7 @@
             "circled-point-1",
             "highlighted-point-1"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -108,6 +111,7 @@
             "circled-point-2",
             "highlighted-point-1"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -153,6 +157,7 @@
             "circled-point-4",
             "highlighted-point-1"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -196,6 +201,7 @@
           "annotations": [
             "circled-point-5"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -218,6 +224,7 @@
           "annotations": [
             "circled-point-6"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -240,6 +247,7 @@
           "annotations": [
             "circled-point-7"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-2"
           ]
@@ -284,6 +292,7 @@
           "annotations": [
             "circled-point-8"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-2"
           ]
@@ -328,6 +337,7 @@
           "annotations": [
             "circled-point-9"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-2"
           ]
@@ -350,6 +360,7 @@
           "annotations": [
             "circled-point-10"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-2"
           ]
@@ -363,14 +374,14 @@
     {
       "url": "/shared/point-circles/response-templates/numeric-1",
       "templateString": "",
-      "fieldTypes": [
-        "numeric"
-      ],
       "fieldChoicesList": [
         null
       ],
       "initialValues": [
         ""
+      ],
+      "fieldTypes": [
+        "numeric"
       ]
     }
   ],

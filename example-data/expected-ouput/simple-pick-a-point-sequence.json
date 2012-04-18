@@ -28,7 +28,8 @@
         "/shared/pick-a-point-sequence/page/1-introduction/step/4",
         "/shared/pick-a-point-sequence/page/1-introduction/step/5"
       ],
-      "firstStep": "/shared/pick-a-point-sequence/page/1-introduction/step/1"
+      "firstStep": "/shared/pick-a-point-sequence/page/1-introduction/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -43,7 +44,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["highlighted-point-1"],
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -51,7 +55,10 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": ["highlighted-point-1"]
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -64,13 +71,18 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/2",
       "responseBranches": [
         {
-          "criterion": ["coordinates=", "tag-1", 4, 800],
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            4,
+            800
+          ],
           "step": "/shared/pick-a-point-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/2",
       "isFinalStep": false
     },
     {
@@ -84,7 +96,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["highlighted-point-1"],
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -92,7 +107,10 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": ["highlighted-point-1"]
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -105,13 +123,18 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/3",
       "responseBranches": [
         {
-          "criterion": ["coordinates=", "tag-1", 4, 800],
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            4,
+            800
+          ],
           "step": "/shared/pick-a-point-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/3",
       "isFinalStep": false
     },
     {
@@ -125,7 +148,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["highlighted-point-1"],
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -133,7 +159,10 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": ["highlighted-point-1"]
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -146,13 +175,18 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/4",
       "responseBranches": [
         {
-          "criterion": ["coordinates=", "tag-1", 4, 800],
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            4,
+            800
+          ],
           "step": "/shared/pick-a-point-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/4",
       "isFinalStep": false
     },
     {
@@ -167,6 +201,7 @@
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
           "annotations": [],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -174,11 +209,12 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     },
     {
       "url": "/shared/pick-a-point-sequence/page/1-introduction/step/5",
@@ -192,6 +228,7 @@
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
           "annotations": [],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -199,11 +236,12 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     }
   ],
   "responseTemplates": [],

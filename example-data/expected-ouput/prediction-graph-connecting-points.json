@@ -24,7 +24,8 @@
       "steps": [
         "/shared/prediction-graph-activity/page/1-prediction-graph-page/step/1"
       ],
-      "firstStep": "/shared/prediction-graph-activity/page/1-prediction-graph-page/step/1"
+      "firstStep": "/shared/prediction-graph-activity/page/1-prediction-graph-page/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -38,11 +39,13 @@
           "title": "Back and Forth",
           "xAxis": "/shared/prediction-graph-activity/axes/1",
           "yAxis": "/shared/prediction-graph-activity/axes/2",
-          "data": [],
-          "annotations": ["freehand-sketch-1"]
+          "annotations": [
+            "freehand-sketch-1"
+          ],
+          "highlightedAnnotations": [],
+          "data": []
         }
       },
-      "isFinalStep": true,
       "tools": [
         {
           "name": "prediction",
@@ -53,27 +56,23 @@
           }
         }
       ],
-      "submissibilityDependsOn": ["annotation", "freehand-sketch-1"],
-      "submissibilityCriterion": [">=", ["sketchLength", "freehand-sketch-1"], 0.2],
+      "submissibilityCriterion": [
+        ">=",
+        [
+          "sketchLength",
+          "freehand-sketch-1"
+        ],
+        0.2
+      ],
+      "submissibilityDependsOn": [
+        "annotation",
+        "freehand-sketch-1"
+      ],
+      "isFinalStep": true,
       "nextButtonShouldSubmit": true
     }
   ],
-  "units": [
-    {
-      "url": "/shared/prediction-graph-activity/units/Time",
-      "activity": "/shared/prediction-graph-activity",
-      "name": "Time",
-      "abbreviation": "s",
-      "pluralName": "Time"
-    },
-    {
-      "url": "/shared/prediction-graph-activity/units/Distance",
-      "activity": "/shared/prediction-graph-activity",
-      "name": "Distance",
-      "abbreviation": "m",
-      "pluralName": "Distance"
-    }
-  ],
+  "responseTemplates": [],
   "axes": [
     {
       "url": "/shared/prediction-graph-activity/axes/1",
@@ -92,14 +91,8 @@
       "label": "Position"
     }
   ],
-  "responseTemplates": [
-  ],
-  "tags": [
-  ],
-  "variables": [
-  ],
-  "datadefs": [
-  ],
+  "datadefs": [],
+  "tags": [],
   "annotations": [
     {
       "type": "FreehandSketch",
@@ -112,6 +105,23 @@
           "points": []
         }
       ]
+    }
+  ],
+  "variables": [],
+  "units": [
+    {
+      "url": "/shared/prediction-graph-activity/units/Time",
+      "activity": "/shared/prediction-graph-activity",
+      "name": "Time",
+      "abbreviation": "s",
+      "pluralName": "Time"
+    },
+    {
+      "url": "/shared/prediction-graph-activity/units/Distance",
+      "activity": "/shared/prediction-graph-activity",
+      "name": "Distance",
+      "abbreviation": "m",
+      "pluralName": "Distance"
     }
   ]
 }

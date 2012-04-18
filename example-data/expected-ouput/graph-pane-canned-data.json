@@ -24,7 +24,8 @@
       "steps": [
         "/shared/simple-graph/page/1-graph/step/1"
       ],
-      "firstStep": "/shared/simple-graph/page/1-graph/step/1"
+      "firstStep": "/shared/simple-graph/page/1-graph/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -38,30 +39,18 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/simple-graph/axes/1",
           "yAxis": "/shared/simple-graph/axes/2",
-          "data": ["datadef-1"],
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": [],
+          "data": [
+            "datadef-1"
+          ]
         }
       },
       "isFinalStep": true,
       "nextButtonShouldSubmit": true
     }
   ],
-  "units": [
-    {
-      "url": "/shared/simple-graph/units/minutes",
-      "activity": "/shared/simple-graph",
-      "name": "minute",
-      "abbreviation": "m",
-      "pluralName": "minutes"
-    },
-    {
-      "url": "/shared/simple-graph/units/meters",
-      "activity": "/shared/simple-graph",
-      "name": "meter",
-      "abbreviation": "m",
-      "pluralName": "meters"
-    }
-  ],
+  "responseTemplates": [],
   "axes": [
     {
       "url": "/shared/simple-graph/axes/1",
@@ -80,12 +69,6 @@
       "label": "Position"
     }
   ],
-  "responseTemplates": [
-  ],
-  "tags": [
-  ],
-  "variables": [
-  ],
   "datadefs": [
     {
       "type": "UnorderedDataPoints",
@@ -100,10 +83,41 @@
           "yUnits": "/shared/simple-graph/units/meters",
           "yLabel": "Position",
           "yShortLabel": "Position",
-          "points": [[1,200], [2,400], [3,600]]
+          "points": [
+            [
+              1,
+              200
+            ],
+            [
+              2,
+              400
+            ],
+            [
+              3,
+              600
+            ]
+          ]
         }
       ]
     }
   ],
-  "annotations": []
+  "tags": [],
+  "annotations": [],
+  "variables": [],
+  "units": [
+    {
+      "url": "/shared/simple-graph/units/meters",
+      "activity": "/shared/simple-graph",
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
+    },
+    {
+      "url": "/shared/simple-graph/units/minutes",
+      "activity": "/shared/simple-graph",
+      "name": "minute",
+      "abbreviation": "m",
+      "pluralName": "minutes"
+    }
+  ]
 }

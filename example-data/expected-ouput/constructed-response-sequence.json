@@ -21,7 +21,8 @@
       "steps": [
         "/shared/marias-run/page/1-introduction/step/1"
       ],
-      "firstStep": "/shared/marias-run/page/1-introduction/step/1"
+      "firstStep": "/shared/marias-run/page/1-introduction/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -31,14 +32,21 @@
       "beforeText": "What is your name?",
       "paneConfig": "single",
       "panes": {
-          "single": {
-            "type": "image",
-            "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
-            "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
-          }
-        },
+        "single": {
+          "type": "image",
+          "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+          "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
+        }
+      },
       "responseTemplate": "/shared/marias-run/response-templates/open-1",
-      "submissibilityCriterion": ["textLengthIsAtLeast", 1, ["responseField", 1]],
+      "submissibilityCriterion": [
+        "textLengthIsAtLeast",
+        1,
+        [
+          "responseField",
+          1
+        ]
+      ],
       "isFinalStep": true,
       "nextButtonShouldSubmit": true
     }
@@ -47,14 +55,14 @@
     {
       "url": "/shared/marias-run/response-templates/open-1",
       "templateString": "",
-      "fieldTypes": [
-        "textarea"
-      ],
       "fieldChoicesList": [
         null
       ],
       "initialValues": [
         "My name is..."
+      ],
+      "fieldTypes": [
+        "textarea"
       ]
     }
   ],

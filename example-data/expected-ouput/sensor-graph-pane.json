@@ -24,7 +24,8 @@
       "steps": [
         "/shared/sensor-graph-activity/page/1-sensor-graph-page/step/1"
       ],
-      "firstStep": "/shared/sensor-graph-activity/page/1-sensor-graph-page/step/1"
+      "firstStep": "/shared/sensor-graph-activity/page/1-sensor-graph-page/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -39,6 +40,7 @@
           "xAxis": "/shared/sensor-graph-activity/axes/1",
           "yAxis": "/shared/sensor-graph-activity/axes/2",
           "annotations": [],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]

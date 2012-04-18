@@ -24,7 +24,8 @@
       "steps": [
         "/shared/graph-and-table/page/1-graph/step/1"
       ],
-      "firstStep": "/shared/graph-and-table/page/1-graph/step/1"
+      "firstStep": "/shared/graph-and-table/page/1-graph/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -36,37 +37,26 @@
         "top": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         },
         "bottom": {
           "type": "graph",
           "title": "Position vs. Time",
           "xAxis": "/shared/graph-and-table/axes/1",
           "yAxis": "/shared/graph-and-table/axes/2",
-          "data" : ["datadef-1"],
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": [],
+          "data": [
+            "datadef-1"
+          ]
         }
       },
       "isFinalStep": true,
       "nextButtonShouldSubmit": true
     }
   ],
-  "units": [
-    {
-      "url": "/shared/graph-and-table/units/minutes",
-      "activity": "/shared/graph-and-table",
-      "name": "minute",
-      "abbreviation": "m",
-      "pluralName": "minutes"
-    },
-    {
-      "url": "/shared/graph-and-table/units/meters",
-      "activity": "/shared/graph-and-table",
-      "name": "meter",
-      "abbreviation": "m",
-      "pluralName": "meters"
-    }
-  ],
+  "responseTemplates": [],
   "axes": [
     {
       "url": "/shared/graph-and-table/axes/1",
@@ -85,12 +75,6 @@
       "label": "Position"
     }
   ],
-  "responseTemplates": [
-  ],
-  "tags": [
-  ],
-  "variables": [
-  ],
   "datadefs": [
     {
       "type": "UnorderedDataPoints",
@@ -105,10 +89,41 @@
           "yUnits": "/shared/graph-and-table/units/meters",
           "yLabel": "Position",
           "yShortLabel": "Position",
-          "points": [[1,200], [2,400], [3,600]]
+          "points": [
+            [
+              1,
+              200
+            ],
+            [
+              2,
+              400
+            ],
+            [
+              3,
+              600
+            ]
+          ]
         }
       ]
     }
   ],
-  "annotations": []
+  "tags": [],
+  "annotations": [],
+  "variables": [],
+  "units": [
+    {
+      "url": "/shared/graph-and-table/units/meters",
+      "activity": "/shared/graph-and-table",
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
+    },
+    {
+      "url": "/shared/graph-and-table/units/minutes",
+      "activity": "/shared/graph-and-table",
+      "name": "minute",
+      "abbreviation": "m",
+      "pluralName": "minutes"
+    }
+  ]
 }

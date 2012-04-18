@@ -27,7 +27,8 @@
         "/shared/pick-a-point-sequence/page/1-introduction/step/3",
         "/shared/pick-a-point-sequence/page/1-introduction/step/4"
       ],
-      "firstStep": "/shared/pick-a-point-sequence/page/1-introduction/step/1"
+      "firstStep": "/shared/pick-a-point-sequence/page/1-introduction/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -42,7 +43,11 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["circled-point-1", "highlighted-point-1"],
+          "annotations": [
+            "circled-point-1",
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -50,7 +55,10 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": ["highlighted-point-1"]
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -63,13 +71,18 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/2",
       "responseBranches": [
         {
-          "criterion": ["coordinates=", "tag-1", 4, 800],
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            4,
+            800
+          ],
           "step": "/shared/pick-a-point-sequence/page/1-introduction/step/4"
         }
       ],
-      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/2",
       "isFinalStep": false
     },
     {
@@ -83,7 +96,12 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["circled-point-2", "circled-point-3", "highlighted-point-1"],
+          "annotations": [
+            "circled-point-2",
+            "circled-point-3",
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -91,7 +109,10 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": ["highlighted-point-1"]
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -104,13 +125,18 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/3",
       "responseBranches": [
         {
-          "criterion": ["coordinates=", "tag-1", 4, 800],
+          "criterion": [
+            "coordinates=",
+            "tag-1",
+            4,
+            800
+          ],
           "step": "/shared/pick-a-point-sequence/page/1-introduction/step/4"
         }
       ],
-      "defaultBranch": "/shared/pick-a-point-sequence/page/1-introduction/step/3",
       "isFinalStep": false
     },
     {
@@ -124,7 +150,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["circled-point-4"],
+          "annotations": [
+            "circled-point-4"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -132,11 +161,12 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     },
     {
       "url": "/shared/pick-a-point-sequence/page/1-introduction/step/4",
@@ -149,7 +179,10 @@
           "title": "Position vs. Time",
           "xAxis": "/shared/pick-a-point-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-sequence/axes/2",
-          "annotations": ["circled-point-5"],
+          "annotations": [
+            "circled-point-5"
+          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -157,11 +190,12 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": []
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     }
   ],
   "responseTemplates": [],

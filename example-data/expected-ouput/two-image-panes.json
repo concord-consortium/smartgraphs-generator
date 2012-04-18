@@ -21,7 +21,8 @@
       "steps": [
         "/shared/marias-run/page/1-introduction/step/1"
       ],
-      "firstStep": "/shared/marias-run/page/1-introduction/step/1"
+      "firstStep": "/shared/marias-run/page/1-introduction/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -30,17 +31,17 @@
       "activityPage": "/shared/marias-run/page/1-introduction",
       "paneConfig": "split",
       "panes": {
-          "top": {
-            "type": "image",
-            "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
-            "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
-          },
-          "bottom": {
-            "type": "image",
-            "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
-            "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
-          }
+        "top": {
+          "type": "image",
+          "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+          "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
         },
+        "bottom": {
+          "type": "image",
+          "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
+          "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
+        }
+      },
       "isFinalStep": true,
       "nextButtonShouldSubmit": true
     }

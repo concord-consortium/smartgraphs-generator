@@ -27,7 +27,8 @@
       "steps": [
         "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page/step/1"
       ],
-      "firstStep": "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page/step/1"
+      "firstStep": "/shared/sensor-graph-on-top-of-prediction-graph/page/1-prediction-graph-page/step/1",
+      "contextVars": []
     },
     {
       "name": "Sensor graph page",
@@ -38,7 +39,8 @@
       "steps": [
         "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page/step/1"
       ],
-      "firstStep": "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page/step/1"
+      "firstStep": "/shared/sensor-graph-on-top-of-prediction-graph/page/2-sensor-graph-page/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -55,6 +57,7 @@
           "annotations": [
             "freehand-sketch-1"
           ],
+          "highlightedAnnotations": [],
           "data": []
         }
       },
@@ -96,6 +99,7 @@
           "annotations": [
             "freehand-sketch-1"
           ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]

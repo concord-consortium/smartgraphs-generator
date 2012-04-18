@@ -25,7 +25,8 @@
         "/shared/numeric-sequence/page/1-introduction/step/4",
         "/shared/numeric-sequence/page/1-introduction/step/5"
       ],
-      "firstStep": "/shared/numeric-sequence/page/1-introduction/step/1"
+      "firstStep": "/shared/numeric-sequence/page/1-introduction/step/1",
+      "contextVars": []
     }
   ],
   "steps": [
@@ -33,54 +34,93 @@
       "url": "/shared/numeric-sequence/page/1-introduction/step/1",
       "activityPage": "/shared/numeric-sequence/page/1-introduction",
       "beforeText": "<p>What is the x-coordinate at the 3-time unit mark?</p>",
-      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
       "paneConfig": "single",
       "panes": null,
       "submitButtonTitle": "Check My Answer",
-      "submissibilityCriterion": ["isNumeric", ["responseField", 1]],
+      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/2",
+      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
       "responseBranches": [
         {
-          "criterion": ["=", ["responseField", 1], 600],
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            600
+          ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/2",
       "isFinalStep": false
     },
     {
       "url": "/shared/numeric-sequence/page/1-introduction/step/2",
       "activityPage": "/shared/numeric-sequence/page/1-introduction",
       "beforeText": "<p>Hint: ask yourself, which is the y-axis and which is the x-axis?</p> <p>What is the x-coordinate of the point at the 3-time unit mark?</p>",
-      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
       "paneConfig": "single",
       "panes": null,
       "submitButtonTitle": "Check My Answer",
-      "submissibilityCriterion": ["isNumeric", ["responseField", 1]],
+      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/3",
+      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
       "responseBranches": [
         {
-          "criterion": ["=", ["responseField", 1], 600],
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            600
+          ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/3",
       "isFinalStep": false
     },
     {
       "url": "/shared/numeric-sequence/page/1-introduction/step/3",
       "activityPage": "/shared/numeric-sequence/page/1-introduction",
       "beforeText": "<p>Hint: Where is the \"3-time-unit mark\" on the y-axis?</p> <p>The horizontal position of the point you're looking for is located at this mark. What is the x-coordinate of the point at the 3-time unit mark?</p>",
-      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
       "paneConfig": "single",
       "panes": null,
       "submitButtonTitle": "Check My Answer",
-      "submissibilityCriterion": ["isNumeric", ["responseField", 1]],
+      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/4",
+      "responseTemplate": "/shared/numeric-sequence/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
       "responseBranches": [
         {
-          "criterion": ["=", ["responseField", 1], 600],
+          "criterion": [
+            "=",
+            [
+              "responseField",
+              1
+            ],
+            600
+          ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
       ],
-      "defaultBranch": "/shared/numeric-sequence/page/1-introduction/step/4",
       "isFinalStep": false
     },
     {
@@ -89,8 +129,8 @@
       "beforeText": "<p>Take a closer look, it's 600 units of distance.</p>",
       "paneConfig": "single",
       "panes": null,
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     },
     {
       "url": "/shared/numeric-sequence/page/1-introduction/step/5",
@@ -98,17 +138,23 @@
       "beforeText": "<p>That's right: it's 600 units of distance.</p>",
       "paneConfig": "single",
       "panes": null,
-      "nextButtonShouldSubmit": true,
-      "isFinalStep": true
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
     }
   ],
   "responseTemplates": [
     {
       "url": "/shared/numeric-sequence/response-templates/numeric-1",
       "templateString": "",
-      "fieldTypes": ["numeric"],
-      "fieldChoicesList": [null],
-      "initialValues": [""]
+      "fieldChoicesList": [
+        null
+      ],
+      "initialValues": [
+        ""
+      ],
+      "fieldTypes": [
+        "numeric"
+      ]
     }
   ],
   "axes": [],
