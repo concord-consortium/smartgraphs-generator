@@ -2,16 +2,68 @@
 # TODO: we could extend CorrectableSequenceWithFeedback
 exports.SlopeToolSequence = class SlopeToolSequence
 
-  selectFirstPointQuestion: () ->
+  select_first_point_first_time_text: () ->
     results = ""
     if @firstQuestionIsSlopeQuestion
-      results = "<p>Incorrect.</p>"
+      results = @incorrect_text()
     results = """
       #{results}
-      <p>Select a point between #{@xMin} and #{@xMax}#{@xUnits}.</p>
-      <p>Then click "OK". </p>
+      #{@select_first_point_text()}
     """
     results
+  
+  ending_text: () ->
+    "#{@xMax}#{if @xUnits.length > 0 then @xUnits else " for #{@x_axis_name}"}"
+
+  click_ok_text: () ->
+    """<p>Then click "OK". </p>"""
+
+  incorrect_text: () ->
+    "<p><strong>Incorrect.</strong></p>"
+
+  range_text: (first_point=true) ->
+    if (@studentMustSelectEndpointsOfRange)
+      """
+        #{if first_point then "an" else "a second"} 
+        <strong><em>endpoint</em></strong> of the range 
+        #{@xMin} through #{@ending_text()}.
+      """
+    else
+      """
+        #{if first_point then "a" else "a second"} 
+        point between #{@xMin} and #{@ending_text()}.
+      """
+  
+  select_first_point_text: ()->
+    """
+      <p> Select #{@range_text()} </p>
+      #{@click_ok_text()}
+    """
+    
+  first_point_wrong_text: () ->
+    """
+      #{@incorrect_text()}
+      <p>The point you have selected is not 
+      #{@range_text()}
+      Try again.</p>
+      #{@select_first_point_text()}
+    """
+
+  select_second_point_text: (first_time=true) ->
+    """
+      <p>Now select
+      #{@range_text(false)}</p>
+      #{@click_ok_text()}
+    """
+
+  second_point_out_of_range_text: () ->
+    """
+      #{@incorrect_text()}
+      <p> The point you have selected is not 
+      #{@range_text()}  
+      Try again.</p>
+      #{@select_second_point_text()}
+    """
   
   previous_answers: ->
     [
@@ -51,7 +103,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
     }
 
   point_in_range: (dest, pointName=@firstPoint.name, axis='x', max=@xMax, min=@xMin) ->
-    criterion = [ "and", [ "=>", [ "coord", axis, pointName ], min ], ["<=", [ "coord", axis, pointName ], max ] ]
+    criterion = [ "and", [ ">=", [ "coord", axis, pointName ], min ], ["<=", [ "coord", axis, pointName ], max ] ]
     if @studentMustSelectEndpointsOfRange
       criterion = ["or", [ "=" , [ "coord", axis, pointName],  min ], [ "=", [ "coord", axis, pointName ], max ] ]
     return {
@@ -69,7 +121,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
     if @selectedPointsMustBeAdjacent
       results.push(@not_adjacent('second_point_not_adjacent_and_should_be')) 
     results.push(@same_point('second_point_duplicate_point'))
-    results.push(@point_not_in_range('second_point_not_in_correct_range'))
+    results.push(@point_not_in_range('second_point_out_of_range'))
     results
 
   check_correct_slope: (use_points=true) ->
@@ -294,7 +346,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       name:                   "select_first_point"
       defaultBranch:          "if_first_point_wrong"
       submitButtonTitle:      "OK"
-      beforeText:             @selectFirstPointQuestion()
+      beforeText:             @select_first_point_first_time_text()
 
       graphAnnotations: [ "#{@firstPoint.name}",]
       tableAnnotations: [ "#{@firstPoint.name}" ]
@@ -309,14 +361,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       name:                   "if_first_point_wrong"
       defaultBranch:          "if_first_point_wrong"
       submitButtonTitle:      "OK"
-      beforeText:              """
-        <p> Incorrect </p>
-        <p> The point you have selected is not between
-        #{@xMin} and #{@xMax}#{@xUnits}.  Try again.</p>
-        <p> Select a point <em>between 
-        #{@xMin} and #{@xMax}#{@xUnits}</em>.</p>
-        <p>Then click "OK". </p>
-      """
+      beforeText:              @first_point_wrong_text()
 
       graphAnnotations: [ "#{@firstPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}" ]
@@ -332,11 +377,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       name:                   "select_second_point"
       defaultBranch:          "when_line_appears"
       submitButtonTitle:      "OK"
-      beforeText:             """
-        <p>Now select a second point between 
-        #{@xMin} and #{@xMax}#{@xUnits}.</p>
-        <p>Then click "OK". </p>
-      """
+      beforeText:             @select_second_point_text()
+
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tools:            [ tag: @secondPoint.name                               ]
@@ -351,11 +393,9 @@ exports.SlopeToolSequence = class SlopeToolSequence
       defaultBranch:          "when_line_appears"
       submitButtonTitle:      "OK"
       beforeText:             """
-        <p> Incorrect </p>
+        #{@incorrect_text()}
         <p> Your points should be adjacent.</p>
-        <p> Select a second point between 
-        #{@xMin} and #{@xMax}#{@xUnits}.</p>
-        <p>Then click "OK". </p>
+        #{@select_second_point_text()}
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
@@ -372,11 +412,9 @@ exports.SlopeToolSequence = class SlopeToolSequence
       defaultBranch:          "when_line_appears"
       submitButtonTitle:      "OK"
       beforeText:             """
-        <p> Incorrect </p>
+        #{@incorrect_text()}
         <p> You have selected the same point twice.</p>
-        <p> Now select a <em>second</em> point between 
-        #{@xMin} and #{@xMax}#{@xUnits}.</p>
-        <p>Then click "OK". </p>
+        #{@select_second_point_text()}
       """
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
@@ -384,21 +422,15 @@ exports.SlopeToolSequence = class SlopeToolSequence
       responseBranches: @second_point_response_branches()
     }
 
-  second_point_not_in_correct_range: ->
+  second_point_out_of_range: ->
     { ############################################
-      ##         second_point_not_in_correct_range
+      ##         second_point_out_of_range
       ############################################
-      name:                   "second_point_not_in_correct_range"
+      name:                   "second_point_out_of_range"
       defaultBranch:          "when_line_appears"
       submitButtonTitle:      "OK"    
-      beforeText:             """
-        <p> Incorrect </p>
-        <p> The point you have selected is not between
-        #{@xMin} and #{@xMax}#{@xUnits}.  Try again.</p>
-        <p> Select a second point <em>between 
-        #{@xMin} and #{@xMax}#{@xUnits}</em>.</p>
-        <p>Then click "OK". </p>
-      """
+      beforeText:             @second_point_out_of_range_text()
+
       graphAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tableAnnotations: [ "#{@firstPoint.name}", "#{@secondPoint.name}" ]
       tools:            [ tag: @secondPoint.name                                  ]
@@ -436,7 +468,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
-        <p>Incorrect.</p>
+        #{@incorrect_text()}
         <p> #{@lineAppearsQuestion()} </p>
         <p>Hint: Recall that the slope is 
         the change in  #{@y_axis_name}
@@ -460,7 +492,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
-        <p>Incorrect.</p>
+        #{@incorrect_text()}
         <p>What was the change in
         #{@y_axis_name} between the two points#{@in_yUnits}?</p>
         <p>Hint: Look at the graph.</p>
@@ -487,7 +519,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
-        <p>Incorrect.</p>
+        #{@incorrect_text()}
         <p>What was the change in
         #{@y_axis_name} between the two points#{@in_yUnits}?</p>
         <p>Hint: Look at the table and the graph.</p>
@@ -517,7 +549,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Continue"
       
       beforeText:             """
-        <p><b>Incorrect.</b></p>
+        #{@incorrect_text()}
         <p>The change#{@in_yUnits} is
         <b>%@</b> - <b>%@</b>, 
         or <b>%@</b>.</p>
@@ -566,7 +598,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText:             """
-        <p>Incorrect.</p>
+        #{@incorrect_text()}
         <p>What was the change in
         #{@x_axis_name} between the two points#{@in_xUnits}?</p>
         <p>Hint: Look at the graph and the table.</p>
@@ -594,7 +626,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Continue"
       
       beforeText:             """
-        <p><b>Incorrect.</b></p>
+        #{@incorrect_text()}
         <p>The change#{@in_xUnits} 
         between the points is <b>%@</b> - <b>%@</b>, 
         or <b>%@</b>.</p>
@@ -640,7 +672,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       submitButtonTitle:      "Check My Answer"
       responseTemplate:       "#{@response_template}/numeric"
       beforeText: """
-        <p><b>Incorrect</b></p>
+        #{@incorrect_text()}
         <p>
           If the change in #{@y_axis_name} is %@#{@yUnits}
           and the change in #{@x_axis_name} is %@#{@xUnits}
@@ -672,7 +704,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       isFinalStep: true
       hideSubmitButton: true
       beforeText:             """
-        <p><b>Incorrect.</b></p>
+        #{@incorrect_text()}
         <p>
         If the change in #{@y_axis_name} is %@#{@yUnits}
         and the change in #{@x_axis_name} is %@#{@xUnits},
@@ -720,7 +752,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       @steps.push(@select_second_point())
       @steps.push(@second_point_not_adjacent_and_should_be())
       @steps.push(@second_point_duplicate_point())
-      @steps.push(@second_point_not_in_correct_range())
+      @steps.push(@second_point_out_of_range())
 
     #All cases
     @steps.push(@when_line_appears())
