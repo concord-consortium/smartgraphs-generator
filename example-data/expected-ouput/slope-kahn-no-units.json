@@ -1,48 +1,49 @@
 {
-  "_id": "slope-tool-b-demo.df6",
+  "_id": "khan-academy-example.df6",
   "_rev": 1,
   "data_format_version": 6,
   "activity": {
-    "title": "Slope Tool B Demo",
-    "url": "/shared/slope-tool-b-demo",
+    "title": "Khan Academy example",
+    "url": "/shared/khan-academy-example",
     "owner": "shared",
     "pages": [
-      "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question"
+      "/shared/khan-academy-example/page/1-page-1"
     ],
     "axes": [
-      "/shared/slope-tool-b-demo/axes/1",
-      "/shared/slope-tool-b-demo/axes/2"
+      "/shared/khan-academy-example/axes/1",
+      "/shared/khan-academy-example/axes/2"
     ],
-    "authorName": "Noah Paessel"
+    "authorName": "Andy Zucker"
   },
   "pages": [
     {
-      "name": "Demo of Case B:  Don't ask initial slope question.",
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "activity": "/shared/slope-tool-b-demo",
+      "name": "Page 1",
+      "url": "/shared/khan-academy-example/page/1-page-1",
+      "activity": "/shared/khan-academy-example",
       "index": 1,
-      "introText": "What is the velocity of the car between 2 and 8 seconds?",
+      "introText": "This is an example of using a Khan Academy video in SmartGraphs. Click on the video if you need to see an explanation of how to calculate slope, and if the \"helps\" in the graph at right are not enough. <br><br>\r\n\r\n<object style=\"height: 390px; width: 640px\"><param name=\"movie\" value=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\"><param name=\"allowFullScreen\" value=\"true\"><param name=\"allowScriptAccess\" value=\"always\"><embed src=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowScriptAccess=\"always\" width=\"640\" height=\"360\"></object>",
       "steps": [
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/1",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/2",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/3",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/4",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/5",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/6",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/7",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/8",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/9",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/10",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/11",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/12",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/13",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/14",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/15",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/16",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/17",
-        "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/18"
+        "/shared/khan-academy-example/page/1-page-1/step/1",
+        "/shared/khan-academy-example/page/1-page-1/step/2",
+        "/shared/khan-academy-example/page/1-page-1/step/3",
+        "/shared/khan-academy-example/page/1-page-1/step/4",
+        "/shared/khan-academy-example/page/1-page-1/step/5",
+        "/shared/khan-academy-example/page/1-page-1/step/6",
+        "/shared/khan-academy-example/page/1-page-1/step/7",
+        "/shared/khan-academy-example/page/1-page-1/step/8",
+        "/shared/khan-academy-example/page/1-page-1/step/9",
+        "/shared/khan-academy-example/page/1-page-1/step/10",
+        "/shared/khan-academy-example/page/1-page-1/step/11",
+        "/shared/khan-academy-example/page/1-page-1/step/12",
+        "/shared/khan-academy-example/page/1-page-1/step/13",
+        "/shared/khan-academy-example/page/1-page-1/step/14",
+        "/shared/khan-academy-example/page/1-page-1/step/15",
+        "/shared/khan-academy-example/page/1-page-1/step/16",
+        "/shared/khan-academy-example/page/1-page-1/step/17",
+        "/shared/khan-academy-example/page/1-page-1/step/18",
+        "/shared/khan-academy-example/page/1-page-1/step/19"
       ],
-      "firstStep": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/1",
+      "firstStep": "/shared/khan-academy-example/page/1-page-1/step/1",
       "contextVars": [
         {
           "name": "start-y",
@@ -232,22 +233,80 @@
   ],
   "steps": [
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/1",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "\n<p> Select a \npoint between 2 and 8 for time. </p>\n<p>Then click \"OK\". </p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/1",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "What is the slope of the line connecting the blue points in the graph?",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [],
+          "highlightedAnnotations": [],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [],
+          "highlightedAnnotations": []
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/2",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            0.6666666666666666,
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": []
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/2",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Select a \npoint between -6 and 6 for x. </p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -258,9 +317,7 @@
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -273,7 +330,7 @@
         }
       ],
       "submitButtonTitle": "OK",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/2",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/3",
       "responseBranches": [
         {
           "criterion": [
@@ -285,7 +342,7 @@
                 "x",
                 "first-point"
               ],
-              2
+              -6
             ],
             [
               "<=",
@@ -294,31 +351,29 @@
                 "x",
                 "first-point"
               ],
-              8
+              6
             ]
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/3"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/4"
         }
       ],
       "isFinalStep": false
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/2",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na \npoint between 2 and 8 for time.\nTry again.</p>\n<p> Select a \npoint between 2 and 8 for time. </p>\n<p>Then click \"OK\". </p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/3",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na \npoint between -6 and 6 for x.\nTry again.</p>\n<p> Select a \npoint between -6 and 6 for x. </p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -329,9 +384,7 @@
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -344,7 +397,7 @@
         }
       ],
       "submitButtonTitle": "OK",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/2",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/3",
       "responseBranches": [
         {
           "criterion": [
@@ -356,7 +409,7 @@
                 "x",
                 "first-point"
               ],
-              2
+              -6
             ],
             [
               "<=",
@@ -365,32 +418,30 @@
                 "x",
                 "first-point"
               ],
-              8
+              6
             ]
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/3"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/4"
         }
       ],
       "isFinalStep": false
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/3",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p>Now select\na second \npoint between 2 and 8 for time.</p>\n<p>Then click \"OK\". </p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/4",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -402,9 +453,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -417,7 +466,7 @@
         }
       ],
       "submitButtonTitle": "OK",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/7",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
       "responseBranches": [
         {
           "criterion": [
@@ -425,7 +474,7 @@
             "first-point",
             "second-point"
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/5"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
         },
         {
           "criterion": [
@@ -437,7 +486,7 @@
                 "x",
                 "second-point"
               ],
-              2
+              -6
             ],
             [
               ">",
@@ -446,32 +495,30 @@
                 "x",
                 "second-point"
               ],
-              8
+              6
             ]
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/6"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
         }
       ],
       "isFinalStep": false
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/4",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now select\na second \npoint between 2 and 8 for time.</p>\n<p>Then click \"OK\". </p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/5",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -483,9 +530,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -498,7 +543,7 @@
         }
       ],
       "submitButtonTitle": "OK",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/7",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
       "responseBranches": [
         {
           "criterion": [
@@ -506,7 +551,7 @@
             "first-point",
             "second-point"
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/5"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
         },
         {
           "criterion": [
@@ -518,7 +563,7 @@
                 "x",
                 "second-point"
               ],
-              2
+              -6
             ],
             [
               ">",
@@ -527,32 +572,30 @@
                 "x",
                 "second-point"
               ],
-              8
+              6
             ]
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/6"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
         }
       ],
       "isFinalStep": false
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/5",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now select\na second \npoint between 2 and 8 for time.</p>\n<p>Then click \"OK\". </p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/6",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -564,9 +607,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -579,7 +620,7 @@
         }
       ],
       "submitButtonTitle": "OK",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/7",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
       "responseBranches": [
         {
           "criterion": [
@@ -587,7 +628,7 @@
             "first-point",
             "second-point"
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/5"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
         },
         {
           "criterion": [
@@ -599,7 +640,7 @@
                 "x",
                 "second-point"
               ],
-              2
+              -6
             ],
             [
               ">",
@@ -608,32 +649,30 @@
                 "x",
                 "second-point"
               ],
-              8
+              6
             ]
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/6"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
         }
       ],
       "isFinalStep": false
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/6",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na \npoint between 2 and 8 for time.  \nTry again.</p>\n<p>Now select\na second \npoint between 2 and 8 for time.</p>\n<p>Then click \"OK\". </p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/7",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na \npoint between -6 and 6 for x.  \nTry again.</p>\n<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -645,9 +684,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -660,7 +697,7 @@
         }
       ],
       "submitButtonTitle": "OK",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/7",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
       "responseBranches": [
         {
           "criterion": [
@@ -668,7 +705,7 @@
             "first-point",
             "second-point"
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/5"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
         },
         {
           "criterion": [
@@ -680,7 +717,7 @@
                 "x",
                 "second-point"
               ],
-              2
+              -6
             ],
             [
               ">",
@@ -689,33 +726,31 @@
                 "x",
                 "second-point"
               ],
-              8
+              6
             ]
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/6"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
         }
       ],
       "isFinalStep": false
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/7",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p> Here is the line connecting the two points. </p>\n<p> What was the slope between the two points? </p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/8",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p> Here is the line connecting the two points. </p>\n<p> What is the slope of the line connecting the blue points in the graph? </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -727,14 +762,12 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/8",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/9",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -757,7 +790,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/18"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
         }
       ],
       "isFinalStep": false,
@@ -770,29 +803,25 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/8",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What was the slope between the two points? </p>\n<p>Hint: Recall that the slope is \nthe change in  distance\ndivided by the change in time.</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/9",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What is the slope of the line connecting the blue points in the graph? </p>\n<p>Hint: Recall that the slope is \nthe change in  y\ndivided by the change in x.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -804,14 +833,12 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/9",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/10",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -834,7 +861,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/18"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
         }
       ],
       "isFinalStep": false,
@@ -847,21 +874,19 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/9",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points?</p>\n<p>Hint: Look at the graph.</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/10",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ny between the two points?</p>\n<p>Hint: Look at the graph.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
@@ -881,14 +906,12 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/10",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/11",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -915,7 +938,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/12"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/13"
         }
       ],
       "isFinalStep": false,
@@ -930,16 +953,16 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/10",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points?</p>\n<p>Hint: Look at the table and the graph.</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/11",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ny between the two points?</p>\n<p>Hint: Look at the table and the graph.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
@@ -965,8 +988,8 @@
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/11",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/12",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -993,7 +1016,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/12"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/13"
         }
       ],
       "isFinalStep": false,
@@ -1006,21 +1029,19 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/11",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/12",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
       "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
@@ -1046,7 +1067,7 @@
         }
       },
       "submitButtonTitle": "Continue",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/12",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/13",
       "isFinalStep": false,
       "substitutedExpressions": [
         "end-y",
@@ -1055,16 +1076,16 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/12",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p>What was the change in\ntime between the two points?</p>\n<p>Hint: Look at the graph.</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/13",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p>What was the change in\nx between the two points?</p>\n<p>Hint: Look at the graph.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
@@ -1085,14 +1106,12 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/13",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/14",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -1119,7 +1138,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/15"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/16"
         }
       ],
       "isFinalStep": false,
@@ -1134,16 +1153,16 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/13",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ntime between the two points?</p>\n<p>Hint: Look at the graph and the table.</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/14",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\nx between the two points?</p>\n<p>Hint: Look at the graph and the table.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
@@ -1170,8 +1189,8 @@
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/14",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/15",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -1198,7 +1217,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/15"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/16"
         }
       ],
       "isFinalStep": false,
@@ -1213,16 +1232,16 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/14",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/15",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
       "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
@@ -1249,7 +1268,7 @@
         }
       },
       "submitButtonTitle": "Continue",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/15",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/16",
       "isFinalStep": false,
       "substitutedExpressions": [
         "end-x",
@@ -1258,24 +1277,22 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/15",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p>\n  If the change in distance is %@\n  and the change in time is %@\n  then what is the slope?\n</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/16",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p>\n  If the change in y is %@\n  and the change in x is %@\n  then what is the slope?\n</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1287,14 +1304,12 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/16",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/17",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -1317,7 +1332,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/18"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
         }
       ],
       "isFinalStep": false,
@@ -1336,24 +1351,22 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/16",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in distance is %@\n  and the change in time is %@\n  then what is the slope?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in distance \n  <b>divided by</b> \n  the change in time.\n</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/17",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in y is %@\n  and the change in x is %@\n  then what is the slope?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in y \n  <b>divided by</b> \n  the change in x.\n</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1365,14 +1378,12 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/17",
-      "responseTemplate": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/18",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
       "submissibilityCriterion": [
         "isNumeric",
         [
@@ -1395,7 +1406,7 @@
             ],
             0.1
           ],
-          "step": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/18"
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
         }
       ],
       "isFinalStep": false,
@@ -1414,24 +1425,22 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/17",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in distance is %@\nand the change in time is %@,\nthe slope is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b>.</p>",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/18",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in y is %@\nand the change in x is %@,\nthe slope is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b>.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1443,9 +1452,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "isFinalStep": true,
@@ -1459,24 +1466,22 @@
       ]
     },
     {
-      "url": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question/step/18",
-      "activityPage": "/shared/slope-tool-b-demo/page/1-demo-of-case-b--dont-ask-initial-slope-question",
+      "url": "/shared/khan-academy-example/page/1-page-1/step/19",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
       "beforeText": "<p><b>Correct!</b></p>\n<p>The slope is <b>%@</b>.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
           "type": "graph",
-          "title": "Velocity",
-          "xAxis": "/shared/slope-tool-b-demo/axes/1",
-          "yAxis": "/shared/slope-tool-b-demo/axes/2",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1484,12 +1489,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": [
-
-          ],
-          "highlightedAnnotations": [
-
-          ]
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "isFinalStep": true,
@@ -1501,7 +1502,7 @@
   ],
   "responseTemplates": [
     {
-      "url": "/shared/slope-tool-b-demo/response-templates/numeric-1",
+      "url": "/shared/khan-academy-example/response-templates/numeric-1",
       "templateString": "",
       "fieldChoicesList": [
         null
@@ -1516,18 +1517,18 @@
   ],
   "axes": [
     {
-      "url": "/shared/slope-tool-b-demo/axes/1",
-      "min": 0,
-      "max": 10,
-      "nSteps": 10,
-      "label": "Time"
+      "url": "/shared/khan-academy-example/axes/1",
+      "min": -6,
+      "max": 6,
+      "nSteps": 12,
+      "label": "X"
     },
     {
-      "url": "/shared/slope-tool-b-demo/axes/2",
-      "min": 0,
-      "max": 10,
+      "url": "/shared/khan-academy-example/axes/2",
+      "min": -5,
+      "max": 5,
       "nSteps": 10,
-      "label": "Distance"
+      "label": "Y"
     }
   ],
   "datadefs": [
@@ -1535,57 +1536,33 @@
       "type": "UnorderedDataPoints",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/datadefs/datadef-1",
+          "url": "/shared/khan-academy-example/datadefs/datadef-1",
           "name": "datadef-1",
-          "activity": "/shared/slope-tool-b-demo",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yLabel": "Distance",
-          "yShortLabel": "Distance",
+          "activity": "/shared/khan-academy-example",
+          "xLabel": "X",
+          "xShortLabel": "X",
+          "yLabel": "Y",
+          "yShortLabel": "Y",
           "points": [
             [
+              -6,
+              -5
+            ],
+            [
+              -3,
+              -3
+            ],
+            [
               0,
-              0
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              2,
-              1
+              -1
             ],
             [
               3,
-              2
-            ],
-            [
-              4,
-              3
-            ],
-            [
-              5,
-              4
+              1
             ],
             [
               6,
-              5
-            ],
-            [
-              7,
-              6
-            ],
-            [
-              8,
-              7
-            ],
-            [
-              9,
-              7
-            ],
-            [
-              10,
-              7
+              3
             ]
           ]
         }
@@ -1594,13 +1571,13 @@
   ],
   "tags": [
     {
-      "url": "/shared/slope-tool-b-demo/tags/first-point",
-      "activity": "/shared/slope-tool-b-demo",
+      "url": "/shared/khan-academy-example/tags/first-point",
+      "activity": "/shared/khan-academy-example",
       "name": "first-point"
     },
     {
-      "url": "/shared/slope-tool-b-demo/tags/second-point",
-      "activity": "/shared/slope-tool-b-demo",
+      "url": "/shared/khan-academy-example/tags/second-point",
+      "activity": "/shared/khan-academy-example",
       "name": "second-point"
     }
   ],
@@ -1609,19 +1586,19 @@
       "type": "HighlightedPoint",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/highlighted-point-1",
+          "url": "/shared/khan-academy-example/annotations/highlighted-point-1",
           "name": "highlighted-point-1",
-          "activity": "/shared/slope-tool-b-demo",
+          "activity": "/shared/khan-academy-example",
           "datadefName": "datadef-1",
-          "tag": "/shared/slope-tool-b-demo/tags/first-point",
+          "tag": "/shared/khan-academy-example/tags/first-point",
           "color": "#1f77b4"
         },
         {
-          "url": "/shared/slope-tool-b-demo/annotations/highlighted-point-2",
+          "url": "/shared/khan-academy-example/annotations/highlighted-point-2",
           "name": "highlighted-point-2",
-          "activity": "/shared/slope-tool-b-demo",
+          "activity": "/shared/khan-academy-example",
           "datadefName": "datadef-1",
-          "tag": "/shared/slope-tool-b-demo/tags/second-point",
+          "tag": "/shared/khan-academy-example/tags/second-point",
           "color": "#ff7f0e"
         }
       ]
@@ -1630,13 +1607,13 @@
       "type": "RunArrow",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/run-arrow",
+          "url": "/shared/khan-academy-example/annotations/run-arrow",
           "name": "run-arrow",
-          "activity": "/shared/slope-tool-b-demo",
+          "activity": "/shared/khan-academy-example",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-b-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-b-demo/tags/second-point"
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
         }
       ]
     },
@@ -1644,13 +1621,13 @@
       "type": "RiseArrow",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/rise-arrow",
+          "url": "/shared/khan-academy-example/annotations/rise-arrow",
           "name": "rise-arrow",
-          "activity": "/shared/slope-tool-b-demo",
+          "activity": "/shared/khan-academy-example",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-b-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-b-demo/tags/second-point"
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
         }
       ]
     },
@@ -1658,13 +1635,13 @@
       "type": "RunBracket",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/run-bracket",
+          "url": "/shared/khan-academy-example/annotations/run-bracket",
           "name": "run-bracket",
-          "activity": "/shared/slope-tool-b-demo",
+          "activity": "/shared/khan-academy-example",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-b-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-b-demo/tags/second-point"
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
         }
       ]
     },
@@ -1672,13 +1649,13 @@
       "type": "RiseBracket",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/rise-bracket",
+          "url": "/shared/khan-academy-example/annotations/rise-bracket",
           "name": "rise-bracket",
-          "activity": "/shared/slope-tool-b-demo",
+          "activity": "/shared/khan-academy-example",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-b-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-b-demo/tags/second-point"
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
         }
       ]
     },
@@ -1686,45 +1663,43 @@
       "type": "LineThroughPoints",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/slope-line",
+          "url": "/shared/khan-academy-example/annotations/slope-line",
           "name": "slope-line",
-          "activity": "/shared/slope-tool-b-demo",
+          "activity": "/shared/khan-academy-example",
           "color": "#1f77b4",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-b-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-b-demo/tags/second-point"
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
         }
       ]
     }
   ],
-  "variables": [
-
-  ],
+  "variables": [],
   "units": [
     {
-      "url": "/shared/slope-tool-b-demo/units/meters",
-      "activity": "/shared/slope-tool-b-demo",
+      "url": "/shared/khan-academy-example/units/meters",
+      "activity": "/shared/khan-academy-example",
       "name": "meter",
       "abbreviation": "m",
       "pluralName": "meters"
     },
     {
-      "url": "/shared/slope-tool-b-demo/units/minutes",
-      "activity": "/shared/slope-tool-b-demo",
+      "url": "/shared/khan-academy-example/units/minutes",
+      "activity": "/shared/khan-academy-example",
       "name": "minute",
       "abbreviation": "m",
       "pluralName": "minutes"
     },
     {
-      "url": "/shared/slope-tool-b-demo/units/meters per second",
-      "activity": "/shared/slope-tool-b-demo",
+      "url": "/shared/khan-academy-example/units/meters per second",
+      "activity": "/shared/khan-academy-example",
       "name": "meters per second",
       "abbreviation": "m/s",
       "pluralName": "meters per second"
     },
     {
-      "url": "/shared/slope-tool-b-demo/units/seconds",
-      "activity": "/shared/slope-tool-b-demo",
+      "url": "/shared/khan-academy-example/units/seconds",
+      "activity": "/shared/khan-academy-example",
       "name": "second",
       "abbreviation": "s",
       "pluralName": "seconds"

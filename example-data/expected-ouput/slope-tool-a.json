@@ -243,12 +243,8 @@
           "title": "Velocity",
           "xAxis": "/shared/slope-tool-a-demo/axes/1",
           "yAxis": "/shared/slope-tool-a-demo/axes/2",
-          "annotations": [
-
-          ],
-          "highlightedAnnotations": [
-
-          ],
+          "annotations": [],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -256,12 +252,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": [
-
-          ],
-          "highlightedAnnotations": [
-
-          ]
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -298,9 +290,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/2",
@@ -316,9 +306,7 @@
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -329,9 +317,7 @@
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -387,9 +373,7 @@
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -400,9 +384,7 @@
           "annotations": [
             "highlighted-point-1"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -459,9 +441,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -473,9 +453,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -540,9 +518,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -554,9 +530,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -621,9 +595,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -635,9 +607,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -702,9 +672,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -716,9 +684,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "tools": [
@@ -784,9 +750,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -798,9 +762,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -841,9 +803,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/9",
@@ -861,9 +821,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -875,9 +833,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -918,9 +874,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/10",
@@ -952,9 +906,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -1077,9 +1029,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/12",
@@ -1156,9 +1106,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -1344,9 +1292,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1358,9 +1304,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -1422,9 +1366,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1436,9 +1378,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -1500,9 +1440,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1514,9 +1452,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "isFinalStep": true,
@@ -1545,9 +1481,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1555,12 +1489,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": [
-
-          ],
-          "highlightedAnnotations": [
-
-          ]
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "isFinalStep": true,
@@ -1772,9 +1702,7 @@
       ]
     }
   ],
-  "variables": [
-
-  ],
+  "variables": [],
   "units": [
     {
       "url": "/shared/slope-tool-a-demo/units/meters",

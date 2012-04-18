@@ -237,12 +237,8 @@
           "title": "Velocity",
           "xAxis": "/shared/slope-tool-c-demo/axes/1",
           "yAxis": "/shared/slope-tool-c-demo/axes/2",
-          "annotations": [
-
-          ],
-          "highlightedAnnotations": [
-
-          ],
+          "annotations": [],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -250,12 +246,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": [
-
-          ],
-          "highlightedAnnotations": [
-
-          ]
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -292,9 +284,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points/step/2",
@@ -312,9 +302,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -326,9 +314,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -369,9 +355,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points/step/3",
@@ -389,9 +373,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -403,9 +385,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -446,9 +426,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points/step/4",
@@ -480,9 +458,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -605,9 +581,7 @@
           ]
         }
       ],
-      "substitutedExpressions": [
-
-      ]
+      "substitutedExpressions": []
     },
     {
       "url": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points/step/6",
@@ -684,9 +658,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -872,9 +844,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -886,9 +856,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -950,9 +918,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -964,9 +930,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "submitButtonTitle": "Check My Answer",
@@ -1028,9 +992,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1042,9 +1004,7 @@
             "highlighted-point-1",
             "highlighted-point-2"
           ],
-          "highlightedAnnotations": [
-
-          ]
+          "highlightedAnnotations": []
         }
       },
       "isFinalStep": true,
@@ -1073,9 +1033,7 @@
             "highlighted-point-2",
             "slope-line"
           ],
-          "highlightedAnnotations": [
-
-          ],
+          "highlightedAnnotations": [],
           "data": [
             "datadef-1"
           ]
@@ -1083,12 +1041,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
-          "annotations": [
-
-          ],
-          "highlightedAnnotations": [
-
-          ]
+          "annotations": [],
+          "highlightedAnnotations": []
         }
       },
       "isFinalStep": true,
@@ -1304,9 +1258,7 @@
       ]
     }
   ],
-  "variables": [
-
-  ],
+  "variables": [],
   "units": [
     {
       "url": "/shared/slope-tool-c-demo/units/meters",
