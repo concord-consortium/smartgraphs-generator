@@ -1,0 +1,1808 @@
+{
+  "_id": "slope-tool-average-over-range.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Slope Tool: Average over range",
+    "url": "/shared/slope-tool-average-over-range",
+    "owner": "shared",
+    "pages": [
+      "/shared/slope-tool-average-over-range/page/1-page-1"
+    ],
+    "axes": [
+      "/shared/slope-tool-average-over-range/axes/1",
+      "/shared/slope-tool-average-over-range/axes/2"
+    ],
+    "authorName": "Noah Paessel"
+  },
+  "pages": [
+    {
+      "name": "Page 1",
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "activity": "/shared/slope-tool-average-over-range",
+      "index": 1,
+      "introText": "Velocity from 40 to 100 seconds",
+      "steps": [
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/1",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/2",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/3",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/4",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/5",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/6",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/7",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/8",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/9",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/10",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/11",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/12",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/13",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/14",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/15",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/16",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/17",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/18",
+        "/shared/slope-tool-average-over-range/page/1-page-1/step/19"
+      ],
+      "firstStep": "/shared/slope-tool-average-over-range/page/1-page-1/step/1",
+      "contextVars": [
+        {
+          "name": "start-y",
+          "value": [
+            "coord",
+            "y",
+            [
+              "listItem",
+              1,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "start-y_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "start-y"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "end-y",
+          "value": [
+            "coord",
+            "y",
+            [
+              "listItem",
+              2,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "end-y_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "end-y"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "change-y",
+          "value": [
+            "-",
+            [
+              "get",
+              "end-y"
+            ],
+            [
+              "get",
+              "start-y"
+            ]
+          ]
+        },
+        {
+          "name": "change-y_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "change-y"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "start-x",
+          "value": [
+            "coord",
+            "x",
+            [
+              "listItem",
+              1,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "start-x_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "start-x"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "end-x",
+          "value": [
+            "coord",
+            "x",
+            [
+              "listItem",
+              2,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "end-x_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "end-x"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "change-x",
+          "value": [
+            "-",
+            [
+              "get",
+              "end-x"
+            ],
+            [
+              "get",
+              "start-x"
+            ]
+          ]
+        },
+        {
+          "name": "change-x_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "change-x"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "slope",
+          "value": [
+            "/",
+            [
+              "get",
+              "change-y"
+            ],
+            [
+              "get",
+              "change-x"
+            ]
+          ]
+        },
+        {
+          "name": "slope_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "slope"
+            ],
+            2
+          ]
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/1",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "What is the average slope between 40 and 100 seconds?",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/2",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            1,
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/2",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Select an \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds. </p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "first-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/3",
+      "responseBranches": [
+        {
+          "criterion": [
+            "or",
+            [
+              "=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              40
+            ],
+            [
+              "=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              100
+            ]
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/4"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/3",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \nan \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds.\nTry again.</p>\n<p> Select an \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds. </p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "first-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/3",
+      "responseBranches": [
+        {
+          "criterion": [
+            "or",
+            [
+              "=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              40
+            ],
+            [
+              "=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              100
+            ]
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/4"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/4",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p>Now select\na second \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "and",
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              40
+            ],
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              100
+            ]
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/5",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now select\na second \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "and",
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              40
+            ],
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              100
+            ]
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/6",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now select\na second \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "and",
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              40
+            ],
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              100
+            ]
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/7",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \nan \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds.  \nTry again.</p>\n<p>Now select\na second \n<strong><em>endpoint</em></strong> of the range \n40 through 100 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "and",
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              40
+            ],
+            [
+              "!=",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              100
+            ]
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/8",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p> Here is the line connecting the two points. </p>\n<p> What is the average slope between 40 and 100 seconds? </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/9",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/9",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What is the average slope between 40 and 100 seconds? </p>\n<p>Hint: Recall that the slope is \nthe change in  distance\ndivided by the change in time.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/10",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/10",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points in  meters?</p>\n<p>Hint: Look at the graph.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+            "rise-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/11",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "y",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/13"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/11",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points in  meters?</p>\n<p>Hint: Look at the table and the graph.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+            "rise-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "rise-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/12",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "y",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/13"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/12",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change in  meters is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+            "rise-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "rise-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Continue",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/13",
+      "isFinalStep": false,
+      "substitutedExpressions": [
+        "end-y",
+        "start-y",
+        "change-y"
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/13",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p>What was the change in\ntime between the two points in  seconds?</p>\n<p>Hint: Look at the graph.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line",
+            "rise-arrow"
+          ],
+          "highlightedAnnotations": [
+            "run-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/14",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "x",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/16"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/14",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ntime between the two points in  seconds?</p>\n<p>Hint: Look at the graph and the table.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line",
+            "rise-arrow"
+          ],
+          "highlightedAnnotations": [
+            "run-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "run-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/15",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "x",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/16"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/15",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change in  seconds \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line",
+            "rise-arrow"
+          ],
+          "highlightedAnnotations": [
+            "run-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "run-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Continue",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/16",
+      "isFinalStep": false,
+      "substitutedExpressions": [
+        "end-x",
+        "start-x",
+        "change-x"
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/16",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the  in m/s?\n</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/17",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+        "change-y",
+        "change-x"
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/17",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the  in m/s?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in distance \n  <b>divided by</b> \n  the change in time.\n</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/slope-tool-average-over-range/page/1-page-1/step/18",
+      "responseTemplate": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/slope-tool-average-over-range/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+        "change-y",
+        "change-x"
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/18",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in distance is %@ meters\nand the change in time is %@ seconds,\nthe  is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> m/s.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true,
+      "substitutedExpressions": [
+        "change-y",
+        "change-x",
+        "change-y",
+        "change-x",
+        "slope_str"
+      ]
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/19",
+      "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
+      "beforeText": "<p><b>Correct!</b></p>\n<p>The  is <b>%@</b> m/s.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "Velocity",
+          "xAxis": "/shared/slope-tool-average-over-range/axes/1",
+          "yAxis": "/shared/slope-tool-average-over-range/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true,
+      "substitutedExpressions": [
+        "student-response-field"
+      ]
+    }
+  ],
+  "responseTemplates": [
+    {
+      "url": "/shared/slope-tool-average-over-range/response-templates/numeric-1",
+      "templateString": "",
+      "fieldChoicesList": [
+        null
+      ],
+      "initialValues": [
+        ""
+      ],
+      "fieldTypes": [
+        "numeric"
+      ]
+    }
+  ],
+  "axes": [
+    {
+      "url": "/shared/slope-tool-average-over-range/axes/1",
+      "units": "/shared/slope-tool-average-over-range/units/seconds",
+      "min": 0,
+      "max": 100,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/axes/2",
+      "units": "/shared/slope-tool-average-over-range/units/meters",
+      "min": 0,
+      "max": 100,
+      "nSteps": 10,
+      "label": "Distance"
+    }
+  ],
+  "datadefs": [
+    {
+      "type": "UnorderedDataPoints",
+      "records": [
+        {
+          "url": "/shared/slope-tool-average-over-range/datadefs/datadef-1",
+          "name": "datadef-1",
+          "activity": "/shared/slope-tool-average-over-range",
+          "xUnits": "/shared/slope-tool-average-over-range/units/seconds",
+          "xLabel": "Time",
+          "xShortLabel": "Time",
+          "yUnits": "/shared/slope-tool-average-over-range/units/meters",
+          "yLabel": "Distance",
+          "yShortLabel": "Distance",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              10,
+              0
+            ],
+            [
+              20,
+              0
+            ],
+            [
+              30,
+              0
+            ],
+            [
+              40,
+              10
+            ],
+            [
+              50,
+              20
+            ],
+            [
+              60,
+              60
+            ],
+            [
+              70,
+              10
+            ],
+            [
+              80,
+              50
+            ],
+            [
+              90,
+              60
+            ],
+            [
+              100,
+              70
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "url": "/shared/slope-tool-average-over-range/tags/first-point",
+      "activity": "/shared/slope-tool-average-over-range",
+      "name": "first-point"
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/tags/second-point",
+      "activity": "/shared/slope-tool-average-over-range",
+      "name": "second-point"
+    }
+  ],
+  "annotations": [
+    {
+      "type": "HighlightedPoint",
+      "records": [
+        {
+          "url": "/shared/slope-tool-average-over-range/annotations/highlighted-point-1",
+          "name": "highlighted-point-1",
+          "activity": "/shared/slope-tool-average-over-range",
+          "datadefName": "datadef-1",
+          "tag": "/shared/slope-tool-average-over-range/tags/first-point",
+          "color": "#1f77b4"
+        },
+        {
+          "url": "/shared/slope-tool-average-over-range/annotations/highlighted-point-2",
+          "name": "highlighted-point-2",
+          "activity": "/shared/slope-tool-average-over-range",
+          "datadefName": "datadef-1",
+          "tag": "/shared/slope-tool-average-over-range/tags/second-point",
+          "color": "#ff7f0e"
+        }
+      ]
+    },
+    {
+      "type": "RunArrow",
+      "records": [
+        {
+          "url": "/shared/slope-tool-average-over-range/annotations/run-arrow",
+          "name": "run-arrow",
+          "activity": "/shared/slope-tool-average-over-range",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/slope-tool-average-over-range/tags/first-point",
+          "p2Tag": "/shared/slope-tool-average-over-range/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "RiseArrow",
+      "records": [
+        {
+          "url": "/shared/slope-tool-average-over-range/annotations/rise-arrow",
+          "name": "rise-arrow",
+          "activity": "/shared/slope-tool-average-over-range",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/slope-tool-average-over-range/tags/first-point",
+          "p2Tag": "/shared/slope-tool-average-over-range/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "RunBracket",
+      "records": [
+        {
+          "url": "/shared/slope-tool-average-over-range/annotations/run-bracket",
+          "name": "run-bracket",
+          "activity": "/shared/slope-tool-average-over-range",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/slope-tool-average-over-range/tags/first-point",
+          "p2Tag": "/shared/slope-tool-average-over-range/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "RiseBracket",
+      "records": [
+        {
+          "url": "/shared/slope-tool-average-over-range/annotations/rise-bracket",
+          "name": "rise-bracket",
+          "activity": "/shared/slope-tool-average-over-range",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/slope-tool-average-over-range/tags/first-point",
+          "p2Tag": "/shared/slope-tool-average-over-range/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "LineThroughPoints",
+      "records": [
+        {
+          "url": "/shared/slope-tool-average-over-range/annotations/slope-line",
+          "name": "slope-line",
+          "activity": "/shared/slope-tool-average-over-range",
+          "color": "#1f77b4",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/slope-tool-average-over-range/tags/first-point",
+          "p2Tag": "/shared/slope-tool-average-over-range/tags/second-point"
+        }
+      ]
+    }
+  ],
+  "variables": [
+
+  ],
+  "units": [
+    {
+      "url": "/shared/slope-tool-average-over-range/units/meters",
+      "activity": "/shared/slope-tool-average-over-range",
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/units/minutes",
+      "activity": "/shared/slope-tool-average-over-range",
+      "name": "minute",
+      "abbreviation": "m",
+      "pluralName": "minutes"
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/units/meters per second",
+      "activity": "/shared/slope-tool-average-over-range",
+      "name": "meters per second",
+      "abbreviation": "m/s",
+      "pluralName": "meters per second"
+    },
+    {
+      "url": "/shared/slope-tool-average-over-range/units/seconds",
+      "activity": "/shared/slope-tool-average-over-range",
+      "name": "second",
+      "abbreviation": "s",
+      "pluralName": "seconds"
+    }
+  ]
+}

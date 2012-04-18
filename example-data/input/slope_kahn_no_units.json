@@ -1,0 +1,90 @@
+{
+  "type": "Activity",
+  "name": "Khan Academy example",
+  "authorName": "Andy Zucker",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Page 1",
+      "text": "This is an example of using a Khan Academy video in SmartGraphs. Click on the video if you need to see an explanation of how to calculate slope, and if the \"helps\" in the graph at right are not enough. <br><br>\r\n\r\n<object style=\"height: 390px; width: 640px\"><param name=\"movie\" value=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\"><param name=\"allowFullScreen\" value=\"true\"><param name=\"allowScriptAccess\" value=\"always\"><embed src=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowScriptAccess=\"always\" width=\"640\" height=\"360\"></object>",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "A Straight Line",
+          "yLabel": "Y",
+          "yUnits": null,
+          "yMin": -5.0,
+          "yMax": 5.0,
+          "xLabel": "X",
+          "xUnits": null,
+          "xMin": -6.0,
+          "xMax": 6.0,
+          "yTicks": 10.0,
+          "xTicks": 12.0,
+          "data": [
+            [
+              -6.0,
+              -5.0
+            ],
+            [
+              -3.0,
+              -3.0
+            ],
+            [
+              0.0,
+              -1.0
+            ],
+            [
+              3.0,
+              1.0
+            ],
+            [
+              6.0,
+              3.0
+            ]
+          ]
+        },
+        {
+          "type": "TablePane",
+          "title": "Table for straight line"
+        }
+      ],
+      "sequence": {
+        "type": "SlopeToolSequence",
+        "firstQuestionIsSlopeQuestion": true,
+        "firstQuestion": "What is the slope of the line connecting the blue points in the graph?",
+        "studentSelectsPoints": true,
+        "studentMustSelectEndpointsOfRange": false,
+        "slopeVariableName": "slope",
+        "xMin": -6.0,
+        "xMax": 6.0,
+        "yMin": -5.0,
+        "yMax": 3.0,
+        "selectedPointsMustBeAdjacent": false,
+        "tolerance": 0.1
+      }
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    }
+  ]
+}

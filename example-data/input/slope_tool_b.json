@@ -1,0 +1,114 @@
+{
+  "type": "Activity",
+  "name": "Slope Tool B Demo",
+  "authorName": "Noah Paessel",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Demo of Case B:  Don't ask initial slope question.",
+      "text": "What is the velocity of the car between 2 and 8 seconds?",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Velocity",
+          "yLabel": "Distance",
+          "yUnits": null,
+          "yMin": 0.0,
+          "yMax": 10.0,
+          "xLabel": "Time",
+          "xUnits": null,
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "data": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0
+            ],
+            [
+              2.0,
+              1.0
+            ],
+            [
+              3.0,
+              2.0
+            ],
+            [
+              4.0,
+              3.0
+            ],
+            [
+              5.0,
+              4.0
+            ],
+            [
+              6.0,
+              5.0
+            ],
+            [
+              7.0,
+              6.0
+            ],
+            [
+              8.0,
+              7.0
+            ],
+            [
+              9.0,
+              7.0
+            ],
+            [
+              10.0,
+              7.0
+            ]
+          ]
+        },
+        {
+          "type": "TablePane",
+          "title": "data table"
+        }
+      ],
+      "sequence": {
+        "type": "SlopeToolSequence",
+        "firstQuestionIsSlopeQuestion": false,
+        "firstQuestion": "Pick a point between 2 and 8 seconds.",
+        "studentSelectsPoints": true,
+        "studentMustSelectEndpointsOfRange": false,
+        "slopeVariableName": "slope",
+        "xMin": 2.0,
+        "xMax": 8.0,
+        "yMin": 1.0,
+        "yMax": 7.0,
+        "selectedPointsMustBeAdjacent": false,
+        "tolerance": 0.1
+      }
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    }
+  ]
+}

@@ -1,0 +1,1780 @@
+{
+  "_id": "khan-academy-example.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Khan Academy example",
+    "url": "/shared/khan-academy-example",
+    "owner": "shared",
+    "pages": [
+      "/shared/khan-academy-example/page/1-page-1"
+    ],
+    "axes": [
+      "/shared/khan-academy-example/axes/1",
+      "/shared/khan-academy-example/axes/2"
+    ],
+    "authorName": "Andy Zucker"
+  },
+  "pages": [
+    {
+      "name": "Page 1",
+      "url": "/shared/khan-academy-example/page/1-page-1",
+      "activity": "/shared/khan-academy-example",
+      "index": 1,
+      "introText": "This is an example of using a Khan Academy video in SmartGraphs. Click on the video if you need to see an explanation of how to calculate slope, and if the \"helps\" in the graph at right are not enough. <br><br>\r\n\r\n<object style=\"height: 390px; width: 640px\"><param name=\"movie\" value=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\"><param name=\"allowFullScreen\" value=\"true\"><param name=\"allowScriptAccess\" value=\"always\"><embed src=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowScriptAccess=\"always\" width=\"640\" height=\"360\"></object>",
+      "steps": [
+        "/shared/khan-academy-example/page/1-page-1/step/1",
+        "/shared/khan-academy-example/page/1-page-1/step/2",
+        "/shared/khan-academy-example/page/1-page-1/step/3",
+        "/shared/khan-academy-example/page/1-page-1/step/4",
+        "/shared/khan-academy-example/page/1-page-1/step/5",
+        "/shared/khan-academy-example/page/1-page-1/step/6",
+        "/shared/khan-academy-example/page/1-page-1/step/7",
+        "/shared/khan-academy-example/page/1-page-1/step/8",
+        "/shared/khan-academy-example/page/1-page-1/step/9",
+        "/shared/khan-academy-example/page/1-page-1/step/10",
+        "/shared/khan-academy-example/page/1-page-1/step/11",
+        "/shared/khan-academy-example/page/1-page-1/step/12",
+        "/shared/khan-academy-example/page/1-page-1/step/13",
+        "/shared/khan-academy-example/page/1-page-1/step/14",
+        "/shared/khan-academy-example/page/1-page-1/step/15",
+        "/shared/khan-academy-example/page/1-page-1/step/16",
+        "/shared/khan-academy-example/page/1-page-1/step/17",
+        "/shared/khan-academy-example/page/1-page-1/step/18",
+        "/shared/khan-academy-example/page/1-page-1/step/19"
+      ],
+      "firstStep": "/shared/khan-academy-example/page/1-page-1/step/1",
+      "contextVars": [
+        {
+          "name": "start-y",
+          "value": [
+            "coord",
+            "y",
+            [
+              "listItem",
+              1,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "start-y_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "start-y"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "end-y",
+          "value": [
+            "coord",
+            "y",
+            [
+              "listItem",
+              2,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "end-y_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "end-y"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "change-y",
+          "value": [
+            "-",
+            [
+              "get",
+              "end-y"
+            ],
+            [
+              "get",
+              "start-y"
+            ]
+          ]
+        },
+        {
+          "name": "change-y_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "change-y"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "start-x",
+          "value": [
+            "coord",
+            "x",
+            [
+              "listItem",
+              1,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "start-x_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "start-x"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "end-x",
+          "value": [
+            "coord",
+            "x",
+            [
+              "listItem",
+              2,
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "end-x_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "end-x"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "change-x",
+          "value": [
+            "-",
+            [
+              "get",
+              "end-x"
+            ],
+            [
+              "get",
+              "start-x"
+            ]
+          ]
+        },
+        {
+          "name": "change-x_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "change-x"
+            ],
+            2
+          ]
+        },
+        {
+          "name": "slope",
+          "value": [
+            "/",
+            [
+              "get",
+              "change-y"
+            ],
+            [
+              "get",
+              "change-x"
+            ]
+          ]
+        },
+        {
+          "name": "slope_str",
+          "value": [
+            "toFixedString",
+            [
+              "get",
+              "slope"
+            ],
+            2
+          ]
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/1",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "What is the slope of the line connecting the blue points in the graph?",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/2",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            0.6666666666666666,
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/2",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Select a \npoint between -6 and 6 for x. </p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "first-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/3",
+      "responseBranches": [
+        {
+          "criterion": [
+            "and",
+            [
+              ">=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              -6
+            ],
+            [
+              "<=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              6
+            ]
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/4"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/3",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na \npoint between -6 and 6 for x.\nTry again.</p>\n<p> Select a \npoint between -6 and 6 for x. </p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "first-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/3",
+      "responseBranches": [
+        {
+          "criterion": [
+            "and",
+            [
+              ">=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              -6
+            ],
+            [
+              "<=",
+              [
+                "coord",
+                "x",
+                "first-point"
+              ],
+              6
+            ]
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/4"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/4",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "or",
+            [
+              "<",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              -6
+            ],
+            [
+              ">",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              6
+            ]
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/5",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "or",
+            [
+              "<",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              -6
+            ],
+            [
+              ">",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              6
+            ]
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/6",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "or",
+            [
+              "<",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              -6
+            ],
+            [
+              ">",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              6
+            ]
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/7",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na \npoint between -6 and 6 for x.  \nTry again.</p>\n<p>Now select\na second \npoint between -6 and 6 for x.</p>\n<p>Then click \"OK\". </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "tagging",
+          "setup": {
+            "tag": "second-point",
+            "data": "datadef-1"
+          }
+        }
+      ],
+      "submitButtonTitle": "OK",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/8",
+      "responseBranches": [
+        {
+          "criterion": [
+            "samePoint",
+            "first-point",
+            "second-point"
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/6"
+        },
+        {
+          "criterion": [
+            "or",
+            [
+              "<",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              -6
+            ],
+            [
+              ">",
+              [
+                "coord",
+                "x",
+                "second-point"
+              ],
+              6
+            ]
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/7"
+        }
+      ],
+      "isFinalStep": false
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/8",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p> Here is the line connecting the two points. </p>\n<p> What is the slope of the line connecting the blue points in the graph? </p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/9",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/9",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What is the slope of the line connecting the blue points in the graph? </p>\n<p>Hint: Recall that the slope is \nthe change in  y\ndivided by the change in x.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/10",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/10",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ny between the two points?</p>\n<p>Hint: Look at the graph.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+            "rise-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/11",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "y",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/13"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/11",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ny between the two points?</p>\n<p>Hint: Look at the table and the graph.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+            "rise-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "rise-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/12",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "y",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/13"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/12",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+            "rise-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "rise-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Continue",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/13",
+      "isFinalStep": false,
+      "substitutedExpressions": [
+        "end-y",
+        "start-y",
+        "change-y"
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/13",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p>What was the change in\nx between the two points?</p>\n<p>Hint: Look at the graph.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line",
+            "rise-arrow"
+          ],
+          "highlightedAnnotations": [
+            "run-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/14",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "x",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/16"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/14",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\nx between the two points?</p>\n<p>Hint: Look at the graph and the table.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line",
+            "rise-arrow"
+          ],
+          "highlightedAnnotations": [
+            "run-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "run-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/15",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "delta",
+              "x",
+              [
+                "slopeToolOrder",
+                "first-point",
+                "second-point"
+              ]
+            ],
+            [
+              "responseField",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/16"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/15",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line",
+            "rise-arrow"
+          ],
+          "highlightedAnnotations": [
+            "run-arrow"
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+            "run-bracket"
+          ]
+        }
+      },
+      "submitButtonTitle": "Continue",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/16",
+      "isFinalStep": false,
+      "substitutedExpressions": [
+        "end-x",
+        "start-x",
+        "change-x"
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/16",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p>\n  If the change in y is %@\n  and the change in x is %@\n  then what is the slope?\n</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/17",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+        "change-y",
+        "change-x"
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/17",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in y is %@\n  and the change in x is %@\n  then what is the slope?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in y \n  <b>divided by</b> \n  the change in x.\n</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "submitButtonTitle": "Check My Answer",
+      "defaultBranch": "/shared/khan-academy-example/page/1-page-1/step/18",
+      "responseTemplate": "/shared/khan-academy-example/response-templates/numeric-1",
+      "submissibilityCriterion": [
+        "isNumeric",
+        [
+          "responseField",
+          1
+        ]
+      ],
+      "responseBranches": [
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            [
+              "responseField",
+              1
+            ],
+            [
+              "slope",
+              "first-point",
+              "second-point"
+            ],
+            0.1
+          ],
+          "step": "/shared/khan-academy-example/page/1-page-1/step/19"
+        }
+      ],
+      "isFinalStep": false,
+      "variableAssignments": [
+        {
+          "name": "student-response-field",
+          "value": [
+            "responseField",
+            1
+          ]
+        }
+      ],
+      "substitutedExpressions": [
+        "change-y",
+        "change-x"
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/18",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in y is %@\nand the change in x is %@,\nthe slope is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b>.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2"
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true,
+      "substitutedExpressions": [
+        "change-y",
+        "change-x",
+        "change-y",
+        "change-x",
+        "slope_str"
+      ]
+    },
+    {
+      "url": "/shared/khan-academy-example/page/1-page-1/step/19",
+      "activityPage": "/shared/khan-academy-example/page/1-page-1",
+      "beforeText": "<p><b>Correct!</b></p>\n<p>The slope is <b>%@</b>.</p>",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "A Straight Line",
+          "xAxis": "/shared/khan-academy-example/axes/1",
+          "yAxis": "/shared/khan-academy-example/axes/2",
+          "annotations": [
+            "highlighted-point-1",
+            "highlighted-point-2",
+            "slope-line"
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "datadef-1"
+          ]
+        },
+        "bottom": {
+          "type": "table",
+          "data": "datadef-1",
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true,
+      "substitutedExpressions": [
+        "student-response-field"
+      ]
+    }
+  ],
+  "responseTemplates": [
+    {
+      "url": "/shared/khan-academy-example/response-templates/numeric-1",
+      "templateString": "",
+      "fieldChoicesList": [
+        null
+      ],
+      "initialValues": [
+        ""
+      ],
+      "fieldTypes": [
+        "numeric"
+      ]
+    }
+  ],
+  "axes": [
+    {
+      "url": "/shared/khan-academy-example/axes/1",
+      "min": -6,
+      "max": 6,
+      "nSteps": 12,
+      "label": "X"
+    },
+    {
+      "url": "/shared/khan-academy-example/axes/2",
+      "min": -5,
+      "max": 5,
+      "nSteps": 10,
+      "label": "Y"
+    }
+  ],
+  "datadefs": [
+    {
+      "type": "UnorderedDataPoints",
+      "records": [
+        {
+          "url": "/shared/khan-academy-example/datadefs/datadef-1",
+          "name": "datadef-1",
+          "activity": "/shared/khan-academy-example",
+          "xLabel": "X",
+          "xShortLabel": "X",
+          "yLabel": "Y",
+          "yShortLabel": "Y",
+          "points": [
+            [
+              -6,
+              -5
+            ],
+            [
+              -3,
+              -3
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              6,
+              3
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "url": "/shared/khan-academy-example/tags/first-point",
+      "activity": "/shared/khan-academy-example",
+      "name": "first-point"
+    },
+    {
+      "url": "/shared/khan-academy-example/tags/second-point",
+      "activity": "/shared/khan-academy-example",
+      "name": "second-point"
+    }
+  ],
+  "annotations": [
+    {
+      "type": "HighlightedPoint",
+      "records": [
+        {
+          "url": "/shared/khan-academy-example/annotations/highlighted-point-1",
+          "name": "highlighted-point-1",
+          "activity": "/shared/khan-academy-example",
+          "datadefName": "datadef-1",
+          "tag": "/shared/khan-academy-example/tags/first-point",
+          "color": "#1f77b4"
+        },
+        {
+          "url": "/shared/khan-academy-example/annotations/highlighted-point-2",
+          "name": "highlighted-point-2",
+          "activity": "/shared/khan-academy-example",
+          "datadefName": "datadef-1",
+          "tag": "/shared/khan-academy-example/tags/second-point",
+          "color": "#ff7f0e"
+        }
+      ]
+    },
+    {
+      "type": "RunArrow",
+      "records": [
+        {
+          "url": "/shared/khan-academy-example/annotations/run-arrow",
+          "name": "run-arrow",
+          "activity": "/shared/khan-academy-example",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "RiseArrow",
+      "records": [
+        {
+          "url": "/shared/khan-academy-example/annotations/rise-arrow",
+          "name": "rise-arrow",
+          "activity": "/shared/khan-academy-example",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "RunBracket",
+      "records": [
+        {
+          "url": "/shared/khan-academy-example/annotations/run-bracket",
+          "name": "run-bracket",
+          "activity": "/shared/khan-academy-example",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "RiseBracket",
+      "records": [
+        {
+          "url": "/shared/khan-academy-example/annotations/rise-bracket",
+          "name": "rise-bracket",
+          "activity": "/shared/khan-academy-example",
+          "color": "#cccccc",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
+        }
+      ]
+    },
+    {
+      "type": "LineThroughPoints",
+      "records": [
+        {
+          "url": "/shared/khan-academy-example/annotations/slope-line",
+          "name": "slope-line",
+          "activity": "/shared/khan-academy-example",
+          "color": "#1f77b4",
+          "datadefName": "datadef-1",
+          "p1Tag": "/shared/khan-academy-example/tags/first-point",
+          "p2Tag": "/shared/khan-academy-example/tags/second-point"
+        }
+      ]
+    }
+  ],
+  "variables": [
+
+  ],
+  "units": [
+    {
+      "url": "/shared/khan-academy-example/units/meters",
+      "activity": "/shared/khan-academy-example",
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
+    },
+    {
+      "url": "/shared/khan-academy-example/units/minutes",
+      "activity": "/shared/khan-academy-example",
+      "name": "minute",
+      "abbreviation": "m",
+      "pluralName": "minutes"
+    },
+    {
+      "url": "/shared/khan-academy-example/units/meters per second",
+      "activity": "/shared/khan-academy-example",
+      "name": "meters per second",
+      "abbreviation": "m/s",
+      "pluralName": "meters per second"
+    },
+    {
+      "url": "/shared/khan-academy-example/units/seconds",
+      "activity": "/shared/khan-academy-example",
+      "name": "second",
+      "abbreviation": "s",
+      "pluralName": "seconds"
+    }
+  ]
+}

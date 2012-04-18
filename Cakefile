@@ -27,6 +27,44 @@ task 'test', "run all Jasmine spec tests in spec/", test = ({quiet, junit}) ->
   options.unshift '--junitreport' if junit?
   run 'nbin/jasmine-node', options
 
+task 'build_st_tests', "automatical build tests", build_st_tests = (cb) ->
+  make_slope_tool_tests()
+
+activity_urls = ->
+  [
+    {
+      number: '16'
+      name: 'slope_tool_a'
+    },{
+      number: '17'
+      name: 'slope_tool_b'
+    },{
+      number: '18'
+      name: 'slope_tool_c'
+    },{
+      number: '19'
+      name: 'slope_kahn_no_units'
+    },{
+      number: '22'
+      name: 'slope_average_over_range'
+    }
+  ]
+
+make_slope_tool_tests = ->
+  prefix = "http://smartgraphs-authoring.staging.concord.org/activities/"
+  for url in activity_urls()
+    in_json_url   = "#{prefix}#{url.number}.json"
+    in_json_file  = "example-data/input/#{url.name}.json"
+    out_json_url  = "#{prefix}#{url.number}/student_preview.json"
+    out_json_file = "example-data/expected-ouput/#{url.name}.json"
+
+    curl_file( in_json_url, in_json_file)
+    curl_file(out_json_url,out_json_file)
+
+curl_file = (srcUrl,dstFile) ->
+  echo "#{srcUrl} ==> #{dstFile}\n"
+  run "curl", [srcUrl, '-o', dstFile]
+
 srcFiles = ->
   files = fs.readdirSync 'src'
   ('src/' + file for file in files when file.match(/\.coffee$/))
