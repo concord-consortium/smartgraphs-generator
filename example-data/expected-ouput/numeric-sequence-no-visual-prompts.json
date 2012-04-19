@@ -49,12 +49,13 @@
       "responseBranches": [
         {
           "criterion": [
-            "=",
+          "withinAbsTolerance",
             [
               "responseField",
               1
             ],
-            600
+            600,
+            0.03
           ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
@@ -80,12 +81,13 @@
       "responseBranches": [
         {
           "criterion": [
-            "=",
+          "withinAbsTolerance",
             [
               "responseField",
               1
             ],
-            600
+            600,
+            0.03
           ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }
@@ -111,12 +113,13 @@
       "responseBranches": [
         {
           "criterion": [
-            "=",
+          "withinAbsTolerance",
             [
               "responseField",
               1
             ],
-            600
+            600,
+            0.03
           ],
           "step": "/shared/numeric-sequence/page/1-introduction/step/5"
         }

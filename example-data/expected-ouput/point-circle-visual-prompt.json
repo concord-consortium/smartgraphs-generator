@@ -266,12 +266,13 @@
       "responseBranches": [
         {
           "criterion": [
-            "=",
+            "withinAbsTolerance",
             [
               "responseField",
               1
             ],
-            4
+            4,
+            0.01
           ],
           "step": "/shared/point-circles/page/2-numeric/step/4"
         }
@@ -311,12 +312,13 @@
       "responseBranches": [
         {
           "criterion": [
-            "=",
+             "withinAbsTolerance",
             [
               "responseField",
               1
             ],
-            4
+            4,
+            0.01
           ],
           "step": "/shared/point-circles/page/2-numeric/step/4"
         }

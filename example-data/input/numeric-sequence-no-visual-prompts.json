@@ -13,6 +13,7 @@
           "text": "<p>What is the x-coordinate at the 3-time unit mark?</p>"
         },
         "correctAnswer": 600.0,
+        "tolerance": 0.03,
         "giveUp": {
           "text": "<p>Take a closer look, it's 600 units of distance.</p>"
         },

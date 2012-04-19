@@ -78,16 +78,18 @@ Sequence.classFor['ConstructedResponseSequence'] = class ConstructedResponseSequ
 
 Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = class MultipleChoiceWithCustomHintsSequence
 
-  constructor: ({@initialPrompt, @choices, @correctAnswerIndex, @hints, @confirmCorrect,  @page}) ->
+  constructor: ({@initialPrompt, @choices, @correctAnswerIndex, @hints, @confirmCorrect, @page}) ->
     [@initialPrompt, @confirmCorrect] = [@initialPrompt, @confirmCorrect].map asObject
     
     # FIXME? Underscore would be handy here.
     indexed = []
     indexed[hint.choiceIndex] = hint for hint in @hints
+
     @orderedHints = (hint for hint in indexed when hint?)
 
   getCriterionForChoice: (choiceIndex) ->
     ["=", ["responseField", 1], 1 + choiceIndex]
+    
 
   appendSteps: (runtimePage) ->
     runtimeActivity = runtimePage.activity
@@ -242,11 +244,14 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends Corre
 
 Sequence.classFor['NumericSequence'] = class NumericSequence extends CorrectableSequenceWithFeedback
 
-  constructor: ({@correctAnswer}) ->
+  constructor: ({@correctAnswer, @tolerance}) ->
+    @tolerance = @tolerance ? 0.01
     super arguments...
+
     
   getCriterion: ->
-    ["=",["responseField", 1], @correctAnswer]
+    ["withinAbsTolerance",["responseField", 1], @correctAnswer, @tolerance]
+
 
   appendSteps: (runtimePage) ->
     runtimeActivity = runtimePage.activity
