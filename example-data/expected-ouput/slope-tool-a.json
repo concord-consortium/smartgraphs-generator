@@ -1468,7 +1468,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/19",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><b>Correct!</b></p>\n<p>The velocity is <b>%@</b> m/s.</p>",
+      "beforeText": "<p><b>Correct!</b></p>\n<p>The velocity is <b>1.00</b> m/s.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1495,9 +1495,7 @@
       },
       "isFinalStep": true,
       "nextButtonShouldSubmit": true,
-      "substitutedExpressions": [
-        "student-response-field"
-      ]
+      "substitutedExpressions": []
     }
   ],
   "responseTemplates": [

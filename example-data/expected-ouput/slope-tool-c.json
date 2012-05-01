@@ -1020,7 +1020,7 @@
     {
       "url": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points/step/13",
       "activityPage": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points",
-      "beforeText": "<p><b>Correct!</b></p>\n<p>The velocity is <b>%@</b> m/s.</p>",
+      "beforeText": "<p><b>Correct!</b></p>\n<p>The velocity is <b>1.00</b> m/s.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1047,9 +1047,7 @@
       },
       "isFinalStep": true,
       "nextButtonShouldSubmit": true,
-      "substitutedExpressions": [
-        "student-response-field"
-      ]
+      "substitutedExpressions": []
     }
   ],
   "responseTemplates": [

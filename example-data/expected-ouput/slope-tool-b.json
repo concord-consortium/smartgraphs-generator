@@ -1435,7 +1435,7 @@
       "isFinalStep": true,
       "nextButtonShouldSubmit": true,
       "substitutedExpressions": [
-        "student-response-field"
+        "slope_str"
       ]
     }
   ],

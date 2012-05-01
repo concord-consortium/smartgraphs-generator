@@ -730,17 +730,25 @@ exports.SlopeToolSequence = class SlopeToolSequence
     }
 
   confirm_correct: ->
+    the_slope = "%@" 
+    subs_expr = ["slope_str"]
+    if @firstQuestionIsSlopeQuestion
+      the_slope = @slope.toFixed(@precision)
+      subs_expr = []
+
     { ############################################
       ##         confirm_correct
+      ##
       ############################################
       name:                   "confirm_correct"
       isFinalStep:            true
       hideSubmitButton:       true
       beforeText:             """
         <p><b>Correct!</b></p>
-        <p>The #{@slopeVariableName} is <b>%@</b>#{@slope_units}.</p>
+        <p>The #{@slopeVariableName} is <b>#{the_slope}</b>#{@slope_units}.</p>
       """
-      substitutedExpressions: [ "student-response-field"]
+      # substitutedExpressions: [ "student-response-field"]
+      substitutedExpressions: subs_expr
       graphAnnotations:       [ "#{@firstPoint.name}", "#{@secondPoint.name}", "slope-line" ]
       # variableAssignments:  @previous_answers()
     }
