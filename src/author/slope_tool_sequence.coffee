@@ -304,7 +304,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
     for annotation in otherAnnotations
       @annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation
         type: annotation.type
-        name: annotation.name
+        namePrefix: annotation.name
         datadefRef: datadefRef
         color: annotation.color || '#cccccc'
         p1Tag: @firstPoint
