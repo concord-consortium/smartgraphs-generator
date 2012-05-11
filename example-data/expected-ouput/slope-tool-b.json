@@ -687,7 +687,7 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [],
           "data": [
@@ -758,7 +758,7 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [],
           "data": [
@@ -829,10 +829,10 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [
-            "rise-arrow"
+            "rise-arrow1"
           ],
           "data": [
             "datadef-1"
@@ -905,10 +905,10 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [
-            "rise-arrow"
+            "rise-arrow1"
           ],
           "data": [
             "datadef-1"
@@ -922,7 +922,7 @@
             "highlighted-point-2"
           ],
           "highlightedAnnotations": [
-            "rise-bracket"
+            "rise-bracket1"
           ]
         }
       },
@@ -984,10 +984,10 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [
-            "rise-arrow"
+            "rise-arrow1"
           ],
           "data": [
             "datadef-1"
@@ -1001,7 +1001,7 @@
             "highlighted-point-2"
           ],
           "highlightedAnnotations": [
-            "rise-bracket"
+            "rise-bracket1"
           ]
         }
       },
@@ -1028,11 +1028,11 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line",
-            "rise-arrow"
+            "line-throughpoints1",
+            "rise-arrow1"
           ],
           "highlightedAnnotations": [
-            "run-arrow"
+            "run-arrow1"
           ],
           "data": [
             "datadef-1"
@@ -1105,11 +1105,11 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line",
-            "rise-arrow"
+            "line-throughpoints1",
+            "rise-arrow1"
           ],
           "highlightedAnnotations": [
-            "run-arrow"
+            "run-arrow1"
           ],
           "data": [
             "datadef-1"
@@ -1123,7 +1123,7 @@
             "highlighted-point-2"
           ],
           "highlightedAnnotations": [
-            "run-bracket"
+            "run-bracket1"
           ]
         }
       },
@@ -1184,11 +1184,11 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line",
-            "rise-arrow"
+            "line-throughpoints1",
+            "rise-arrow1"
           ],
           "highlightedAnnotations": [
-            "run-arrow"
+            "run-arrow1"
           ],
           "data": [
             "datadef-1"
@@ -1202,7 +1202,7 @@
             "highlighted-point-2"
           ],
           "highlightedAnnotations": [
-            "run-bracket"
+            "run-bracket1"
           ]
         }
       },
@@ -1229,7 +1229,7 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [],
           "data": [
@@ -1303,7 +1303,7 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [],
           "data": [
@@ -1377,7 +1377,7 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [],
           "data": [
@@ -1418,7 +1418,7 @@
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2",
-            "slope-line"
+            "line-throughpoints1"
           ],
           "highlightedAnnotations": [],
           "data": [
@@ -1570,8 +1570,8 @@
       "type": "RunArrow",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/run-arrow",
-          "name": "run-arrow",
+          "url": "/shared/slope-tool-b-demo/annotations/run-arrow1",
+          "name": "run-arrow1",
           "activity": "/shared/slope-tool-b-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
@@ -1584,8 +1584,8 @@
       "type": "RiseArrow",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/rise-arrow",
-          "name": "rise-arrow",
+          "url": "/shared/slope-tool-b-demo/annotations/rise-arrow1",
+          "name": "rise-arrow1",
           "activity": "/shared/slope-tool-b-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
@@ -1598,8 +1598,8 @@
       "type": "RunBracket",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/run-bracket",
-          "name": "run-bracket",
+          "url": "/shared/slope-tool-b-demo/annotations/run-bracket1",
+          "name": "run-bracket1",
           "activity": "/shared/slope-tool-b-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
@@ -1612,8 +1612,8 @@
       "type": "RiseBracket",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/rise-bracket",
-          "name": "rise-bracket",
+          "url": "/shared/slope-tool-b-demo/annotations/rise-bracket1",
+          "name": "rise-bracket1",
           "activity": "/shared/slope-tool-b-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
@@ -1626,8 +1626,8 @@
       "type": "LineThroughPoints",
       "records": [
         {
-          "url": "/shared/slope-tool-b-demo/annotations/slope-line",
-          "name": "slope-line",
+          "url": "/shared/slope-tool-b-demo/annotations/line-throughpoints1",
+          "name": "line-throughpoints1",
           "activity": "/shared/slope-tool-b-demo",
           "color": "#1f77b4",
           "datadefName": "datadef-1",
