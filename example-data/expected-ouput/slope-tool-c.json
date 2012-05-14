@@ -49,8 +49,8 @@
               1,
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ]
           ]
@@ -76,8 +76,8 @@
               2,
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ]
           ]
@@ -128,8 +128,8 @@
               1,
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ]
           ]
@@ -155,8 +155,8 @@
               2,
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ]
           ]
@@ -337,8 +337,8 @@
             ],
             [
               "slope",
-              "first-point",
-              "second-point"
+              "tag-1",
+              "tag-2"
             ],
             0.1
           ],
@@ -408,8 +408,8 @@
             ],
             [
               "slope",
-              "first-point",
-              "second-point"
+              "tag-1",
+              "tag-2"
             ],
             0.1
           ],
@@ -480,8 +480,8 @@
               "y",
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ],
             [
@@ -558,8 +558,8 @@
               "y",
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ],
             [
@@ -680,8 +680,8 @@
               "x",
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ],
             [
@@ -759,8 +759,8 @@
               "x",
               [
                 "slopeToolOrder",
-                "first-point",
-                "second-point"
+                "tag-1",
+                "tag-2"
               ]
             ],
             [
@@ -879,8 +879,8 @@
             ],
             [
               "slope",
-              "first-point",
-              "second-point"
+              "tag-1",
+              "tag-2"
             ],
             0.1
           ],
@@ -953,8 +953,8 @@
             ],
             [
               "slope",
-              "first-point",
-              "second-point"
+              "tag-1",
+              "tag-2"
             ],
             0.1
           ],
@@ -1149,16 +1149,16 @@
   ],
   "tags": [
     {
-      "url": "/shared/slope-tool-c-demo/tags/first-point",
+      "url": "/shared/slope-tool-c-demo/tags/tag-1",
       "activity": "/shared/slope-tool-c-demo",
-      "name": "first-point",
+      "name": "tag-1",
       "x": 2,
       "y": 1
     },
     {
-      "url": "/shared/slope-tool-c-demo/tags/second-point",
+      "url": "/shared/slope-tool-c-demo/tags/tag-2",
       "activity": "/shared/slope-tool-c-demo",
-      "name": "second-point",
+      "name": "tag-2",
       "x": 8,
       "y": 7
     }
@@ -1172,7 +1172,7 @@
           "name": "highlighted-point-1",
           "activity": "/shared/slope-tool-c-demo",
           "datadefName": "datadef-1",
-          "tag": "/shared/slope-tool-c-demo/tags/first-point",
+          "tag": "/shared/slope-tool-c-demo/tags/tag-1",
           "color": "#1f77b4"
         },
         {
@@ -1180,7 +1180,7 @@
           "name": "highlighted-point-2",
           "activity": "/shared/slope-tool-c-demo",
           "datadefName": "datadef-1",
-          "tag": "/shared/slope-tool-c-demo/tags/second-point",
+          "tag": "/shared/slope-tool-c-demo/tags/tag-2",
           "color": "#ff7f0e"
         }
       ]
@@ -1194,8 +1194,8 @@
           "activity": "/shared/slope-tool-c-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-c-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-c-demo/tags/second-point"
+          "p1Tag": "/shared/slope-tool-c-demo/tags/tag-1",
+          "p2Tag": "/shared/slope-tool-c-demo/tags/tag-2"
         }
       ]
     },
@@ -1208,8 +1208,8 @@
           "activity": "/shared/slope-tool-c-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-c-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-c-demo/tags/second-point"
+          "p1Tag": "/shared/slope-tool-c-demo/tags/tag-1",
+          "p2Tag": "/shared/slope-tool-c-demo/tags/tag-2"
         }
       ]
     },
@@ -1222,8 +1222,8 @@
           "activity": "/shared/slope-tool-c-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-c-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-c-demo/tags/second-point"
+          "p1Tag": "/shared/slope-tool-c-demo/tags/tag-1",
+          "p2Tag": "/shared/slope-tool-c-demo/tags/tag-2"
         }
       ]
     },
@@ -1236,8 +1236,8 @@
           "activity": "/shared/slope-tool-c-demo",
           "color": "#cccccc",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-c-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-c-demo/tags/second-point"
+          "p1Tag": "/shared/slope-tool-c-demo/tags/tag-1",
+          "p2Tag": "/shared/slope-tool-c-demo/tags/tag-2"
         }
       ]
     },
@@ -1250,8 +1250,8 @@
           "activity": "/shared/slope-tool-c-demo",
           "color": "#1f77b4",
           "datadefName": "datadef-1",
-          "p1Tag": "/shared/slope-tool-c-demo/tags/first-point",
-          "p2Tag": "/shared/slope-tool-c-demo/tags/second-point"
+          "p1Tag": "/shared/slope-tool-c-demo/tags/tag-1",
+          "p2Tag": "/shared/slope-tool-c-demo/tags/tag-2"
         }
       ]
     }

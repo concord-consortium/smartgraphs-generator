@@ -267,11 +267,9 @@ exports.SlopeToolSequence = class SlopeToolSequence
     @annotations = {}
     
     @firstPoint     = runtimeActivity.createAndAppendTag()
-    @firstPoint.name = 'first-point'
     @firstPoint.datadefName = datadefRef.name
     
     @secondPoint    = runtimeActivity.createAndAppendTag()
-    @secondPoint.name = 'second-point'
     @firstPoint.datadefName = datadefRef.name
 
     unless @studentSelectsPoints
