@@ -79,7 +79,7 @@
         "firstQuestion": "What is the average slope between 40 and 100 seconds?",
         "studentSelectsPoints": true,
         "studentMustSelectEndpointsOfRange": true,
-        "slopeVariableName": "",
+        "slopeVariableName": "slope",
         "xMin": 40.0,
         "xMax": 100.0,
         "yMin": 10.0,

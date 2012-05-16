@@ -808,7 +808,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/9",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What is the average velocity between 2 and 9 seconds (in m / s)? </p>\n<p>Hint: Recall that the slope is \nthe change in  distance\ndivided by the change in time.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What is the average velocity between 2 and 9 seconds (in m / s)? </p>\n<p>Hint: Recall that the velocity is \nthe change in  distance\ndivided by the change in time.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {

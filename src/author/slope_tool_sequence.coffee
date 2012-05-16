@@ -155,6 +155,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
     @page
     }) ->
       @precision = 2; # TODO calculate or lookup precision from DB.
+      @slopeVariableName = "slope" unless @slopeVariableName and @slopeVariableName.length > 0
       @runtimeStepsByName = {}
       @slope = (@yMax - @yMin) / (@xMax - @xMin)
       @steps=[]
@@ -474,7 +475,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       beforeText:             """
         #{@incorrect_text()}
         <p> #{@lineAppearsQuestion()} </p>
-        <p>Hint: Recall that the slope is 
+        <p>Hint: Recall that the #{@slopeVariableName} is 
         the change in  #{@y_axis_name}
         divided by the change in #{@x_axis_name}.</p>
       """

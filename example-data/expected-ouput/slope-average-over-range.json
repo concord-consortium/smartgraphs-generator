@@ -1279,7 +1279,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/16",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the  in m/s?\n</p>",
+      "beforeText": "<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the slope in m/s?\n</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1353,7 +1353,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/17",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the  in m/s?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in distance \n  <b>divided by</b> \n  the change in time.\n</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the slope in m/s?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in distance \n  <b>divided by</b> \n  the change in time.\n</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1427,7 +1427,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/18",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in distance is %@ meters\nand the change in time is %@ seconds,\nthe  is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> m/s.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in distance is %@ meters\nand the change in time is %@ seconds,\nthe slope is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> m/s.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1468,7 +1468,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/19",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><b>Correct!</b></p>\n<p>The  is <b>1.00</b> m/s.</p>",
+      "beforeText": "<p><b>Correct!</b></p>\n<p>The slope is <b>1.00</b> m/s.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {

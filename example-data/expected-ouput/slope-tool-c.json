@@ -360,7 +360,7 @@
     {
       "url": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points/step/3",
       "activityPage": "/shared/slope-tool-c-demo/page/1-velocity-1-no-picking-points",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What is the average velocity of the car between 2 and 8 seconds? </p>\n<p>Hint: Recall that the slope is \nthe change in  distance\ndivided by the change in time.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> What is the average velocity of the car between 2 and 8 seconds? </p>\n<p>Hint: Recall that the velocity is \nthe change in  distance\ndivided by the change in time.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
