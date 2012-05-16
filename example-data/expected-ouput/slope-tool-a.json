@@ -1599,12 +1599,16 @@
     {
       "url": "/shared/slope-tool-a-demo/tags/tag-1",
       "activity": "/shared/slope-tool-a-demo",
-      "name": "tag-1"
+      "name": "tag-1",
+      "x": 2,
+      "y": 1
     },
     {
       "url": "/shared/slope-tool-a-demo/tags/tag-2",
       "activity": "/shared/slope-tool-a-demo",
-      "name": "tag-2"
+      "name": "tag-2",
+      "x": 9,
+      "y": 8
     }
   ],
   "annotations": [

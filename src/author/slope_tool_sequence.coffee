@@ -269,10 +269,14 @@ exports.SlopeToolSequence = class SlopeToolSequence
     
     @firstPoint     = runtimeActivity.createAndAppendTag()
     @firstPoint.datadefName = datadefRef.name
-    
-    @secondPoint    = runtimeActivity.createAndAppendTag()
-    @firstPoint.datadefName = datadefRef.name
+    @firstPoint.x = @xMin
+    @firstPoint.y = @yMin
 
+    @secondPoint    = runtimeActivity.createAndAppendTag()
+    @secondPoint.datadefName = datadefRef.name
+    @secondPoint.x = @xMax
+    @secondPoint.y = @yMax
+   
     unless @studentSelectsPoints
       @firstPoint.x = @xMin
       @firstPoint.y = @yMin
@@ -729,8 +733,12 @@ exports.SlopeToolSequence = class SlopeToolSequence
     }
 
   confirm_correct: ->
+    
+    # the slope is from user points:
     the_slope = "%@" 
     subs_expr = ["slope_str"]
+
+    # the slope was known at the start.
     if @firstQuestionIsSlopeQuestion
       the_slope = @slope.toFixed(@precision)
       subs_expr = []
