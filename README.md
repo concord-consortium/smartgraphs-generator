@@ -7,7 +7,8 @@ To get started:
 
   * Clone this repository.
   * Install [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/).
-  * Run `npm install` in the root of the repository to install [commander.js](https://github.com/visionmedia/commander.js/), [Coffeescript](http://jashkenas.github.com/coffee-script/) and [jasmine-node](https://github.com/mhevery/jasmine-node) sandboxed to this project's `node_modules` folder.
+  * Run `npm install` in the root of the repository to install [commander.js](https://github.com/visionmedia/commander.js/), [Coffeescript](http://jashkenas.github.com/coffee-script/), [jasmine-node](https://github.com/mhevery/jasmine-node) and [coffeelint](https://github.com/clutchski/coffeelint/) sandboxed to this project's `node_modules` folder.
+  * The coffeelint module helps keep the Coffeescript clean and consistent and runs on every cake build. It can also be called explicitly by running `nbin/cake coffeelint` under the project folder. The module is currently configured to check all `.coffee` files within the `src/` directory.
   * We are committing the compiled Javascript as we go. Therefore, before editing source files, run `nbin/cake watch` in a separate window to build the Javascript incrementally as you save Coffeescript files. When needed, you can run `nbin/cake build` to build the Javascript files in one go.
   
 Notes: 

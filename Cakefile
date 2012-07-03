@@ -4,6 +4,9 @@ fs      = require 'fs'
 option '-q', '--quiet', "When running tests, do not use --verbose flag"
 option '-j', '--junit', "When running tests, generate a junit XML report"
 
+task 'coffeelint', "check src/ style which helps to keep CoffeeScript code clean and consistent", coffeelint = (cb) ->
+  run 'nbin/coffeelint', ['-f', 'coffeelint-config.json', '-r', 'src/'], cb
+
 task 'build:js', "build the smartgraphs-generator javascript in lib/ from coffeescript in src/", buildjs = (cb) ->
   run 'nbin/coffee', ['-o', 'lib/', '-c', 'src/'], cb
 
@@ -12,7 +15,8 @@ task 'build:browser', "build the browserified javascript from javascript in lib/
 
 task 'build', "build javascript and browserified test page", build = (cb) ->
   buildjs ->
-    buildBrowser(cb)
+    buildBrowser ->
+      coffeelint(cb)
 
 task 'testpage', "build and open test page", testpage = (cb) ->
   build ->
