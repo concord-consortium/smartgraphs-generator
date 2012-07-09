@@ -1935,17 +1935,13 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
   exports.LineConstructionSequence = LineConstructionSequence = (function() {
 
-    LineConstructionSequence.prototype.require_numeric_input = function(dest) {
-      return ["isNumeric", ["responseField", 0]];
-    };
-
     LineConstructionSequence.prototype.getDataDefRef = function(runtimeActivity) {
       if (this.graphPane == null) return null;
       return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
     };
 
     LineConstructionSequence.prototype.setupStep = function(_arg) {
-      var runtimePage, step, stepdef;
+      var annotation, response_def, runtimePage, step, stepdef, tool, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
       runtimePage = _arg.runtimePage, stepdef = _arg.stepdef;
       step = this.runtimeStepsByName[stepdef.name];
       step.addGraphPane({
@@ -1953,7 +1949,10 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         datadefRef: this.getDataDefRef(runtimePage.activity),
         xAxis: this.xAxis,
         yAxis: this.yAxis,
-        index: this.graphPane.index
+        index: this.graphPane.index,
+        showCrossHairs: this.showCrossHairs,
+        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.showToolTipCoords
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
@@ -1963,7 +1962,53 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       step.substitutedExpressions = stepdef.substitutedExpressions;
       step.variableAssignments = stepdef.variableAssignments;
       step.submitButtonTitle = stepdef.submitButtonTitle;
-      return step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      step.setSubmissibilityCriterion(stepdef.submissibilityCriterion);
+      _ref = stepdef.graphAnnotations || [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        annotation = _ref[_i];
+        if (this.annotations[annotation]) {
+          step.addAnnotationToPane({
+            annotation: this.annotations[annotation],
+            index: this.graphPane.index
+          });
+        }
+      }
+      _ref2 = stepdef.tools || [];
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        tool = _ref2[_j];
+        step.addGraphingTool({
+          index: this.index || 0,
+          datadefRef: this.getDataDefRef(runtimePage.activity),
+          annotation: this.annotations['singleLineGraphing'],
+          shape: 'singleLine'
+        });
+      }
+      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      _ref3 = stepdef.responseBranches || [];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        response_def = _ref3[_k];
+        step.appendResponseBranch({
+          criterion: response_def.criterion,
+          step: this.runtimeStepsByName[response_def.step]
+        });
+      }
+      return step;
+    };
+
+    LineConstructionSequence.prototype.check_correct_answer = function() {
+      return [
+        {
+          "criterion": ["and", ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations['singleLineGraphing'].name, "1"], this.slopeTolerance], ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations['singleLineGraphing'].name, "1"], this.yInterceptTolerance]],
+          "step": "incorrect_answer_all"
+        }, {
+          "criterion": ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations['singleLineGraphing'].name, "1"], this.slopeTolerance],
+          "step": "incorrect_answer_but_y_intercept_correct"
+        }, {
+          "criterion": ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations['singleLineGraphing'].name, "1"], this.yInterceptTolerance],
+          "step": "incorrect_answer_but_slope_correct"
+        }
+      ];
     };
 
     function LineConstructionSequence(_arg) {
@@ -1984,31 +2029,39 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     }
 
     LineConstructionSequence.prototype.appendSteps = function(runtimePage) {
-      var datadefRef, isActiveInputPane, previousAnnotation, runtimeActivity, runtimeStep, stepdef, _i, _j, _len, _len2, _ref, _ref2, _results;
+      var annotation, otherAnnotations, runtimeActivity, runtimeStep, stepdef, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _results;
       this.annotations = {};
       this.yAxis = this.graphPane.yAxis;
       this.xAxis = this.graphPane.xAxis;
       this.x_axis_name = this.xAxis.label.toLowerCase();
       this.y_axis_name = this.yAxis.label.toLowerCase();
       runtimeActivity = runtimePage.activity;
-      datadefRef = this.getDataDefRef(runtimeActivity);
+      this.datadefRef = this.getDataDefRef(runtimeActivity);
+      this.tags = {};
+      this.annotations = {};
+      otherAnnotations = [
+        {
+          name: 'singleLineGraphing',
+          type: 'FreehandSketch'
+        }
+      ];
+      for (_i = 0, _len = otherAnnotations.length; _i < _len; _i++) {
+        annotation = otherAnnotations[_i];
+        this.annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation({
+          type: 'FreehandSketch'
+        });
+      }
       this.assemble_steps();
       _ref = this.steps;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        stepdef = _ref[_i];
+      for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+        stepdef = _ref[_j];
         runtimeStep = runtimePage.appendStep();
-        isActiveInputPane = true;
-        previousAnnotation = this.graphPane.annotation;
-        this.graphPane.addToStep(runtimeStep, {
-          isActiveInputPane: isActiveInputPane,
-          previousAnnotation: previousAnnotation
-        });
         this.runtimeStepsByName[stepdef.name] = runtimeStep;
       }
       _ref2 = this.steps;
       _results = [];
-      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-        stepdef = _ref2[_j];
+      for (_k = 0, _len3 = _ref2.length; _k < _len3; _k++) {
+        stepdef = _ref2[_k];
         _results.push(this.setupStep({
           stepdef: stepdef,
           runtimePage: runtimePage
@@ -2019,20 +2072,97 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
     LineConstructionSequence.prototype.first_question = function() {
       return {
-        name: "question_1",
-        defaultBranch: "when_line_appears",
+        name: "question",
+        defaultBranch: "confirm_correct",
         submitButtonTitle: "Check My Answer",
         beforeText: this.initialPrompt,
         substitutedExpressions: [],
-        submissibilityCriterion: this.require_numeric_input(),
-        graphAnnotations: [],
+        submissibilityCriterion: ["=", ["lineCount"], 1],
+        showCrossHairs: this.showCrossHairs,
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ['singleLineGraphing'],
         tableAnnotations: [],
-        tools: []
+        tools: ['graphing'],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.incorrect_answer_all = function() {
+      return {
+        name: "incorrect_answer_all",
+        defaultBranch: "confirm_correct",
+        submitButtonTitle: "Check My Answer",
+        beforeText: "<b>" + this.allIncorrect + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: false,
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ['singleLineGraphing'],
+        tableAnnotations: [],
+        tools: ['graphing'],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.incorrect_answer_but_y_intercept_correct = function() {
+      return {
+        name: "incorrect_answer_but_y_intercept_correct",
+        defaultBranch: "confirm_correct",
+        submitButtonTitle: "Check My Answer",
+        beforeText: "<b>" + this.slopeIncorrect + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: false,
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ['singleLineGraphing'],
+        tableAnnotations: [],
+        tools: ['graphing'],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.incorrect_answer_but_slope_correct = function() {
+      return {
+        name: "incorrect_answer_but_slope_correct",
+        defaultBranch: "confirm_correct",
+        submitButtonTitle: "Check My Answer",
+        beforeText: " <b>" + this.yInterceptIncorrect + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        showcrosshairs: true,
+        showtooltipcoord: true,
+        showgraphgrid: true,
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: "false",
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ['singleLineGraphing'],
+        tableAnnotations: [],
+        tools: ['graphing'],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.confirm_correct = function() {
+      return {
+        name: "confirm_correct",
+        isFinalStep: true,
+        hideSubmitButton: true,
+        beforeText: "<b>" + this.confirmCorrect + "</b>",
+        showcrosshairs: false,
+        showtooltipcoord: false,
+        showgraphgrid: this.showGraphGrid
       };
     };
 
     LineConstructionSequence.prototype.assemble_steps = function() {
-      return this.steps.push(this.first_question());
+      this.steps.push(this.first_question());
+      this.steps.push(this.incorrect_answer_all());
+      this.steps.push(this.incorrect_answer_but_y_intercept_correct());
+      this.steps.push(this.incorrect_answer_but_slope_correct());
+      return this.steps.push(this.confirm_correct());
     };
 
     return LineConstructionSequence;
@@ -2664,38 +2794,44 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addGraphPane = function(_arg) {
-      var datadefRef, index, title, xAxis, yAxis;
-      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index;
+      var datadefRef, index, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords;
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
         xAxis: xAxis,
         yAxis: yAxis,
+        showCrossHairs: showCrossHairs,
+        showGraphGrid: showGraphGrid,
+        showToolTipCoords: showToolTipCoords,
         annotations: [],
         highlightedAnnotations: [],
         toHash: function() {
-          var annotation;
+          var annotation, _ref, _ref2, _ref3;
           return {
             type: 'graph',
             title: this.title,
             xAxis: this.xAxis.getUrl(),
             yAxis: this.yAxis.getUrl(),
+            showCrossHairs: (_ref = this.showCrossHairs) != null ? _ref : void 0,
+            showGraphGrid: (_ref2 = this.showGraphGrid) != null ? _ref2 : void 0,
+            showToolTipCoords: (_ref3 = this.showToolTipCoords) != null ? _ref3 : void 0,
             annotations: (function() {
-              var _i, _len, _ref, _results;
-              _ref = this.annotations;
+              var _i, _len, _ref4, _results;
+              _ref4 = this.annotations;
               _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                annotation = _ref[_i];
+              for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                annotation = _ref4[_i];
                 _results.push(annotation.name);
               }
               return _results;
             }).call(this),
             highlightedAnnotations: (function() {
-              var _i, _len, _ref, _results;
-              _ref = this.highlightedAnnotations;
+              var _i, _len, _ref4, _results;
+              _ref4 = this.highlightedAnnotations;
               _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                annotation = _ref[_i];
+              for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                annotation = _ref4[_i];
                 _results.push(annotation.name);
               }
               return _results;
@@ -2806,6 +2942,27 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
               pane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
               uiBehavior: uiBehavior,
               annotationName: annotation.name
+            }
+          };
+        }
+      };
+    };
+
+    Step.prototype.addGraphingTool = function(_arg) {
+      var annotation, datadefRef, index, shape;
+      index = _arg.index, datadefRef = _arg.datadefRef, annotation = _arg.annotation, shape = _arg.shape;
+      return this.tools['graphing'] = {
+        index: index,
+        panes: this.panes,
+        datadefRef: datadefRef,
+        toHash: function() {
+          return {
+            name: 'graphing',
+            setup: {
+              pane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
+              shape: shape,
+              annotationName: annotation.name,
+              data: this.datadefRef.datadef.name
             }
           };
         }
