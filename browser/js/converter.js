@@ -1950,9 +1950,9 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         xAxis: this.xAxis,
         yAxis: this.yAxis,
         index: this.graphPane.index,
-        showCrossHairs: this.showCrossHairs,
-        showGraphGrid: this.showGraphGrid,
-        showToolTipCoords: this.showToolTipCoords
+        showCrossHairs: stepdef.showCrossHairs,
+        showGraphGrid: stepdef.showGraphGrid,
+        showToolTipCoords: stepdef.showToolTipCoords
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
@@ -1980,8 +1980,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         step.addGraphingTool({
           index: this.index || 0,
           datadefRef: this.getDataDefRef(runtimePage.activity),
-          annotation: this.annotations['singleLineGraphing'],
-          shape: 'singleLine'
+          annotation: this.annotations["singleLineGraphing"],
+          shape: "singleLine"
         });
       }
       step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
@@ -1999,14 +1999,14 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     LineConstructionSequence.prototype.check_correct_answer = function() {
       return [
         {
-          "criterion": ["and", ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations['singleLineGraphing'].name, "1"], this.slopeTolerance], ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations['singleLineGraphing'].name, "1"], this.yInterceptTolerance]],
-          "step": "incorrect_answer_all"
+          "criterion": ["and", ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance], ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance]],
+          "step": "confirm_correct"
         }, {
-          "criterion": ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations['singleLineGraphing'].name, "1"], this.slopeTolerance],
-          "step": "incorrect_answer_but_y_intercept_correct"
-        }, {
-          "criterion": ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations['singleLineGraphing'].name, "1"], this.yInterceptTolerance],
+          "criterion": ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance],
           "step": "incorrect_answer_but_slope_correct"
+        }, {
+          "criterion": ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance],
+          "step": "incorrect_answer_but_y_intercept_correct"
         }
       ];
     };
@@ -2019,10 +2019,10 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       _ref = this.page.panes || [];
       for (i = 0, _len = _ref.length; i < _len; i++) {
         pane = _ref[i];
-        if (pane instanceof AuthorPane.classFor['PredefinedGraphPane']) {
+        if (pane instanceof AuthorPane.classFor["PredefinedGraphPane"]) {
           this.graphPane = pane;
         }
-        if (pane instanceof AuthorPane.classFor['TablePane']) {
+        if (pane instanceof AuthorPane.classFor["TablePane"]) {
           this.tablePane = pane;
         }
       }
@@ -2041,14 +2041,14 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       this.annotations = {};
       otherAnnotations = [
         {
-          name: 'singleLineGraphing',
-          type: 'FreehandSketch'
+          name: "singleLineGraphing",
+          type: "FreehandSketch"
         }
       ];
       for (_i = 0, _len = otherAnnotations.length; _i < _len; _i++) {
         annotation = otherAnnotations[_i];
         this.annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation({
-          type: 'FreehandSketch'
+          type: "FreehandSketch"
         });
       }
       this.assemble_steps();
@@ -2073,7 +2073,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     LineConstructionSequence.prototype.first_question = function() {
       return {
         name: "question",
-        defaultBranch: "confirm_correct",
+        defaultBranch: "incorrect_answer_all",
         submitButtonTitle: "Check My Answer",
         beforeText: this.initialPrompt,
         substitutedExpressions: [],
@@ -2081,9 +2081,9 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         showCrossHairs: this.showCrossHairs,
         showToolTipCoords: this.showToolTipCoords,
         showGraphGrid: this.showGraphGrid,
-        graphAnnotations: ['singleLineGraphing'],
+        graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
-        tools: ['graphing'],
+        tools: ["graphing"],
         responseBranches: this.check_correct_answer()
       };
     };
@@ -2091,7 +2091,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     LineConstructionSequence.prototype.incorrect_answer_all = function() {
       return {
         name: "incorrect_answer_all",
-        defaultBranch: "confirm_correct",
+        defaultBranch: "incorrect_answer_all",
         submitButtonTitle: "Check My Answer",
         beforeText: "<b>" + this.allIncorrect + "</b><p>" + this.initialPrompt + "</p>",
         substitutedExpressions: [],
@@ -2099,9 +2099,9 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         showCrossHairs: false,
         showToolTipCoords: this.showToolTipCoords,
         showGraphGrid: this.showGraphGrid,
-        graphAnnotations: ['singleLineGraphing'],
+        graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
-        tools: ['graphing'],
+        tools: ["graphing"],
         responseBranches: this.check_correct_answer()
       };
     };
@@ -2109,7 +2109,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     LineConstructionSequence.prototype.incorrect_answer_but_y_intercept_correct = function() {
       return {
         name: "incorrect_answer_but_y_intercept_correct",
-        defaultBranch: "confirm_correct",
+        defaultBranch: "incorrect_answer_all",
         submitButtonTitle: "Check My Answer",
         beforeText: "<b>" + this.slopeIncorrect + "</b><p>" + this.initialPrompt + "</p>",
         substitutedExpressions: [],
@@ -2117,9 +2117,9 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         showCrossHairs: false,
         showToolTipCoords: this.showToolTipCoords,
         showGraphGrid: this.showGraphGrid,
-        graphAnnotations: ['singleLineGraphing'],
+        graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
-        tools: ['graphing'],
+        tools: ["graphing"],
         responseBranches: this.check_correct_answer()
       };
     };
@@ -2127,20 +2127,17 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     LineConstructionSequence.prototype.incorrect_answer_but_slope_correct = function() {
       return {
         name: "incorrect_answer_but_slope_correct",
-        defaultBranch: "confirm_correct",
+        defaultBranch: "incorrect_answer_all",
         submitButtonTitle: "Check My Answer",
-        beforeText: " <b>" + this.yInterceptIncorrect + "</b><p>" + this.initialPrompt + "</p>",
+        beforeText: "<b>" + this.yInterceptIncorrect + "</b><p>" + this.initialPrompt + "</p>",
         substitutedExpressions: [],
-        showcrosshairs: true,
-        showtooltipcoord: true,
-        showgraphgrid: true,
         submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
-        showCrossHairs: "false",
+        showCrossHairs: false,
         showToolTipCoords: this.showToolTipCoords,
         showGraphGrid: this.showGraphGrid,
-        graphAnnotations: ['singleLineGraphing'],
+        graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
-        tools: ['graphing'],
+        tools: ["graphing"],
         responseBranches: this.check_correct_answer()
       };
     };
@@ -2151,9 +2148,10 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         isFinalStep: true,
         hideSubmitButton: true,
         beforeText: "<b>" + this.confirmCorrect + "</b>",
-        showcrosshairs: false,
-        showtooltipcoord: false,
-        showgraphgrid: this.showGraphGrid
+        showCrossHairs: false,
+        showToolTipCoords: false,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"]
       };
     };
 

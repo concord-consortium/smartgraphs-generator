@@ -14,9 +14,9 @@ exports.LineConstructionSequence = class LineConstructionSequence
       xAxis: @xAxis
       yAxis: @yAxis
       index: @graphPane.index
-      showCrossHairs:@showCrossHairs
-      showGraphGrid:@showGraphGrid
-      showToolTipCoords:@showToolTipCoords
+      showCrossHairs: stepdef.showCrossHairs
+      showGraphGrid: stepdef.showGraphGrid
+      showToolTipCoords: stepdef.showToolTipCoords
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
@@ -38,8 +38,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
       step.addGraphingTool 
         index: @index || 0
         datadefRef: @getDataDefRef(runtimePage.activity)
-        annotation: @annotations['singleLineGraphing']
-        shape: 'singleLine'
+        annotation: @annotations["singleLineGraphing"]
+        shape: "singleLine"
            
     step.defaultBranch = @runtimeStepsByName[stepdef.defaultBranch]
     for response_def in stepdef.responseBranches || []
@@ -51,17 +51,17 @@ exports.LineConstructionSequence = class LineConstructionSequence
   check_correct_answer:->
     [
       {
-        "criterion": ["and", [ "withinAbsTolerance", @slope, ["lineSlope", @annotations['singleLineGraphing'].name, "1"] ,@slopeTolerance],
-                    [ "withinAbsTolerance", @yIntercept, ["yIntercept",  @annotations['singleLineGraphing'].name, "1"], @yInterceptTolerance] ],
-        "step": "incorrect_answer_all"
+        "criterion": ["and", [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance],
+                    [ "withinAbsTolerance", @yIntercept, ["yIntercept", @annotations["singleLineGraphing"].name, 1], @yInterceptTolerance] ],
+        "step": "confirm_correct"
       },
       {
-        "criterion": [ "withinAbsTolerance", @slope, ["lineSlope",  @annotations['singleLineGraphing'].name, "1"] ,@slopeTolerance ],
-        "step": "incorrect_answer_but_y_intercept_correct"
-      },
-      {
-        "criterion":  [ "withinAbsTolerance", @yIntercept, ["yIntercept",  @annotations['singleLineGraphing'].name, "1"], @yInterceptTolerance ] ,
+        "criterion": [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance ],
         "step": "incorrect_answer_but_slope_correct"
+      },
+      {
+        "criterion": [ "withinAbsTolerance", @yIntercept, ["yIntercept", @annotations["singleLineGraphing"].name, 1], @yInterceptTolerance ] ,
+        "step": "incorrect_answer_but_y_intercept_correct"
       }
     ]
     
@@ -83,8 +83,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @steps = []
     @runtimeStepsByName = {}
     for pane, i in @page.panes || []
-      @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
-      @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
+      @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
+      @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
  
   appendSteps: (runtimePage) ->
     @annotations = {}
@@ -100,9 +100,9 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @tags = {}
     @annotations = {}
     
-    otherAnnotations = [{ name: 'singleLineGraphing',    type: 'FreehandSketch'    }]
+    otherAnnotations = [{ name: "singleLineGraphing",    type: "FreehandSketch"    }]
     for annotation in otherAnnotations
-      @annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation {type: 'FreehandSketch'}
+      @annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation {type: "FreehandSketch"}
     @assemble_steps()
     for stepdef in @steps
       runtimeStep = runtimePage.appendStep()
@@ -116,71 +116,68 @@ exports.LineConstructionSequence = class LineConstructionSequence
     { ############################################
       ##         first_question             ##
       ############################################
-      name:                   				"question"
-      defaultBranch:          			"confirm_correct"
-      submitButtonTitle:     			"Check My Answer"
-      beforeText:             				@initialPrompt
-      substitutedExpressions: 		[]
-      submissibilityCriterion: 			["=", ["lineCount"], 1]
-      showCrossHairs:         			@showCrossHairs
-      showToolTipCoords :    		@showToolTipCoords
-      showGraphGrid     :    			@showGraphGrid
-      graphAnnotations:   				['singleLineGraphing']
-      tableAnnotations: 					[ ]
-      tools: 									['graphing']
-      responseBranches: 				@check_correct_answer()
+      name:                         "question"
+      defaultBranch:                "incorrect_answer_all"
+      submitButtonTitle:            "Check My Answer"
+      beforeText:                   @initialPrompt
+      substitutedExpressions:       []
+      submissibilityCriterion:      ["=", ["lineCount"], 1]
+      showCrossHairs:               @showCrossHairs
+      showToolTipCoords :           @showToolTipCoords
+      showGraphGrid     :           @showGraphGrid
+      graphAnnotations:             ["singleLineGraphing"]
+      tableAnnotations:             []
+      tools:                        ["graphing"]
+      responseBranches:             @check_correct_answer()
     } 
     
   incorrect_answer_all: ->
     {
-      name:                  		"incorrect_answer_all"
-      defaultBranch:          "confirm_correct" 
-      submitButtonTitle:      "Check My Answer"
-      beforeText:               "<b>#{@allIncorrect}</b><p>#{@initialPrompt}</p>"
-      substitutedExpressions: []
-      submissibilityCriterion: ["or",["pointMoved", @datadefRef.datadef.name, 1 ],["pointMoved", @datadefRef.datadef.name,2 ]]
-      showCrossHairs:         false
-      showToolTipCoords :     @showToolTipCoords
-      showGraphGrid     :     @showGraphGrid
-      graphAnnotations: [ 'singleLineGraphing']
-      tableAnnotations: [ ]
-      tools: ['graphing' ]
-      responseBranches: @check_correct_answer()
+      name:                        "incorrect_answer_all"
+      defaultBranch:               "incorrect_answer_all" 
+      submitButtonTitle:           "Check My Answer"
+      beforeText:                  "<b>#{@allIncorrect}</b><p>#{@initialPrompt}</p>"
+      substitutedExpressions:      []
+      submissibilityCriterion:     ["or", ["pointMoved", @datadefRef.datadef.name, 1 ], ["pointMoved", @datadefRef.datadef.name, 2 ]]
+      showCrossHairs:              false
+      showToolTipCoords :          @showToolTipCoords
+      showGraphGrid     :          @showGraphGrid
+      graphAnnotations:            ["singleLineGraphing"]
+      tableAnnotations:            []
+      tools:                       ["graphing"]
+      responseBranches:            @check_correct_answer()
     }
   incorrect_answer_but_y_intercept_correct: ->
     {
       name:                        "incorrect_answer_but_y_intercept_correct"
-      defaultBranch:           "confirm_correct" 
-      submitButtonTitle:      "Check My Answer"
-      beforeText:                "<b>#{@slopeIncorrect}</b><p>#{@initialPrompt}</p>"
-      substitutedExpressions: []
-      submissibilityCriterion:["or",["pointMoved", @datadefRef.datadef.name, 1 ],["pointMoved", @datadefRef.datadef.name,2 ]]
-      showCrossHairs:         false
-      showToolTipCoords :     @showToolTipCoords
-      showGraphGrid     :     @showGraphGrid
-      graphAnnotations: [ 'singleLineGraphing']
-      tableAnnotations: [ ]
-      tools: [ 'graphing']
-      responseBranches: @check_correct_answer()
+      defaultBranch:               "incorrect_answer_all" 
+      submitButtonTitle:           "Check My Answer"
+      beforeText:                  "<b>#{@slopeIncorrect}</b><p>#{@initialPrompt}</p>"
+      substitutedExpressions:      []
+      submissibilityCriterion:     ["or", ["pointMoved", @datadefRef.datadef.name, 1 ], ["pointMoved", @datadefRef.datadef.name, 2 ]]
+      showCrossHairs:              false
+      showToolTipCoords :          @showToolTipCoords
+      showGraphGrid     :          @showGraphGrid
+      graphAnnotations  :          ["singleLineGraphing"]
+      tableAnnotations:            []
+      tools:                       ["graphing"]
+      responseBranches:            @check_correct_answer()
     }    
   incorrect_answer_but_slope_correct: ->
     {
-      name:                   "incorrect_answer_but_slope_correct"
-      defaultBranch:          "confirm_correct" 
-      submitButtonTitle:      "Check My Answer"
-      beforeText:            " <b>#{@yInterceptIncorrect}</b><p>#{@initialPrompt}</p>"
-      substitutedExpressions: []
-      showcrosshairs:         true
-      showtooltipcoord:       true
-      showgraphgrid:          true
-      submissibilityCriterion: ["or",["pointMoved", @datadefRef.datadef.name, 1 ],["pointMoved", @datadefRef.datadef.name,2 ]]  
-      showCrossHairs:         "false"
-      showToolTipCoords:     @showToolTipCoords
-      showGraphGrid    :     @showGraphGrid
-      graphAnnotations:       ['singleLineGraphing' ]
-      tableAnnotations:       [ ]
-      tools: [ 'graphing']
-      responseBranches: @check_correct_answer()
+      name:                       "incorrect_answer_but_slope_correct"
+      defaultBranch:              "incorrect_answer_all" 
+      submitButtonTitle:          "Check My Answer"
+      beforeText:                 "<b>#{@yInterceptIncorrect}</b><p>#{@initialPrompt}</p>"
+      substitutedExpressions:     []
+      submissibilityCriterion:    ["or", ["pointMoved", @datadefRef.datadef.name, 1 ], ["pointMoved", @datadefRef.datadef.name, 2 ]]  
+      showCrossHairs:             false
+      showToolTipCoords:          @showToolTipCoords
+      showGraphGrid    :          @showGraphGrid
+      graphAnnotations:           ["singleLineGraphing"]
+      tableAnnotations:           []
+      tools:                      ["graphing"]
+      responseBranches:           @check_correct_answer()
     }
   confirm_correct: ->
     {
@@ -188,9 +185,10 @@ exports.LineConstructionSequence = class LineConstructionSequence
       isFinalStep:            true  
       hideSubmitButton:       true
       beforeText:             "<b>#{@confirmCorrect}</b>"
-      showcrosshairs:         false
-      showtooltipcoord:       false
-      showgraphgrid:          @showGraphGrid
+      showCrossHairs:         false
+      showToolTipCoords:      false
+      showGraphGrid:          @showGraphGrid
+      graphAnnotations  :     ["singleLineGraphing"]
     }
    
   assemble_steps: ->
