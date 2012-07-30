@@ -468,13 +468,15 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, SlopeToolSequence, asObject,
+  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, LineConstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, SlopeToolSequence, asObject,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   AuthorPane = require('./author-panes').AuthorPane;
 
   SlopeToolSequence = require('./slope_tool_sequence').SlopeToolSequence;
+
+  LineConstructionSequence = require('./line_construction_sequence').LineConstructionSequence;
 
   asObject = function(s) {
     if (typeof s === 'string') {
@@ -867,12 +869,14 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     __extends(NumericSequence, _super);
 
     function NumericSequence(_arg) {
-      this.correctAnswer = _arg.correctAnswer;
+      var _ref;
+      this.correctAnswer = _arg.correctAnswer, this.tolerance = _arg.tolerance;
+      this.tolerance = (_ref = this.tolerance) != null ? _ref : 0.01;
       NumericSequence.__super__.constructor.apply(this, arguments);
     }
 
     NumericSequence.prototype.getCriterion = function() {
-      return ["=", ["responseField", 1], this.correctAnswer];
+      return ["withinAbsTolerance", ["responseField", 1], this.correctAnswer, this.tolerance];
     };
 
     NumericSequence.prototype.appendSteps = function(runtimePage) {
@@ -921,6 +925,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   })(CorrectableSequenceWithFeedback);
 
   Sequence.classFor['SlopeToolSequence'] = SlopeToolSequence;
+
+  Sequence.classFor['LineConstructionSequence'] = LineConstructionSequence;
 
 }).call(this);
 
@@ -1181,12 +1187,52 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
 
   exports.SlopeToolSequence = SlopeToolSequence = (function() {
 
-    SlopeToolSequence.prototype.selectFirstPointQuestion = function() {
+    SlopeToolSequence.prototype.select_first_point_first_time_text = function() {
       var results;
       results = "";
-      if (this.firstQuestionIsSlopeQuestion) results = "<p>Incorrect.</p>";
-      results = "" + results + "\n<p>Select a point between " + this.xMin + " and " + this.xMax + " " + this.xUnits + ".</p>\n<p>Then click \"OK\". </p>";
+      if (this.firstQuestionIsSlopeQuestion) results = this.incorrect_text();
+      results = "" + results + "\n" + (this.select_first_point_text());
       return results;
+    };
+
+    SlopeToolSequence.prototype.ending_text = function() {
+      return "" + this.xMax + (this.xUnits.length > 0 ? this.xUnits : " for " + this.x_axis_name);
+    };
+
+    SlopeToolSequence.prototype.click_ok_text = function() {
+      return "<p>Then click \"OK\". </p>";
+    };
+
+    SlopeToolSequence.prototype.incorrect_text = function() {
+      return "<p><strong>Incorrect.</strong></p>";
+    };
+
+    SlopeToolSequence.prototype.range_text = function(first_point) {
+      if (first_point == null) first_point = true;
+      if (this.selectedPointsMustBeAdjacent && !first_point) {
+        return "a second <strong><em>adjacent</em></strong> \npoint between " + this.xMin + " and " + (this.ending_text()) + ".\n";
+      } else if (this.studentMustSelectEndpointsOfRange) {
+        return "" + (first_point ? "an" : "a second") + " \n<strong><em>endpoint</em></strong> of the range \n" + this.xMin + " through " + (this.ending_text()) + ".";
+      } else {
+        return "" + (first_point ? "a" : "a second") + " \npoint between " + this.xMin + " and " + (this.ending_text()) + ".";
+      }
+    };
+
+    SlopeToolSequence.prototype.select_first_point_text = function() {
+      return "<p> Select " + (this.range_text()) + " </p>\n" + (this.click_ok_text());
+    };
+
+    SlopeToolSequence.prototype.first_point_wrong_text = function() {
+      return "" + (this.incorrect_text()) + "\n<p>The point you have selected is not \n" + (this.range_text()) + "\nTry again.</p>\n" + (this.select_first_point_text());
+    };
+
+    SlopeToolSequence.prototype.select_second_point_text = function(first_time) {
+      if (first_time == null) first_time = true;
+      return "<p>Now select\n" + (this.range_text(false)) + "</p>\n" + (this.click_ok_text());
+    };
+
+    SlopeToolSequence.prototype.second_point_out_of_range_text = function() {
+      return "" + (this.incorrect_text()) + "\n<p> The point you have selected is not \n" + (this.range_text()) + "  \nTry again.</p>\n" + (this.select_second_point_text());
     };
 
     SlopeToolSequence.prototype.previous_answers = function() {
@@ -1221,12 +1267,33 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     };
 
     SlopeToolSequence.prototype.point_not_in_range = function(dest, pointName, axis, max, min) {
+      var criterion;
+      if (pointName == null) pointName = this.secondPoint.name;
+      if (axis == null) axis = 'x';
+      if (max == null) max = this.xMax;
+      if (min == null) min = this.xMin;
+      criterion = ["or", ["<", ["coord", axis, pointName], min], [">", ["coord", axis, pointName], max]];
+      if (this.studentMustSelectEndpointsOfRange) {
+        criterion = ["and", ["!=", ["coord", axis, pointName], min], ["!=", ["coord", axis, pointName], max]];
+      }
+      return {
+        criterion: criterion,
+        step: dest
+      };
+    };
+
+    SlopeToolSequence.prototype.point_in_range = function(dest, pointName, axis, max, min) {
+      var criterion;
       if (pointName == null) pointName = this.firstPoint.name;
       if (axis == null) axis = 'x';
       if (max == null) max = this.xMax;
       if (min == null) min = this.xMin;
+      criterion = ["and", [">=", ["coord", axis, pointName], min], ["<=", ["coord", axis, pointName], max]];
+      if (this.studentMustSelectEndpointsOfRange) {
+        criterion = ["or", ["=", ["coord", axis, pointName], min], ["=", ["coord", axis, pointName], max]];
+      }
       return {
-        criterion: ["or", ["<", ["coord", axis, pointName], min], [">", ["coord", axis, pointName], max]],
+        criterion: criterion,
         step: dest
       };
     };
@@ -1243,7 +1310,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         results.push(this.not_adjacent('second_point_not_adjacent_and_should_be'));
       }
       results.push(this.same_point('second_point_duplicate_point'));
-      results.push(this.point_not_in_range('second_point_not_in_correct_range', this.secondPoint.name));
+      results.push(this.point_not_in_range('second_point_out_of_range'));
       return results;
     };
 
@@ -1266,6 +1333,10 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     function SlopeToolSequence(_arg) {
       var i, pane, _len, _ref;
       this.firstQuestionIsSlopeQuestion = _arg.firstQuestionIsSlopeQuestion, this.studentSelectsPoints = _arg.studentSelectsPoints, this.selectedPointsMustBeAdjacent = _arg.selectedPointsMustBeAdjacent, this.studentMustSelectEndpointsOfRange = _arg.studentMustSelectEndpointsOfRange, this.slopeVariableName = _arg.slopeVariableName, this.firstQuestion = _arg.firstQuestion, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.tolerance = _arg.tolerance, this.page = _arg.page;
+      this.precision = 2;
+      if (!(this.slopeVariableName && this.slopeVariableName.length > 0)) {
+        this.slopeVariableName = "slope";
+      }
       this.runtimeStepsByName = {};
       this.slope = (this.yMax - this.yMin) / (this.xMax - this.xMin);
       this.steps = [];
@@ -1385,11 +1456,24 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
 
     SlopeToolSequence.prototype.appendSteps = function(runtimePage) {
       var annotation, color, datadefRef, otherAnnotations, point, runtimeActivity, runtimeStep, stepdef, x_units_abbr, y_units_abbr, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref, _ref2, _ref3, _results;
-      this.yUnits = this.graphPane.yUnits.toLowerCase();
-      this.xUnits = this.graphPane.xUnits.toLowerCase();
-      x_units_abbr = this.graphPane.xUnitsRef.unit.abbreviation;
-      y_units_abbr = this.graphPane.yUnitsRef.unit.abbreviation;
-      this.slope_units = "" + y_units_abbr + "/" + x_units_abbr;
+      this.xUnits = "";
+      this.yUnits = "";
+      this.in_xUnits = "";
+      this.in_yUnits = "";
+      this.slope_units = "";
+      this.in_slope_units = "";
+      if (this.graphPane.yUnits) {
+        this.yUnits = " " + (this.graphPane.yUnits.toLowerCase());
+        this.xUnits = " " + (this.graphPane.xUnits.toLowerCase());
+        this.in_xUnits = " in " + this.xUnits;
+        this.in_yUnits = " in " + this.yUnits;
+      }
+      if (this.graphPane.xUnitsRef) {
+        x_units_abbr = this.graphPane.xUnitsRef.unit.abbreviation;
+        y_units_abbr = this.graphPane.yUnitsRef.unit.abbreviation;
+        this.slope_units = " " + y_units_abbr + "/" + x_units_abbr;
+        this.in_slope_units = " in" + this.slope_units;
+      }
       this.yAxis = this.graphPane.yAxis;
       this.xAxis = this.graphPane.xAxis;
       this.x_axis_name = this.xAxis.label.toLowerCase();
@@ -1399,18 +1483,20 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       this.tags = {};
       this.annotations = {};
       this.firstPoint = runtimeActivity.createAndAppendTag();
-      this.firstPoint.name = 'first-point';
       this.firstPoint.datadefName = datadefRef.name;
+      this.firstPoint.x = this.xMin;
+      this.firstPoint.y = this.yMin;
       this.secondPoint = runtimeActivity.createAndAppendTag();
-      this.secondPoint.name = 'second-point';
-      this.firstPoint.datadefName = datadefRef.name;
+      this.secondPoint.datadefName = datadefRef.name;
+      this.secondPoint.x = this.xMax;
+      this.secondPoint.y = this.yMax;
       if (!this.studentSelectsPoints) {
         this.firstPoint.x = this.xMin;
         this.firstPoint.y = this.yMin;
         this.secondPoint.x = this.xMax;
         this.secondPoint.y = this.yMax;
       }
-      runtimePage.addSlopeVars(this.firstPoint, this.secondPoint);
+      runtimePage.addSlopeVars(this.firstPoint, this.secondPoint, this.precision);
       _ref = [this.firstPoint, this.secondPoint];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         point = _ref[_i];
@@ -1447,7 +1533,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         annotation = otherAnnotations[_j];
         this.annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation({
           type: annotation.type,
-          name: annotation.name,
+          namePrefix: annotation.name,
           datadefRef: datadefRef,
           color: annotation.color || '#cccccc',
           p1Tag: this.firstPoint,
@@ -1474,8 +1560,9 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     };
 
     SlopeToolSequence.prototype.lineAppearsQuestion = function() {
+      var _ref;
       if (this.firstQuestionIsSlopeQuestion) return this.firstQuestion;
-      return "What was the " + this.slopeVariableName + " between the two points in " + this.slope_units + "?";
+      return "What was the " + this.slopeVariableName + " between the two points" + ((_ref = this.in_slope_units) != null ? _ref : "") + "?";
     };
 
     SlopeToolSequence.prototype.first_slope_question = function() {
@@ -1500,7 +1587,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "select_first_point",
         defaultBranch: "if_first_point_wrong",
         submitButtonTitle: "OK",
-        beforeText: this.selectFirstPointQuestion(),
+        beforeText: this.select_first_point_first_time_text(),
         graphAnnotations: ["" + this.firstPoint.name],
         tableAnnotations: ["" + this.firstPoint.name],
         tools: [
@@ -1508,12 +1595,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
             tag: this.firstPoint.name
           }
         ],
-        responseBranches: [
-          {
-            criterion: ["and", [">=", ["coord", "x", this.firstPoint.name], this.xMin], ["<=", ["coord", "x", this.firstPoint.name], this.xMax]],
-            step: "select_second_point"
-          }
-        ]
+        responseBranches: [this.point_in_range("select_second_point")]
       };
     };
 
@@ -1522,7 +1604,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "if_first_point_wrong",
         defaultBranch: "if_first_point_wrong",
         submitButtonTitle: "OK",
-        beforeText: "<p> Incorrect </p>\n<p> The point you have selected is not between\n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".  Try again.</p>\n<p> Select a point <em>between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + "</em>.</p>\n<p>Then click \"OK\". </p>",
+        beforeText: this.first_point_wrong_text(),
         graphAnnotations: ["" + this.firstPoint.name],
         tableAnnotations: ["" + this.firstPoint.name],
         tools: [
@@ -1530,12 +1612,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
             tag: this.firstPoint.name
           }
         ],
-        responseBranches: [
-          {
-            criterion: ["and", [">=", ["coord", "x", this.firstPoint.name], this.xMin], ["<=", ["coord", "x", this.firstPoint.name], this.xMax]],
-            step: "select_second_point"
-          }
-        ]
+        responseBranches: [this.point_in_range("select_second_point")]
       };
     };
 
@@ -1544,7 +1621,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "select_second_point",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p>Now select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".</p>\n<p>Then click \"OK\". </p>",
+        beforeText: this.select_second_point_text(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
@@ -1561,7 +1638,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "second_point_not_adjacent_and_should_be",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p> Incorrect </p>\n<p> Your points should be adjacent.</p>\n<p> Select a second point between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".</p>\n<p>Then click \"OK\". </p>",
+        beforeText: "" + (this.incorrect_text()) + "\n<p> Your points should be adjacent.</p>\n" + (this.select_second_point_text()),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
@@ -1578,7 +1655,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "second_point_duplicate_point",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p> Incorrect </p>\n<p> You have selected the same point twice.</p>\n<p> Now select a <em>second</em> point between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".</p>\n<p>Then click \"OK\". </p>",
+        beforeText: "" + (this.incorrect_text()) + "\n<p> You have selected the same point twice.</p>\n" + (this.select_second_point_text()),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
@@ -1590,12 +1667,12 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       };
     };
 
-    SlopeToolSequence.prototype.second_point_not_in_correct_range = function() {
+    SlopeToolSequence.prototype.second_point_out_of_range = function() {
       return {
-        name: "second_point_not_in_correct_range",
+        name: "second_point_out_of_range",
         defaultBranch: "when_line_appears",
         submitButtonTitle: "OK",
-        beforeText: "<p> Incorrect </p>\n<p> The point you have selected is not between\n" + this.xMin + " and " + this.xMax + " " + this.xUnits + ".  Try again.</p>\n<p> Select a second point <em>between \n" + this.xMin + " and " + this.xMax + " " + this.xUnits + "</em>.</p>\n<p>Then click \"OK\". </p>",
+        beforeText: this.second_point_out_of_range_text(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         tools: [
@@ -1629,7 +1706,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "slope_wrong_ask_for_rise",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p> " + (this.lineAppearsQuestion()) + " </p>\n<p>Hint: recall that the slope is \nthe change in  " + this.y_axis_name + "\ndivided by the change in " + this.x_axis_name + ".</p>",
+        beforeText: "" + (this.incorrect_text()) + "\n<p> " + (this.lineAppearsQuestion()) + " </p>\n<p>Hint: Recall that the " + this.slopeVariableName + " is \nthe change in  " + this.y_axis_name + "\ndivided by the change in " + this.x_axis_name + ".</p>",
         substitutedExpressions: [],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
@@ -1645,7 +1722,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_rise_wrong_1",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.y_axis_name + " between the two points in " + this.yUnits + "?</p>\n<p>Hint: Look at the graph.</p>",
+        beforeText: "" + (this.incorrect_text()) + "\n<p>What was the change in\n" + this.y_axis_name + " between the two points" + this.in_yUnits + "?</p>\n<p>Hint: Look at the graph.</p>",
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
@@ -1666,7 +1743,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_rise_wrong_2",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.y_axis_name + " between the two points in " + this.yUnits + "?</p>\n<p>Hint: Look at the table and the graph.</p>",
+        beforeText: "" + (this.incorrect_text()) + "\n<p>What was the change in\n" + this.y_axis_name + " between the two points" + this.in_yUnits + "?</p>\n<p>Hint: Look at the table and the graph.</p>",
         substitutedExpressions: [],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
@@ -1688,8 +1765,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "if_rise_wrong_2",
         defaultBranch: "ask_for_run",
         submitButtonTitle: "Continue",
-        beforeText: "<p><b>Incorrect.</b></p>\n<p>The change in " + this.yUnits + " is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b> %@.</p>",
-        substitutedExpressions: ["end-y", "start-y", "change-y", "change-y-units"],
+        beforeText: "" + (this.incorrect_text()) + "\n<p>The change" + this.in_yUnits + " is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+        substitutedExpressions: ["end-y", "start-y", "change-y"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         highLightedGraphAnnotations: ["rise-arrow"],
@@ -1703,7 +1780,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_run_wrong_1",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>What was the change in\n" + this.x_axis_name + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph.</p>",
+        beforeText: "<p>What was the change in\n" + this.x_axis_name + " between the two points" + this.in_xUnits + "?</p>\n<p>Hint: Look at the graph.</p>",
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line", "rise-arrow"],
@@ -1724,7 +1801,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "if_run_wrong_2",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>Incorrect.</p>\n<p>What was the change in\n" + this.x_axis_name + " between the two points in " + this.xUnits + "?</p>\n<p>Hint: Look at the graph and the table.</p>",
+        beforeText: "" + (this.incorrect_text()) + "\n<p>What was the change in\n" + this.x_axis_name + " between the two points" + this.in_xUnits + "?</p>\n<p>Hint: Look at the graph and the table.</p>",
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line", "rise-arrow"],
@@ -1745,8 +1822,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "if_run_wrong_2",
         defaultBranch: "ask_for_slope",
         submitButtonTitle: "Continue",
-        beforeText: "<p><b>Incorrect.</b></p>\n<p>The change in " + this.xUnits + " \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b> %@.</p>",
-        substitutedExpressions: ["end-x", "start-x", "change-x", "change-x-units"],
+        beforeText: "" + (this.incorrect_text()) + "\n<p>The change" + this.in_xUnits + " \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+        substitutedExpressions: ["end-x", "start-x", "change-x"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line", "rise-arrow"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         highLightedGraphAnnotations: ["run-arrow"],
@@ -1760,8 +1837,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "slope_wrong_1",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p>If the change in " + this.y_axis_name + " is %@ %@\n  and the change in " + this.x_axis_name + " is %@ %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.slope_units + "?</p>",
-        substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units"],
+        beforeText: "<p>\n  If the change in " + this.y_axis_name + " is %@" + this.yUnits + "\n  and the change in " + this.x_axis_name + " is %@" + this.xUnits + "\n  then what is the " + this.slopeVariableName + this.in_slope_units + "?\n</p>",
+        substitutedExpressions: ["change-y", "change-x"],
         variableAssignments: this.previous_answers(),
         submissibilityCriterion: this.require_numeric_input(),
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
@@ -1776,8 +1853,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         defaultBranch: "give_up_slope_calculation",
         submitButtonTitle: "Check My Answer",
         responseTemplate: "" + this.response_template + "/numeric",
-        beforeText: "<p><b>Incorrect</b></p>\n<p>\n  If the change in " + this.y_axis_name + " is <b>%@</b> %@\n  and the change in " + this.x_axis_name + " is <b>%@</b> %@ \n  then what is the " + this.slopeVariableName + "\n  in " + this.slope_units + "?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in " + this.y_axis_name + " \n  <b>divided by</b> \n  the change in " + this.x_axis_name + ".\n</p>",
-        substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units"],
+        beforeText: "" + (this.incorrect_text()) + "\n<p>\n  If the change in " + this.y_axis_name + " is %@" + this.yUnits + "\n  and the change in " + this.x_axis_name + " is %@" + this.xUnits + "\n  then what is the " + this.slopeVariableName + this.in_slope_units + "?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in " + this.y_axis_name + " \n  <b>divided by</b> \n  the change in " + this.x_axis_name + ".\n</p>",
+        substitutedExpressions: ["change-y", "change-x"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name],
         variableAssignments: this.previous_answers(),
@@ -1791,20 +1868,27 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         name: "give_up_slope_calculation",
         isFinalStep: true,
         hideSubmitButton: true,
-        beforeText: "<p><b>Incorrect.</b></p>\n<p>If the change in " + this.y_axis_name + " is <b>%@</b> %@ \nand the change in " + this.x_axis_name + " is <b>%@</b> %@, \nthe " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> %@.</p>",
-        substitutedExpressions: ["change-y", "change-y-units", "change-x", "change-x-units", "change-y", "change-x", "slope", "slope-units"],
+        beforeText: "" + (this.incorrect_text()) + "\n<p>\nIf the change in " + this.y_axis_name + " is %@" + this.yUnits + "\nand the change in " + this.x_axis_name + " is %@" + this.xUnits + ",\nthe " + this.slopeVariableName + " is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b>" + this.slope_units + ".</p>",
+        substitutedExpressions: ["change-y", "change-x", "change-y", "change-x", "slope_str"],
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"],
         tableAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name]
       };
     };
 
     SlopeToolSequence.prototype.confirm_correct = function() {
+      var subs_expr, the_slope;
+      the_slope = "%@";
+      subs_expr = ["slope_str"];
+      if (this.firstQuestionIsSlopeQuestion) {
+        the_slope = this.slope.toFixed(this.precision);
+        subs_expr = [];
+      }
       return {
         name: "confirm_correct",
         isFinalStep: true,
         hideSubmitButton: true,
-        beforeText: "<p><b>Correct!</b></p>\n<p>The " + this.slopeVariableName + " is <b>%@</b> %@.</p>",
-        substitutedExpressions: ["student-response-field", "slope-units"],
+        beforeText: "<p><b>Correct!</b></p>\n<p>The " + this.slopeVariableName + " is <b>" + the_slope + "</b>" + this.slope_units + ".</p>",
+        substitutedExpressions: subs_expr,
         graphAnnotations: ["" + this.firstPoint.name, "" + this.secondPoint.name, "slope-line"]
       };
     };
@@ -1819,7 +1903,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         this.steps.push(this.select_second_point());
         this.steps.push(this.second_point_not_adjacent_and_should_be());
         this.steps.push(this.second_point_duplicate_point());
-        this.steps.push(this.second_point_not_in_correct_range());
+        this.steps.push(this.second_point_out_of_range());
       }
       this.steps.push(this.when_line_appears());
       this.steps.push(this.slope_wrong_0());
@@ -1836,6 +1920,250 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
     };
 
     return SlopeToolSequence;
+
+  })();
+
+}).call(this);
+
+});
+
+require.define("/author/line_construction_sequence.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var AuthorPane, LineConstructionSequence;
+
+  AuthorPane = require('./author-panes').AuthorPane;
+
+  exports.LineConstructionSequence = LineConstructionSequence = (function() {
+
+    LineConstructionSequence.prototype.getDataDefRef = function(runtimeActivity) {
+      if (this.graphPane == null) return null;
+      return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
+    };
+
+    LineConstructionSequence.prototype.setupStep = function(_arg) {
+      var annotation, response_def, runtimePage, step, stepdef, tool, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
+      runtimePage = _arg.runtimePage, stepdef = _arg.stepdef;
+      step = this.runtimeStepsByName[stepdef.name];
+      step.addGraphPane({
+        title: this.graphPane.title,
+        datadefRef: this.getDataDefRef(runtimePage.activity),
+        xAxis: this.xAxis,
+        yAxis: this.yAxis,
+        index: this.graphPane.index,
+        showCrossHairs: stepdef.showCrossHairs,
+        showGraphGrid: stepdef.showGraphGrid,
+        showToolTipCoords: stepdef.showToolTipCoords
+      });
+      step.addTablePane({
+        datadefRef: this.getDataDefRef(runtimePage.activity),
+        index: this.tablePane.index
+      });
+      step.beforeText = stepdef.beforeText;
+      step.substitutedExpressions = stepdef.substitutedExpressions;
+      step.variableAssignments = stepdef.variableAssignments;
+      step.submitButtonTitle = stepdef.submitButtonTitle;
+      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      step.setSubmissibilityCriterion(stepdef.submissibilityCriterion);
+      _ref = stepdef.graphAnnotations || [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        annotation = _ref[_i];
+        if (this.annotations[annotation]) {
+          step.addAnnotationToPane({
+            annotation: this.annotations[annotation],
+            index: this.graphPane.index
+          });
+        }
+      }
+      _ref2 = stepdef.tools || [];
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        tool = _ref2[_j];
+        step.addGraphingTool({
+          index: this.index || 0,
+          datadefRef: this.getDataDefRef(runtimePage.activity),
+          annotation: this.annotations["singleLineGraphing"],
+          shape: "singleLine"
+        });
+      }
+      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      _ref3 = stepdef.responseBranches || [];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        response_def = _ref3[_k];
+        step.appendResponseBranch({
+          criterion: response_def.criterion,
+          step: this.runtimeStepsByName[response_def.step]
+        });
+      }
+      return step;
+    };
+
+    LineConstructionSequence.prototype.check_correct_answer = function() {
+      return [
+        {
+          "criterion": ["and", ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance], ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance]],
+          "step": "confirm_correct"
+        }, {
+          "criterion": ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance],
+          "step": "incorrect_answer_but_slope_correct"
+        }, {
+          "criterion": ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance],
+          "step": "incorrect_answer_but_y_intercept_correct"
+        }
+      ];
+    };
+
+    function LineConstructionSequence(_arg) {
+      var i, pane, _len, _ref;
+      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.showCrossHairs = _arg.showCrossHairs, this.showToolTipCoords = _arg.showToolTipCoords, this.showGraphGrid = _arg.showGraphGrid, this.page = _arg.page;
+      this.steps = [];
+      this.runtimeStepsByName = {};
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor["PredefinedGraphPane"]) {
+          this.graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor["TablePane"]) {
+          this.tablePane = pane;
+        }
+      }
+    }
+
+    LineConstructionSequence.prototype.appendSteps = function(runtimePage) {
+      var annotation, otherAnnotations, runtimeActivity, runtimeStep, stepdef, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _results;
+      this.annotations = {};
+      this.yAxis = this.graphPane.yAxis;
+      this.xAxis = this.graphPane.xAxis;
+      this.x_axis_name = this.xAxis.label.toLowerCase();
+      this.y_axis_name = this.yAxis.label.toLowerCase();
+      runtimeActivity = runtimePage.activity;
+      this.datadefRef = this.getDataDefRef(runtimeActivity);
+      this.tags = {};
+      this.annotations = {};
+      otherAnnotations = [
+        {
+          name: "singleLineGraphing",
+          type: "FreehandSketch"
+        }
+      ];
+      for (_i = 0, _len = otherAnnotations.length; _i < _len; _i++) {
+        annotation = otherAnnotations[_i];
+        this.annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation({
+          type: "FreehandSketch"
+        });
+      }
+      this.assemble_steps();
+      _ref = this.steps;
+      for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+        stepdef = _ref[_j];
+        runtimeStep = runtimePage.appendStep();
+        this.runtimeStepsByName[stepdef.name] = runtimeStep;
+      }
+      _ref2 = this.steps;
+      _results = [];
+      for (_k = 0, _len3 = _ref2.length; _k < _len3; _k++) {
+        stepdef = _ref2[_k];
+        _results.push(this.setupStep({
+          stepdef: stepdef,
+          runtimePage: runtimePage
+        }));
+      }
+      return _results;
+    };
+
+    LineConstructionSequence.prototype.first_question = function() {
+      return {
+        name: "question",
+        defaultBranch: "incorrect_answer_all",
+        submitButtonTitle: "Check My Answer",
+        beforeText: this.initialPrompt,
+        substitutedExpressions: [],
+        submissibilityCriterion: ["=", ["lineCount"], 1],
+        showCrossHairs: this.showCrossHairs,
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"],
+        tableAnnotations: [],
+        tools: ["graphing"],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.incorrect_answer_all = function() {
+      return {
+        name: "incorrect_answer_all",
+        defaultBranch: "incorrect_answer_all",
+        submitButtonTitle: "Check My Answer",
+        beforeText: "<b>" + this.allIncorrect + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: false,
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"],
+        tableAnnotations: [],
+        tools: ["graphing"],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.incorrect_answer_but_y_intercept_correct = function() {
+      return {
+        name: "incorrect_answer_but_y_intercept_correct",
+        defaultBranch: "incorrect_answer_all",
+        submitButtonTitle: "Check My Answer",
+        beforeText: "<b>" + this.slopeIncorrect + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: false,
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"],
+        tableAnnotations: [],
+        tools: ["graphing"],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.incorrect_answer_but_slope_correct = function() {
+      return {
+        name: "incorrect_answer_but_slope_correct",
+        defaultBranch: "incorrect_answer_all",
+        submitButtonTitle: "Check My Answer",
+        beforeText: "<b>" + this.yInterceptIncorrect + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: false,
+        showToolTipCoords: this.showToolTipCoords,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"],
+        tableAnnotations: [],
+        tools: ["graphing"],
+        responseBranches: this.check_correct_answer()
+      };
+    };
+
+    LineConstructionSequence.prototype.confirm_correct = function() {
+      return {
+        name: "confirm_correct",
+        isFinalStep: true,
+        hideSubmitButton: true,
+        beforeText: "<b>" + this.confirmCorrect + "</b>",
+        showCrossHairs: false,
+        showToolTipCoords: false,
+        showGraphGrid: this.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"]
+      };
+    };
+
+    LineConstructionSequence.prototype.assemble_steps = function() {
+      this.steps.push(this.first_question());
+      this.steps.push(this.incorrect_answer_all());
+      this.steps.push(this.incorrect_answer_but_y_intercept_correct());
+      this.steps.push(this.incorrect_answer_but_slope_correct());
+      return this.steps.push(this.confirm_correct());
+    };
+
+    return LineConstructionSequence;
 
   })();
 
@@ -2304,9 +2632,10 @@ require.define("/runtime/runtime-page.js", function (require, module, exports, _
       return this.addContextVar(new ContextVar(definition));
     };
 
-    RuntimePage.prototype.addSlopeVars = function(pointA, pointB) {
+    RuntimePage.prototype.addSlopeVars = function(pointA, pointB, tolerance) {
       var definition, _i, _len, _ref, _results;
-      _ref = this.slopeVarDefs(pointA, pointB);
+      if (tolerance == null) tolerance = 2;
+      _ref = this.slopeVarDefs(pointA, pointB, tolerance);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         definition = _ref[_i];
@@ -2315,59 +2644,51 @@ require.define("/runtime/runtime-page.js", function (require, module, exports, _
       return _results;
     };
 
-    RuntimePage.prototype.slopeVarDefs = function(pointA, pointB) {
+    RuntimePage.prototype.slopeVarDefs = function(pointA, pointB, tolerance) {
+      if (tolerance == null) tolerance = 2;
       return [
         {
           "name": "start-y",
           "value": ["coord", "y", ["listItem", 1, ["slopeToolOrder", pointA.name, pointB.name]]]
         }, {
           "name": "start-y_str",
-          "value": ["toFixedString", ["get", "start-y"], 2]
+          "value": ["toFixedString", ["get", "start-y"], tolerance]
         }, {
           "name": "end-y",
           "value": ["coord", "y", ["listItem", 2, ["slopeToolOrder", pointA.name, pointB.name]]]
         }, {
           "name": "end-y_str",
-          "value": ["toFixedString", ["get", "end-y"], 2]
+          "value": ["toFixedString", ["get", "end-y"], tolerance]
         }, {
           "name": "change-y",
           "value": ["-", ["get", "end-y"], ["get", "start-y"]]
         }, {
           "name": "change-y_str",
-          "value": ["toFixedString", ["get", "change-y"], 2]
+          "value": ["toFixedString", ["get", "change-y"], tolerance]
         }, {
           "name": "start-x",
           "value": ["coord", "x", ["listItem", 1, ["slopeToolOrder", pointA.name, pointB.name]]]
         }, {
           "name": "start-x_str",
-          "value": ["toFixedString", ["get", "start-x"], 2]
+          "value": ["toFixedString", ["get", "start-x"], tolerance]
         }, {
           "name": "end-x",
           "value": ["coord", "x", ["listItem", 2, ["slopeToolOrder", pointA.name, pointB.name]]]
         }, {
           "name": "end-x_str",
-          "value": ["toFixedString", ["get", "end-x"], 2]
+          "value": ["toFixedString", ["get", "end-x"], tolerance]
         }, {
           "name": "change-x",
           "value": ["-", ["get", "end-x"], ["get", "start-x"]]
         }, {
           "name": "change-x_str",
-          "value": ["toFixedString", ["get", "change-x"], 2]
+          "value": ["toFixedString", ["get", "change-x"], tolerance]
         }, {
           "name": "slope",
           "value": ["/", ["get", "change-y"], ["get", "change-x"]]
         }, {
           "name": "slope_str",
-          "value": ["toFixedString", ["get", "slope"], 2]
-        }, {
-          "name": "change-y-units",
-          "value": ["pluralizeUnits", "/builtins/units/meters", ["get", "change-y"]]
-        }, {
-          "name": "change-x-units",
-          "value": ["pluralizeUnits", "/builtins/units/seconds", ["get", "change-x"]]
-        }, {
-          "name": "slope-units",
-          "value": ["pluralizeUnits", "/builtins/units/meters-per-second", ["get", "slope"]]
+          "value": ["toFixedString", ["get", "slope"], tolerance]
         }
       ];
     };
@@ -2471,38 +2792,44 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addGraphPane = function(_arg) {
-      var datadefRef, index, title, xAxis, yAxis;
-      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index;
+      var datadefRef, index, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords;
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
         xAxis: xAxis,
         yAxis: yAxis,
+        showCrossHairs: showCrossHairs,
+        showGraphGrid: showGraphGrid,
+        showToolTipCoords: showToolTipCoords,
         annotations: [],
         highlightedAnnotations: [],
         toHash: function() {
-          var annotation;
+          var annotation, _ref, _ref2, _ref3;
           return {
             type: 'graph',
             title: this.title,
             xAxis: this.xAxis.getUrl(),
             yAxis: this.yAxis.getUrl(),
+            showCrossHairs: (_ref = this.showCrossHairs) != null ? _ref : void 0,
+            showGraphGrid: (_ref2 = this.showGraphGrid) != null ? _ref2 : void 0,
+            showToolTipCoords: (_ref3 = this.showToolTipCoords) != null ? _ref3 : void 0,
             annotations: (function() {
-              var _i, _len, _ref, _results;
-              _ref = this.annotations;
+              var _i, _len, _ref4, _results;
+              _ref4 = this.annotations;
               _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                annotation = _ref[_i];
+              for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                annotation = _ref4[_i];
                 _results.push(annotation.name);
               }
               return _results;
             }).call(this),
             highlightedAnnotations: (function() {
-              var _i, _len, _ref, _results;
-              _ref = this.highlightedAnnotations;
+              var _i, _len, _ref4, _results;
+              _ref4 = this.highlightedAnnotations;
               _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                annotation = _ref[_i];
+              for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                annotation = _ref4[_i];
                 _results.push(annotation.name);
               }
               return _results;
@@ -2613,6 +2940,27 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
               pane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
               uiBehavior: uiBehavior,
               annotationName: annotation.name
+            }
+          };
+        }
+      };
+    };
+
+    Step.prototype.addGraphingTool = function(_arg) {
+      var annotation, datadefRef, index, shape;
+      index = _arg.index, datadefRef = _arg.datadefRef, annotation = _arg.annotation, shape = _arg.shape;
+      return this.tools['graphing'] = {
+        index: index,
+        panes: this.panes,
+        datadefRef: datadefRef,
+        toHash: function() {
+          return {
+            name: 'graphing',
+            setup: {
+              pane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
+              shape: shape,
+              annotationName: annotation.name,
+              data: this.datadefRef.datadef.name
             }
           };
         }

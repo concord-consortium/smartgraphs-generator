@@ -107,6 +107,18 @@
                   },
                   "data": {
                     "type": ["string", "array"]
+                  },
+                  "showCrossHairs": {
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  "showGraphGrid": {
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  "showToolTipCoords": {
+                    "type": "boolean",
+                    "optional": true
                   }
                 }
               },
@@ -134,6 +146,18 @@
                   },
                   "data": {
                     "type": ["string", "array"]
+                  },
+                  "showCrossHairs": {
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  "showGraphGrid": {
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  "showToolTipCoords": {
+                    "type": "boolean",
+                    "optional": true
                   }
                 }
               },
@@ -161,6 +185,18 @@
                   },
                   "data": {
                     "type": ["string", "array"]
+                  },
+                  "showCrossHairs": {
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  "showGraphGrid": {
+                    "type": "boolean",
+                    "optional": true
+                  },
+                  "showToolTipCoords": {
+                    "type": "boolean",
+                    "optional": true
                   }
                 }
               }

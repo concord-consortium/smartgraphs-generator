@@ -38,12 +38,15 @@ exports.Step = class Step
         caption: "#{@license} #{@attribution}"
     }
 
-  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index }) ->
+  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords }) ->
     @panes[index] = {
       title,
       datadefRef,
       xAxis,
       yAxis,
+      showCrossHairs,
+      showGraphGrid,
+      showToolTipCoords,
       annotations: [],
       highlightedAnnotations: [],
       toHash: ->
@@ -51,6 +54,9 @@ exports.Step = class Step
         title:       @title
         xAxis:       @xAxis.getUrl()
         yAxis:       @yAxis.getUrl()
+        showCrossHairs:   @showCrossHairs ? undefined
+        showGraphGrid:    @showGraphGrid ? undefined
+        showToolTipCoords:@showToolTipCoords ? undefined
         annotations: annotation.name for annotation in @annotations
         highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
         data:        if @datadefRef? then [@datadefRef.datadef.name] else []
@@ -108,6 +114,20 @@ exports.Step = class Step
           pane: if @panes.length == 1 then 'single' else if @index == 0 then 'top' else 'bottom'
           uiBehavior: uiBehavior
           annotationName: annotation.name
+    }
+    
+  addGraphingTool: ({ index, datadefRef, annotation, shape}) ->
+    @tools['graphing'] = {
+      index,
+      panes: @panes,
+      datadefRef,
+      toHash: ->
+        name: 'graphing'
+        setup:
+          pane: if @panes.length == 1 then 'single' else if @index == 0 then 'top' else 'bottom'
+          shape: shape
+          annotationName: annotation.name
+          data: @datadefRef.datadef.name
     }
 
   appendResponseBranch: ({ criterion, step }) ->

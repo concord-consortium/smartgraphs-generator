@@ -1,0 +1,72 @@
+{
+  "type": "Activity",
+  "name": "Activity with a line construction tool",
+  "authorName": "Noah",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "This is the first page.",
+      "text": "( we should mandate that pages have names?)",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Line Construction Graph Pane",
+          "yLabel": "y",
+          "yUnits": null,
+          "yMin": 0.0,
+          "yMax": 10.0,
+          "xLabel": "x",
+          "xUnits": null,
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "data": [
+
+          ]
+        },
+        {
+          "type": "TablePane",
+          "title": "Line Construction Table"
+        }
+      ],
+      "sequence": {
+        "type": "LineConstructionSequence",
+        "slope": 1.0,
+        "slopeTolerance": 0.1,
+        "yIntercept": 0.0,
+        "yInterceptTolerance": 0.1,
+        "initialPrompt": "Construct a line with y-interept 0.0, with slope 1.0",
+        "confirmCorrect": "Thats Correct",
+        "slopeIncorrect": "Incorrect, your slope is wrong.",
+        "yInterceptIncorrect": "Incorrect, your y-intercept is wrong.",
+        "allIncorrect": "Incorrect. Try again.",
+        "showCrossHairs": true,
+        "showToolTipCoords": false,
+        "showGraphGrid": true
+      }
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 {AuthorPane}          = require './author-panes'
 {SlopeToolSequence}   = require './slope_tool_sequence'
+{LineConstructionSequence} = require './line_construction_sequence' 
 asObject = (s) ->
   if typeof s is 'string' 
     text: s
@@ -283,3 +284,4 @@ Sequence.classFor['MultipleChoiceWithSequentialHintsSequence'] = class MultipleC
     @appendStepsWithModifier runtimePage, modifierForSequenceType
 
 Sequence.classFor['SlopeToolSequence'] = SlopeToolSequence
+Sequence.classFor['LineConstructionSequence'] = LineConstructionSequence
