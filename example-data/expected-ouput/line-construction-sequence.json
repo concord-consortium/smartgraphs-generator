@@ -7,7 +7,7 @@
     "url": "/shared/activity-with-a-line-construction-tool",
     "owner": "shared",
     "pages": [
-      "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1"
+      "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page"
     ],
     "axes": [
       "/shared/activity-with-a-line-construction-tool/axes/1",
@@ -17,26 +17,26 @@
   },
   "pages": [
     {
-      "name": "Construct a Line: Page 1",
-      "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
+      "name": "This is the first page.",
+      "url": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page",
       "activity": "/shared/activity-with-a-line-construction-tool",
       "index": 1,
-      "introText": "On this page, students will be asked to construct a line.",
+      "introText": "( we should mandate that pages have names?)",
       "steps": [
-        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/1",
-        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
-        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3",
-        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4",
-        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+        "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/1",
+        "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/2",
+        "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/3",
+        "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/4",
+        "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/5"
       ],
-      "firstStep": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/1",
+      "firstStep": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/1",
       "contextVars": []
     }
   ],
   "steps": [
     {
-      "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/1",
-      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
+      "url": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/1",
+      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page",
       "beforeText": "Construct a line with y-interept 0.0, with slope 1.0",
       "paneConfig": "split",
       "panes": {
@@ -47,7 +47,7 @@
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
           "showCrossHairs": true,
           "showGraphGrid": true,
-          "showToolTipCoords": true,
+          "showToolTipCoords": false,
           "annotations": [
             "freehand-sketch-1"
           ],
@@ -75,7 +75,7 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
+      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/2",
       "submissibilityCriterion": [
         "=",
         [
@@ -108,7 +108,7 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/5"
         },
         {
           "criterion": [
@@ -121,7 +121,7 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/4"
         },
         {
           "criterion": [
@@ -134,15 +134,15 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/3"
         }
       ],
       "isFinalStep": false,
       "substitutedExpressions": []
     },
     {
-      "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
-      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
+      "url": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/2",
+      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page",
       "beforeText": "<b>Incorrect. Try again.</b><p>Construct a line with y-interept 0.0, with slope 1.0</p>",
       "paneConfig": "split",
       "panes": {
@@ -153,7 +153,7 @@
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
           "showCrossHairs": false,
           "showGraphGrid": true,
-          "showToolTipCoords": true,
+          "showToolTipCoords": false,
           "annotations": [
             "freehand-sketch-1"
           ],
@@ -181,7 +181,7 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
+      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/2",
       "submissibilityCriterion": [
         "or",
         [
@@ -220,7 +220,7 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/5"
         },
         {
           "criterion": [
@@ -233,7 +233,7 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/4"
         },
         {
           "criterion": [
@@ -246,15 +246,15 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/3"
         }
       ],
       "isFinalStep": false,
       "substitutedExpressions": []
     },
     {
-      "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3",
-      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
+      "url": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/3",
+      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page",
       "beforeText": "<b>Incorrect, your slope is wrong.</b><p>Construct a line with y-interept 0.0, with slope 1.0</p>",
       "paneConfig": "split",
       "panes": {
@@ -265,7 +265,7 @@
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
           "showCrossHairs": false,
           "showGraphGrid": true,
-          "showToolTipCoords": true,
+          "showToolTipCoords": false,
           "annotations": [
             "freehand-sketch-1"
           ],
@@ -293,7 +293,7 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
+      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/2",
       "submissibilityCriterion": [
         "or",
         [
@@ -332,7 +332,7 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/5"
         },
         {
           "criterion": [
@@ -345,7 +345,7 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/4"
         },
         {
           "criterion": [
@@ -358,15 +358,15 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/3"
         }
       ],
       "isFinalStep": false,
       "substitutedExpressions": []
     },
     {
-      "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4",
-      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
+      "url": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/4",
+      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page",
       "beforeText": "<b>Incorrect, your y-intercept is wrong.</b><p>Construct a line with y-interept 0.0, with slope 1.0</p>",
       "paneConfig": "split",
       "panes": {
@@ -377,7 +377,7 @@
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
           "showCrossHairs": false,
           "showGraphGrid": true,
-          "showToolTipCoords": true,
+          "showToolTipCoords": false,
           "annotations": [
             "freehand-sketch-1"
           ],
@@ -405,7 +405,7 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
+      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/2",
       "submissibilityCriterion": [
         "or",
         [
@@ -444,7 +444,7 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/5"
         },
         {
           "criterion": [
@@ -457,7 +457,7 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/4"
         },
         {
           "criterion": [
@@ -470,15 +470,15 @@
             ],
             0.1
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/3"
         }
       ],
       "isFinalStep": false,
       "substitutedExpressions": []
     },
     {
-      "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5",
-      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
+      "url": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page/step/5",
+      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-this-is-the-first-page",
       "beforeText": "<b>Thats Correct</b>",
       "paneConfig": "split",
       "panes": {
