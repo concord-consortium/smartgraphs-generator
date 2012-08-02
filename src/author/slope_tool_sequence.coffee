@@ -14,9 +14,12 @@ exports.SlopeToolSequence = class SlopeToolSequence
   
   ending_text: () ->
     "#{@xMax}#{if @xUnits.length > 0 then @xUnits else " for #{@x_axis_name}"}"
+  
+  starting_text: () ->
+    "#{@xMin}#{if @xUnits.length > 0 then @xUnits}"
 
   click_ok_text: () ->
-    """<p>Then click "OK". </p>"""
+    "<p>Then click \"OK\". </p>"
 
   incorrect_text: () ->
     "<p><strong>Incorrect.</strong></p>"
@@ -29,11 +32,21 @@ exports.SlopeToolSequence = class SlopeToolSequence
         
       """
     else if (@studentMustSelectEndpointsOfRange)
-      """
-        #{if first_point then "an" else "a second"} 
-        <strong><em>endpoint</em></strong> of the range 
-        #{@xMin} through #{@ending_text()}.
-      """
+      # "Click on a point at one end of the interval from 0 hours to 5 hours."
+      if first_point
+        """
+          a point at 
+          <strong><em>one end</em></strong>  
+          of the interval from
+          #{@starting_text()} to #{@ending_text()}.
+        """
+      else
+        """
+          the point at 
+          <strong><em>the other end</em></strong>  
+          of the interval from
+          #{@starting_text()} to #{@ending_text()}.
+        """
     else
       """
         #{if first_point then "a" else "a second"} 
@@ -42,7 +55,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
   
   select_first_point_text: ()->
     """
-      <p> Select #{@range_text()} </p>
+      <p> Click on #{@range_text()} </p>
       #{@click_ok_text()}
     """
     
@@ -57,7 +70,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
   select_second_point_text: (first_time=true) ->
     """
-      <p>Now select
+      <p>Now click on
       #{@range_text(false)}</p>
       #{@click_ok_text()}
     """
@@ -154,14 +167,14 @@ exports.SlopeToolSequence = class SlopeToolSequence
     @tolerance,
     @page
     }) ->
-      @precision = 2; # TODO calculate or lookup precision from DB.
-      @slopeVariableName = "slope" unless @slopeVariableName and @slopeVariableName.length > 0
-      @runtimeStepsByName = {}
-      @slope = (@yMax - @yMin) / (@xMax - @xMin)
-      @steps=[]
-      for pane, i in @page.panes || []
-        @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
-        @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
+    @precision = 2; # TODO calculate or lookup precision from DB.
+    @slopeVariableName = "slope" unless @slopeVariableName and @slopeVariableName.length > 0
+    @runtimeStepsByName = {}
+    @slope = (@yMax - @yMin) / (@xMax - @xMin)
+    @steps=[]
+    for pane, i in @page.panes || []
+      @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
+      @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
 
 
   getRequiresGraphOrTable: ->

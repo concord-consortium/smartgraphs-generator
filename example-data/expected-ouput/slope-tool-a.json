@@ -295,7 +295,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/2",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Select a \npoint between 2 and 9 seconds. </p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Click on a \npoint between 2 and 9 seconds. </p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -362,7 +362,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/3",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na \npoint between 2 and 9 seconds.\nTry again.</p>\n<p> Select a \npoint between 2 and 9 seconds. </p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na \npoint between 2 and 9 seconds.\nTry again.</p>\n<p> Click on a \npoint between 2 and 9 seconds. </p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -429,7 +429,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/4",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p>Now select\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -506,7 +506,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/5",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now select\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -583,7 +583,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/6",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now select\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -660,7 +660,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/7",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na \npoint between 2 and 9 seconds.  \nTry again.</p>\n<p>Now select\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na \npoint between 2 and 9 seconds.  \nTry again.</p>\n<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
