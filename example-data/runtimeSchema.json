@@ -108,6 +108,9 @@
                   "data": {
                     "type": ["string", "array"]
                   },
+                  "datarefs": {
+                    "type": ["string", "array"]
+                  },
                   "showCrossHairs": {
                     "type": "boolean",
                     "optional": true
@@ -147,6 +150,9 @@
                   "data": {
                     "type": ["string", "array"]
                   },
+                  "datarefs": {
+                    "type": ["string", "array"]
+                  },
                   "showCrossHairs": {
                     "type": "boolean",
                     "optional": true
@@ -184,6 +190,9 @@
                     "type": "array"
                   },
                   "data": {
+                    "type": ["string", "array"]
+                  },
+                  "datarefs": {
                     "type": ["string", "array"]
                   },
                   "showCrossHairs": {
@@ -326,6 +335,56 @@
                       "type": "number"
                     }
                   }
+                },
+                "line-type": {
+                  "type": "string"
+                },
+                "point-type": {
+                  "type": "string"
+                },
+                "lineSnapDistance": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "datarefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["LinearEquation"]
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "activity": {
+                  "type": "string"
+                },
+                "datadefName": {
+                  "type": "string"
+                },
+                "expressionForm": {
+                  "type": "string"
+                },
+                "xInterval": {
+                  "type": "number"
+                },
+                "params": {
+                  "type": "object"
                 }
               }
             }
