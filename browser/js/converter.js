@@ -956,7 +956,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function GraphPane(_arg) {
       var includeAnnotationsFrom;
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords;
       this.annotationSources = includeAnnotationsFrom != null ? includeAnnotationsFrom.map(function(source) {
         var page, pane, _ref;
         _ref = (source.match(/^page\/(\d)+\/pane\/(\d)+$/)).slice(1, 3).map(function(s) {
@@ -1013,7 +1013,10 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         datadefRef: this.datadefRef,
         xAxis: this.xAxis,
         yAxis: this.yAxis,
-        index: this.index
+        index: this.index,
+        showCrossHairs: this.showCrossHairs,
+        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.showToolTipCoords
       });
       return (_ref = this.annotationSources) != null ? _ref.forEach(function(source) {
         var page, pages, pane;
@@ -2013,7 +2016,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
     function LineConstructionSequence(_arg) {
       var i, pane, _len, _ref;
-      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.showCrossHairs = _arg.showCrossHairs, this.showToolTipCoords = _arg.showToolTipCoords, this.showGraphGrid = _arg.showGraphGrid, this.page = _arg.page;
+      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.page = _arg.page;
       this.steps = [];
       this.runtimeStepsByName = {};
       _ref = this.page.panes || [];
@@ -2078,9 +2081,9 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         beforeText: this.initialPrompt,
         substitutedExpressions: [],
         submissibilityCriterion: ["=", ["lineCount"], 1],
-        showCrossHairs: this.showCrossHairs,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showCrossHairs: this.graphPane.showCrossHairs,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2097,8 +2100,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         substitutedExpressions: [],
         submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
         showCrossHairs: false,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2115,8 +2118,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         substitutedExpressions: [],
         submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
         showCrossHairs: false,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2133,8 +2136,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         substitutedExpressions: [],
         submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
         showCrossHairs: false,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2150,7 +2153,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         beforeText: "<b>" + this.confirmCorrect + "</b>",
         showCrossHairs: false,
         showToolTipCoords: false,
-        showGraphGrid: this.showGraphGrid,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"]
       };
     };

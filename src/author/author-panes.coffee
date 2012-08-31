@@ -12,7 +12,7 @@ AuthorPane = exports.AuthorPane =
 
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks, includeAnnotationsFrom }) ->
+  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords}) ->
     @annotationSources = includeAnnotationsFrom?.map (source) ->
       [page, pane] = (source.match /^page\/(\d)+\/pane\/(\d)+$/)[1..2].map (s) -> parseInt(s, 10) - 1
       { page, pane }
@@ -31,7 +31,7 @@ class GraphPane
       runtimeActivity.defineDatadef dataKey, datadef
 
   addToStep: (step) ->
-    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index }
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords }
 
     @annotationSources?.forEach (source) =>
       pages = @page.activity.pages

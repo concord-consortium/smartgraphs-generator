@@ -75,9 +75,6 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @slopeIncorrect,
     @yInterceptIncorrect,
     @allIncorrect,
-    @showCrossHairs,
-    @showToolTipCoords,
-    @showGraphGrid,
     @page
     }) ->
     @steps = []
@@ -122,9 +119,9 @@ exports.LineConstructionSequence = class LineConstructionSequence
       beforeText:                   @initialPrompt
       substitutedExpressions:       []
       submissibilityCriterion:      ["=", ["lineCount"], 1]
-      showCrossHairs:               @showCrossHairs
-      showToolTipCoords :           @showToolTipCoords
-      showGraphGrid     :           @showGraphGrid
+      showCrossHairs:               @graphPane.showCrossHairs
+      showToolTipCoords :           @graphPane.showToolTipCoords
+      showGraphGrid     :           @graphPane.showGraphGrid
       graphAnnotations:             ["singleLineGraphing"]
       tableAnnotations:             []
       tools:                        ["graphing"]
@@ -140,8 +137,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
       substitutedExpressions:      []
       submissibilityCriterion:     ["or", ["pointMoved", @datadefRef.datadef.name, 1 ], ["pointMoved", @datadefRef.datadef.name, 2 ]]
       showCrossHairs:              false
-      showToolTipCoords :          @showToolTipCoords
-      showGraphGrid     :          @showGraphGrid
+      showToolTipCoords :          @graphPane.showToolTipCoords
+      showGraphGrid     :          @graphPane.showGraphGrid
       graphAnnotations:            ["singleLineGraphing"]
       tableAnnotations:            []
       tools:                       ["graphing"]
@@ -156,8 +153,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
       substitutedExpressions:      []
       submissibilityCriterion:     ["or", ["pointMoved", @datadefRef.datadef.name, 1 ], ["pointMoved", @datadefRef.datadef.name, 2 ]]
       showCrossHairs:              false
-      showToolTipCoords :          @showToolTipCoords
-      showGraphGrid     :          @showGraphGrid
+      showToolTipCoords :          @graphPane.showToolTipCoords
+      showGraphGrid     :          @graphPane.showGraphGrid
       graphAnnotations  :          ["singleLineGraphing"]
       tableAnnotations:            []
       tools:                       ["graphing"]
@@ -172,8 +169,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
       substitutedExpressions:     []
       submissibilityCriterion:    ["or", ["pointMoved", @datadefRef.datadef.name, 1 ], ["pointMoved", @datadefRef.datadef.name, 2 ]]  
       showCrossHairs:             false
-      showToolTipCoords:          @showToolTipCoords
-      showGraphGrid    :          @showGraphGrid
+      showToolTipCoords:          @graphPane.showToolTipCoords
+      showGraphGrid    :          @graphPane.showGraphGrid
       graphAnnotations:           ["singleLineGraphing"]
       tableAnnotations:           []
       tools:                      ["graphing"]
@@ -187,7 +184,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
       beforeText:             "<b>#{@confirmCorrect}</b>"
       showCrossHairs:         false
       showToolTipCoords:      false
-      showGraphGrid:          @showGraphGrid
+      showGraphGrid:          @graphPane.showGraphGrid
       graphAnnotations  :     ["singleLineGraphing"]
     }
    
