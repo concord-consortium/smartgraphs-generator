@@ -14,9 +14,9 @@ task 'build:browser', "build the browserified javascript from javascript in lib/
   run 'nbin/browserify', ['lib/converter.js', '-o', 'browser/js/converter.js'], cb
 
 task 'build', "build javascript and browserified test page", build = (cb) ->
-  buildjs ->
-    buildBrowser ->
-      coffeelint(cb)
+  coffeelint ->
+    buildjs ->
+      buildBrowser(cb)
 
 task 'testpage', "build and open test page", testpage = (cb) ->
   build ->

@@ -141,7 +141,7 @@ exports.RuntimeActivity = class RuntimeActivity
     page
 
   toHash: ->
-    flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args);
+    flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args)
 
     _id: "#{slugify @name}.df6"
     _rev: 1
