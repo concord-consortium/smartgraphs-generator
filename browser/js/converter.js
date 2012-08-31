@@ -3359,7 +3359,7 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
         url: this.getUrl(),
         name: this.name,
         activity: this.activity.getUrl(),
-        datadefname: this.datadefname,
+        datadefName: this.datadefname,
         expressionForm: this.expressionForm,
         xInterval: this.xInterval,
         params: this.params

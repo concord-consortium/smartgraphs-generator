@@ -18,7 +18,7 @@ exports.DataRef = class DataRef
     url:            @getUrl()
     name:           @name
     activity:       @activity.getUrl()
-    datadefname:    @datadefname
+    datadefName:    @datadefname
     expressionForm: @expressionForm
     xInterval:      @xInterval
     params:         @params
