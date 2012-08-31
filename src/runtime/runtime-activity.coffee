@@ -17,6 +17,7 @@
 {Axis}        = require './axis'
 {RuntimeUnit} = require './runtime-unit'
 {Datadef}     = require './datadef'
+{DataRef}     = require './dataref'
 {Tag}         = require './tag'
 
 {AnnotationCollection, Annotation, HighlightedPoint, SegmentOverlay} = require './annotations'
@@ -34,6 +35,9 @@ exports.RuntimeActivity = class RuntimeActivity
 
     @datadefRefs = {}
     @nDatadefs   = 0
+
+    @dataRefRefs = {}
+    @nDataRefs  = 0
 
     @annotations  = {}
     @annotationCounts = {}      # {"HighlightedPoints": 3, "SegmentOverlays": 6}
@@ -66,10 +70,17 @@ exports.RuntimeActivity = class RuntimeActivity
     unit.activity = this
     unit
 
-  createDatadef: ({ points, xLabel, xUnitsRef, yLabel, yUnitsRef }) ->
-    datadef = new Datadef { points, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs }
+  createDatadef: ({ points, xLabel, xUnitsRef, yLabel, yUnitsRef, pointType, lineType, lineSnapDistance }) ->
+    datadef = new Datadef { points, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs, pointType, lineType, lineSnapDistance}
     datadef.activity = this
     datadef
+
+  createDataRef: ({ datadefname, expressionType, expressionForm, xInterval, params, index }) ->
+    dataRef = new DataRef { datadefname, expressionType, expressionForm, xInterval, params, index: ++@nDataRefs }
+    dataRef.activity = this
+    @dataRefRefs[expressionType]?= []
+    @dataRefRefs[expressionType].push dataRef
+    dataRef
 
   ###
     Forward references. Some of this is repetitious and should be factored out.
@@ -161,6 +172,7 @@ exports.RuntimeActivity = class RuntimeActivity
     responseTemplates: template.toHash() for own i, template of @responseTemplates
     axes:              @axes[url].toHash() for url of @axes
     datadefs:          Datadef.serializeDatadefs(@datadefRefs[key].datadef for key of @datadefRefs)
+    datarefs:          if @nDataRefs isnt 0 then DataRef.serializeDataRefs @dataRefRefs else undefined
     tags:              tag.toHash() for tag in @tags
     annotations:       Annotation.serializeAnnotations @annotations
     variables:         []
