@@ -358,7 +358,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["LinearEquation"]
+            "enum": ["LinearEquation", "SinusoidalEquation"]
           },
           "records": {
             "type": "array",
@@ -378,6 +378,9 @@
                   "type": "string"
                 },
                 "expressionForm": {
+                  "type": "string"
+                },
+                "angularForm": {
                   "type": "string"
                 },
                 "xInterval": {

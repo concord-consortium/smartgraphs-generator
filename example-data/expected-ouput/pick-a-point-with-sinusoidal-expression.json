@@ -41,7 +41,7 @@
       "panes": {
         "top": {
           "type": "graph",
-          "title": "y = 0.5x + 5",
+          "title": "y = sin(2*x) + 5",
           "xAxis": "/shared/pick-a-point-on-a-line-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-on-a-line-sequence/axes/2",
           "showCrossHairs": true,
@@ -102,7 +102,7 @@
       "panes": {
         "top": {
           "type": "graph",
-          "title": "y = 0.5x + 5",
+          "title": "y = sin(2*x) + 5",
           "xAxis": "/shared/pick-a-point-on-a-line-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-on-a-line-sequence/axes/2",
           "showCrossHairs": true,
@@ -163,7 +163,7 @@
       "panes": {
         "top": {
           "type": "graph",
-          "title": "y = 0.5x + 5",
+          "title": "y = sin(2*x) + 5",
           "xAxis": "/shared/pick-a-point-on-a-line-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-on-a-line-sequence/axes/2",
           "showCrossHairs": true,
@@ -225,7 +225,7 @@
       "panes": {
         "top": {
           "type": "graph",
-          "title": "y = 0.5x + 5",
+          "title": "y = sin(2*x) + 5",
           "xAxis": "/shared/pick-a-point-on-a-line-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-on-a-line-sequence/axes/2",
           "showCrossHairs": true,
@@ -260,7 +260,7 @@
       "panes": {
         "top": {
           "type": "graph",
-          "title": "y = 0.5x + 5",
+          "title": "y = sin(2*x) + 5",
           "xAxis": "/shared/pick-a-point-on-a-line-sequence/axes/1",
           "yAxis": "/shared/pick-a-point-on-a-line-sequence/axes/2",
           "showCrossHairs": true,
@@ -327,18 +327,21 @@
   ],
   "datarefs": [
     {
-      "type": "LinearEquation",
+      "type": "SinusoidalEquation",
       "records": [
         {
           "url": "/shared/pick-a-point-on-a-line-sequence/datarefs/dataref-1",
           "name": "dataref-1",
           "activity": "/shared/pick-a-point-on-a-line-sequence",
           "datadefName": "datadef-1",
-          "expressionForm": "slope-intercept",
-          "xInterval": 0.5,
+          "expressionForm": "sine-cosine",
+          "angularFunction": "sine",
+          "xInterval": 0.01,
           "params": {
-            "slope": 0.5,
-            "yIntercept": 5
+            "amplitude": 1,
+            "frequency": 2,
+            "phase": 0,
+            "centerAmplitude": 5
           }
         }
       ]
