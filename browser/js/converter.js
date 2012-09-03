@@ -1067,6 +1067,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
             expressionType: expressionData.type,
             xInterval: this.xPrecision,
             expressionForm: expressionData.form,
+            angularFunction: expressionData.angularFunction,
             params: expressionData.params,
             datadefname: this.datadefRef.datadef.name
           });
@@ -1220,7 +1221,7 @@ require.define("/author/expressionParser.js", function (require, module, exports
   this.expressionParser = function() {};
 
   this.expressionParser.parseExpression = function(expression) {
-    var expressionData, linearConstantRegExPattern, linearRegExPattern, params, regExpConstant, regExpNum, regExpNumberMultiplier, regExpSpace, strResult;
+    var expressionData, linearConstantRegExPattern, linearRegExPattern, params, regExpConstant, regExpNum, regExpNumberMultiplier, regExpSpace, sineRegExPattern, strResult;
     this.expression = expression;
     expressionData = {};
     params = {};
@@ -1232,6 +1233,7 @@ require.define("/author/expressionParser.js", function (require, module, exports
     strResult = "";
     linearConstantRegExPattern = new RegExp('^y=([+-]?' + regExpNum + ')$', 'i');
     linearRegExPattern = new RegExp('^y=(?:(' + regExpNumberMultiplier + ')?x)(' + regExpConstant + ')?$', 'i');
+    sineRegExPattern = new RegExp('^y=(' + regExpNumberMultiplier + ')?sin\\((' + regExpNumberMultiplier + ')?x(' + regExpConstant + ')?\\)(' + regExpConstant + ')?$', 'i');
     if (linearConstantRegExPattern.test(this.expression)) {
       expressionData['type'] = 'LinearEquation';
       expressionData['form'] = 'slope-intercept';
@@ -1251,6 +1253,38 @@ require.define("/author/expressionParser.js", function (require, module, exports
         params['yIntercept'] = 0;
       } else {
         params['yIntercept'] = parseFloat(RegExp.$2);
+      }
+    } else if (sineRegExPattern.test(this.expression)) {
+      expressionData['type'] = 'SinusoidalEquation';
+      expressionData['form'] = 'sine-cosine';
+      expressionData['angularFunction'] = 'sine';
+      if (parseFloat(RegExp.$1) || parseFloat(RegExp.$1) === 0) {
+        params['amplitude'] = parseFloat(RegExp.$1);
+      } else if (RegExp.$1 === "-") {
+        params['amplitude'] = -1;
+      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
+        params['amplitude'] = 1;
+      }
+      if (parseFloat(RegExp.$2) || parseFloat(RegExp.$2) === 0) {
+        params['frequency'] = parseFloat(RegExp.$2);
+      } else if (RegExp.$2 === "-") {
+        params['frequency'] = -1;
+      } else if (RegExp.$2 === "" || RegExp.$2 === "+") {
+        params['frequency'] = 1;
+      }
+      if (parseFloat(RegExp.$3) || parseFloat(RegExp.$3) === 0) {
+        params['phase'] = parseFloat(RegExp.$3);
+      } else if (RegExp.$3 === "-") {
+        params['phase'] = 0;
+      } else if (RegExp.$3 === "") {
+        params['phase'] = 0;
+      }
+      if (parseFloat(RegExp.$4) || parseFloat(RegExp.$4) === 0) {
+        params['centerAmplitude'] = parseFloat(RegExp.$4);
+      } else if (RegExp.$4 === "-") {
+        params['centerAmplitude'] = 0;
+      } else if (RegExp.$4 === "") {
+        params['centerAmplitude'] = 0;
       }
     } else {
       expressionData['type'] = 'not supported';
@@ -2398,12 +2432,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDataRef = function(_arg) {
-      var dataRef, datadefname, expressionForm, expressionType, index, params, xInterval, _base;
-      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index;
+      var angularFunction, dataRef, datadefname, expressionForm, expressionType, index, params, xInterval, _base;
+      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index;
       dataRef = new DataRef({
         datadefname: datadefname,
         expressionType: expressionType,
         expressionForm: expressionForm,
+        angularFunction: angularFunction,
         xInterval: xInterval,
         params: params,
         index: ++this.nDataRefs
@@ -3346,7 +3381,7 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
     };
 
     function DataRef(_arg) {
-      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expressionForm = _arg.expressionForm, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index;
+      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index;
       this.name = "dataref-" + this.index;
     }
 
@@ -3361,6 +3396,7 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
         activity: this.activity.getUrl(),
         datadefName: this.datadefname,
         expressionForm: this.expressionForm,
+        angularFunction: this.angularFunction,
         xInterval: this.xInterval,
         params: this.params
       };

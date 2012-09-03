@@ -62,11 +62,12 @@ AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends G
       expressionData = expressionParser.parseExpression(@expression)
       if expressionData.type? and expressionData.type isnt "not supported"
         @dataRef = runtimeActivity.createDataRef { 
-          expressionType: expressionData.type,
-          xInterval: @xPrecision,
-          expressionForm: expressionData.form,
-          params: expressionData.params,
-          datadefname: @datadefRef.datadef.name
+          expressionType:  expressionData.type,
+          xInterval:       @xPrecision,
+          expressionForm:  expressionData.form,
+          angularFunction: expressionData.angularFunction,
+          params:          expressionData.params,
+          datadefname:     @datadefRef.datadef.name
         }
   addToStep: (step) ->
     super

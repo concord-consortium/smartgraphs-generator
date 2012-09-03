@@ -8,17 +8,18 @@ exports.DataRef = class DataRef
         records: (dataRef.toHash() for dataRef in dataRefOfOneType)
     ret
 
-  constructor: ({ @datadefname, @expressionType, @expressionForm, @xInterval, @params, @index }) ->
+  constructor: ({ @datadefname, @expressionType, @expressionForm, @angularFunction, @xInterval, @params, @index }) ->
     @name = "dataref-#{@index}"
 
   getUrl: ->
     "#{@activity.getUrl()}/datarefs/#{@name}"
 
   toHash: ->
-    url:            @getUrl()
-    name:           @name
-    activity:       @activity.getUrl()
-    datadefName:    @datadefname
-    expressionForm: @expressionForm
-    xInterval:      @xInterval
-    params:         @params
+    url:             @getUrl()
+    name:            @name
+    activity:        @activity.getUrl()
+    datadefName:     @datadefname
+    expressionForm:  @expressionForm
+    angularFunction: @angularFunction
+    xInterval:       @xInterval
+    params:          @params
