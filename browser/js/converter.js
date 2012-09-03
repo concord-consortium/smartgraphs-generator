@@ -1246,7 +1246,7 @@ require.define("/author/expressionParser.js", function (require, module, exports
         params['slope'] = parseFloat(RegExp.$1);
       } else if (RegExp.$1 === "-") {
         params['slope'] = -1;
-      } else if (RegExp.$1 === "") {
+      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
         params['slope'] = 1;
       }
       if (RegExp.$2 === "") {

@@ -26,7 +26,7 @@
       params['slope'] = parseFloat(RegExp.$1)
     else if RegExp.$1 is "-"
       params['slope'] = -1
-    else if RegExp.$1 is ""
+    else if RegExp.$1 is "" or RegExp.$1 is "+" 
       params['slope'] =  1
     if RegExp.$2 is ""
       params['yIntercept'] = 0
