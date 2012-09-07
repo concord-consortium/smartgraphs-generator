@@ -7,6 +7,9 @@ option '-j', '--junit', "When running tests, generate a junit XML report"
 task 'coffeelint', "check src/ style which helps to keep CoffeeScript code clean and consistent", coffeelint = (cb) ->
   run 'nbin/coffeelint', ['-f', 'coffeelint-config.json', '-r', 'src/'], cb
 
+task 'coffeelint_spec', "check spec/ style which helps to keep CoffeeScript code clean and consistent", coffeelint_spec = (cb) ->
+  run 'nbin/coffeelint', ['-f', 'coffeelint-config.json', '-r', 'spec/'], cb
+
 task 'build:js', "build the smartgraphs-generator javascript in lib/ from coffeescript in src/", buildjs = (cb) ->
   run 'nbin/coffee', ['-o', 'lib/', '-c', 'src/'], cb
 
@@ -29,7 +32,8 @@ task 'test', "run all Jasmine spec tests in spec/", test = ({quiet, junit}) ->
   options = ['--coffee', 'spec']
   options.unshift '--verbose' unless quiet?
   options.unshift '--junitreport' if junit?
-  run 'nbin/jasmine-node', options
+  coffeelint_spec ->  
+    run 'nbin/jasmine-node', options
 
 task 'build_st_tests', "automatical build tests", build_st_tests = (cb) ->
   make_slope_tool_tests()

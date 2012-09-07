@@ -1,7 +1,7 @@
 converter = require '../lib/converter'
 fs        = require 'fs'
 path      = require 'path'
-exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data');
+exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data')
 
 describe "the converter", ->
 
