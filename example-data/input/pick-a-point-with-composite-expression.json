@@ -50,7 +50,7 @@
 			"correctAnswerRange": {
 				"xMin": 10.0,
 				"yMin": null,
-				"xMax": 30.0,
+				"xMax": 20.0,
 				"yMax": null
 			},
 			"giveUp": {
