@@ -1,6 +1,6 @@
 	{
 	  "type": "Activity",
-	  "name": "Pick A Point On A Line Sequence",
+	  "name": "Pick A Point With Sinusoidal Expression",
 	  "pages": [
 		{
 		  "type": "Page",
@@ -49,9 +49,9 @@
 			},
 			"correctAnswerRange": {
 				"xMin": 1.0,
-				"yMin": "null",
-				"xMax": 3.0,
-				"yMax": "null"
+				"yMin": null,
+				"xMax": 2.0,
+				"yMax": null
 			},
 			"giveUp": {
 			  "text": "If you look carefully, ....",

@@ -49,9 +49,9 @@
 			},
 			"correctAnswerRange": {
 				"xMin": 1.0,
-				"yMin": "null",
-				"xMax": 3.0,
-				"yMax": "null"
+				"yMin": null,
+				"xMax": 2.0,
+				"yMax": null
 			},
 			"giveUp": {
 			  "text": "If you look carefully, ....",
