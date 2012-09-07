@@ -65,6 +65,7 @@ AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends G
           expressionType:  expressionData.type,
           xInterval:       @xPrecision,
           expressionForm:  expressionData.form,
+          expression:      @expression 
           angularFunction: expressionData.angularFunction,
           params:          expressionData.params,
           datadefname:     @datadefRef.datadef.name

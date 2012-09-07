@@ -1067,6 +1067,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
             expressionType: expressionData.type,
             xInterval: this.xPrecision,
             expressionForm: expressionData.form,
+            expression: this.expression,
             angularFunction: expressionData.angularFunction,
             params: expressionData.params,
             datadefname: this.datadefRef.datadef.name
@@ -1286,8 +1287,10 @@ require.define("/author/expressionParser.js", function (require, module, exports
       } else if (RegExp.$4 === "") {
         params['centerAmplitude'] = 0;
       }
-    } else {
+    } else if (this.expression === "") {
       expressionData['type'] = 'not supported';
+    } else {
+      expressionData['type'] = 'CompositeEquation';
     }
     expressionData['params'] = params;
     return expressionData;
@@ -2432,12 +2435,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDataRef = function(_arg) {
-      var angularFunction, dataRef, datadefname, expressionForm, expressionType, index, params, xInterval, _base;
-      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index;
+      var angularFunction, dataRef, datadefname, expression, expressionForm, expressionType, index, params, xInterval, _base;
+      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index;
       dataRef = new DataRef({
         datadefname: datadefname,
         expressionType: expressionType,
         expressionForm: expressionForm,
+        expression: expression,
         angularFunction: angularFunction,
         xInterval: xInterval,
         params: params,
@@ -3381,7 +3385,7 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
     };
 
     function DataRef(_arg) {
-      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index;
+      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expression = _arg.expression, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index;
       this.name = "dataref-" + this.index;
     }
 
@@ -3396,6 +3400,7 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
         activity: this.activity.getUrl(),
         datadefName: this.datadefname,
         expressionForm: this.expressionForm,
+        expression: this.expressionType === 'CompositeEquation' ? this.expression : void 0,
         angularFunction: this.angularFunction,
         xInterval: this.xInterval,
         params: this.params

@@ -8,7 +8,7 @@ exports.DataRef = class DataRef
         records: (dataRef.toHash() for dataRef in dataRefOfOneType)
     ret
 
-  constructor: ({ @datadefname, @expressionType, @expressionForm, @angularFunction, @xInterval, @params, @index }) ->
+  constructor: ({ @datadefname, @expressionType, @expression, @expressionForm, @angularFunction, @xInterval, @params, @index }) ->
     @name = "dataref-#{@index}"
 
   getUrl: ->
@@ -20,6 +20,7 @@ exports.DataRef = class DataRef
     activity:        @activity.getUrl()
     datadefName:     @datadefname
     expressionForm:  @expressionForm
+    expression:      if @expressionType is 'CompositeEquation' then @expression else undefined
     angularFunction: @angularFunction
     xInterval:       @xInterval
     params:          @params

@@ -75,8 +75,8 @@ exports.RuntimeActivity = class RuntimeActivity
     datadef.activity = this
     datadef
 
-  createDataRef: ({ datadefname, expressionType, expressionForm, angularFunction, xInterval, params, index }) ->
-    dataRef = new DataRef { datadefname, expressionType, expressionForm, angularFunction, xInterval, params, index: ++@nDataRefs }
+  createDataRef: ({ datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index }) ->
+    dataRef = new DataRef { datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index: ++@nDataRefs }
     dataRef.activity = this
     @dataRefRefs[expressionType]?= []
     @dataRefRefs[expressionType].push dataRef

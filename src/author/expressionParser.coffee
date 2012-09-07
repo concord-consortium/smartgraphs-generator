@@ -19,6 +19,7 @@
     expressionData['form'] = 'slope-intercept'
     params['slope'] = 0
     params['yIntercept'] = parseFloat(RegExp.$1)
+
   else if linearRegExPattern.test(@expression)
     expressionData['type'] = 'LinearEquation'
     expressionData['form'] = 'slope-intercept'
@@ -32,6 +33,7 @@
       params['yIntercept'] = 0
     else
       params['yIntercept'] = parseFloat(RegExp.$2)
+
   else if sineRegExPattern.test(@expression)
     expressionData['type'] = 'SinusoidalEquation'
     expressionData['form'] = 'sine-cosine'
@@ -49,7 +51,7 @@
       params['frequency'] = -1
     else if RegExp.$2 is "" or RegExp.$2 is "+"
       params['frequency'] = 1
-    
+
     if parseFloat(RegExp.$3) or parseFloat(RegExp.$3) is 0
       params['phase'] = parseFloat(RegExp.$3)
     else if RegExp.$3 is "-"
@@ -63,8 +65,12 @@
       params['centerAmplitude'] = 0
     else if RegExp.$4 is ""
       params['centerAmplitude'] = 0
-  else
+
+  else if @expression is ""
     expressionData['type'] = 'not supported'
+
+  else
+    expressionData['type'] = 'CompositeEquation'
 
   expressionData['params'] = params
 
