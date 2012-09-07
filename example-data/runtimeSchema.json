@@ -251,7 +251,7 @@
                 "criterion": {
                   "type": "array",
                   "items": {
-                    "type": ["string", "number", "array"]
+                    "type": ["string", "number", "array", "null"]
                   }
                 },
                 "step": {
@@ -358,7 +358,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["LinearEquation", "SinusoidalEquation"]
+            "enum": ["LinearEquation", "SinusoidalEquation", "CompositeEquation"]
           },
           "records": {
             "type": "array",
@@ -375,6 +375,9 @@
                   "type": "string"
                 },
                 "datadefName": {
+                  "type": "string"
+                },
+                "expression": {
                   "type": "string"
                 },
                 "expressionForm": {

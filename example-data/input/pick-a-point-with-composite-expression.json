@@ -1,0 +1,116 @@
+	{
+	  "type": "Activity",
+	  "name": "Pick A Point With Composite Expression",
+	  "pages": [
+		{
+		  "type": "Page",
+		  "name": "Introduction",
+		  "text": "In this activity....",
+		  "panes": [
+			{
+			  "type": "PredefinedGraphPane",
+			  "title": "y = log(x) + sin(x)",
+			  "yLabel": "y",
+			  "yMin": 0,
+			  "yMax": 10,
+			  "yTicks": 10,
+			  "xLabel": "x",
+			  "xMin": 0,
+			  "xMax": 100,
+			  "xTicks": 10,
+			  "xPrecision":0.1,
+			  "yPrecision":0.5,
+			  "expression": "y = log(x) + sin(x)",
+			  "lineSnapDistance": 0.5, 
+			  "lineType": "connected",
+			  "pointType": "none",
+			  "showCrossHairs": true,
+			  "showToolTipCoords": false,
+			  "showGraphGrid": true,
+			  "data": [ ]
+			},
+			{
+			  "type": "TablePane"
+			}
+		  ],
+		  "sequence": {
+			"type": "PickAPointSequence",
+			"initialPrompt": {
+			  "text": "Click on the line where x is between 10 and 20",
+			  "visualPrompts": [
+				{
+				  "type": "RangeVisualPrompt",
+				  "name": "10 to 20",
+				  "xMin": 10,
+				  "xMax": 20,
+				  "color": "#000000"
+				}
+			  ]
+			},
+			"correctAnswerRange": {
+				"xMin": 10.0,
+				"yMin": null,
+				"xMax": 30.0,
+				"yMax": null
+			},
+			"giveUp": {
+			  "text": "If you look carefully, ....",
+			  "visualPrompts": [
+				{
+				  "type": "RangeVisualPrompt",
+				  "name": "10 to 20",
+				  "xMin": 10,
+				  "xMax": 20,
+				  "color": "#000000"
+				}
+			  ]
+			},
+			"confirmCorrect": {
+			  "text": "Four minutes into her run ....",
+			  "visualPrompts": [
+				{
+				  "type": "RangeVisualPrompt",
+				  "name": "10 to 20",
+				  "xMin": 10,
+				  "xMax": 20,
+				  "color": "#ffffff"
+				}
+			  ]
+			},
+			"hints": [
+			  {
+				"name": "1st wrong answer",
+				"text": "Look at the graph...",
+				"visualPrompts": [
+				  {
+					"type": "RangeVisualPrompt",
+					"name": "10 to 20",
+					"xMin": 10,
+					"xMax": 20,
+					"color": "#ff0000"
+				  }
+				]
+			  },
+			  {
+				"name": "2nd wrong answer",
+				"text": "In these two intervals....",
+				"visualPrompts": [
+				  {
+					"type": "RangeVisualPrompt",
+					"name": "Unbounded left",
+					"xMax": 30,
+					"color": "#00ff00"
+				  },
+				  {
+					"type": "RangeVisualPrompt",
+					"name": "Unbounded right",
+					"xMin": 40,
+					"color": "#0000ff"
+				  }
+				]
+			  }
+			]
+		  }
+		}
+	  ]
+	}

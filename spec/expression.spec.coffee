@@ -87,30 +87,6 @@ describe "Linear Expression Parsing", ->
     it "should parse the y-intercept value as 37462834248323.3432432432", ->
       expect(result.params.yIntercept).toEqual 37462834248323.3432432432
 
-  describe "for expression y=-*x + 0", ->
-    beforeEach ->
-      expression = "y=-*x + 0"
-      result = expressionParser.expressionParser.parseExpression(expression)
-
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
-
-  describe "for expression y= --9X ", ->
-    beforeEach ->
-      expression = "y=--9X"
-      result = expressionParser.expressionParser.parseExpression(expression)
-
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
-
-  describe "for expression y=-.1*x ", ->
-    beforeEach ->
-      expression = "y=-.1*x"
-      result = expressionParser.expressionParser.parseExpression(expression)
-
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
-
 describe "Sinusoidal Expression Parsing", ->
   result = {}
 
@@ -219,37 +195,37 @@ describe "Sinusoidal Expression Parsing", ->
     it "should parse the center amplitude value as 0", ->
       expect(result.params.centerAmplitude).toEqual 0
 
-  describe "for expression Y = -0.00243 *  Sin*   (-23.26  *   x)  -0.223", ->
-    beforeEach ->
-      expression = "Y = -0.00243 *  Sin*   (-23.26  *   x)  -0.223"
-      result = expressionParser.expressionParser.parseExpression(expression)
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
+describe "Composite Expression Parsing", ->
+  result = {}
 
-  describe "for expression Y = -.1*  Sin   (-23.26  *   x)  -0.223", ->
+  describe "for expression y= 2*log(x) + 5", ->
     beforeEach ->
-      expression = "Y= -.1*  Sin   (-23.26  *   x)  -0.223"
+      expression = "y=2*log(x) + 5"
       result = expressionParser.expressionParser.parseExpression(expression)
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
 
-  describe "for expression Y = -*  Sin   (-23.26  *   x)  -0.223", ->
-    beforeEach ->
-      expression = "Y= -*  Sin   (-23.26  *   x)  -0.223"
-      result = expressionParser.expressionParser.parseExpression(expression)
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
+    it "should give equation type as CompositeEquation", ->
+      expect(result.type).toEqual "CompositeEquation"
 
-  describe "for expression Y =   Sin   (-23.26  )  -0.223", ->
+  describe "for expression y= log(x) + sin(x)", ->
     beforeEach ->
-      expression = "Y=   Sin   (-23.26 )  -0.223"
+      expression = "y= log(x) + sin(x)"
       result = expressionParser.expressionParser.parseExpression(expression)
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
 
-  describe "for expression y = sin(1*-X)", ->
+    it "should give equation type as CompositeEquation", ->
+      expect(result.type).toEqual "CompositeEquation"
+
+  describe "for expression y= 7 * (x * x) + 4 * x - 10", ->
     beforeEach ->
-      expression = "y = sin(1*-X)"
+      expression = "y= 7 * (x * x) + 4 * x - 10"
       result = expressionParser.expressionParser.parseExpression(expression)
-    it "should give equation type as not supported", ->
-      expect(result.type).toEqual "not supported"
+
+    it "should give equation type as CompositeEquation", ->
+      expect(result.type).toEqual "CompositeEquation"
+
+  describe "for expression y= (x - 1) / ( (x * x) + 12 )", ->
+    beforeEach ->
+      expression = "y= (x - 1) / ( (x * x) + 12 )"
+      result = expressionParser.expressionParser.parseExpression(expression)
+
+    it "should give equation type as CompositeEquation", ->
+      expect(result.type).toEqual "CompositeEquation"
