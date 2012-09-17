@@ -5,8 +5,8 @@
   "pages": [
     {
       "type": "Page",
-      "name": "This is the first page.",
-      "text": "( we should mandate that pages have names?)",
+      "name": "Construct a Line: Page 1",
+      "text": "On this page, students will be asked to construct a line.",
       "panes": [
         {
           "type": "PredefinedGraphPane",
@@ -23,7 +23,10 @@
           "xTicks": 10.0,
           "data": [
 
-          ]
+          ],
+          "showCrossHairs": true,
+          "showToolTipCoords": true,
+          "showGraphGrid": true
         },
         {
           "type": "TablePane",
@@ -40,10 +43,7 @@
         "confirmCorrect": "Thats Correct",
         "slopeIncorrect": "Incorrect, your slope is wrong.",
         "yInterceptIncorrect": "Incorrect, your y-intercept is wrong.",
-        "allIncorrect": "Incorrect. Try again.",
-        "showCrossHairs": true,
-        "showToolTipCoords": false,
-        "showGraphGrid": true
+        "allIncorrect": "Incorrect. Try again."
       }
     }
   ],

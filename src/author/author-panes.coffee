@@ -1,4 +1,5 @@
 {dumbSingularize} = require '../singularize'
+{expressionParser} = require './expressionParser'
 
 AuthorPane = exports.AuthorPane =
 
@@ -12,7 +13,7 @@ AuthorPane = exports.AuthorPane =
 
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks, includeAnnotationsFrom }) ->
+  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @xPrecision, @yPrecision, @expression, @lineType, @pointType, @lineSnapDistance}) ->
     @annotationSources = includeAnnotationsFrom?.map (source) ->
       [page, pane] = (source.match /^page\/(\d)+\/pane\/(\d)+$/)[1..2].map (s) -> parseInt(s, 10) - 1
       { page, pane }
@@ -27,11 +28,11 @@ class GraphPane
     if @data?
       dataKey = "#{@page.index}-#{@index}"
       @datadefRef = runtimeActivity.getDatadefRef dataKey
-      datadef = runtimeActivity.createDatadef { points: @data, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef }
+      datadef = runtimeActivity.createDatadef { points: @data, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @lineType, @pointType,@lineSnapDistance }
       runtimeActivity.defineDatadef dataKey, datadef
 
   addToStep: (step) ->
-    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index }
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords }
 
     @annotationSources?.forEach (source) =>
       pages = @page.activity.pages
@@ -55,6 +56,24 @@ AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends G
   constructor: ({@data}) ->
     super
 
+  addToPageAndActivity: (runtimePage, runtimeActivity) ->
+    super
+    if @expression isnt null and @expression isnt undefined
+      expressionData = expressionParser.parseExpression(@expression)
+      if expressionData.type? and expressionData.type isnt "not supported"
+        @dataRef = runtimeActivity.createDataRef { 
+          expressionType:  expressionData.type,
+          xInterval:       @xPrecision,
+          expressionForm:  expressionData.form,
+          expression:      @expression 
+          angularFunction: expressionData.angularFunction,
+          params:          expressionData.params,
+          datadefname:     @datadefRef.datadef.name
+        }
+  addToStep: (step) ->
+    super
+    if @dataRef? then step.addDataRefToPane { @index, @dataRef }
+        
 
 AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 

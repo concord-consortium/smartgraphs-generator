@@ -1,11 +1,11 @@
 {JSV} = require 'JSV'
 fs        = require 'fs'
 path      = require 'path'
-exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data');
+exampleDataDir  = path.join(path.dirname(fs.realpathSync(__filename)), '../example-data')
 
 schemaString = fs.readFileSync exampleDataDir + "/runtimeSchema.json", 'utf8'
 schema = JSON.parse schemaString
-env = JSV.createEnvironment();
+env = JSV.createEnvironment()
 
 describe "the runtime schema", ->
 

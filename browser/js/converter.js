@@ -934,11 +934,13 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
+  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize, expressionParser,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   dumbSingularize = require('../singularize').dumbSingularize;
+
+  expressionParser = require('./expressionParser').expressionParser;
 
   AuthorPane = exports.AuthorPane = {
     classFor: {},
@@ -956,7 +958,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function GraphPane(_arg) {
       var includeAnnotationsFrom;
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.xPrecision = _arg.xPrecision, this.yPrecision = _arg.yPrecision, this.expression = _arg.expression, this.lineType = _arg.lineType, this.pointType = _arg.pointType, this.lineSnapDistance = _arg.lineSnapDistance;
       this.annotationSources = includeAnnotationsFrom != null ? includeAnnotationsFrom.map(function(source) {
         var page, pane, _ref;
         _ref = (source.match(/^page\/(\d)+\/pane\/(\d)+$/)).slice(1, 3).map(function(s) {
@@ -999,7 +1001,10 @@ require.define("/author/author-panes.js", function (require, module, exports, __
           xLabel: this.xLabel,
           xUnitsRef: this.xUnitsRef,
           yLabel: this.yLabel,
-          yUnitsRef: this.yUnitsRef
+          yUnitsRef: this.yUnitsRef,
+          lineType: this.lineType,
+          pointType: this.pointType,
+          lineSnapDistance: this.lineSnapDistance
         });
         return runtimeActivity.defineDatadef(dataKey, datadef);
       }
@@ -1013,7 +1018,10 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         datadefRef: this.datadefRef,
         xAxis: this.xAxis,
         yAxis: this.yAxis,
-        index: this.index
+        index: this.index,
+        showCrossHairs: this.showCrossHairs,
+        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.showToolTipCoords
       });
       return (_ref = this.annotationSources) != null ? _ref.forEach(function(source) {
         var page, pages, pane;
@@ -1048,6 +1056,35 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       this.data = _arg.data;
       PredefinedGraphPane.__super__.constructor.apply(this, arguments);
     }
+
+    PredefinedGraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
+      var expressionData;
+      PredefinedGraphPane.__super__.addToPageAndActivity.apply(this, arguments);
+      if (this.expression !== null && this.expression !== void 0) {
+        expressionData = expressionParser.parseExpression(this.expression);
+        if ((expressionData.type != null) && expressionData.type !== "not supported") {
+          return this.dataRef = runtimeActivity.createDataRef({
+            expressionType: expressionData.type,
+            xInterval: this.xPrecision,
+            expressionForm: expressionData.form,
+            expression: this.expression,
+            angularFunction: expressionData.angularFunction,
+            params: expressionData.params,
+            datadefname: this.datadefRef.datadef.name
+          });
+        }
+      }
+    };
+
+    PredefinedGraphPane.prototype.addToStep = function(step) {
+      PredefinedGraphPane.__super__.addToStep.apply(this, arguments);
+      if (this.dataRef != null) {
+        return step.addDataRefToPane({
+          index: this.index,
+          dataRef: this.dataRef
+        });
+      }
+    };
 
     return PredefinedGraphPane;
 
@@ -1173,6 +1210,90 @@ require.define("/singularize.js", function (require, module, exports, __dirname,
   exports.dumbSingularize = function(str) {
     var _ref;
     return ((_ref = str.match(/(.*)s$/)) != null ? _ref[1] : void 0) || str;
+  };
+
+}).call(this);
+
+});
+
+require.define("/author/expressionParser.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+
+  this.expressionParser = function() {};
+
+  this.expressionParser.parseExpression = function(expression) {
+    var expressionData, linearConstantRegExPattern, linearRegExPattern, params, regExpConstant, regExpNum, regExpNumberMultiplier, regExpSpace, sineRegExPattern, strResult;
+    this.expression = expression;
+    expressionData = {};
+    params = {};
+    regExpSpace = /\s+/g;
+    this.expression = this.expression.replace(regExpSpace, "");
+    regExpNum = "\\d+(?:\\.?\\d+)?";
+    regExpNumberMultiplier = "(?:(?:[+-]?(?:" + regExpNum + ")))\\*?|(?:(?:[+-]))";
+    regExpConstant = "[+-](?:" + regExpNum + ")";
+    strResult = "";
+    linearConstantRegExPattern = new RegExp('^y=([+-]?' + regExpNum + ')$', 'i');
+    linearRegExPattern = new RegExp('^y=(?:(' + regExpNumberMultiplier + ')?x)(' + regExpConstant + ')?$', 'i');
+    sineRegExPattern = new RegExp('^y=(' + regExpNumberMultiplier + ')?sin\\((' + regExpNumberMultiplier + ')?x(' + regExpConstant + ')?\\)(' + regExpConstant + ')?$', 'i');
+    if (linearConstantRegExPattern.test(this.expression)) {
+      expressionData['type'] = 'LinearEquation';
+      expressionData['form'] = 'slope-intercept';
+      params['slope'] = 0;
+      params['yIntercept'] = parseFloat(RegExp.$1);
+    } else if (linearRegExPattern.test(this.expression)) {
+      expressionData['type'] = 'LinearEquation';
+      expressionData['form'] = 'slope-intercept';
+      if (parseFloat(RegExp.$1) || parseFloat(RegExp.$1) === 0) {
+        params['slope'] = parseFloat(RegExp.$1);
+      } else if (RegExp.$1 === "-") {
+        params['slope'] = -1;
+      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
+        params['slope'] = 1;
+      }
+      if (RegExp.$2 === "") {
+        params['yIntercept'] = 0;
+      } else {
+        params['yIntercept'] = parseFloat(RegExp.$2);
+      }
+    } else if (sineRegExPattern.test(this.expression)) {
+      expressionData['type'] = 'SinusoidalEquation';
+      expressionData['form'] = 'sine-cosine';
+      expressionData['angularFunction'] = 'sine';
+      if (parseFloat(RegExp.$1) || parseFloat(RegExp.$1) === 0) {
+        params['amplitude'] = parseFloat(RegExp.$1);
+      } else if (RegExp.$1 === "-") {
+        params['amplitude'] = -1;
+      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
+        params['amplitude'] = 1;
+      }
+      if (parseFloat(RegExp.$2) || parseFloat(RegExp.$2) === 0) {
+        params['frequency'] = parseFloat(RegExp.$2);
+      } else if (RegExp.$2 === "-") {
+        params['frequency'] = -1;
+      } else if (RegExp.$2 === "" || RegExp.$2 === "+") {
+        params['frequency'] = 1;
+      }
+      if (parseFloat(RegExp.$3) || parseFloat(RegExp.$3) === 0) {
+        params['phase'] = parseFloat(RegExp.$3);
+      } else if (RegExp.$3 === "-") {
+        params['phase'] = 0;
+      } else if (RegExp.$3 === "") {
+        params['phase'] = 0;
+      }
+      if (parseFloat(RegExp.$4) || parseFloat(RegExp.$4) === 0) {
+        params['centerAmplitude'] = parseFloat(RegExp.$4);
+      } else if (RegExp.$4 === "-") {
+        params['centerAmplitude'] = 0;
+      } else if (RegExp.$4 === "") {
+        params['centerAmplitude'] = 0;
+      }
+    } else if (this.expression === "") {
+      expressionData['type'] = 'not supported';
+    } else {
+      expressionData['type'] = 'CompositeEquation';
+    }
+    expressionData['params'] = params;
+    return expressionData;
   };
 
 }).call(this);
@@ -2013,7 +2134,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
     function LineConstructionSequence(_arg) {
       var i, pane, _len, _ref;
-      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.showCrossHairs = _arg.showCrossHairs, this.showToolTipCoords = _arg.showToolTipCoords, this.showGraphGrid = _arg.showGraphGrid, this.page = _arg.page;
+      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.page = _arg.page;
       this.steps = [];
       this.runtimeStepsByName = {};
       _ref = this.page.panes || [];
@@ -2078,9 +2199,9 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         beforeText: this.initialPrompt,
         substitutedExpressions: [],
         submissibilityCriterion: ["=", ["lineCount"], 1],
-        showCrossHairs: this.showCrossHairs,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showCrossHairs: this.graphPane.showCrossHairs,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2097,8 +2218,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         substitutedExpressions: [],
         submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
         showCrossHairs: false,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2115,8 +2236,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         substitutedExpressions: [],
         submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
         showCrossHairs: false,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2133,8 +2254,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         substitutedExpressions: [],
         submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
         showCrossHairs: false,
-        showToolTipCoords: this.showToolTipCoords,
-        showGraphGrid: this.showGraphGrid,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
@@ -2150,7 +2271,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         beforeText: "<b>" + this.confirmCorrect + "</b>",
         showCrossHairs: false,
         showToolTipCoords: false,
-        showGraphGrid: this.showGraphGrid,
+        showGraphGrid: this.graphPane.showGraphGrid,
         graphAnnotations: ["singleLineGraphing"]
       };
     };
@@ -2220,7 +2341,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
 */
 
 (function() {
-  var Annotation, AnnotationCollection, Axis, Datadef, HighlightedPoint, ResponseTemplateCollection, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref,
+  var Annotation, AnnotationCollection, Axis, DataRef, Datadef, HighlightedPoint, ResponseTemplateCollection, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref,
     __hasProp = Object.prototype.hasOwnProperty;
 
   slugify = require('../slugify').slugify;
@@ -2234,6 +2355,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
   RuntimeUnit = require('./runtime-unit').RuntimeUnit;
 
   Datadef = require('./datadef').Datadef;
+
+  DataRef = require('./dataref').DataRef;
 
   Tag = require('./tag').Tag;
 
@@ -2254,6 +2377,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.nAxes = 0;
       this.datadefRefs = {};
       this.nDatadefs = 0;
+      this.dataRefRefs = {};
+      this.nDataRefs = 0;
       this.annotations = {};
       this.annotationCounts = {};
       this.tags = [];
@@ -2292,18 +2417,42 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDatadef = function(_arg) {
-      var datadef, points, xLabel, xUnitsRef, yLabel, yUnitsRef;
-      points = _arg.points, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef;
+      var datadef, lineSnapDistance, lineType, pointType, points, xLabel, xUnitsRef, yLabel, yUnitsRef;
+      points = _arg.points, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance;
       datadef = new Datadef({
         points: points,
         xLabel: xLabel,
         xUnitsRef: xUnitsRef,
         yLabel: yLabel,
         yUnitsRef: yUnitsRef,
-        index: ++this.nDatadefs
+        index: ++this.nDatadefs,
+        pointType: pointType,
+        lineType: lineType,
+        lineSnapDistance: lineSnapDistance
       });
       datadef.activity = this;
       return datadef;
+    };
+
+    RuntimeActivity.prototype.createDataRef = function(_arg) {
+      var angularFunction, dataRef, datadefname, expression, expressionForm, expressionType, index, params, xInterval, _base;
+      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index;
+      dataRef = new DataRef({
+        datadefname: datadefname,
+        expressionType: expressionType,
+        expressionForm: expressionForm,
+        expression: expression,
+        angularFunction: angularFunction,
+        xInterval: xInterval,
+        params: params,
+        index: ++this.nDataRefs
+      });
+      dataRef.activity = this;
+      if ((_base = this.dataRefRefs)[expressionType] == null) {
+        _base[expressionType] = [];
+      }
+      this.dataRefRefs[expressionType].push(dataRef);
+      return dataRef;
     };
 
     /*
@@ -2504,6 +2653,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           }
           return _results;
         }).call(this)),
+        datarefs: this.nDataRefs !== 0 ? DataRef.serializeDataRefs(this.dataRefRefs) : void 0,
         tags: (function() {
           var _i, _len, _ref2, _results;
           _ref2 = this.tags;
@@ -2797,6 +2947,7 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
+        dataRef: [],
         xAxis: xAxis,
         yAxis: yAxis,
         showCrossHairs: showCrossHairs,
@@ -2805,7 +2956,7 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         annotations: [],
         highlightedAnnotations: [],
         toHash: function() {
-          var annotation, _ref, _ref2, _ref3;
+          var annotation, dataref, _ref, _ref2, _ref3;
           return {
             type: 'graph',
             title: this.title,
@@ -2834,7 +2985,21 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
               }
               return _results;
             }).call(this),
-            data: this.datadefRef != null ? [this.datadefRef.datadef.name] : []
+            data: this.datadefRef != null ? [this.datadefRef.datadef.name] : [],
+            datarefs: (function() {
+              var _i, _len, _ref4, _results;
+              if (this.dataRef.length === 0) {
+                return;
+              } else {
+                _ref4 = this.dataRef;
+                _results = [];
+                for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                  dataref = _ref4[_i];
+                  _results.push(dataref.name);
+                }
+                return _results;
+              }
+            }).call(this)
           };
         }
       };
@@ -2881,6 +3046,12 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       var annotation, index;
       annotation = _arg.annotation, index = _arg.index;
       return this.panes[index].annotations.push(annotation);
+    };
+
+    Step.prototype.addDataRefToPane = function(_arg) {
+      var dataRef, index;
+      dataRef = _arg.dataRef, index = _arg.index;
+      return this.panes[index].dataRef.push(dataRef);
     };
 
     Step.prototype.addHighlightedAnnotationToPane = function(_arg) {
@@ -3151,7 +3322,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
     };
 
     function Datadef(_arg) {
-      this.points = _arg.points, this.xLabel = _arg.xLabel, this.xUnitsRef = _arg.xUnitsRef, this.yLabel = _arg.yLabel, this.yUnitsRef = _arg.yUnitsRef, this.index = _arg.index;
+      this.points = _arg.points, this.xLabel = _arg.xLabel, this.xUnitsRef = _arg.xUnitsRef, this.yLabel = _arg.yLabel, this.yUnitsRef = _arg.yUnitsRef, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance;
       this.name = "datadef-" + this.index;
     }
 
@@ -3171,11 +3342,72 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
         yUnits: (_ref2 = this.yUnitsRef) != null ? _ref2.unit.getUrl() : void 0,
         yLabel: this.yLabel,
         yShortLabel: this.yLabel,
-        points: this.points
+        points: this.points,
+        pointType: this.pointType,
+        lineType: this.lineType,
+        lineSnapDistance: this.lineSnapDistance
       };
     };
 
     return Datadef;
+
+  })();
+
+}).call(this);
+
+});
+
+require.define("/runtime/dataref.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var DataRef;
+
+  exports.DataRef = DataRef = (function() {
+
+    DataRef.serializeDataRefs = function(dataRefRefs) {
+      var dataRef, dataRefOfOneType, key, ret;
+      ret = [];
+      for (key in dataRefRefs) {
+        dataRefOfOneType = dataRefRefs[key];
+        ret.push({
+          type: dataRefOfOneType[0].expressionType,
+          records: (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = dataRefOfOneType.length; _i < _len; _i++) {
+              dataRef = dataRefOfOneType[_i];
+              _results.push(dataRef.toHash());
+            }
+            return _results;
+          })()
+        });
+      }
+      return ret;
+    };
+
+    function DataRef(_arg) {
+      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expression = _arg.expression, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index;
+      this.name = "dataref-" + this.index;
+    }
+
+    DataRef.prototype.getUrl = function() {
+      return "" + (this.activity.getUrl()) + "/datarefs/" + this.name;
+    };
+
+    DataRef.prototype.toHash = function() {
+      return {
+        url: this.getUrl(),
+        name: this.name,
+        activity: this.activity.getUrl(),
+        datadefName: this.datadefname,
+        expressionForm: this.expressionForm,
+        expression: this.expressionType === 'CompositeEquation' ? this.expression : void 0,
+        angularFunction: this.angularFunction,
+        xInterval: this.xInterval,
+        params: this.params
+      };
+    };
+
+    return DataRef;
 
   })();
 
