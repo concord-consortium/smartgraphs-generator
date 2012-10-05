@@ -19,13 +19,14 @@
 {Datadef}     = require './datadef'
 {DataRef}     = require './dataref'
 {Tag}         = require './tag'
+{expressionParser} = require '../author/expressionParser'
 
 {AnnotationCollection, Annotation, HighlightedPoint, SegmentOverlay} = require './annotations'
 {ResponseTemplateCollection} = require './response-templates'
 
 exports.RuntimeActivity = class RuntimeActivity
 
-  constructor: (@owner, @name, @authorName) ->
+  constructor: (@owner, @name, @authorName, @datasets) ->
     @pages     = []
     @steps     = []
     @unitRefs  = {}
@@ -70,13 +71,13 @@ exports.RuntimeActivity = class RuntimeActivity
     unit.activity = this
     unit
 
-  createDatadef: ({ points, xLabel, xUnitsRef, yLabel, yUnitsRef, pointType, lineType, lineSnapDistance }) ->
-    datadef = new Datadef { points, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs, pointType, lineType, lineSnapDistance}
+  createDatadef: ({ points, xLabel, xUnitsRef, yLabel, yUnitsRef, pointType, lineType, lineSnapDistance, name }) ->
+    datadef = new Datadef { points, xLabel, xUnitsRef, yLabel, yUnitsRef, index: ++@nDatadefs, pointType, lineType, lineSnapDistance, name }
     datadef.activity = this
     datadef
 
-  createDataRef: ({ datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index }) ->
-    dataRef = new DataRef { datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index: ++@nDataRefs }
+  createDataRef: ({ datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index, name }) ->
+    dataRef = new DataRef { datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index: ++@nDataRefs, name }
     dataRef.activity = this
     @dataRefRefs[expressionType]?= []
     @dataRefRefs[expressionType].push dataRef
@@ -106,6 +107,28 @@ exports.RuntimeActivity = class RuntimeActivity
     if ref.datadef? then throw new Error "Redefinition of datadef #{key}"
     ref.datadef = datadef
     datadef
+    
+  populateDataSet: (xLabel, xUnitsRef, yLabel, yUnitsRef, includedDataSets) ->
+    populatedDataDefs = []
+    populatedDataRefs = []
+    activeDataSetIndex = 0
+    for datasetEntry in includedDataSets
+      for datasetObject in @datasets
+        if datasetObject.name is datasetEntry.name
+          if datasetObject.type is "datadef"
+            datadef = this.createDatadef({ points: datasetObject.data, xLabel, xUnitsRef, yLabel, yUnitsRef, lineType: datasetObject.lineType, pointType: datasetObject.pointType, @lineSnapDistance, name: datasetObject.name })
+            populatedDataDefs.push datadef
+          else
+            @expression = datasetObject.expression
+            if @expression isnt null and @expression isnt undefined
+              expressionData = expressionParser.parseExpression(@expression)
+              if expressionData.type? and expressionData.type isnt "not supported"
+                datadef = this.createDatadef({ points: [], xLabel, xUnitsRef, yLabel, yUnitsRef, lineType: datasetObject.lineType, pointType: datasetObject.pointType })
+                populatedDataDefs.push datadef
+                dataRef = this.createDataRef ({ datadefname: datadef.name, expressionType: expressionData.type, xInterval: datasetObject.xPrecision, expressionForm: expressionData.form, expression: datasetObject.expression, angularFunction: expressionData.angularFunction, params: expressionData.params, name: datasetObject.name })
+                populatedDataRefs.push dataRef
+
+    { datadef: populatedDataDefs, dataref: populatedDataRefs }
 
   ###
     Things that are defined only inline (for now) and therefore don't need to be treated as forward references.

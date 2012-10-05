@@ -4,13 +4,13 @@ exports.LineConstructionSequence = class LineConstructionSequence
   
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
-    runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}"
+    runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}-#{@graphPane.activeDataSetIndex}"
 
   setupStep: ({runtimePage, stepdef}) ->
     step = @runtimeStepsByName[stepdef.name]
     step.addGraphPane
       title: @graphPane.title
-      datadefRef: @getDataDefRef(runtimePage.activity)
+      datadefRef: @graphPane.datadefRef
       xAxis: @xAxis
       yAxis: @yAxis
       index: @graphPane.index
@@ -28,6 +28,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
     step.defaultBranch = @runtimeStepsByName[stepdef.defaultBranch]
     step.setSubmissibilityCriterion stepdef.submissibilityCriterion
            
+    @graphPane.addToStep step
+
     for annotation in stepdef.graphAnnotations || []
       if @annotations[annotation]
         step.addAnnotationToPane
@@ -75,13 +77,16 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @slopeIncorrect,
     @yInterceptIncorrect,
     @allIncorrect,
-    @page
+    @page,
+    @dataSetName
     }) ->
     @steps = []
     @runtimeStepsByName = {}
     for pane, i in @page.panes || []
       @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
       @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
+
+    if @dataSetName then @graphPane.activeDatasetName = @dataSetName
  
   appendSteps: (runtimePage) ->
     @annotations = {}

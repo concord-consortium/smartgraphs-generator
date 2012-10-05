@@ -38,7 +38,7 @@ exports.Step = class Step
         caption: "#{@license} #{@attribution}"
     }
 
-  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords }) ->
+  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName }) ->
     @panes[index] = {
       title,
       datadefRef,
@@ -50,6 +50,8 @@ exports.Step = class Step
       showToolTipCoords,
       annotations: [],
       highlightedAnnotations: [],
+      includedDataSets,
+      activeDatasetName,
       toHash: ->
         type:                   'graph'
         title:                  @title
@@ -60,8 +62,36 @@ exports.Step = class Step
         showToolTipCoords:      @showToolTipCoords ? undefined
         annotations:            annotation.name for annotation in @annotations
         highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
-        data:                   if @datadefRef? then [@datadefRef.datadef.name] else []
+        data:                   if @datadefRef.length is 0 then [] else datadefref.datadef.name for datadefref in @datadefRef
         datarefs:               if @dataRef.length is 0 then undefined else dataref.name for dataref in @dataRef
+        legends:                @GetLegends()
+        activeDatadefs:         @GetActiveDatasetNames()
+
+      GetActiveDatasetNames: ->
+        if(@activeDatasetName) then [@activeDatasetName]
+
+      GetLegends: ->
+        unless @includedDataSets.length is 0
+          oLegends = new Array()
+          for dataset in @includedDataSets
+            if dataset.inLegend
+              oObj = undefined
+              bPushed = false
+              for dataRef in @dataRef
+                if dataRef.name is dataset.name
+                  oLegends.push
+                    name: dataset.name
+                    dataset: dataRef.datadefname
+                  bPushed = true
+                  break
+              unless bPushed 
+                for datadefRef in @datadefRef
+                  if datadefRef.datadef.name is dataset.name
+                    oLegends.push
+                      name: dataset.name
+                      dataset: datadefRef.datadef.name
+                    break
+          oLegends
     }
 
   addTablePane: ({ datadefRef, index }) ->
@@ -72,6 +102,7 @@ exports.Step = class Step
       toHash: ->
         type:                   'table'
         data:                   @datadefRef.datadef.name
+        #data:                   @datadefRef['0-1-0'].datadef.name
         annotations:            annotation.name for annotation in @annotations
         highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
     }
@@ -80,7 +111,7 @@ exports.Step = class Step
     @panes[index].annotations.push annotation
 
   addDataRefToPane: ({ dataRef, index }) ->
-    @panes[index].dataRef.push dataRef
+    @panes[index].dataRef = dataRef
 
   addHighlightedAnnotationToPane:({ annotation, index }) ->
     @panes[index].highlightedAnnotations.push annotation

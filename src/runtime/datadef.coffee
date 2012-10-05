@@ -9,8 +9,9 @@ exports.Datadef = class Datadef
   @serializeDatadefs = (datadefs) ->
     if datadefs.length == 0 then [] else [{ type: 'UnorderedDataPoints', records: (datadef.toHash() for datadef in datadefs) }]
 
-  constructor: ({@points, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @index, @pointType, @lineType, @lineSnapDistance}) ->
-    @name = "datadef-#{@index}"
+  constructor: ({@points, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @index, @pointType, @lineType, @lineSnapDistance, @name }) ->
+    if !_arg.name then @name = "datadef-#{@index}"
+    if !_arg.lineSnapDistance then @lineSnapDistance = 0
 
   getUrl: ->
     "#{@activity.getUrl()}/datadefs/#{@name}"
