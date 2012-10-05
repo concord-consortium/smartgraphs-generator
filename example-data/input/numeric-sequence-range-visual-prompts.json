@@ -1,6 +1,18 @@
 {
   "type": "Activity",
   "name": "Numeric Sequence",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+            [1,200],
+            [2,400],
+            [3,600],
+            [4,800]
+          ] 
+    }
+  ],
   "pages": [
     {
       "type": "Page",
@@ -18,11 +30,11 @@
           "xMin": 0,
           "xMax": 10,
           "xTicks": 10,
-          "data": [
-            [1,200],
-            [2,400],
-            [3,600],
-            [4,800]
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
           ]
         },
         {

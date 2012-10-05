@@ -1,6 +1,13 @@
 {
   "type": "Activity",
   "name": "Sensor Graph Activity",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": []
+    }
+   ],
   "pages": [
     {
       "type": "Page",
@@ -19,7 +26,13 @@
           "xMin": 0.0,
           "xMax": 20.0,
           "yTicks": 10.0,
-          "xTicks": 10.0
+          "xTicks": 10.0,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
         }
       ]
     }

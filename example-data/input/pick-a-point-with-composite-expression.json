@@ -1,6 +1,18 @@
 	{
 	  "type": "Activity",
 	  "name": "Pick A Point With Composite Expression",
+    "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "xPrecision":0.1,
+			"yPrecision":0.5,
+			"expression": "y = log(x) + sin(x)",
+			"lineSnapDistance": 0.5, 
+			"lineType": "connected",
+			"pointType": "none"
+    }
+  ],
 	  "pages": [
 		{
 		  "type": "Page",
@@ -18,17 +30,16 @@
 			  "xMin": 0,
 			  "xMax": 100,
 			  "xTicks": 10,
-			  "xPrecision":0.1,
-			  "yPrecision":0.5,
-			  "expression": "y = log(x) + sin(x)",
-			  "lineSnapDistance": 0.5, 
-			  "lineType": "connected",
-			  "pointType": "none",
 			  "showCrossHairs": true,
 			  "showToolTipCoords": false,
 			  "showGraphGrid": true,
-			  "data": [ ]
-			},
+        "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
+       },
 			{
 			  "type": "TablePane"
 			}

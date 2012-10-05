@@ -43,6 +43,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -92,7 +101,8 @@
               3,
               600
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

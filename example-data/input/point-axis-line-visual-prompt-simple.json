@@ -1,6 +1,19 @@
 {
   "type": "Activity",
   "name": "Pick A Point Sequence",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+            [1,200],
+            [2,400],
+            [3,600],
+            [4,800],
+            [5,1000]
+          ]
+    }
+  ],
   "pages": [
     {
       "type": "Page",
@@ -17,13 +30,12 @@
           "xLabel": "Time",
           "xMin": 0,
           "xMax": 10,
-          "xTicks": 10,
-          "data": [
-            [1,200],
-            [2,400],
-            [3,600],
-            [4,800],
-            [5,1000]
+          "xTicks": 10,  
+           "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
           ]
         },
         {

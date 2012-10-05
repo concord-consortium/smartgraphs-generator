@@ -54,6 +54,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -151,7 +160,7 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": false,
+          "showCrossHairs": true,
           "showGraphGrid": true,
           "showToolTipCoords": true,
           "annotations": [
@@ -159,6 +168,15 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -263,7 +281,7 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": false,
+          "showCrossHairs": true,
           "showGraphGrid": true,
           "showToolTipCoords": true,
           "annotations": [
@@ -271,6 +289,15 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -375,7 +402,7 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": false,
+          "showCrossHairs": true,
           "showGraphGrid": true,
           "showToolTipCoords": true,
           "annotations": [
@@ -383,6 +410,15 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -487,14 +523,23 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": false,
+          "showCrossHairs": true,
           "showGraphGrid": true,
-          "showToolTipCoords": false,
+          "showToolTipCoords": true,
           "annotations": [
             "freehand-sketch-1"
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -538,7 +583,8 @@
           "xShortLabel": "x",
           "yLabel": "y",
           "yShortLabel": "y",
-          "points": []
+          "points": [],
+          "lineSnapDistance": 0
         }
       ]
     }

@@ -1,6 +1,13 @@
 	{
 	  "type": "Activity",
 	  "name": "Pick A Point With Sinusoidal Expression",
+    "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": []
+    }
+  ],
 	  "pages": [
 		{
 		  "type": "Page",
@@ -27,8 +34,13 @@
 			  "showCrossHairs": true,
 			  "showToolTipCoords": false,
 			  "showGraphGrid": true,
-			  "data": [ ]
-			},
+         "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
+       },
 			{
 			  "type": "TablePane"
 			}

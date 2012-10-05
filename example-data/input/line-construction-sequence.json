@@ -2,6 +2,14 @@
   "type": "Activity",
   "name": "Activity with a line construction tool",
   "authorName": "Noah",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+      ]
+    }
+  ],
   "pages": [
     {
       "type": "Page",
@@ -21,12 +29,15 @@
           "xMax": 10.0,
           "yTicks": 10.0,
           "xTicks": 10.0,
-          "data": [
-
-          ],
           "showCrossHairs": true,
           "showToolTipCoords": true,
-          "showGraphGrid": true
+          "showGraphGrid": true,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
         },
         {
           "type": "TablePane",

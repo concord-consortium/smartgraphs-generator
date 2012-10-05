@@ -47,6 +47,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -111,6 +120,15 @@
           "annotations": [],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         }
@@ -177,6 +195,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -241,6 +268,15 @@
           "annotations": [],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         }
@@ -321,7 +357,8 @@
               4,
               40
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

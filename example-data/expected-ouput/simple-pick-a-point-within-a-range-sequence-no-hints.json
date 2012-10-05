@@ -48,6 +48,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -100,6 +109,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -126,6 +144,15 @@
           "annotations": [],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -186,7 +213,8 @@
               4,
               800
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

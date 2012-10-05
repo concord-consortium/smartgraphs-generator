@@ -2,26 +2,11 @@
   "type": "Activity",
   "name": "Slope Tool A Demo",
   "authorName": "Noah Paessel",
-  "pages": [
+  "datasets": [
     {
-      "type": "Page",
-      "name": "Page 1",
-      "text": "This is the first page, with a slope tool sequence.",
-      "panes": [
-        {
-          "type": "PredefinedGraphPane",
-          "title": "Velocity",
-          "yLabel": "Distance",
-          "yUnits": "meters",
-          "yMin": 0.0,
-          "yMax": 10.0,
-          "xLabel": "Time",
-          "xUnits": "seconds",
-          "xMin": 0.0,
-          "xMax": 10.0,
-          "yTicks": 10.0,
-          "xTicks": 10.0,
-          "data": [
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
             [
               0.0,
               0.0
@@ -66,6 +51,33 @@
               10.0,
               7.0
             ]
+          ]
+      }
+   ],
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Page 1",
+      "text": "This is the first page, with a slope tool sequence.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Velocity",
+          "yLabel": "Distance",
+          "yUnits": "meters",
+          "yMin": 0.0,
+          "yMax": 10.0,
+          "xLabel": "Time",
+          "xUnits": "seconds",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
           ]
         },
         {

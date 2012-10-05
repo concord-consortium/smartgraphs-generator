@@ -241,6 +241,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -304,6 +313,15 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -375,6 +393,15 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -448,6 +475,15 @@
             "rise-arrow1"
           ],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -524,6 +560,15 @@
             "rise-arrow1"
           ],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -604,6 +649,15 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -648,6 +702,15 @@
             "run-arrow1"
           ],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -725,6 +788,15 @@
             "run-arrow1"
           ],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -805,6 +877,15 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -846,6 +927,15 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -921,6 +1011,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -995,6 +1094,15 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -1035,6 +1143,15 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         },
@@ -1142,7 +1259,8 @@
               10,
               7
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

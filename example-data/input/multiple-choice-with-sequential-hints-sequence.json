@@ -1,26 +1,11 @@
 {
   "type": "Activity",
   "name": "Multiple Choice 1",
-  "pages": [
+  "datasets": [
     {
-      "type": "Page",
-      "name": "First Page",
-      "text": "<p>This is an example page.</p>",
-      "panes": [
-        {
-          "type": "PredefinedGraphPane",
-          "title": "The Graph",
-          "yLabel": "Distance",
-          "yUnits": "meters",
-          "yMin": 0.0,
-          "yMax": 100.0,
-          "xLabel": "Time",
-          "xUnits": "seconds",
-          "xMin": 0.0,
-          "xMax": 10.0,
-          "yTicks": 10.0,
-          "xTicks": 10.0,
-          "data": [
+      "name": "datadef-1",
+      "type": "datadef",
+       "data": [
             [
               0.0,
               0.0
@@ -42,8 +27,35 @@
               40.0
             ]
           ]
-        }
-      ],
+    }
+  ],
+  "pages": [
+    {
+      "type": "Page",
+      "name": "First Page",
+      "text": "<p>This is an example page.</p>",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "The Graph",
+          "yLabel": "Distance",
+          "yUnits": "meters",
+          "yMin": 0.0,
+          "yMax": 100.0,
+          "xLabel": "Time",
+          "xUnits": "seconds",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
+         }     
+        ],
       "sequence": {
         "type": "MultipleChoiceWithSequentialHintsSequence",
         "initialPrompt": "<p>Which of the following choices is choice \"B\"?</p>",

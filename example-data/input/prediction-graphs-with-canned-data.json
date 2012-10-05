@@ -1,6 +1,17 @@
 {
   "type": "Activity",
   "name": "Prediction Graph Below Data Activity",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+            [1,200],
+            [2,400],
+            [3,600]
+          ]
+      }
+   ],
   "pages": [
     {
       "type": "Page",
@@ -20,10 +31,11 @@
           "xMax": 20.0,
           "yTicks": 10.0,
           "xTicks": 10.0,
-          "data": [
-            [1,200],
-            [2,400],
-            [3,600]
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
           ]
         },
         {

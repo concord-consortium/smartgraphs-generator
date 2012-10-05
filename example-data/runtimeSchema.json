@@ -111,6 +111,12 @@
                   "datarefs": {
                     "type": ["string", "array"]
                   },
+                  "legends": {
+                    "type": "array"
+                  },
+                  "activeDatadefs": {
+                    "type": "array"
+                  },
                   "showCrossHairs": {
                     "type": "boolean",
                     "optional": true
@@ -153,6 +159,12 @@
                   "datarefs": {
                     "type": ["string", "array"]
                   },
+                  "legends": {
+                    "type": "array"
+                  },
+                  "activeDatadefs": {
+                    "type": "array"
+                  },
                   "showCrossHairs": {
                     "type": "boolean",
                     "optional": true
@@ -194,6 +206,12 @@
                   },
                   "datarefs": {
                     "type": ["string", "array"]
+                  },
+                  "legends": {
+                    "type": "array"
+                  },
+                  "activeDatadefs": {
+                    "type": "array"
                   },
                   "showCrossHairs": {
                     "type": "boolean",

@@ -55,8 +55,14 @@
           "data": [
             "datadef-1"
           ],
-          "datarefs": [
-            "dataref-1"
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -116,8 +122,14 @@
           "data": [
             "datadef-1"
           ],
-          "datarefs": [
-            "dataref-1"
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -178,8 +190,14 @@
           "data": [
             "datadef-1"
           ],
-          "datarefs": [
-            "dataref-1"
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -238,8 +256,14 @@
           "data": [
             "datadef-1"
           ],
-          "datarefs": [
-            "dataref-1"
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -273,8 +297,14 @@
           "data": [
             "datadef-1"
           ],
-          "datarefs": [
-            "dataref-1"
+          "legends": [
+            {
+              "name": "datadef-1",
+              "dataset": "datadef-1"
+            }
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
@@ -318,31 +348,7 @@
           "yLabel": "y",
           "yShortLabel": "y",
           "points": [],
-          "pointType": "none",
-          "lineType": "connected",
-          "lineSnapDistance": 0.5
-        }
-      ]
-    }
-  ],
-  "datarefs": [
-    {
-      "type": "SinusoidalEquation",
-      "records": [
-        {
-          "url": "/shared/pick-a-point-with-sinusoidal-expression/datarefs/dataref-1",
-          "name": "dataref-1",
-          "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
-          "expressionForm": "sine-cosine",
-          "angularFunction": "sine",
-          "xInterval": 0.01,
-          "params": {
-            "amplitude": 1,
-            "frequency": 2,
-            "phase": 0,
-            "centerAmplitude": 5
-          }
+          "lineSnapDistance": 0
         }
       ]
     }

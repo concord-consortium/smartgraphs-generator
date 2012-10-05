@@ -49,12 +49,21 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "dataSetA"
+          ],
+          "legends": [
+            {
+              "name": "dataSetA",
+              "dataset": "dataSetA"
+            }
+          ],
+          "activeDatadefs": [
+            "dataSetA"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataSetA",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -66,7 +75,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "dataSetA"
           }
         }
       ],
@@ -103,12 +112,21 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "dataSetA"
+          ],
+          "legends": [
+            {
+              "name": "dataSetA",
+              "dataset": "dataSetA"
+            }
+          ],
+          "activeDatadefs": [
+            "dataSetA"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataSetA",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -120,7 +138,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "dataSetA"
           }
         }
       ],
@@ -155,12 +173,21 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "dataSetA"
+          ],
+          "legends": [
+            {
+              "name": "dataSetA",
+              "dataset": "dataSetA"
+            }
+          ],
+          "activeDatadefs": [
+            "dataSetA"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataSetA",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -184,12 +211,21 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "dataSetA"
+          ],
+          "legends": [
+            {
+              "name": "dataSetA",
+              "dataset": "dataSetA"
+            }
+          ],
+          "activeDatadefs": [
+            "dataSetA"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataSetA",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -220,8 +256,8 @@
       "type": "UnorderedDataPoints",
       "records": [
         {
-          "url": "/shared/pick-a-point-sequence/datadefs/datadef-1",
-          "name": "datadef-1",
+          "url": "/shared/pick-a-point-sequence/datadefs/dataSetA",
+          "name": "dataSetA",
           "activity": "/shared/pick-a-point-sequence",
           "xLabel": "Time",
           "xShortLabel": "Time",
@@ -248,7 +284,8 @@
               5,
               1000
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }
@@ -268,7 +305,7 @@
           "url": "/shared/pick-a-point-sequence/annotations/highlighted-point-1",
           "name": "highlighted-point-1",
           "activity": "/shared/pick-a-point-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataSetA",
           "tag": "/shared/pick-a-point-sequence/tags/tag-1",
           "color": "#1f77b4"
         }
@@ -281,7 +318,7 @@
           "url": "/shared/pick-a-point-sequence/annotations/circled-point-1",
           "name": "circled-point-1",
           "activity": "/shared/pick-a-point-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataSetA",
           "color": "red",
           "xRecord": 1,
           "yRecord": 200
@@ -290,7 +327,7 @@
           "url": "/shared/pick-a-point-sequence/annotations/circled-point-2",
           "name": "circled-point-2",
           "activity": "/shared/pick-a-point-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataSetA",
           "color": "#ff0000",
           "xRecord": 2,
           "yRecord": 400
@@ -299,7 +336,7 @@
           "url": "/shared/pick-a-point-sequence/annotations/circled-point-3",
           "name": "circled-point-3",
           "activity": "/shared/pick-a-point-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataSetA",
           "color": "#00ff00",
           "xRecord": 3,
           "yRecord": 600
@@ -308,7 +345,7 @@
           "url": "/shared/pick-a-point-sequence/annotations/circled-point-4",
           "name": "circled-point-4",
           "activity": "/shared/pick-a-point-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataSetA",
           "color": "#000000",
           "xRecord": 4,
           "yRecord": 800
@@ -317,7 +354,7 @@
           "url": "/shared/pick-a-point-sequence/annotations/circled-point-5",
           "name": "circled-point-5",
           "activity": "/shared/pick-a-point-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataSetA",
           "color": "#ffffff",
           "xRecord": 5,
           "yRecord": 1000
