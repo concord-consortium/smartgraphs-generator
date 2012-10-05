@@ -81,11 +81,15 @@ AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 
   constructor: ->
     super
-    @includedDataSets = []
 
   addToStep: (step) ->
     super
-    step.addSensorTool { @index, @datadefRef }
+    dataKey = "#{@page.index}-#{@index}-#{@activeDataSetIndex}"
+    datadefRef
+    for dataDefRef in @datadefRef
+      if dataDefRef.key is dataKey
+        datadefRef = dataDefRef
+    step.addSensorTool { @index, datadefRef }
 
 
 AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends GraphPane
