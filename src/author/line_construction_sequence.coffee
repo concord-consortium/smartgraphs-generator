@@ -17,6 +17,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
       showCrossHairs: stepdef.showCrossHairs
       showGraphGrid: stepdef.showGraphGrid
       showToolTipCoords: stepdef.showToolTipCoords
+      includedDataSets: @graphPane.includedDataSets
+      activeDatasetName: @graphPane.activeDatasetName
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
@@ -27,8 +29,6 @@ exports.LineConstructionSequence = class LineConstructionSequence
     step.submitButtonTitle = stepdef.submitButtonTitle
     step.defaultBranch = @runtimeStepsByName[stepdef.defaultBranch]
     step.setSubmissibilityCriterion stepdef.submissibilityCriterion
-           
-    @graphPane.addToStep step
 
     for annotation in stepdef.graphAnnotations || []
       if @annotations[annotation]

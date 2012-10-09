@@ -201,6 +201,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
       xAxis: @xAxis
       yAxis: @yAxis
       index: @graphPane.index
+      includedDataSets: @graphPane.includedDataSets
+      activeDatasetName: @graphPane.activeDatasetName
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
@@ -209,8 +211,6 @@ exports.SlopeToolSequence = class SlopeToolSequence
     step.substitutedExpressions = stepdef.substitutedExpressions
     step.variableAssignments = stepdef.variableAssignments
     step.submitButtonTitle = stepdef.submitButtonTitle
-    
-    @graphPane.addToStep step
 
     if stepdef.responseTemplate
       responseTemplate = runtimePage.activity.createAndAppendResponseTemplate "NumericResponseTemplate"

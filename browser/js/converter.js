@@ -1429,7 +1429,9 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         datadefRef: this.graphPane.datadefRef,
         xAxis: this.xAxis,
         yAxis: this.yAxis,
-        index: this.graphPane.index
+        index: this.graphPane.index,
+        includedDataSets: this.graphPane.includedDataSets,
+        activeDatasetName: this.graphPane.activeDatasetName
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
@@ -1439,7 +1441,6 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       step.substitutedExpressions = stepdef.substitutedExpressions;
       step.variableAssignments = stepdef.variableAssignments;
       step.submitButtonTitle = stepdef.submitButtonTitle;
-      this.graphPane.addToStep(step);
       if (stepdef.responseTemplate) {
         responseTemplate = runtimePage.activity.createAndAppendResponseTemplate("NumericResponseTemplate");
         step.setSubmissibilityCriterion(stepdef.submissibilityCriterion);
@@ -2004,7 +2005,9 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         index: this.graphPane.index,
         showCrossHairs: stepdef.showCrossHairs,
         showGraphGrid: stepdef.showGraphGrid,
-        showToolTipCoords: stepdef.showToolTipCoords
+        showToolTipCoords: stepdef.showToolTipCoords,
+        includedDataSets: this.graphPane.includedDataSets,
+        activeDatasetName: this.graphPane.activeDatasetName
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
@@ -2016,7 +2019,6 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       step.submitButtonTitle = stepdef.submitButtonTitle;
       step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
       step.setSubmissibilityCriterion(stepdef.submissibilityCriterion);
-      this.graphPane.addToStep(step);
       _ref = stepdef.graphAnnotations || [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         annotation = _ref[_i];
@@ -2372,8 +2374,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDataRef = function(_arg) {
-      var angularFunction, dataRef, datadefname, expression, expressionForm, expressionType, index, name, params, xInterval, _base;
-      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index, name = _arg.name;
+      var angularFunction, dataRef, datadefname, expression, expressionForm, expressionType, index, lineSnapDistance, name, params, xInterval, _base;
+      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name;
       dataRef = new DataRef({
         datadefname: datadefname,
         expressionType: expressionType,
@@ -2383,6 +2385,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         xInterval: xInterval,
         params: params,
         index: ++this.nDataRefs,
+        lineSnapDistance: lineSnapDistance,
         name: name
       });
       dataRef.activity = this;
@@ -2459,7 +2462,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                 yUnitsRef: yUnitsRef,
                 lineType: datasetObject.lineType,
                 pointType: datasetObject.pointType,
-                lineSnapDistance: this.lineSnapDistance,
+                lineSnapDistance: datasetObject.lineSnapDistance,
                 name: datasetObject.name
               });
               populatedDataDefs.push(datadef);
@@ -2475,6 +2478,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                     yLabel: yLabel,
                     yUnitsRef: yUnitsRef,
                     lineType: datasetObject.lineType,
+                    lineSnapDistance: datasetObject.lineSnapDistance,
                     pointType: datasetObject.pointType
                   });
                   populatedDataDefs.push(datadef);
@@ -2486,6 +2490,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                     expression: datasetObject.expression,
                     angularFunction: expressionData.angularFunction,
                     params: expressionData.params,
+                    lineSnapDistance: datasetObject.lineSnapDistance,
                     name: datasetObject.name
                   });
                   populatedDataRefs.push(dataRef);
