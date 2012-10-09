@@ -349,7 +349,7 @@
           "yShortLabel": "y",
           "pointType": "none",
           "lineType": "connected",
-          "lineSnapDistance": 0
+          "lineSnapDistance": 0.5
         }
       ]
     }

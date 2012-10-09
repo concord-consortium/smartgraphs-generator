@@ -5,6 +5,12 @@
     {
       "name": "datadef-1",
       "type": "datadef",
+			"xPrecision":0.5,
+			"yPrecision":0.5,
+			"expression": "y = 0.5 * x + 5",
+			"lineSnapDistance": 0.5, 
+			"lineType": "connected",
+			"pointType": "none",
       "data": [
       ]
     }
@@ -26,12 +32,6 @@
 			  "xMin": 0,
 			  "xMax": 10,
 			  "xTicks": 10,
-			  "xPrecision":0.5,
-			  "yPrecision":0.5,
-			  "expression": "y = 0.5 * x + 5",
-			  "lineSnapDistance": 0.5, 
-			  "lineType": "connected",
-			  "pointType": "none",
 			  "showCrossHairs": true,
 			  "showToolTipCoords": false,
 			  "showGraphGrid": true,

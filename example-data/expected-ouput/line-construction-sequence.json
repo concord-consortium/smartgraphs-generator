@@ -160,7 +160,7 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": true,
+          "showCrossHairs": false,
           "showGraphGrid": true,
           "showToolTipCoords": true,
           "annotations": [
@@ -281,7 +281,7 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": true,
+          "showCrossHairs": false,
           "showGraphGrid": true,
           "showToolTipCoords": true,
           "annotations": [
@@ -402,7 +402,7 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": true,
+          "showCrossHairs": false,
           "showGraphGrid": true,
           "showToolTipCoords": true,
           "annotations": [
@@ -523,9 +523,9 @@
           "title": "Line Construction Graph Pane",
           "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
           "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": true,
+          "showCrossHairs": false,
           "showGraphGrid": true,
-          "showToolTipCoords": true,
+          "showToolTipCoords": false,
           "annotations": [
             "freehand-sketch-1"
           ],

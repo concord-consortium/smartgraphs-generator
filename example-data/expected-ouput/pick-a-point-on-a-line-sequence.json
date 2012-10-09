@@ -348,7 +348,9 @@
           "yLabel": "y",
           "yShortLabel": "y",
           "points": [],
-          "lineSnapDistance": 0
+          "pointType": "none",
+          "lineType": "connected",
+          "lineSnapDistance": 0.5
         }
       ]
     }
