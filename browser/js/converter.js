@@ -1039,7 +1039,8 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         showGraphGrid: this.showGraphGrid,
         showToolTipCoords: this.showToolTipCoords,
         includedDataSets: this.includedDataSets,
-        activeDatasetName: this.activeDatasetName
+        activeDatasetName: this.activeDatasetName,
+        dataRef: this.dataRef
       });
       return (_ref = this.annotationSources) != null ? _ref.forEach(function(source) {
         var page, pages, pane;
@@ -1073,16 +1074,6 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     function PredefinedGraphPane() {
       PredefinedGraphPane.__super__.constructor.apply(this, arguments);
     }
-
-    PredefinedGraphPane.prototype.addToStep = function(step) {
-      PredefinedGraphPane.__super__.addToStep.apply(this, arguments);
-      if (this.dataRef != null) {
-        return step.addDataRefToPane({
-          index: this.index,
-          dataRef: this.dataRef
-        });
-      }
-    };
 
     return PredefinedGraphPane;
 
@@ -1431,7 +1422,8 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         yAxis: this.yAxis,
         index: this.graphPane.index,
         includedDataSets: this.graphPane.includedDataSets,
-        activeDatasetName: this.graphPane.activeDatasetName
+        activeDatasetName: this.graphPane.activeDatasetName,
+        dataRef: this.graphPane.dataRef ? this.graphPane.dataRef : []
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
@@ -2007,7 +1999,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         showGraphGrid: stepdef.showGraphGrid,
         showToolTipCoords: stepdef.showToolTipCoords,
         includedDataSets: this.graphPane.includedDataSets,
-        activeDatasetName: this.graphPane.activeDatasetName
+        activeDatasetName: this.graphPane.activeDatasetName,
+        dataRef: this.graphPane.dataRef ? this.graphPane.dataRef : []
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
@@ -2947,12 +2940,12 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addGraphPane = function(_arg) {
-      var activeDatasetName, datadefRef, includedDataSets, index, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
-      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName;
+      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef;
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
-        dataRef: [],
+        dataRef: dataRef ? dataRef : [],
         xAxis: xAxis,
         yAxis: yAxis,
         showCrossHairs: showCrossHairs,
@@ -3111,12 +3104,6 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       var annotation, index;
       annotation = _arg.annotation, index = _arg.index;
       return this.panes[index].annotations.push(annotation);
-    };
-
-    Step.prototype.addDataRefToPane = function(_arg) {
-      var dataRef, index;
-      dataRef = _arg.dataRef, index = _arg.index;
-      return this.panes[index].dataRef = dataRef;
     };
 
     Step.prototype.addHighlightedAnnotationToPane = function(_arg) {

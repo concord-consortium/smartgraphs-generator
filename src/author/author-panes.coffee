@@ -51,7 +51,7 @@ class GraphPane
           @activeDatasetName = populatedDataDefs[@activeDataSetIndex].name
 
   addToStep: (step) ->
-    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName }
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef }
 
     @annotationSources?.forEach (source) =>
       pages = @page.activity.pages
@@ -72,10 +72,8 @@ class GraphPane
 
 AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends GraphPane
 
-  addToStep: (step) ->
+  constructor: ->
     super
-    # add all datarefs sent back from populateDataSet
-    if @dataRef? then step.addDataRefToPane { @index, @dataRef }
 
 AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 

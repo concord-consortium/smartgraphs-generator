@@ -203,6 +203,7 @@ exports.SlopeToolSequence = class SlopeToolSequence
       index: @graphPane.index
       includedDataSets: @graphPane.includedDataSets
       activeDatasetName: @graphPane.activeDatasetName
+      dataRef: if @graphPane.dataRef then @graphPane.dataRef else []
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index

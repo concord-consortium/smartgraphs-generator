@@ -38,11 +38,11 @@ exports.Step = class Step
         caption: "#{@license} #{@attribution}"
     }
 
-  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName }) ->
+  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataRef }) ->
     @panes[index] = {
       title,
       datadefRef,
-      dataRef: [],
+      dataRef: if dataRef then dataRef else [],
       xAxis,
       yAxis,
       showCrossHairs,
@@ -109,9 +109,6 @@ exports.Step = class Step
 
   addAnnotationToPane: ({ annotation, index }) ->
     @panes[index].annotations.push annotation
-
-  addDataRefToPane: ({ dataRef, index }) ->
-    @panes[index].dataRef = dataRef
 
   addHighlightedAnnotationToPane:({ annotation, index }) ->
     @panes[index].highlightedAnnotations.push annotation
