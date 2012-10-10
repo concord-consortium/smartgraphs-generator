@@ -3,12 +3,12 @@
 	  "name": "Pick A Point With Composite Expression",
     "datasets": [
     {
-      "name": "datadef-1",
-      "type": "datadef",
+      "name": "dataRef-1",
+      "type": "dataRef",
       "xPrecision":0.1,
 			"yPrecision":0.5,
 			"expression": "y = log(x) + sin(x)",
-			"lineSnapDistance": 0.5, 
+			"lineSnapDistance": 0.5,
 			"lineType": "connected",
 			"pointType": "none"
     }
@@ -35,7 +35,7 @@
 			  "showGraphGrid": true,
         "includedDataSets": [
             {
-              "name": "datadef-1",
+              "name": "dataRef-1",
               "inLegend": true
             }
           ]
@@ -46,6 +46,7 @@
 		  ],
 		  "sequence": {
 			"type": "PickAPointSequence",
+      "dataSetName": "dataRef-1",
 			"initialPrompt": {
 			  "text": "Click on the line where x is between 10 and 20",
 			  "visualPrompts": [

@@ -53,21 +53,29 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "datadef-2"
+          ],
+          "datarefs": [
+            "dataRef-1"
           ],
           "legends": [
             {
               "name": "datadef-1",
               "dataset": "datadef-1"
+            },
+            {
+              "name": "dataRef-1",
+              "dataset": "datadef-2"
             }
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "datadef-2"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "datadef-2",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -79,7 +87,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "datadef-2"
           }
         }
       ],
@@ -120,21 +128,29 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "datadef-2"
+          ],
+          "datarefs": [
+            "dataRef-1"
           ],
           "legends": [
             {
               "name": "datadef-1",
               "dataset": "datadef-1"
+            },
+            {
+              "name": "dataRef-1",
+              "dataset": "datadef-2"
             }
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "datadef-2"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "datadef-2",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -146,7 +162,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "datadef-2"
           }
         }
       ],
@@ -188,21 +204,29 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "datadef-2"
+          ],
+          "datarefs": [
+            "dataRef-1"
           ],
           "legends": [
             {
               "name": "datadef-1",
               "dataset": "datadef-1"
+            },
+            {
+              "name": "dataRef-1",
+              "dataset": "datadef-2"
             }
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "datadef-2"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "datadef-2",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -214,7 +238,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "datadef-2"
           }
         }
       ],
@@ -254,21 +278,29 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "datadef-2"
+          ],
+          "datarefs": [
+            "dataRef-1"
           ],
           "legends": [
             {
               "name": "datadef-1",
               "dataset": "datadef-1"
+            },
+            {
+              "name": "dataRef-1",
+              "dataset": "datadef-2"
             }
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "datadef-2"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "datadef-2",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -295,21 +327,29 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "datadef-2"
+          ],
+          "datarefs": [
+            "dataRef-1"
           ],
           "legends": [
             {
               "name": "datadef-1",
               "dataset": "datadef-1"
+            },
+            {
+              "name": "dataRef-1",
+              "dataset": "datadef-2"
             }
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "datadef-2"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "datadef-2",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -348,9 +388,42 @@
           "yLabel": "y",
           "yShortLabel": "y",
           "points": [],
+          "lineSnapDistance": 0
+        },
+        {
+          "url": "/shared/pick-a-point-with-sinusoidal-expression/datadefs/datadef-2",
+          "name": "datadef-2",
+          "activity": "/shared/pick-a-point-with-sinusoidal-expression",
+          "xLabel": "x",
+          "xShortLabel": "x",
+          "yLabel": "y",
+          "yShortLabel": "y",
+          "points": [],
           "pointType": "none",
           "lineType": "connected",
           "lineSnapDistance": 0.5
+        }
+      ]
+    }
+  ],
+  "datarefs": [
+    {
+      "type": "SinusoidalEquation",
+      "records": [
+        {
+          "url": "/shared/pick-a-point-with-sinusoidal-expression/datarefs/dataRef-1",
+          "name": "dataRef-1",
+          "activity": "/shared/pick-a-point-with-sinusoidal-expression",
+          "datadefName": "datadef-2",
+          "expressionForm": "sine-cosine",
+          "angularFunction": "sine",
+          "xInterval": 0.1,
+          "params": {
+            "amplitude": 1,
+            "frequency": 2,
+            "phase": 0,
+            "centerAmplitude": 5
+          }
         }
       ]
     }
@@ -370,7 +443,7 @@
           "url": "/shared/pick-a-point-with-sinusoidal-expression/annotations/highlighted-point-1",
           "name": "highlighted-point-1",
           "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "datadef-2",
           "tag": "/shared/pick-a-point-with-sinusoidal-expression/tags/tag-1",
           "color": "#1f77b4"
         }
@@ -383,7 +456,7 @@
           "url": "/shared/pick-a-point-with-sinusoidal-expression/annotations/segment-overlay-1",
           "name": "segment-overlay-1",
           "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "datadef-2",
           "color": "#000000",
           "x1Record": 1,
           "x2Record": 2
@@ -392,7 +465,7 @@
           "url": "/shared/pick-a-point-with-sinusoidal-expression/annotations/segment-overlay-2",
           "name": "segment-overlay-2",
           "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "datadef-2",
           "color": "#ff0000",
           "x1Record": 1,
           "x2Record": 2
@@ -401,7 +474,7 @@
           "url": "/shared/pick-a-point-with-sinusoidal-expression/annotations/segment-overlay-3",
           "name": "segment-overlay-3",
           "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "datadef-2",
           "color": "#00ff00",
           "x1Record": 3,
           "isUnboundedLeft": true
@@ -410,7 +483,7 @@
           "url": "/shared/pick-a-point-with-sinusoidal-expression/annotations/segment-overlay-4",
           "name": "segment-overlay-4",
           "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "datadef-2",
           "color": "#0000ff",
           "x1Record": 4,
           "isUnboundedRight": true
@@ -419,7 +492,7 @@
           "url": "/shared/pick-a-point-with-sinusoidal-expression/annotations/segment-overlay-5",
           "name": "segment-overlay-5",
           "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "datadef-2",
           "color": "#000000",
           "x1Record": 1,
           "x2Record": 2
@@ -428,7 +501,7 @@
           "url": "/shared/pick-a-point-with-sinusoidal-expression/annotations/segment-overlay-6",
           "name": "segment-overlay-6",
           "activity": "/shared/pick-a-point-with-sinusoidal-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "datadef-2",
           "color": "#ffffff",
           "x1Record": 1,
           "x2Record": 2
@@ -439,3 +512,4 @@
   "variables": [],
   "units": []
 }
+

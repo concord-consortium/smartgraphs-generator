@@ -5,14 +5,18 @@
     {
       "name": "datadef-1",
       "type": "datadef",
-			"xPrecision":0.5,
-			"yPrecision":0.5,
-			"expression": "y = 0.5 * x + 5",
-			"lineSnapDistance": 0.5, 
-			"lineType": "connected",
-			"pointType": "none",
       "data": [
       ]
+    },
+    {
+      "name": "dataRef-1",
+      "type": "dataRef",
+      "xPrecision":0.1,
+			"yPrecision":0.5,
+      "expression": "y = 0.5 * x + 5",
+			"lineSnapDistance": 0.5, 
+			"lineType": "connected",
+			"pointType": "none"
     }
   ],
 	  "pages": [
@@ -39,6 +43,10 @@
             {
               "name": "datadef-1",
               "inLegend": true
+            },
+            {
+              "name": "dataRef-1",
+              "inLegend": true
             }
           ]
         },
@@ -48,6 +56,7 @@
 		  ],
 		  "sequence": {
 			"type": "PickAPointSequence",
+      "dataSetName": "dataRef-1",
 			"initialPrompt": {
 			  "text": "Click on the line where x is between 1 and 2",
 			  "visualPrompts": [

@@ -55,9 +55,12 @@
           "data": [
             "datadef-1"
           ],
+          "datarefs": [
+            "dataRef-1"
+          ],
           "legends": [
             {
-              "name": "datadef-1",
+              "name": "dataRef-1",
               "dataset": "datadef-1"
             }
           ],
@@ -122,9 +125,12 @@
           "data": [
             "datadef-1"
           ],
+          "datarefs": [
+            "dataRef-1"
+          ],
           "legends": [
             {
-              "name": "datadef-1",
+              "name": "dataRef-1",
               "dataset": "datadef-1"
             }
           ],
@@ -190,9 +196,12 @@
           "data": [
             "datadef-1"
           ],
+          "datarefs": [
+            "dataRef-1"
+          ],
           "legends": [
             {
-              "name": "datadef-1",
+              "name": "dataRef-1",
               "dataset": "datadef-1"
             }
           ],
@@ -256,9 +265,12 @@
           "data": [
             "datadef-1"
           ],
+          "datarefs": [
+            "dataRef-1"
+          ],
           "legends": [
             {
-              "name": "datadef-1",
+              "name": "dataRef-1",
               "dataset": "datadef-1"
             }
           ],
@@ -297,9 +309,12 @@
           "data": [
             "datadef-1"
           ],
+          "datarefs": [
+            "dataRef-1"
+          ],
           "legends": [
             {
-              "name": "datadef-1",
+              "name": "dataRef-1",
               "dataset": "datadef-1"
             }
           ],
@@ -347,9 +362,26 @@
           "xShortLabel": "x",
           "yLabel": "y",
           "yShortLabel": "y",
+          "points": [],
           "pointType": "none",
           "lineType": "connected",
           "lineSnapDistance": 0.5
+        }
+      ]
+    }
+  ],
+  "datarefs": [
+    {
+      "type": "CompositeEquation",
+      "records": [
+        {
+          "url": "/shared/pick-a-point-with-composite-expression/datarefs/dataRef-1",
+          "name": "dataRef-1",
+          "activity": "/shared/pick-a-point-with-composite-expression",
+          "datadefName": "datadef-1",
+          "expression": "y = log(x) + sin(x)",
+          "xInterval": 0.1,
+          "params": {}
         }
       ]
     }
