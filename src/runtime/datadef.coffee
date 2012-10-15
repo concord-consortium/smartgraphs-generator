@@ -3,15 +3,21 @@
   FirstOrderDifference and Function Datadefs
 ###
 
+{dumbSingularize} = require '../singularize'
+
 exports.Datadef = class Datadef
 
   # a "class method"
   @serializeDatadefs = (datadefs) ->
     if datadefs.length == 0 then [] else [{ type: 'UnorderedDataPoints', records: (datadef.toHash() for datadef in datadefs) }]
 
-  constructor: ({@points, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @index, @pointType, @lineType, @lineSnapDistance, @name }) ->
+  constructor: ({@points, @xLabel, @yLabel, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name }) ->
     if !_arg.name then @name = "datadef-#{@index}"
     if !_arg.lineSnapDistance then @lineSnapDistance = 0
+
+  constructUnitRefs: ->
+    @xUnitsRef = @activity.getUnitRef dumbSingularize @xUnits if @xUnits
+    @yUnitsRef = @activity.getUnitRef dumbSingularize @yUnits if @yUnits
 
   getUrl: ->
     "#{@activity.getUrl()}/datadefs/#{@name}"
@@ -21,11 +27,7 @@ exports.Datadef = class Datadef
     name:              @name
     activity:          @activity.getUrl()
     xUnits:            @xUnitsRef?.unit.getUrl()
-    xLabel:            @xLabel
-    xShortLabel:       @xLabel
     yUnits:            @yUnitsRef?.unit.getUrl()
-    yLabel:            @yLabel
-    yShortLabel:       @yLabel
     points:            @points
     pointType:         @pointType
     lineType:          @lineType

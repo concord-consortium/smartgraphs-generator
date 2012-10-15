@@ -75,26 +75,14 @@ exports.Step = class Step
           oLegends = new Array()
           for dataset in @includedDataSets
             if dataset.inLegend
-              oObj = undefined
-              bPushed = false
-              for dataRef in @dataRef
-                if dataRef.name is dataset.name
-                  oLegends.push
-                    name: dataset.name
-                    dataset: dataRef.datadefname
-                  bPushed = true
+              for datadefRef in @datadefRef
+                if datadefRef.datadef.name is dataset.name
+                  oLegends.push dataset.name
                   break
-              unless bPushed 
-                for datadefRef in @datadefRef
-                  if datadefRef.datadef.name is dataset.name
-                    oLegends.push
-                      name: dataset.name
-                      dataset: datadefRef.datadef.name
-                    break
           oLegends
     }
 
-  addTablePane: ({ datadefRef, index }) ->
+  addTablePane: ({ datadefRef, index, xLabel, yLabel }) ->
     @panes[index] = {
       datadefRef,
       annotations: [],
@@ -102,7 +90,8 @@ exports.Step = class Step
       toHash: ->
         type:                   'table'
         data:                   @datadefRef.datadef.name
-        #data:                   @datadefRef['0-1-0'].datadef.name
+        xLabel:                 xLabel
+        yLabel:                 yLabel
         annotations:            annotation.name for annotation in @annotations
         highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
     }

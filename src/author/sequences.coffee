@@ -160,7 +160,7 @@ class CorrectableSequenceWithFeedback
 
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
-    runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}-#{@graphPane.activeDataSetIndex}"
+    runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
 
   appendStepsWithModifier: (runtimePage, modifyForSequenceType) ->
     if @getRequiresGraphOrTable() and not @graphPane? and not @tablePane? then throw new Error "Sequence requires at least one graph or table pane"

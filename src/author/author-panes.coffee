@@ -12,7 +12,7 @@ AuthorPane = exports.AuthorPane =
 
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets}) ->
+  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets}) ->
     @activeDataSetIndex = 0
     @totalDatasetsIndex = 0
     @activeDatasetName
@@ -23,18 +23,15 @@ class GraphPane
       { page, pane }
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
-    @xUnitsRef = runtimeActivity.getUnitRef dumbSingularize @xUnits if @xUnits
-    @yUnitsRef = runtimeActivity.getUnitRef dumbSingularize @yUnits if @yUnits
 
-    @xAxis = runtimeActivity.createAndAppendAxis { label: @xLabel, unitRef: @xUnitsRef, min: @xMin, max: @xMax, nSteps: @xTicks }
-    @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
-
-    
     if @includedDataSets?
       unless @includedDataSets.length is 0
-        populatedDataSets = runtimeActivity.populateDataSet @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @includedDataSets
+        populatedDataSets = runtimeActivity.populateDataSet @xLabel, @yLabel, @includedDataSets
         populatedDataDefs = populatedDataSets.datadef
         @dataRef = populatedDataSets.dataref
+
+        unless @activeDatasetName
+          @activeDatasetName = populatedDataDefs[@activeDataSetIndex].name
 
         for dataRef in @dataRef
           if @activeDatasetName is dataRef.name
@@ -42,13 +39,15 @@ class GraphPane
             break
 
         for populatedDataDef in populatedDataDefs
-          dataKey = "#{@page.index}-#{@index}-#{@totalDatasetsIndex++}"
+          dataKey = "#{populatedDataDef.name}"
           runtimeActivity.defineDatadef dataKey, populatedDataDef
-          if @activeDatasetName is populatedDataDef.name then @activeDataSetIndex = @totalDatasetsIndex - 1
+          if @activeDatasetName is populatedDataDef.name
+            @xUnitsRef = populatedDataDef.xUnitsRef
+            @yUnitsRef = populatedDataDef.yUnitsRef
           @datadefRef.push runtimeActivity.getDatadefRef dataKey
 
-        unless @activeDatasetName
-          @activeDatasetName = populatedDataDefs[@activeDataSetIndex].name
+    @xAxis = runtimeActivity.createAndAppendAxis { label: @xLabel, unitRef: @xUnitsRef, min: @xMin, max: @xMax, nSteps: @xTicks }
+    @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
 
   addToStep: (step) ->
     step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef }
@@ -82,7 +81,7 @@ AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 
   addToStep: (step) ->
     super
-    dataKey = "#{@page.index}-#{@index}-#{@activeDataSetIndex}"
+    dataKey = "#{@activeDatasetName}"
     datadefRef
     for dataDefRef in @datadefRef
       if dataDefRef.key is dataKey
@@ -121,10 +120,12 @@ AuthorPane.classFor['ImagePane'] = class ImagePane
 
 AuthorPane.classFor['TablePane'] = class TablePane
 
+  constructor: ({ @xLabel, @yLabel }) ->
+
   addToPageAndActivity: (runtimePage, @runtimeActivity) ->
 
   addToStep: (step) ->
     otherPaneIndex = 1 - @index
-    dataKey = "#{@page.index}-#{otherPaneIndex}-#{@page.panes[otherPaneIndex].activeDataSetIndex}"
+    dataKey = "#{@page.panes[otherPaneIndex].activeDatasetName}"
     datadefRef = @runtimeActivity.getDatadefRef dataKey     # get the datadef defined in the *other* pane on this page
-    step.addTablePane { datadefRef, @index }
+    step.addTablePane { datadefRef, @index, @xLabel, @yLabel }

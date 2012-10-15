@@ -4,7 +4,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
   
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
-    runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}-#{@graphPane.activeDataSetIndex}"
+    runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
 
   setupStep: ({runtimePage, stepdef}) ->
     step = @runtimeStepsByName[stepdef.name]
@@ -23,6 +23,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
+      xLabel: @tablePane.xLabel
+      yLabel: @tablePane.yLabel
     
     step.beforeText = stepdef.beforeText
     step.substitutedExpressions = stepdef.substitutedExpressions
