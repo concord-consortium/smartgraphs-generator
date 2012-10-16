@@ -71,10 +71,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -125,10 +122,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -180,10 +174,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -233,10 +224,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -265,10 +253,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -294,16 +279,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-2",
-              "dataset": "datadef-2"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
-            "datadef-2"
+            "datadef-1"
           ]
         }
       },
@@ -349,16 +331,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-2",
-              "dataset": "datadef-2"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
-            "datadef-2"
+            "datadef-1"
           ]
         }
       },
@@ -404,16 +383,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-2",
-              "dataset": "datadef-2"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
-            "datadef-2"
+            "datadef-1"
           ]
         }
       },
@@ -436,16 +412,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-2",
-              "dataset": "datadef-2"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
-            "datadef-2"
+            "datadef-1"
           ]
         }
       },
@@ -511,11 +484,7 @@
           "name": "datadef-1",
           "activity": "/shared/point-circles",
           "xUnits": "/shared/point-circles/units/Time (s)",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/point-circles/units/Intensity",
-          "yLabel": "Light",
-          "yShortLabel": "Light",
           "points": [
             [
               0,
@@ -560,64 +529,6 @@
             [
               10,
               11
-            ]
-          ],
-          "lineSnapDistance": 0
-        },
-        {
-          "url": "/shared/point-circles/datadefs/datadef-2",
-          "name": "datadef-2",
-          "activity": "/shared/point-circles",
-          "xUnits": "/shared/point-circles/units/Time (s)",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yUnits": "/shared/point-circles/units/Intensity",
-          "yLabel": "Light",
-          "yShortLabel": "Light",
-          "points": [
-            [
-              0.5,
-              1.5
-            ],
-            [
-              3,
-              8
-            ],
-            [
-              4,
-              3.4
-            ],
-            [
-              3.8,
-              4.1
-            ],
-            [
-              3.9,
-              4.7
-            ],
-            [
-              6,
-              7
-            ],
-            [
-              6.5,
-              7.8
-            ],
-            [
-              7.4,
-              8.4
-            ],
-            [
-              8.3,
-              9.5
-            ],
-            [
-              9.6,
-              10.6
-            ],
-            [
-              10.3,
-              11.3
             ]
           ],
           "lineSnapDistance": 0
@@ -707,7 +618,7 @@
           "url": "/shared/point-circles/annotations/circled-point-7",
           "name": "circled-point-7",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "black",
           "xRecord": 5,
           "yRecord": 6
@@ -716,7 +627,7 @@
           "url": "/shared/point-circles/annotations/circled-point-8",
           "name": "circled-point-8",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "red",
           "xRecord": 3,
           "yRecord": 4
@@ -725,7 +636,7 @@
           "url": "/shared/point-circles/annotations/circled-point-9",
           "name": "circled-point-9",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "grey",
           "xRecord": 4,
           "yRecord": 5
@@ -734,7 +645,7 @@
           "url": "/shared/point-circles/annotations/circled-point-10",
           "name": "circled-point-10",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "blue",
           "xRecord": 4,
           "yRecord": 5

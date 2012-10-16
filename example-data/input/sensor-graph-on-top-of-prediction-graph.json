@@ -1,15 +1,13 @@
 {
   "type": "Activity",
   "name": "Sensor Graph on top of Prediction Graph",
+  
   "datasets": [
     {
       "type": "datadef",
       "name": "datadef-1",
-      "data": []
-    },
-   {
-      "type": "datadef",
-      "name": "datadef-2",
+      "xUnits": "Seconds",
+      "yUnits": "Meters",
       "data": []
     }
   ],
@@ -22,12 +20,10 @@
         {
           "type": "PredictionGraphPane",
           "title": "Back and Forth",
-          "yLabel": "Position",
-          "yUnits": "Meters",
+          "yLabel": "Position",          
           "yMin": 0.0,
           "yMax": 5.0,
-          "xLabel": "Time",
-          "xUnits": "Seconds",
+          "xLabel": "Time",          
           "xMin": 0.0,
           "xMax": 20.0,
           "yTicks": 10.0,
@@ -63,7 +59,7 @@
           "includeAnnotationsFrom": ["page/1/pane/1"],
           "includedDataSets": [
             {
-              "name": "datadef-2",
+              "name": "datadef-1",
               "inLegend": true
             }
           ]

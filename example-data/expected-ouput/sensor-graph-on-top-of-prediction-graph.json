@@ -62,10 +62,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -112,16 +109,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-2",
-              "dataset": "datadef-2"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
-            "datadef-2"
+            "datadef-1"
           ]
         }
       },
@@ -130,7 +124,7 @@
           "name": "sensor",
           "setup": {
             "controlsPane": "single",
-            "data": "datadef-2"
+            "data": "datadef-1"
           }
         }
       ],
@@ -182,24 +176,7 @@
           "name": "datadef-1",
           "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
           "xUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Seconds",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Meters",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
-          "points": [],
-          "lineSnapDistance": 0
-        },
-        {
-          "url": "/shared/sensor-graph-on-top-of-prediction-graph/datadefs/datadef-2",
-          "name": "datadef-2",
-          "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
-          "xUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Seconds",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Meters",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
           "points": [],
           "lineSnapDistance": 0
         }

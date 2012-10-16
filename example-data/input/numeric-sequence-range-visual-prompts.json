@@ -1,120 +1,148 @@
 {
-  "type": "Activity",
-  "name": "Numeric Sequence",
-  "datasets": [
-    {
-      "name": "datadef-1",
-      "type": "datadef",
-      "data": [
-            [1,200],
-            [2,400],
-            [3,600],
-            [4,800]
-          ] 
-    }
-  ],
-  "pages": [
-    {
-      "type": "Page",
-      "name": "Introduction",
-      "text": "in this activity....",
-      "panes": [
+    "type": "Activity",
+    "name": "Numeric Sequence",
+    "datasets": [
         {
-          "type": "PredefinedGraphPane",
-          "title": "Position vs. Time",
-          "yLabel": "Position",
-          "yMin": 0,
-          "yMax": 2000,
-          "yTicks": 10,
-          "xLabel": "Time",
-          "xMin": 0,
-          "xMax": 10,
-          "xTicks": 10,
-          "includedDataSets": [
-            {
-              "name": "datadef-1",
-              "inLegend": true
-            }
-          ]
+            "name": "datadef-1",
+            "type": "datadef",
+            "data": [
+                [
+                    1,
+                    200
+                ],
+                [
+                    2,
+                    400
+                ],
+                [
+                    3,
+                    600
+                ],
+                [
+                    4,
+                    800
+                ]
+            ]
         },
         {
-          "type": "TablePane"
+            "name": "dataRef-1",
+            "type": "dataRef",
+            "xPrecision": 0.1,
+            "yPrecision": 0.5,
+            "expression": "y = 100x",
+            "lineSnapDistance": 0.5,
+            "lineType": "connected",
+            "pointType": "none"
         }
-      ],
-      "sequence": {
-        "type": "NumericSequence",
-        "initialPrompt": {
-          "text": "<p>What is the x-coordinate at the 3-time unit mark?</p>",
-          "visualPrompts": [
-            {
-              "type": "RangeVisualPrompt",
-              "name": "1 to 2",
-              "xMin": 1,
-              "xMax": 2,
-              "color": "#000000"
+    ],
+    "pages": [
+        {
+            "type": "Page",
+            "name": "Introduction",
+            "text": "in this activity....",
+            "panes": [
+                {
+                    "type": "PredefinedGraphPane",
+                    "title": "Position vs. Time",
+                    "yLabel": "Position",
+                    "yMin": 0,
+                    "yMax": 2000,
+                    "yTicks": 10,
+                    "xLabel": "Time",
+                    "xMin": 0,
+                    "xMax": 10,
+                    "xTicks": 10,
+                    "includedDataSets": [
+                        {
+                            "name": "datadef-1",
+                            "inLegend": true
+                        },
+                        {
+                            "name": "dataRef-1",
+                            "inLegend": true
+                        }
+                    ]
+                },
+                {
+                    "type": "TablePane",
+                    "yLabel": "Position",
+                    "xLabel": "Time"
+                }
+            ],
+            "sequence": {
+                "type": "NumericSequence",
+                "dataSetName": "dataRef-1",
+                "initialPrompt": {
+                    "text": "<p>What is the x-coordinate at the 3-time unit mark?</p>",
+                    "visualPrompts": [
+                        {
+                            "type": "RangeVisualPrompt",
+                            "name": "1 to 2",
+                            "xMin": 1,
+                            "xMax": 2,
+                            "color": "#000000"
+                        }
+                    ]
+                },
+                "correctAnswer": 600,
+                "giveUp": {
+                    "text": "<p>Take a closer look, it's 600 units of distance.</p>",
+                    "visualPrompts": [
+                        {
+                            "type": "RangeVisualPrompt",
+                            "name": "1 to 2",
+                            "xMin": 1,
+                            "xMax": 2,
+                            "color": "#000000"
+                        }
+                    ]
+                },
+                "confirmCorrect": {
+                    "text": "<p>That's right: it's 600 units of distance.</p>",
+                    "visualPrompts": [
+                        {
+                            "type": "RangeVisualPrompt",
+                            "name": "1 to 2",
+                            "xMin": 1,
+                            "xMax": 2,
+                            "color": "#ffffff"
+                        }
+                    ]
+                },
+                "hints": [
+                    {
+                        "name": "Hint 1",
+                        "text": "<p>Hint: ask yourself, which is the y-axis and which is the x-axis?</p> <p>What is the x-coordinate of the point at the 3-time unit mark?</p>",
+                        "visualPrompts": [
+                            {
+                                "type": "RangeVisualPrompt",
+                                "name": "1 to 3",
+                                "xMin": 1,
+                                "xMax": 3,
+                                "color": "#ff0000"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Hint 2",
+                        "text": "<p>Hint: Where is the \"3-time-unit mark\" on the y-axis?</p> <p>The horizontal position of the point you're looking for is located at this mark. What is the x-coordinate of the point at the 3-time unit mark?</p>",
+                        "visualPrompts": [
+                            {
+                                "type": "RangeVisualPrompt",
+                                "name": "Unbounded left",
+                                "xMax": 3,
+                                "color": "#00ff00"
+                            },
+                            {
+                                "type": "RangeVisualPrompt",
+                                "name": "Unbounded right",
+                                "xMin": 4,
+                                "color": "#0000ff"
+                            }
+                        ]
+                    }
+                ]
             }
-          ]
-        },
-        "correctAnswer": 600.0,
-        "giveUp": {
-          "text": "<p>Take a closer look, it's 600 units of distance.</p>",
-          "visualPrompts": [
-            {
-              "type": "RangeVisualPrompt",
-              "name": "1 to 2",
-              "xMin": 1,
-              "xMax": 2,
-              "color": "#000000"
-            }
-          ]
-
-        },
-        "confirmCorrect": {
-          "text": "<p>That's right: it's 600 units of distance.</p>",
-          "visualPrompts": [
-            {
-              "type": "RangeVisualPrompt",
-              "name": "1 to 2",
-              "xMin": 1,
-              "xMax": 2,
-              "color": "#ffffff"
-            }
-          ]
-        },
-        "hints": [
-          {
-            "name": "Hint 1",
-            "text": "<p>Hint: ask yourself, which is the y-axis and which is the x-axis?</p> <p>What is the x-coordinate of the point at the 3-time unit mark?</p>",
-            "visualPrompts": [
-              {
-                "type": "RangeVisualPrompt",
-                "name": "1 to 3",
-                "xMin": 1,
-                "xMax": 3,
-                "color": "#ff0000"
-              }
-            ]
-          },
-          {
-            "name": "Hint 2",
-            "text": "<p>Hint: Where is the \"3-time-unit mark\" on the y-axis?</p> <p>The horizontal position of the point you're looking for is located at this mark. What is the x-coordinate of the point at the 3-time unit mark?</p>",
-            "visualPrompts": [
-              {
-                "type": "RangeVisualPrompt",
-                "name": "Unbounded left",
-                "xMax": 3,
-                "color": "#00ff00"
-              },
-              {
-                "type": "RangeVisualPrompt",
-                "name": "Unbounded right",
-                "xMin": 4,
-                "color": "#0000ff"
-              }
-            ]
-          }
-        ]
-      }
-    }
-  ]
+        }
+    ]
 }

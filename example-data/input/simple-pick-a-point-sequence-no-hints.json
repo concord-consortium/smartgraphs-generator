@@ -38,7 +38,9 @@
           ]
         },
         {
-          "type": "TablePane"
+          "type": "TablePane",
+          "xLabel": "Time",
+          "yLabel": "Position"
         }
       ],
       "sequence": {

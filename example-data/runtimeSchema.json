@@ -109,7 +109,7 @@
                     "type": ["string", "array"]
                   },
                   "datarefs": {
-                    "type": ["string", "array"]
+                    "type": "array"
                   },
                   "legends": {
                     "type": "array"
@@ -128,6 +128,12 @@
                   "showToolTipCoords": {
                     "type": "boolean",
                     "optional": true
+                  },
+                  "xLabel": {
+                    "type": "string"
+                  },
+                  "yLabel": {
+                    "type": "string"
                   }
                 }
               },
@@ -176,6 +182,12 @@
                   "showToolTipCoords": {
                     "type": "boolean",
                     "optional": true
+                  },
+                  "xLabel": {
+                    "type": "string"
+                  },
+                  "yLabel": {
+                    "type": "string"
                   }
                 }
               },
@@ -224,6 +236,12 @@
                   "showToolTipCoords": {
                     "type": "boolean",
                     "optional": true
+                  },
+                  "xLabel": {
+                    "type": "string"
+                  },
+                  "yLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -333,18 +351,6 @@
                 "activity": {
                   "type": "string"
                 },
-                "xLabel": {
-                  "type": "string"
-                },
-                "xShortLabel": {
-                  "type": "string"
-                },
-                "yLabel": {
-                  "type": "string"
-                },
-                "yShortLabel": {
-                  "type": "string"
-                },
                 "points": {
                   "type": "array",
                   "items": {
@@ -393,7 +399,8 @@
                   "type": "string"
                 },
                 "datadefName": {
-                  "type": "string"
+                  "type": "string",
+                  "optional" : false
                 },
                 "expression": {
                   "type": "string"
@@ -405,7 +412,8 @@
                   "type": "string"
                 },
                 "xInterval": {
-                  "type": "number"
+                  "type": "number",
+                  "optional" : false
                 },
                 "params": {
                   "type": "object"

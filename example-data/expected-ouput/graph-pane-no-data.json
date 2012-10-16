@@ -52,7 +52,6 @@
   "axes": [
     {
       "url": "/shared/simple-graph/axes/1",
-      "units": "/shared/simple-graph/units/minutes",
       "min": 0,
       "max": 10,
       "nSteps": 10,
@@ -60,7 +59,6 @@
     },
     {
       "url": "/shared/simple-graph/axes/2",
-      "units": "/shared/simple-graph/units/meters",
       "min": 0,
       "max": 2000,
       "nSteps": 10,

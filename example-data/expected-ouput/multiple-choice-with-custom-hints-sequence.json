@@ -49,10 +49,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -123,10 +120,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -197,10 +191,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -271,10 +262,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -331,11 +319,7 @@
           "name": "datadef-1",
           "activity": "/shared/multiple-choice-2",
           "xUnits": "/shared/multiple-choice-2/units/seconds",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/multiple-choice-2/units/meters",
-          "yLabel": "Distance",
-          "yShortLabel": "Distance",
           "points": [
             [
               0,

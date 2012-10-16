@@ -249,10 +249,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -261,6 +258,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -304,7 +303,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/2",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Click on a \npoint between 2 and 9 seconds. </p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Click on a \npoint between 2 and 9 for time. </p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -320,10 +319,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -332,6 +328,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -380,7 +378,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/3",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na \npoint between 2 and 9 seconds.\nTry again.</p>\n<p> Click on a \npoint between 2 and 9 seconds. </p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na \npoint between 2 and 9 for time.\nTry again.</p>\n<p> Click on a \npoint between 2 and 9 for time. </p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -396,10 +394,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -408,6 +403,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -456,7 +453,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/4",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p>Now click on\na second \npoint between 2 and 9 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -473,10 +470,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -485,6 +479,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -542,7 +538,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/5",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now click on\na second \npoint between 2 and 9 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -559,10 +555,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -571,6 +564,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -628,7 +623,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/6",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now click on\na second \npoint between 2 and 9 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -645,10 +640,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -657,6 +649,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -714,7 +708,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/7",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na \npoint between 2 and 9 seconds.  \nTry again.</p>\n<p>Now click on\na second \npoint between 2 and 9 seconds.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na \npoint between 2 and 9 for time.  \nTry again.</p>\n<p>Now click on\na second \npoint between 2 and 9 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -731,10 +725,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -743,6 +734,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -818,10 +811,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -830,6 +820,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -898,10 +890,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -910,6 +899,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -960,7 +951,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/10",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points in  meters?</p>\n<p>Hint: Look at the graph.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points?</p>\n<p>Hint: Look at the graph.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -980,10 +971,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -992,6 +980,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1045,7 +1035,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/11",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points in  meters?</p>\n<p>Hint: Look at the table and the graph.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ndistance between the two points?</p>\n<p>Hint: Look at the table and the graph.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1065,10 +1055,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1077,6 +1064,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1133,7 +1122,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/12",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change in  meters is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change is\n<b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1153,10 +1142,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1165,6 +1151,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1186,7 +1174,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/13",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p>What was the change in\ntime between the two points in  seconds?</p>\n<p>Hint: Look at the graph.</p>",
+      "beforeText": "<p>What was the change in\ntime between the two points?</p>\n<p>Hint: Look at the graph.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1207,10 +1195,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1219,6 +1204,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1272,7 +1259,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/14",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ntime between the two points in  seconds?</p>\n<p>Hint: Look at the graph and the table.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>What was the change in\ntime between the two points?</p>\n<p>Hint: Look at the graph and the table.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1293,10 +1280,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1305,6 +1289,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1360,7 +1346,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/15",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change in  seconds \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The change \nbetween the points is <b>%@</b> - <b>%@</b>, \nor <b>%@</b>.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1381,10 +1367,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1393,6 +1376,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1414,7 +1399,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/16",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the velocity in m/s?\n</p>",
+      "beforeText": "<p>\n  If the change in distance is %@\n  and the change in time is %@\n  then what is the velocity in m/s?\n</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1432,10 +1417,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1444,6 +1426,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1497,7 +1481,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/17",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in distance is %@ meters\n  and the change in time is %@ seconds\n  then what is the velocity in m/s?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in distance \n  <b>divided by</b> \n  the change in time.\n</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\n  If the change in distance is %@\n  and the change in time is %@\n  then what is the velocity in m/s?\n</p>\n<p>\n  Hint: Remember that it is \n  the change in distance \n  <b>divided by</b> \n  the change in time.\n</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1515,10 +1499,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1527,6 +1508,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1580,7 +1563,7 @@
     {
       "url": "/shared/slope-tool-a-demo/page/1-page-1/step/18",
       "activityPage": "/shared/slope-tool-a-demo/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in distance is %@ meters\nand the change in time is %@ seconds,\nthe velocity is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> m/s.</p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>\nIf the change in distance is %@\nand the change in time is %@,\nthe velocity is \n<b>%@</b> divided by <b>%@</b>, \nor <b>%@</b> m/s.</p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -1598,10 +1581,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1610,6 +1590,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1648,10 +1630,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -1660,6 +1639,8 @@
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -1711,11 +1692,7 @@
           "name": "datadef-1",
           "activity": "/shared/slope-tool-a-demo",
           "xUnits": "/shared/slope-tool-a-demo/units/seconds",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/slope-tool-a-demo/units/meters",
-          "yLabel": "Distance",
-          "yShortLabel": "Distance",
           "points": [
             [
               0,

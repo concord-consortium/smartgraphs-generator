@@ -26,7 +26,9 @@
               4.0,
               40.0
             ]
-          ]
+          ],
+       "yUnits": "meters",
+       "xUnits": "seconds"
     }
   ],
          
@@ -40,11 +42,9 @@
           "type": "PredefinedGraphPane",
           "title": "The Graph",
           "yLabel": "Distance",
-          "yUnits": "meters",
           "yMin": 0.0,
           "yMax": 100.0,
           "xLabel": "Time",
-          "xUnits": "seconds",
           "xMin": 0.0,
           "xMax": 10.0,
           "yTicks": 10.0,

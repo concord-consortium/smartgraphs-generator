@@ -6,6 +6,8 @@
     {
       "name": "datadef-1",
       "type": "datadef",
+      "xUnits": null,
+      "yUnits": null,
       "data": [
             [
               -6.0,
@@ -39,12 +41,10 @@
         {
           "type": "PredefinedGraphPane",
           "title": "A Straight Line",
-          "yLabel": "Y",
-          "yUnits": null,
+          "yLabel": "Y",          
           "yMin": -5.0,
           "yMax": 5.0,
-          "xLabel": "X",
-          "xUnits": null,
+          "xLabel": "X",          
           "xMin": -6.0,
           "xMax": 6.0,
           "yTicks": 10.0,
@@ -58,7 +58,9 @@
         },
         {
           "type": "TablePane",
-          "title": "Table for straight line"
+          "title": "Table for straight line",
+          "xLabel": "X",
+          "yLabel": "Y"
         }
       ],
       "sequence": {

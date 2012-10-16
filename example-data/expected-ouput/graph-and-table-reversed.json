@@ -37,6 +37,8 @@
         "top": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         },
@@ -51,10 +53,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -93,11 +92,7 @@
           "name": "datadef-1",
           "activity": "/shared/graph-and-table",
           "xUnits": "/shared/graph-and-table/units/minutes",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/graph-and-table/units/meters",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
           "points": [
             [
               1,

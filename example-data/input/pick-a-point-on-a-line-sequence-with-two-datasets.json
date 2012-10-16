@@ -55,7 +55,9 @@
           ]
         },
         {
-          "type": "TablePane"
+          "type": "TablePane",
+           "yLabel": "y",
+          "xLabel": "x"
         }
       ],
       "sequence": {

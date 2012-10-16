@@ -9,7 +9,9 @@
         [1,200],
         [2,400],
         [3,600]
-      ]
+      ],
+     "yUnits": "meters",
+     "xUnits": "minutes"
     }
   ],
   "pages": [
@@ -22,12 +24,10 @@
           "type": "PredefinedGraphPane",
           "title": "Position vs. Time",
           "yLabel": "Position",
-          "yUnits": "meters",
           "yMin": 0,
           "yMax": 2000,
           "yTicks": 10,
           "xLabel": "Time",
-          "xUnits": "minutes",
           "xMin": 0,
           "xMax": 10,
           "xTicks": 10,

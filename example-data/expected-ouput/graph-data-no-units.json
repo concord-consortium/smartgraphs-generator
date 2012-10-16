@@ -45,10 +45,7 @@
             "datadef-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1"
           ],
           "activeDatadefs": [
             "datadef-1"
@@ -84,10 +81,6 @@
           "url": "/shared/simple-graph/datadefs/datadef-1",
           "name": "datadef-1",
           "activity": "/shared/simple-graph",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
           "points": [
             [
               1,

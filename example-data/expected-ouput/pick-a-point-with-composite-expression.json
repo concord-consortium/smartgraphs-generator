@@ -53,24 +53,23 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
-          ],
-          "datarefs": [
             "dataRef-1"
           ],
+          "datarefs": [
+            "dataref-1"
+          ],
           "legends": [
-            {
-              "name": "dataRef-1",
-              "dataset": "datadef-1"
-            }
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -82,7 +81,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "dataRef-1"
           }
         }
       ],
@@ -123,24 +122,23 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
-          ],
-          "datarefs": [
             "dataRef-1"
           ],
+          "datarefs": [
+            "dataref-1"
+          ],
           "legends": [
-            {
-              "name": "dataRef-1",
-              "dataset": "datadef-1"
-            }
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -152,7 +150,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "dataRef-1"
           }
         }
       ],
@@ -194,24 +192,23 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
-          ],
-          "datarefs": [
             "dataRef-1"
           ],
+          "datarefs": [
+            "dataref-1"
+          ],
           "legends": [
-            {
-              "name": "dataRef-1",
-              "dataset": "datadef-1"
-            }
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -223,7 +220,7 @@
           "name": "tagging",
           "setup": {
             "tag": "tag-1",
-            "data": "datadef-1"
+            "data": "dataRef-1"
           }
         }
       ],
@@ -263,24 +260,23 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
-          ],
-          "datarefs": [
             "dataRef-1"
           ],
+          "datarefs": [
+            "dataref-1"
+          ],
           "legends": [
-            {
-              "name": "dataRef-1",
-              "dataset": "datadef-1"
-            }
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -307,24 +303,23 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
-          ],
-          "datarefs": [
             "dataRef-1"
           ],
+          "datarefs": [
+            "dataref-1"
+          ],
           "legends": [
-            {
-              "name": "dataRef-1",
-              "dataset": "datadef-1"
-            }
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -355,13 +350,9 @@
       "type": "UnorderedDataPoints",
       "records": [
         {
-          "url": "/shared/pick-a-point-with-composite-expression/datadefs/datadef-1",
-          "name": "datadef-1",
+          "url": "/shared/pick-a-point-with-composite-expression/datadefs/dataRef-1",
+          "name": "dataRef-1",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "xLabel": "x",
-          "xShortLabel": "x",
-          "yLabel": "y",
-          "yShortLabel": "y",
           "points": [],
           "pointType": "none",
           "lineType": "connected",
@@ -375,10 +366,10 @@
       "type": "CompositeEquation",
       "records": [
         {
-          "url": "/shared/pick-a-point-with-composite-expression/datarefs/dataRef-1",
-          "name": "dataRef-1",
+          "url": "/shared/pick-a-point-with-composite-expression/datarefs/dataref-1",
+          "name": "dataref-1",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "expression": "y = log(x) + sin(x)",
           "xInterval": 0.1,
           "params": {}
@@ -401,7 +392,7 @@
           "url": "/shared/pick-a-point-with-composite-expression/annotations/highlighted-point-1",
           "name": "highlighted-point-1",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "tag": "/shared/pick-a-point-with-composite-expression/tags/tag-1",
           "color": "#1f77b4"
         }
@@ -414,7 +405,7 @@
           "url": "/shared/pick-a-point-with-composite-expression/annotations/segment-overlay-1",
           "name": "segment-overlay-1",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#000000",
           "x1Record": 10,
           "x2Record": 20
@@ -423,7 +414,7 @@
           "url": "/shared/pick-a-point-with-composite-expression/annotations/segment-overlay-2",
           "name": "segment-overlay-2",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#ff0000",
           "x1Record": 10,
           "x2Record": 20
@@ -432,7 +423,7 @@
           "url": "/shared/pick-a-point-with-composite-expression/annotations/segment-overlay-3",
           "name": "segment-overlay-3",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#00ff00",
           "x1Record": 30,
           "isUnboundedLeft": true
@@ -441,7 +432,7 @@
           "url": "/shared/pick-a-point-with-composite-expression/annotations/segment-overlay-4",
           "name": "segment-overlay-4",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#0000ff",
           "x1Record": 40,
           "isUnboundedRight": true
@@ -450,7 +441,7 @@
           "url": "/shared/pick-a-point-with-composite-expression/annotations/segment-overlay-5",
           "name": "segment-overlay-5",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#000000",
           "x1Record": 10,
           "x2Record": 20
@@ -459,7 +450,7 @@
           "url": "/shared/pick-a-point-with-composite-expression/annotations/segment-overlay-6",
           "name": "segment-overlay-6",
           "activity": "/shared/pick-a-point-with-composite-expression",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#ffffff",
           "x1Record": 10,
           "x2Record": 20

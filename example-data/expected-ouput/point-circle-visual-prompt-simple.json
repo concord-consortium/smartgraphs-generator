@@ -52,10 +52,7 @@
             "dataSetA"
           ],
           "legends": [
-            {
-              "name": "dataSetA",
-              "dataset": "dataSetA"
-            }
+            "dataSetA"
           ],
           "activeDatadefs": [
             "dataSetA"
@@ -64,6 +61,8 @@
         "bottom": {
           "type": "table",
           "data": "dataSetA",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -115,10 +114,7 @@
             "dataSetA"
           ],
           "legends": [
-            {
-              "name": "dataSetA",
-              "dataset": "dataSetA"
-            }
+            "dataSetA"
           ],
           "activeDatadefs": [
             "dataSetA"
@@ -127,6 +123,8 @@
         "bottom": {
           "type": "table",
           "data": "dataSetA",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -176,10 +174,7 @@
             "dataSetA"
           ],
           "legends": [
-            {
-              "name": "dataSetA",
-              "dataset": "dataSetA"
-            }
+            "dataSetA"
           ],
           "activeDatadefs": [
             "dataSetA"
@@ -188,6 +183,8 @@
         "bottom": {
           "type": "table",
           "data": "dataSetA",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -214,10 +211,7 @@
             "dataSetA"
           ],
           "legends": [
-            {
-              "name": "dataSetA",
-              "dataset": "dataSetA"
-            }
+            "dataSetA"
           ],
           "activeDatadefs": [
             "dataSetA"
@@ -226,6 +220,8 @@
         "bottom": {
           "type": "table",
           "data": "dataSetA",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -259,10 +255,6 @@
           "url": "/shared/pick-a-point-sequence/datadefs/dataSetA",
           "name": "dataSetA",
           "activity": "/shared/pick-a-point-sequence",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
           "points": [
             [
               1,

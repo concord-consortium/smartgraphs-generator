@@ -6,6 +6,8 @@
     {
       "name": "datadef-1",
       "type": "datadef",
+      "xUnits": "seconds",
+      "yUnits": "meters",
      "data": [
             [
               0.0,
@@ -63,12 +65,10 @@
         {
           "type": "PredefinedGraphPane",
           "title": "Velocity",
-          "yLabel": "Distance",
-          "yUnits": "meters",
+          "yLabel": "Distance",          
           "yMin": 0.0,
           "yMax": 10.0,
           "xLabel": "Time",
-          "xUnits": "seconds",
           "xMin": 0.0,
           "xMax": 10.0,
           "yTicks": 10.0,
@@ -82,7 +82,10 @@
         },
         {
           "type": "TablePane",
-          "title": "data table"
+          "title": "data table",
+          "xLabel": "Time",
+          "yLabel": "Distance"
+
         }
       ],
       "sequence": {

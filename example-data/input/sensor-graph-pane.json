@@ -5,6 +5,8 @@
     {
       "name": "datadef-1",
       "type": "datadef",
+      "xUnits": "Time",
+      "yUnits": "Distance",
       "data": []
     }
    ],
@@ -17,12 +19,10 @@
         {
           "type": "SensorGraphPane",
           "title": "Back and Forth",
-          "yLabel": "Position",
-          "yUnits": "Distance",
+          "yLabel": "Position",          
           "yMin": 0.0,
           "yMax": 5.0,
-          "xLabel": "Time",
-          "xUnits": "Time",
+          "xLabel": "Time",          
           "xMin": 0.0,
           "xMax": 20.0,
           "yTicks": 10.0,

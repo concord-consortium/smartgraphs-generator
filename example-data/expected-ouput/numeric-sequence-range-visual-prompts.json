@@ -49,21 +49,25 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "dataRef-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1",
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -110,21 +114,25 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "dataRef-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1",
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -172,21 +180,25 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "dataRef-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1",
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -233,21 +245,25 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "dataRef-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1",
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -271,21 +287,25 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "dataRef-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": [
-            {
-              "name": "datadef-1",
-              "dataset": "datadef-1"
-            }
+            "datadef-1",
+            "dataRef-1"
           ],
           "activeDatadefs": [
-            "datadef-1"
+            "dataRef-1"
           ]
         },
         "bottom": {
           "type": "table",
-          "data": "datadef-1",
+          "data": "dataRef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -333,10 +353,6 @@
           "url": "/shared/numeric-sequence/datadefs/datadef-1",
           "name": "datadef-1",
           "activity": "/shared/numeric-sequence",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
           "points": [
             [
               1,
@@ -356,6 +372,34 @@
             ]
           ],
           "lineSnapDistance": 0
+        },
+        {
+          "url": "/shared/numeric-sequence/datadefs/dataRef-1",
+          "name": "dataRef-1",
+          "activity": "/shared/numeric-sequence",
+          "points": [],
+          "pointType": "none",
+          "lineType": "connected",
+          "lineSnapDistance": 0.5
+        }
+      ]
+    }
+  ],
+  "datarefs": [
+    {
+      "type": "LinearEquation",
+      "records": [
+        {
+          "url": "/shared/numeric-sequence/datarefs/dataref-1",
+          "name": "dataref-1",
+          "activity": "/shared/numeric-sequence",
+          "datadefName": "dataRef-1",
+          "expressionForm": "slope-intercept",
+          "xInterval": 0.1,
+          "params": {
+            "slope": 100,
+            "yIntercept": 0
+          }
         }
       ]
     }
@@ -369,7 +413,7 @@
           "url": "/shared/numeric-sequence/annotations/segment-overlay-1",
           "name": "segment-overlay-1",
           "activity": "/shared/numeric-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#000000",
           "x1Record": 1,
           "x2Record": 2
@@ -378,7 +422,7 @@
           "url": "/shared/numeric-sequence/annotations/segment-overlay-2",
           "name": "segment-overlay-2",
           "activity": "/shared/numeric-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#ff0000",
           "x1Record": 1,
           "x2Record": 3
@@ -387,7 +431,7 @@
           "url": "/shared/numeric-sequence/annotations/segment-overlay-3",
           "name": "segment-overlay-3",
           "activity": "/shared/numeric-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#00ff00",
           "x1Record": 3,
           "isUnboundedLeft": true
@@ -396,7 +440,7 @@
           "url": "/shared/numeric-sequence/annotations/segment-overlay-4",
           "name": "segment-overlay-4",
           "activity": "/shared/numeric-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#0000ff",
           "x1Record": 4,
           "isUnboundedRight": true
@@ -405,7 +449,7 @@
           "url": "/shared/numeric-sequence/annotations/segment-overlay-5",
           "name": "segment-overlay-5",
           "activity": "/shared/numeric-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#000000",
           "x1Record": 1,
           "x2Record": 2
@@ -414,7 +458,7 @@
           "url": "/shared/numeric-sequence/annotations/segment-overlay-6",
           "name": "segment-overlay-6",
           "activity": "/shared/numeric-sequence",
-          "datadefName": "datadef-1",
+          "datadefName": "dataRef-1",
           "color": "#ffffff",
           "x1Record": 1,
           "x2Record": 2
