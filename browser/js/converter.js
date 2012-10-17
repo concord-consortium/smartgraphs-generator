@@ -2452,7 +2452,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
           datasetObject = _ref2[_j];
           if (datasetObject.name === datasetEntry.name) {
-            if (datasetObject.type === "datadef") {
+            if (String(datasetObject.type).toLowerCase() === "datadef".toLowerCase()) {
               if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
                 datadef = this.createDatadef({
                   points: datasetObject.data,
@@ -2467,7 +2467,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                 });
               }
               populatedDataDefs.push(datadef);
-            } else {
+            } else if (String(datasetObject.type).toLowerCase() === "dataref".toLowerCase()) {
               this.expression = datasetObject.expression;
               if (this.expression !== null && this.expression !== void 0) {
                 expressionData = expressionParser.parseExpression(this.expression);

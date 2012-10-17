@@ -116,11 +116,11 @@ exports.RuntimeActivity = class RuntimeActivity
     for datasetEntry in includedDataSets
       for datasetObject in @datasets
         if datasetObject.name is datasetEntry.name
-          if datasetObject.type is "datadef"
+          if String(datasetObject.type).toLowerCase() is ("datadef").toLowerCase()
             unless datadef = @getDatadefRef(datasetObject.name).datadef
               datadef = this.createDatadef({ points: datasetObject.data, xLabel, yLabel, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name })
             populatedDataDefs.push datadef
-          else
+          else if String(datasetObject.type).toLowerCase() is ("dataref").toLowerCase()
             @expression = datasetObject.expression
             if @expression isnt null and @expression isnt undefined
               expressionData = expressionParser.parseExpression(@expression)
