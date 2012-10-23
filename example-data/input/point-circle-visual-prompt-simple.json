@@ -1,6 +1,19 @@
 {
   "type": "Activity",
   "name": "Pick A Point Sequence",
+  "datasets": [
+    {
+      "name": "dataSetA",
+      "type": "datadef",
+      "data": [
+            [1,200],
+            [2,400],
+            [3,600],
+            [4,800],
+            [5,1000]
+          ]
+      }
+   ],
   "pages": [
     {
       "type": "Page",
@@ -18,16 +31,17 @@
           "xMin": 0,
           "xMax": 10,
           "xTicks": 10,
-          "data": [
-            [1,200],
-            [2,400],
-            [3,600],
-            [4,800],
-            [5,1000]
+          "includedDataSets": [
+            {
+              "name": "dataSetA",
+              "inLegend": true
+            }
           ]
         },
         {
-          "type": "TablePane"
+          "type": "TablePane",
+          "xLabel": "Time",
+          "yLabel": "Position"
         }
       ],
       "sequence": {

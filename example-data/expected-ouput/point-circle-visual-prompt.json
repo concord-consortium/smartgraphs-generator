@@ -69,6 +69,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -113,6 +119,12 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         }
@@ -160,6 +172,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -204,6 +222,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -227,6 +251,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -249,7 +279,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -295,7 +331,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -312,7 +354,7 @@
       "responseBranches": [
         {
           "criterion": [
-             "withinAbsTolerance",
+            "withinAbsTolerance",
             [
               "responseField",
               1
@@ -341,7 +383,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -364,7 +412,13 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-2"
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -430,11 +484,7 @@
           "name": "datadef-1",
           "activity": "/shared/point-circles",
           "xUnits": "/shared/point-circles/units/Time (s)",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/point-circles/units/Intensity",
-          "yLabel": "Light",
-          "yShortLabel": "Light",
           "points": [
             [
               0,
@@ -480,64 +530,8 @@
               10,
               11
             ]
-          ]
-        },
-        {
-          "url": "/shared/point-circles/datadefs/datadef-2",
-          "name": "datadef-2",
-          "activity": "/shared/point-circles",
-          "xUnits": "/shared/point-circles/units/Time (s)",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yUnits": "/shared/point-circles/units/Intensity",
-          "yLabel": "Light",
-          "yShortLabel": "Light",
-          "points": [
-            [
-              0,
-              1
-            ],
-            [
-              1,
-              2
-            ],
-            [
-              2,
-              3
-            ],
-            [
-              3,
-              4
-            ],
-            [
-              4,
-              5
-            ],
-            [
-              5,
-              6
-            ],
-            [
-              6,
-              7
-            ],
-            [
-              7,
-              8
-            ],
-            [
-              8,
-              9
-            ],
-            [
-              9,
-              10
-            ],
-            [
-              10,
-              11
-            ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }
@@ -624,7 +618,7 @@
           "url": "/shared/point-circles/annotations/circled-point-7",
           "name": "circled-point-7",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "black",
           "xRecord": 5,
           "yRecord": 6
@@ -633,7 +627,7 @@
           "url": "/shared/point-circles/annotations/circled-point-8",
           "name": "circled-point-8",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "red",
           "xRecord": 3,
           "yRecord": 4
@@ -642,7 +636,7 @@
           "url": "/shared/point-circles/annotations/circled-point-9",
           "name": "circled-point-9",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "grey",
           "xRecord": 4,
           "yRecord": 5
@@ -651,7 +645,7 @@
           "url": "/shared/point-circles/annotations/circled-point-10",
           "name": "circled-point-10",
           "activity": "/shared/point-circles",
-          "datadefName": "datadef-2",
+          "datadefName": "datadef-1",
           "color": "blue",
           "xRecord": 4,
           "yRecord": 5

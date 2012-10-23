@@ -248,11 +248,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -315,11 +323,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -383,11 +399,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -460,11 +484,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -537,11 +569,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -614,11 +654,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -692,11 +740,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -763,11 +819,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -836,11 +900,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -912,11 +984,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -991,11 +1071,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1036,11 +1124,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1113,11 +1209,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1192,11 +1296,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1234,11 +1346,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1308,11 +1428,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1382,11 +1510,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1423,11 +1559,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Distance",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -1478,10 +1622,6 @@
           "url": "/shared/slope-tool-b-demo/datadefs/datadef-1",
           "name": "datadef-1",
           "activity": "/shared/slope-tool-b-demo",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yLabel": "Distance",
-          "yShortLabel": "Distance",
           "points": [
             [
               0,
@@ -1527,7 +1667,8 @@
               10,
               7
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

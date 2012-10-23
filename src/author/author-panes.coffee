@@ -1,5 +1,4 @@
 {dumbSingularize} = require '../singularize'
-{expressionParser} = require './expressionParser'
 
 AuthorPane = exports.AuthorPane =
 
@@ -13,26 +12,45 @@ AuthorPane = exports.AuthorPane =
 
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xUnits, @xMin, @xMax, @xTicks, @yLabel, @yUnits, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @xPrecision, @yPrecision, @expression, @lineType, @pointType, @lineSnapDistance}) ->
+  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets}) ->
+    @activeDataSetIndex = 0
+    @totalDatasetsIndex = 0
+    @activeDatasetName
+    @datadefRef = []
+    unless @includedDataSets then @includedDataSets = []
     @annotationSources = includeAnnotationsFrom?.map (source) ->
       [page, pane] = (source.match /^page\/(\d)+\/pane\/(\d)+$/)[1..2].map (s) -> parseInt(s, 10) - 1
       { page, pane }
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
-    @xUnitsRef = runtimeActivity.getUnitRef dumbSingularize @xUnits if @xUnits
-    @yUnitsRef = runtimeActivity.getUnitRef dumbSingularize @yUnits if @yUnits
+
+    if @includedDataSets?
+      unless @includedDataSets.length is 0
+        populatedDataSets = runtimeActivity.populateDataSet @xLabel, @yLabel, @includedDataSets
+        populatedDataDefs = populatedDataSets.datadef
+        @dataRef = populatedDataSets.dataref
+
+        unless @activeDatasetName
+          @activeDatasetName = populatedDataDefs[@activeDataSetIndex].name
+
+        for dataRef in @dataRef
+          if @activeDatasetName is dataRef.name
+            @activeDatasetName = dataRef.datadefname
+            break
+
+        for populatedDataDef in populatedDataDefs
+          dataKey = "#{populatedDataDef.name}"
+          runtimeActivity.defineDatadef dataKey, populatedDataDef
+          if @activeDatasetName is populatedDataDef.name
+            @xUnitsRef = populatedDataDef.xUnitsRef
+            @yUnitsRef = populatedDataDef.yUnitsRef
+          @datadefRef.push runtimeActivity.getDatadefRef dataKey
 
     @xAxis = runtimeActivity.createAndAppendAxis { label: @xLabel, unitRef: @xUnitsRef, min: @xMin, max: @xMax, nSteps: @xTicks }
     @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
 
-    if @data?
-      dataKey = "#{@page.index}-#{@index}"
-      @datadefRef = runtimeActivity.getDatadefRef dataKey
-      datadef = runtimeActivity.createDatadef { points: @data, @xLabel, @xUnitsRef, @yLabel, @yUnitsRef, @lineType, @pointType,@lineSnapDistance }
-      runtimeActivity.defineDatadef dataKey, datadef
-
   addToStep: (step) ->
-    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords }
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef }
 
     @annotationSources?.forEach (source) =>
       pages = @page.activity.pages
@@ -53,37 +71,22 @@ class GraphPane
 
 AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends GraphPane
 
-  constructor: ({@data}) ->
+  constructor: ->
     super
-
-  addToPageAndActivity: (runtimePage, runtimeActivity) ->
-    super
-    if @expression isnt null and @expression isnt undefined
-      expressionData = expressionParser.parseExpression(@expression)
-      if expressionData.type? and expressionData.type isnt "not supported"
-        @dataRef = runtimeActivity.createDataRef { 
-          expressionType:  expressionData.type,
-          xInterval:       @xPrecision,
-          expressionForm:  expressionData.form,
-          expression:      @expression 
-          angularFunction: expressionData.angularFunction,
-          params:          expressionData.params,
-          datadefname:     @datadefRef.datadef.name
-        }
-  addToStep: (step) ->
-    super
-    if @dataRef? then step.addDataRefToPane { @index, @dataRef }
-        
 
 AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 
   constructor: ->
     super
-    @data = []
 
   addToStep: (step) ->
     super
-    step.addSensorTool { @index, @datadefRef }
+    dataKey = "#{@activeDatasetName}"
+    datadefRef
+    for dataDefRef in @datadefRef
+      if dataDefRef.key is dataKey
+        datadefRef = dataDefRef
+    step.addSensorTool { @index, datadefRef }
 
 
 AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends GraphPane
@@ -117,13 +120,12 @@ AuthorPane.classFor['ImagePane'] = class ImagePane
 
 AuthorPane.classFor['TablePane'] = class TablePane
 
+  constructor: ({ @xLabel, @yLabel }) ->
+
   addToPageAndActivity: (runtimePage, @runtimeActivity) ->
 
   addToStep: (step) ->
     otherPaneIndex = 1 - @index
-    dataKey = "#{@page.index}-#{otherPaneIndex}"
+    dataKey = "#{@page.panes[otherPaneIndex].activeDatasetName}"
     datadefRef = @runtimeActivity.getDatadefRef dataKey     # get the datadef defined in the *other* pane on this page
-    step.addTablePane { datadefRef, @index }
-
-
-
+    step.addTablePane { datadefRef, @index, @xLabel, @yLabel }

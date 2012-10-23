@@ -1,0 +1,144 @@
+{
+  "type": "Activity",
+  "name": "Pick A Point On A Line Sequence with two datasets",
+  "datasets": [
+    {
+      "name": "dataSetA",
+      "type": "dataRef",
+      "expression": "y = 0.5 * x + 5",
+      "lineType": "connected",
+      "pointType": "none",
+      "xPrecision": 0.5,
+      "yPrecision": 0.5,
+      "lineSnapDistance": 0.5
+    },
+    {
+      "name": "dataSetB",
+      "type": "dataRef",
+      "expression": "y = 5",
+      "lineType": "connected",
+      "pointType": "none",
+      "xPrecision": 0.5,
+      "yPrecision": 0.5,
+      "lineSnapDistance": 0.5
+    }
+  ],
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "In this activity....",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": " ",
+          "yLabel": "y",
+          "yMin": 0,
+          "yMax": 10,
+          "yTicks": 10,
+          "xLabel": "x",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "showCrossHairs": true,
+          "showToolTipCoords": false,
+          "showGraphGrid": true,
+          "includedDataSets": [
+            {
+              "name": "dataSetA",
+              "inLegend": true
+            },
+            {
+              "name": "dataSetB",
+              "inLegend": true
+            }
+          ]
+        },
+        {
+          "type": "TablePane",
+           "yLabel": "y",
+          "xLabel": "x"
+        }
+      ],
+      "sequence": {
+        "type": "PickAPointSequence",
+        "dataSetName": "dataSetA",
+        "initialPrompt": {
+          "text": "Click on the orange line where x is between 1 and 2",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#000000"
+            }
+          ]
+        },
+        "correctAnswerRange": {
+          "xMin": 1,
+          "yMin": null,
+          "xMax": 2,
+          "yMax": null
+        },
+        "giveUp": {
+          "text": "If you look carefully, ....",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#000000"
+            }
+          ]
+        },
+        "confirmCorrect": {
+          "text": "Four minutes into her run ....",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#ffffff"
+            }
+          ]
+        },
+        "hints": [
+          {
+            "name": "1st wrong answer",
+            "text": "Look at the graph...",
+            "visualPrompts": [
+              {
+                "type": "RangeVisualPrompt",
+                "name": "1 to 2",
+                "xMin": 1,
+                "xMax": 2,
+                "color": "#ff0000"
+              }
+            ]
+          },
+          {
+            "name": "2nd wrong answer",
+            "text": "In these two intervals....",
+            "visualPrompts": [
+              {
+                "type": "RangeVisualPrompt",
+                "name": "Unbounded left",
+                "xMax": 3,
+                "color": "#00ff00"
+              },
+              {
+                "type": "RangeVisualPrompt",
+                "name": "Unbounded right",
+                "xMin": 4,
+                "color": "#0000ff"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

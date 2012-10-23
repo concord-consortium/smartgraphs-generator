@@ -43,6 +43,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -75,10 +81,6 @@
           "url": "/shared/simple-graph/datadefs/datadef-1",
           "name": "datadef-1",
           "activity": "/shared/simple-graph",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
           "points": [
             [
               1,
@@ -92,7 +94,8 @@
               3,
               600
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

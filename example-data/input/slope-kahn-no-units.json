@@ -2,26 +2,13 @@
   "type": "Activity",
   "name": "Khan Academy example",
   "authorName": "Andy Zucker",
-  "pages": [
+  "datasets": [
     {
-      "type": "Page",
-      "name": "Page 1",
-      "text": "This is an example of using a Khan Academy video in SmartGraphs. Click on the video if you need to see an explanation of how to calculate slope, and if the \"helps\" in the graph at right are not enough. <br><br>\r\n\r\n<object style=\"height: 390px; width: 640px\"><param name=\"movie\" value=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\"><param name=\"allowFullScreen\" value=\"true\"><param name=\"allowScriptAccess\" value=\"always\"><embed src=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowScriptAccess=\"always\" width=\"640\" height=\"360\"></object>",
-      "panes": [
-        {
-          "type": "PredefinedGraphPane",
-          "title": "A Straight Line",
-          "yLabel": "Y",
-          "yUnits": null,
-          "yMin": -5.0,
-          "yMax": 5.0,
-          "xLabel": "X",
-          "xUnits": null,
-          "xMin": -6.0,
-          "xMax": 6.0,
-          "yTicks": 10.0,
-          "xTicks": 12.0,
-          "data": [
+      "name": "datadef-1",
+      "type": "datadef",
+      "xUnits": null,
+      "yUnits": null,
+      "data": [
             [
               -6.0,
               -5.0
@@ -43,10 +30,37 @@
               3.0
             ]
           ]
+      }
+   ], 
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Page 1",
+      "text": "This is an example of using a Khan Academy video in SmartGraphs. Click on the video if you need to see an explanation of how to calculate slope, and if the \"helps\" in the graph at right are not enough. <br><br>\r\n\r\n<object style=\"height: 390px; width: 640px\"><param name=\"movie\" value=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\"><param name=\"allowFullScreen\" value=\"true\"><param name=\"allowScriptAccess\" value=\"always\"><embed src=\"http://www.youtube.com/v/R948Tsyq4vA?version=3&feature=player_embedded\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowScriptAccess=\"always\" width=\"640\" height=\"360\"></object>",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "A Straight Line",
+          "yLabel": "Y",          
+          "yMin": -5.0,
+          "yMax": 5.0,
+          "xLabel": "X",          
+          "xMin": -6.0,
+          "xMax": 6.0,
+          "yTicks": 10.0,
+          "xTicks": 12.0,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
         },
         {
           "type": "TablePane",
-          "title": "Table for straight line"
+          "title": "Table for straight line",
+          "xLabel": "X",
+          "yLabel": "Y"
         }
       ],
       "sequence": {

@@ -109,7 +109,13 @@
                     "type": ["string", "array"]
                   },
                   "datarefs": {
-                    "type": ["string", "array"]
+                    "type": "array"
+                  },
+                  "legends": {
+                    "type": "array"
+                  },
+                  "activeDatadefs": {
+                    "type": "array"
                   },
                   "showCrossHairs": {
                     "type": "boolean",
@@ -122,6 +128,12 @@
                   "showToolTipCoords": {
                     "type": "boolean",
                     "optional": true
+                  },
+                  "xLabel": {
+                    "type": "string"
+                  },
+                  "yLabel": {
+                    "type": "string"
                   }
                 }
               },
@@ -153,6 +165,12 @@
                   "datarefs": {
                     "type": ["string", "array"]
                   },
+                  "legends": {
+                    "type": "array"
+                  },
+                  "activeDatadefs": {
+                    "type": "array"
+                  },
                   "showCrossHairs": {
                     "type": "boolean",
                     "optional": true
@@ -164,6 +182,12 @@
                   "showToolTipCoords": {
                     "type": "boolean",
                     "optional": true
+                  },
+                  "xLabel": {
+                    "type": "string"
+                  },
+                  "yLabel": {
+                    "type": "string"
                   }
                 }
               },
@@ -195,6 +219,12 @@
                   "datarefs": {
                     "type": ["string", "array"]
                   },
+                  "legends": {
+                    "type": "array"
+                  },
+                  "activeDatadefs": {
+                    "type": "array"
+                  },
                   "showCrossHairs": {
                     "type": "boolean",
                     "optional": true
@@ -206,6 +236,12 @@
                   "showToolTipCoords": {
                     "type": "boolean",
                     "optional": true
+                  },
+                  "xLabel": {
+                    "type": "string"
+                  },
+                  "yLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -315,18 +351,6 @@
                 "activity": {
                   "type": "string"
                 },
-                "xLabel": {
-                  "type": "string"
-                },
-                "xShortLabel": {
-                  "type": "string"
-                },
-                "yLabel": {
-                  "type": "string"
-                },
-                "yShortLabel": {
-                  "type": "string"
-                },
                 "points": {
                   "type": "array",
                   "items": {
@@ -375,7 +399,8 @@
                   "type": "string"
                 },
                 "datadefName": {
-                  "type": "string"
+                  "type": "string",
+                  "optional" : false
                 },
                 "expression": {
                   "type": "string"
@@ -387,7 +412,8 @@
                   "type": "string"
                 },
                 "xInterval": {
-                  "type": "number"
+                  "type": "number",
+                  "optional" : false
                 },
                 "params": {
                   "type": "object"

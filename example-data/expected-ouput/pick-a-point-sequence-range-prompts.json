@@ -51,11 +51,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -104,11 +112,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -158,11 +174,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -210,11 +234,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -239,11 +271,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "Time",
+          "yLabel": "Position",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -277,10 +317,6 @@
           "url": "/shared/pick-a-point-sequence/datadefs/datadef-1",
           "name": "datadef-1",
           "activity": "/shared/pick-a-point-sequence",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
           "points": [
             [
               1,
@@ -302,7 +338,8 @@
               5,
               1000
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

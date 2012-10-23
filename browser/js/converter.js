@@ -383,7 +383,7 @@ require.define("/author/author-activity.js", function (require, module, exports,
 
     AuthorActivity.prototype.toRuntimeActivity = function() {
       var page, runtimeActivity, runtimeUnit, unit, _i, _j, _len, _len2, _ref, _ref2;
-      runtimeActivity = new RuntimeActivity(this.owner, this.name, this.authorName);
+      runtimeActivity = new RuntimeActivity(this.owner, this.name, this.authorName, this.hash.datasets);
       _ref = this.units;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         unit = _ref[_i];
@@ -681,7 +681,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
     function CorrectableSequenceWithFeedback(_arg) {
       var i, pane, _len, _ref, _ref2;
-      this.initialPrompt = _arg.initialPrompt, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
+      this.initialPrompt = _arg.initialPrompt, this.hints = _arg.hints, this.giveUp = _arg.giveUp, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
       _ref = [this.initialPrompt, this.giveUp, this.confirmCorrect].map(asObject), this.initialPrompt = _ref[0], this.giveUp = _ref[1], this.confirmCorrect = _ref[2];
       _ref2 = this.page.panes || [];
       for (i = 0, _len = _ref2.length; i < _len; i++) {
@@ -693,6 +693,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
           this.tablePane = pane;
         }
       }
+      if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
     }
 
     CorrectableSequenceWithFeedback.prototype.getRequiresGraphOrTable = function() {
@@ -721,7 +722,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
     CorrectableSequenceWithFeedback.prototype.getDataDefRef = function(runtimeActivity) {
       if (this.graphPane == null) return null;
-      return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
+      return runtimeActivity.getDatadefRef("" + this.graphPane.activeDatasetName);
     };
 
     CorrectableSequenceWithFeedback.prototype.appendStepsWithModifier = function(runtimePage, modifyForSequenceType) {
@@ -934,13 +935,11 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize, expressionParser,
+  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   dumbSingularize = require('../singularize').dumbSingularize;
-
-  expressionParser = require('./expressionParser').expressionParser;
 
   AuthorPane = exports.AuthorPane = {
     classFor: {},
@@ -958,7 +957,12 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function GraphPane(_arg) {
       var includeAnnotationsFrom;
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xUnits = _arg.xUnits, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yUnits = _arg.yUnits, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.xPrecision = _arg.xPrecision, this.yPrecision = _arg.yPrecision, this.expression = _arg.expression, this.lineType = _arg.lineType, this.pointType = _arg.pointType, this.lineSnapDistance = _arg.lineSnapDistance;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets;
+      this.activeDataSetIndex = 0;
+      this.totalDatasetsIndex = 0;
+      this.activeDatasetName;
+      this.datadefRef = [];
+      if (!this.includedDataSets) this.includedDataSets = [];
       this.annotationSources = includeAnnotationsFrom != null ? includeAnnotationsFrom.map(function(source) {
         var page, pane, _ref;
         _ref = (source.match(/^page\/(\d)+\/pane\/(\d)+$/)).slice(1, 3).map(function(s) {
@@ -972,12 +976,34 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     }
 
     GraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
-      var dataKey, datadef;
-      if (this.xUnits) {
-        this.xUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(this.xUnits));
-      }
-      if (this.yUnits) {
-        this.yUnitsRef = runtimeActivity.getUnitRef(dumbSingularize(this.yUnits));
+      var dataKey, dataRef, populatedDataDef, populatedDataDefs, populatedDataSets, _i, _j, _len, _len2, _ref;
+      if (this.includedDataSets != null) {
+        if (this.includedDataSets.length !== 0) {
+          populatedDataSets = runtimeActivity.populateDataSet(this.xLabel, this.yLabel, this.includedDataSets);
+          populatedDataDefs = populatedDataSets.datadef;
+          this.dataRef = populatedDataSets.dataref;
+          if (!this.activeDatasetName) {
+            this.activeDatasetName = populatedDataDefs[this.activeDataSetIndex].name;
+          }
+          _ref = this.dataRef;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            dataRef = _ref[_i];
+            if (this.activeDatasetName === dataRef.name) {
+              this.activeDatasetName = dataRef.datadefname;
+              break;
+            }
+          }
+          for (_j = 0, _len2 = populatedDataDefs.length; _j < _len2; _j++) {
+            populatedDataDef = populatedDataDefs[_j];
+            dataKey = "" + populatedDataDef.name;
+            runtimeActivity.defineDatadef(dataKey, populatedDataDef);
+            if (this.activeDatasetName === populatedDataDef.name) {
+              this.xUnitsRef = populatedDataDef.xUnitsRef;
+              this.yUnitsRef = populatedDataDef.yUnitsRef;
+            }
+            this.datadefRef.push(runtimeActivity.getDatadefRef(dataKey));
+          }
+        }
       }
       this.xAxis = runtimeActivity.createAndAppendAxis({
         label: this.xLabel,
@@ -986,28 +1012,13 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         max: this.xMax,
         nSteps: this.xTicks
       });
-      this.yAxis = runtimeActivity.createAndAppendAxis({
+      return this.yAxis = runtimeActivity.createAndAppendAxis({
         label: this.yLabel,
         unitRef: this.yUnitsRef,
         min: this.yMin,
         max: this.yMax,
         nSteps: this.yTicks
       });
-      if (this.data != null) {
-        dataKey = "" + this.page.index + "-" + this.index;
-        this.datadefRef = runtimeActivity.getDatadefRef(dataKey);
-        datadef = runtimeActivity.createDatadef({
-          points: this.data,
-          xLabel: this.xLabel,
-          xUnitsRef: this.xUnitsRef,
-          yLabel: this.yLabel,
-          yUnitsRef: this.yUnitsRef,
-          lineType: this.lineType,
-          pointType: this.pointType,
-          lineSnapDistance: this.lineSnapDistance
-        });
-        return runtimeActivity.defineDatadef(dataKey, datadef);
-      }
     };
 
     GraphPane.prototype.addToStep = function(step) {
@@ -1021,7 +1032,10 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         index: this.index,
         showCrossHairs: this.showCrossHairs,
         showGraphGrid: this.showGraphGrid,
-        showToolTipCoords: this.showToolTipCoords
+        showToolTipCoords: this.showToolTipCoords,
+        includedDataSets: this.includedDataSets,
+        activeDatasetName: this.activeDatasetName,
+        dataRef: this.dataRef
       });
       return (_ref = this.annotationSources) != null ? _ref.forEach(function(source) {
         var page, pages, pane;
@@ -1052,39 +1066,9 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     __extends(PredefinedGraphPane, _super);
 
-    function PredefinedGraphPane(_arg) {
-      this.data = _arg.data;
+    function PredefinedGraphPane() {
       PredefinedGraphPane.__super__.constructor.apply(this, arguments);
     }
-
-    PredefinedGraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
-      var expressionData;
-      PredefinedGraphPane.__super__.addToPageAndActivity.apply(this, arguments);
-      if (this.expression !== null && this.expression !== void 0) {
-        expressionData = expressionParser.parseExpression(this.expression);
-        if ((expressionData.type != null) && expressionData.type !== "not supported") {
-          return this.dataRef = runtimeActivity.createDataRef({
-            expressionType: expressionData.type,
-            xInterval: this.xPrecision,
-            expressionForm: expressionData.form,
-            expression: this.expression,
-            angularFunction: expressionData.angularFunction,
-            params: expressionData.params,
-            datadefname: this.datadefRef.datadef.name
-          });
-        }
-      }
-    };
-
-    PredefinedGraphPane.prototype.addToStep = function(step) {
-      PredefinedGraphPane.__super__.addToStep.apply(this, arguments);
-      if (this.dataRef != null) {
-        return step.addDataRefToPane({
-          index: this.index,
-          dataRef: this.dataRef
-        });
-      }
-    };
 
     return PredefinedGraphPane;
 
@@ -1096,14 +1080,21 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function SensorGraphPane() {
       SensorGraphPane.__super__.constructor.apply(this, arguments);
-      this.data = [];
     }
 
     SensorGraphPane.prototype.addToStep = function(step) {
+      var dataDefRef, dataKey, datadefRef, _i, _len, _ref;
       SensorGraphPane.__super__.addToStep.apply(this, arguments);
+      dataKey = "" + this.activeDatasetName;
+      datadefRef;
+      _ref = this.datadefRef;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        dataDefRef = _ref[_i];
+        if (dataDefRef.key === dataKey) datadefRef = dataDefRef;
+      }
       return step.addSensorTool({
         index: this.index,
-        datadefRef: this.datadefRef
+        datadefRef: datadefRef
       });
     };
 
@@ -1179,7 +1170,9 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
   AuthorPane.classFor['TablePane'] = TablePane = (function() {
 
-    function TablePane() {}
+    function TablePane(_arg) {
+      this.xLabel = _arg.xLabel, this.yLabel = _arg.yLabel;
+    }
 
     TablePane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
       this.runtimeActivity = runtimeActivity;
@@ -1188,11 +1181,13 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     TablePane.prototype.addToStep = function(step) {
       var dataKey, datadefRef, otherPaneIndex;
       otherPaneIndex = 1 - this.index;
-      dataKey = "" + this.page.index + "-" + otherPaneIndex;
+      dataKey = "" + this.page.panes[otherPaneIndex].activeDatasetName;
       datadefRef = this.runtimeActivity.getDatadefRef(dataKey);
       return step.addTablePane({
         datadefRef: datadefRef,
-        index: this.index
+        index: this.index,
+        xLabel: this.xLabel,
+        yLabel: this.yLabel
       });
     };
 
@@ -1210,90 +1205,6 @@ require.define("/singularize.js", function (require, module, exports, __dirname,
   exports.dumbSingularize = function(str) {
     var _ref;
     return ((_ref = str.match(/(.*)s$/)) != null ? _ref[1] : void 0) || str;
-  };
-
-}).call(this);
-
-});
-
-require.define("/author/expressionParser.js", function (require, module, exports, __dirname, __filename) {
-    (function() {
-
-  this.expressionParser = function() {};
-
-  this.expressionParser.parseExpression = function(expression) {
-    var expressionData, linearConstantRegExPattern, linearRegExPattern, params, regExpConstant, regExpNum, regExpNumberMultiplier, regExpSpace, sineRegExPattern, strResult;
-    this.expression = expression;
-    expressionData = {};
-    params = {};
-    regExpSpace = /\s+/g;
-    this.expression = this.expression.replace(regExpSpace, "");
-    regExpNum = "\\d+(?:\\.?\\d+)?";
-    regExpNumberMultiplier = "(?:(?:[+-]?(?:" + regExpNum + ")))\\*?|(?:(?:[+-]))";
-    regExpConstant = "[+-](?:" + regExpNum + ")";
-    strResult = "";
-    linearConstantRegExPattern = new RegExp('^y=([+-]?' + regExpNum + ')$', 'i');
-    linearRegExPattern = new RegExp('^y=(?:(' + regExpNumberMultiplier + ')?x)(' + regExpConstant + ')?$', 'i');
-    sineRegExPattern = new RegExp('^y=(' + regExpNumberMultiplier + ')?sin\\((' + regExpNumberMultiplier + ')?x(' + regExpConstant + ')?\\)(' + regExpConstant + ')?$', 'i');
-    if (linearConstantRegExPattern.test(this.expression)) {
-      expressionData['type'] = 'LinearEquation';
-      expressionData['form'] = 'slope-intercept';
-      params['slope'] = 0;
-      params['yIntercept'] = parseFloat(RegExp.$1);
-    } else if (linearRegExPattern.test(this.expression)) {
-      expressionData['type'] = 'LinearEquation';
-      expressionData['form'] = 'slope-intercept';
-      if (parseFloat(RegExp.$1) || parseFloat(RegExp.$1) === 0) {
-        params['slope'] = parseFloat(RegExp.$1);
-      } else if (RegExp.$1 === "-") {
-        params['slope'] = -1;
-      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
-        params['slope'] = 1;
-      }
-      if (RegExp.$2 === "") {
-        params['yIntercept'] = 0;
-      } else {
-        params['yIntercept'] = parseFloat(RegExp.$2);
-      }
-    } else if (sineRegExPattern.test(this.expression)) {
-      expressionData['type'] = 'SinusoidalEquation';
-      expressionData['form'] = 'sine-cosine';
-      expressionData['angularFunction'] = 'sine';
-      if (parseFloat(RegExp.$1) || parseFloat(RegExp.$1) === 0) {
-        params['amplitude'] = parseFloat(RegExp.$1);
-      } else if (RegExp.$1 === "-") {
-        params['amplitude'] = -1;
-      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
-        params['amplitude'] = 1;
-      }
-      if (parseFloat(RegExp.$2) || parseFloat(RegExp.$2) === 0) {
-        params['frequency'] = parseFloat(RegExp.$2);
-      } else if (RegExp.$2 === "-") {
-        params['frequency'] = -1;
-      } else if (RegExp.$2 === "" || RegExp.$2 === "+") {
-        params['frequency'] = 1;
-      }
-      if (parseFloat(RegExp.$3) || parseFloat(RegExp.$3) === 0) {
-        params['phase'] = parseFloat(RegExp.$3);
-      } else if (RegExp.$3 === "-") {
-        params['phase'] = 0;
-      } else if (RegExp.$3 === "") {
-        params['phase'] = 0;
-      }
-      if (parseFloat(RegExp.$4) || parseFloat(RegExp.$4) === 0) {
-        params['centerAmplitude'] = parseFloat(RegExp.$4);
-      } else if (RegExp.$4 === "-") {
-        params['centerAmplitude'] = 0;
-      } else if (RegExp.$4 === "") {
-        params['centerAmplitude'] = 0;
-      }
-    } else if (this.expression === "") {
-      expressionData['type'] = 'not supported';
-    } else {
-      expressionData['type'] = 'CompositeEquation';
-    }
-    expressionData['params'] = params;
-    return expressionData;
   };
 
 }).call(this);
@@ -1320,6 +1231,10 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       return "" + this.xMax + (this.xUnits.length > 0 ? this.xUnits : " for " + this.x_axis_name);
     };
 
+    SlopeToolSequence.prototype.starting_text = function() {
+      return "" + this.xMin + (this.xUnits.length > 0 ? this.xUnits : void 0);
+    };
+
     SlopeToolSequence.prototype.click_ok_text = function() {
       return "<p>Then click \"OK\". </p>";
     };
@@ -1333,14 +1248,18 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       if (this.selectedPointsMustBeAdjacent && !first_point) {
         return "a second <strong><em>adjacent</em></strong> \npoint between " + this.xMin + " and " + (this.ending_text()) + ".\n";
       } else if (this.studentMustSelectEndpointsOfRange) {
-        return "" + (first_point ? "an" : "a second") + " \n<strong><em>endpoint</em></strong> of the range \n" + this.xMin + " through " + (this.ending_text()) + ".";
+        if (first_point) {
+          return "a point at \n<strong><em>one end</em></strong>  \nof the interval from\n" + (this.starting_text()) + " to " + (this.ending_text()) + ".";
+        } else {
+          return "the point at \n<strong><em>the other end</em></strong>  \nof the interval from\n" + (this.starting_text()) + " to " + (this.ending_text()) + ".";
+        }
       } else {
         return "" + (first_point ? "a" : "a second") + " \npoint between " + this.xMin + " and " + (this.ending_text()) + ".";
       }
     };
 
     SlopeToolSequence.prototype.select_first_point_text = function() {
-      return "<p> Select " + (this.range_text()) + " </p>\n" + (this.click_ok_text());
+      return "<p> Click on " + (this.range_text()) + " </p>\n" + (this.click_ok_text());
     };
 
     SlopeToolSequence.prototype.first_point_wrong_text = function() {
@@ -1349,7 +1268,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
 
     SlopeToolSequence.prototype.select_second_point_text = function(first_time) {
       if (first_time == null) first_time = true;
-      return "<p>Now select\n" + (this.range_text(false)) + "</p>\n" + (this.click_ok_text());
+      return "<p>Now click on\n" + (this.range_text(false)) + "</p>\n" + (this.click_ok_text());
     };
 
     SlopeToolSequence.prototype.second_point_out_of_range_text = function() {
@@ -1453,7 +1372,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
 
     function SlopeToolSequence(_arg) {
       var i, pane, _len, _ref;
-      this.firstQuestionIsSlopeQuestion = _arg.firstQuestionIsSlopeQuestion, this.studentSelectsPoints = _arg.studentSelectsPoints, this.selectedPointsMustBeAdjacent = _arg.selectedPointsMustBeAdjacent, this.studentMustSelectEndpointsOfRange = _arg.studentMustSelectEndpointsOfRange, this.slopeVariableName = _arg.slopeVariableName, this.firstQuestion = _arg.firstQuestion, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.tolerance = _arg.tolerance, this.page = _arg.page;
+      this.firstQuestionIsSlopeQuestion = _arg.firstQuestionIsSlopeQuestion, this.studentSelectsPoints = _arg.studentSelectsPoints, this.selectedPointsMustBeAdjacent = _arg.selectedPointsMustBeAdjacent, this.studentMustSelectEndpointsOfRange = _arg.studentMustSelectEndpointsOfRange, this.slopeVariableName = _arg.slopeVariableName, this.firstQuestion = _arg.firstQuestion, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.tolerance = _arg.tolerance, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
       this.precision = 2;
       if (!(this.slopeVariableName && this.slopeVariableName.length > 0)) {
         this.slopeVariableName = "slope";
@@ -1471,6 +1390,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
           this.tablePane = pane;
         }
       }
+      if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
     }
 
     SlopeToolSequence.prototype.getRequiresGraphOrTable = function() {
@@ -1487,7 +1407,7 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
 
     SlopeToolSequence.prototype.getDataDefRef = function(runtimeActivity) {
       if (this.graphPane == null) return null;
-      return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
+      return runtimeActivity.getDatadefRef("" + this.graphPane.activeDatasetName);
     };
 
     SlopeToolSequence.prototype.setupStep = function(_arg) {
@@ -1496,14 +1416,19 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
       step = this.runtimeStepsByName[stepdef.name];
       step.addGraphPane({
         title: this.graphPane.title,
-        datadefRef: this.getDataDefRef(runtimePage.activity),
+        datadefRef: this.graphPane.datadefRef,
         xAxis: this.xAxis,
         yAxis: this.yAxis,
-        index: this.graphPane.index
+        index: this.graphPane.index,
+        includedDataSets: this.graphPane.includedDataSets,
+        activeDatasetName: this.graphPane.activeDatasetName,
+        dataRef: this.graphPane.dataRef ? this.graphPane.dataRef : []
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
-        index: this.tablePane.index
+        index: this.tablePane.index,
+        xLabel: this.tablePane.xLabel,
+        yLabel: this.tablePane.yLabel
       });
       step.beforeText = stepdef.beforeText;
       step.substitutedExpressions = stepdef.substitutedExpressions;
@@ -2058,7 +1983,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
     LineConstructionSequence.prototype.getDataDefRef = function(runtimeActivity) {
       if (this.graphPane == null) return null;
-      return runtimeActivity.getDatadefRef("" + this.page.index + "-" + this.graphPane.index);
+      return runtimeActivity.getDatadefRef("" + this.graphPane.activeDatasetName);
     };
 
     LineConstructionSequence.prototype.setupStep = function(_arg) {
@@ -2067,17 +1992,22 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       step = this.runtimeStepsByName[stepdef.name];
       step.addGraphPane({
         title: this.graphPane.title,
-        datadefRef: this.getDataDefRef(runtimePage.activity),
+        datadefRef: this.graphPane.datadefRef,
         xAxis: this.xAxis,
         yAxis: this.yAxis,
         index: this.graphPane.index,
         showCrossHairs: stepdef.showCrossHairs,
         showGraphGrid: stepdef.showGraphGrid,
-        showToolTipCoords: stepdef.showToolTipCoords
+        showToolTipCoords: stepdef.showToolTipCoords,
+        includedDataSets: this.graphPane.includedDataSets,
+        activeDatasetName: this.graphPane.activeDatasetName,
+        dataRef: this.graphPane.dataRef ? this.graphPane.dataRef : []
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
-        index: this.tablePane.index
+        index: this.tablePane.index,
+        xLabel: this.tablePane.xLabel,
+        yLabel: this.tablePane.yLabel
       });
       step.beforeText = stepdef.beforeText;
       step.substitutedExpressions = stepdef.substitutedExpressions;
@@ -2134,7 +2064,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
     function LineConstructionSequence(_arg) {
       var i, pane, _len, _ref;
-      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.page = _arg.page;
+      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
       this.steps = [];
       this.runtimeStepsByName = {};
       _ref = this.page.panes || [];
@@ -2147,6 +2077,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
           this.tablePane = pane;
         }
       }
+      if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
     }
 
     LineConstructionSequence.prototype.appendSteps = function(runtimePage) {
@@ -2341,7 +2272,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
 */
 
 (function() {
-  var Annotation, AnnotationCollection, Axis, DataRef, Datadef, HighlightedPoint, ResponseTemplateCollection, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, slugify, _ref,
+  var Annotation, AnnotationCollection, Axis, DataRef, Datadef, HighlightedPoint, ResponseTemplateCollection, RuntimeActivity, RuntimePage, RuntimeUnit, SegmentOverlay, Step, Tag, expressionParser, slugify, _ref,
     __hasProp = Object.prototype.hasOwnProperty;
 
   slugify = require('../slugify').slugify;
@@ -2360,16 +2291,19 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
 
   Tag = require('./tag').Tag;
 
+  expressionParser = require('../author/expressionParser').expressionParser;
+
   _ref = require('./annotations'), AnnotationCollection = _ref.AnnotationCollection, Annotation = _ref.Annotation, HighlightedPoint = _ref.HighlightedPoint, SegmentOverlay = _ref.SegmentOverlay;
 
   ResponseTemplateCollection = require('./response-templates').ResponseTemplateCollection;
 
   exports.RuntimeActivity = RuntimeActivity = (function() {
 
-    function RuntimeActivity(owner, name, authorName) {
+    function RuntimeActivity(owner, name, authorName, datasets) {
       this.owner = owner;
       this.name = name;
       this.authorName = authorName;
+      this.datasets = datasets;
       this.pages = [];
       this.steps = [];
       this.unitRefs = {};
@@ -2417,26 +2351,28 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDatadef = function(_arg) {
-      var datadef, lineSnapDistance, lineType, pointType, points, xLabel, xUnitsRef, yLabel, yUnitsRef;
-      points = _arg.points, xLabel = _arg.xLabel, xUnitsRef = _arg.xUnitsRef, yLabel = _arg.yLabel, yUnitsRef = _arg.yUnitsRef, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance;
+      var datadef, lineSnapDistance, lineType, name, pointType, points, xLabel, xUnits, yLabel, yUnits;
+      points = _arg.points, xLabel = _arg.xLabel, yLabel = _arg.yLabel, xUnits = _arg.xUnits, yUnits = _arg.yUnits, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name;
       datadef = new Datadef({
         points: points,
         xLabel: xLabel,
-        xUnitsRef: xUnitsRef,
         yLabel: yLabel,
-        yUnitsRef: yUnitsRef,
         index: ++this.nDatadefs,
         pointType: pointType,
         lineType: lineType,
-        lineSnapDistance: lineSnapDistance
+        lineSnapDistance: lineSnapDistance,
+        xUnits: xUnits,
+        yUnits: yUnits,
+        name: name
       });
       datadef.activity = this;
+      datadef.constructUnitRefs();
       return datadef;
     };
 
     RuntimeActivity.prototype.createDataRef = function(_arg) {
-      var angularFunction, dataRef, datadefname, expression, expressionForm, expressionType, index, params, xInterval, _base;
-      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index;
+      var angularFunction, dataRef, datadefname, expression, expressionForm, expressionType, index, lineSnapDistance, name, params, xInterval, _base;
+      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name;
       dataRef = new DataRef({
         datadefname: datadefname,
         expressionType: expressionType,
@@ -2445,7 +2381,9 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         angularFunction: angularFunction,
         xInterval: xInterval,
         params: params,
-        index: ++this.nDataRefs
+        index: ++this.nDataRefs,
+        lineSnapDistance: lineSnapDistance,
+        name: name
       });
       dataRef.activity = this;
       if ((_base = this.dataRefRefs)[expressionType] == null) {
@@ -2496,9 +2434,94 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     RuntimeActivity.prototype.defineDatadef = function(key, datadef) {
       var ref;
       ref = this.getDatadefRef(key);
-      if (ref.datadef != null) throw new Error("Redefinition of datadef " + key);
+      if (ref.datadef !== null ? ref.datadef !== datadef : void 0) {
+        throw new Error("Redefinition of datadef " + key);
+      }
       ref.datadef = datadef;
       return datadef;
+    };
+
+    RuntimeActivity.prototype.populateDataSet = function(xLabel, yLabel, includedDataSets) {
+      var activeDataSetIndex, dataRef, datadef, datasetEntry, datasetObject, expressionData, populatedDataDefs, populatedDataRefs, _i, _j, _len, _len2, _ref2;
+      populatedDataDefs = [];
+      populatedDataRefs = [];
+      activeDataSetIndex = 0;
+      for (_i = 0, _len = includedDataSets.length; _i < _len; _i++) {
+        datasetEntry = includedDataSets[_i];
+        _ref2 = this.datasets;
+        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+          datasetObject = _ref2[_j];
+          if (datasetObject.name === datasetEntry.name) {
+            if (String(datasetObject.type).toLowerCase() === "datadef".toLowerCase()) {
+              if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
+                datadef = this.createDatadef({
+                  points: datasetObject.data,
+                  xLabel: xLabel,
+                  yLabel: yLabel,
+                  xUnits: datasetObject.xUnits,
+                  yUnits: datasetObject.yUnits,
+                  lineType: datasetObject.lineType,
+                  pointType: datasetObject.pointType,
+                  lineSnapDistance: datasetObject.lineSnapDistance,
+                  name: datasetObject.name
+                });
+              }
+              populatedDataDefs.push(datadef);
+            } else if (String(datasetObject.type).toLowerCase() === "dataref".toLowerCase()) {
+              this.expression = datasetObject.expression;
+              if (this.expression !== null && this.expression !== void 0) {
+                expressionData = expressionParser.parseExpression(this.expression);
+                if ((expressionData.type != null) && expressionData.type !== "not supported") {
+                  if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
+                    datadef = this.createDatadef({
+                      points: [],
+                      xLabel: xLabel,
+                      yLabel: yLabel,
+                      xUnits: datasetObject.xUnits,
+                      yUnits: datasetObject.yUnits,
+                      lineType: datasetObject.lineType,
+                      lineSnapDistance: datasetObject.lineSnapDistance,
+                      pointType: datasetObject.pointType,
+                      name: datasetObject.name
+                    });
+                    dataRef = this.createDataRef({
+                      datadefname: datadef.name,
+                      expressionType: expressionData.type,
+                      xInterval: datasetObject.xPrecision,
+                      expressionForm: expressionData.form,
+                      expression: datasetObject.expression,
+                      angularFunction: expressionData.angularFunction,
+                      params: expressionData.params,
+                      lineSnapDistance: datasetObject.lineSnapDistance
+                    });
+                  } else {
+                    dataRef = this.getDataRefOfDatadef({
+                      dataDefName: datadef.name,
+                      expressionType: expressionData.type
+                    });
+                  }
+                  populatedDataDefs.push(datadef);
+                  populatedDataRefs.push(dataRef);
+                }
+              }
+            }
+          }
+        }
+      }
+      return {
+        datadef: populatedDataDefs,
+        dataref: populatedDataRefs
+      };
+    };
+
+    RuntimeActivity.prototype.getDataRefOfDatadef = function(_arg) {
+      var dataDefName, dataRef, expressionType, _i, _len, _ref2;
+      dataDefName = _arg.dataDefName, expressionType = _arg.expressionType;
+      _ref2 = this.dataRefRefs[expressionType];
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        dataRef = _ref2[_i];
+        if (dataRef.datadefname === dataDefName) return dataRef;
+      }
     };
 
     /*
@@ -2942,12 +2965,12 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addGraphPane = function(_arg) {
-      var datadefRef, index, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
-      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords;
+      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef;
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
-        dataRef: [],
+        dataRef: dataRef ? dataRef : [],
         xAxis: xAxis,
         yAxis: yAxis,
         showCrossHairs: showCrossHairs,
@@ -2955,8 +2978,10 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         showToolTipCoords: showToolTipCoords,
         annotations: [],
         highlightedAnnotations: [],
+        includedDataSets: includedDataSets,
+        activeDatasetName: activeDatasetName,
         toHash: function() {
-          var annotation, dataref, _ref, _ref2, _ref3;
+          var annotation, datadefref, dataref, _ref, _ref2, _ref3;
           return {
             type: 'graph',
             title: this.title,
@@ -2985,7 +3010,20 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
               }
               return _results;
             }).call(this),
-            data: this.datadefRef != null ? [this.datadefRef.datadef.name] : [],
+            data: (function() {
+              var _i, _len, _ref4, _results;
+              if (this.datadefRef.length === 0) {
+                return [];
+              } else {
+                _ref4 = this.datadefRef;
+                _results = [];
+                for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+                  datadefref = _ref4[_i];
+                  _results.push(datadefref.datadef.name);
+                }
+                return _results;
+              }
+            }).call(this),
             datarefs: (function() {
               var _i, _len, _ref4, _results;
               if (this.dataRef.length === 0) {
@@ -2999,15 +3037,41 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
                 }
                 return _results;
               }
-            }).call(this)
+            }).call(this),
+            legends: this.GetLegends(),
+            activeDatadefs: this.GetActiveDatasetNames()
           };
+        },
+        GetActiveDatasetNames: function() {
+          if (this.activeDatasetName) return [this.activeDatasetName];
+        },
+        GetLegends: function() {
+          var datadefRef, dataset, oLegends, _i, _j, _len, _len2, _ref, _ref2;
+          if (this.includedDataSets.length !== 0) {
+            oLegends = new Array();
+            _ref = this.includedDataSets;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              dataset = _ref[_i];
+              if (dataset.inLegend) {
+                _ref2 = this.datadefRef;
+                for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+                  datadefRef = _ref2[_j];
+                  if (datadefRef.datadef.name === dataset.name) {
+                    oLegends.push(dataset.name);
+                    break;
+                  }
+                }
+              }
+            }
+            return oLegends;
+          }
         }
       };
     };
 
     Step.prototype.addTablePane = function(_arg) {
-      var datadefRef, index;
-      datadefRef = _arg.datadefRef, index = _arg.index;
+      var datadefRef, index, xLabel, yLabel;
+      datadefRef = _arg.datadefRef, index = _arg.index, xLabel = _arg.xLabel, yLabel = _arg.yLabel;
       return this.panes[index] = {
         datadefRef: datadefRef,
         annotations: [],
@@ -3017,6 +3081,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
           return {
             type: 'table',
             data: this.datadefRef.datadef.name,
+            xLabel: xLabel,
+            yLabel: yLabel,
             annotations: (function() {
               var _i, _len, _ref, _results;
               _ref = this.annotations;
@@ -3046,12 +3112,6 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
       var annotation, index;
       annotation = _arg.annotation, index = _arg.index;
       return this.panes[index].annotations.push(annotation);
-    };
-
-    Step.prototype.addDataRefToPane = function(_arg) {
-      var dataRef, index;
-      dataRef = _arg.dataRef, index = _arg.index;
-      return this.panes[index].dataRef.push(dataRef);
     };
 
     Step.prototype.addHighlightedAnnotationToPane = function(_arg) {
@@ -3295,7 +3355,9 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
 */
 
 (function() {
-  var Datadef;
+  var Datadef, dumbSingularize;
+
+  dumbSingularize = require('../singularize').dumbSingularize;
 
   exports.Datadef = Datadef = (function() {
 
@@ -3322,9 +3384,19 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
     };
 
     function Datadef(_arg) {
-      this.points = _arg.points, this.xLabel = _arg.xLabel, this.xUnitsRef = _arg.xUnitsRef, this.yLabel = _arg.yLabel, this.yUnitsRef = _arg.yUnitsRef, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance;
-      this.name = "datadef-" + this.index;
+      this.points = _arg.points, this.xLabel = _arg.xLabel, this.yLabel = _arg.yLabel, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name;
+      if (!_arg.name) this.name = "datadef-" + this.index;
+      if (!_arg.lineSnapDistance) this.lineSnapDistance = 0;
     }
+
+    Datadef.prototype.constructUnitRefs = function() {
+      if (this.xUnits) {
+        this.xUnitsRef = this.activity.getUnitRef(dumbSingularize(this.xUnits));
+      }
+      if (this.yUnits) {
+        return this.yUnitsRef = this.activity.getUnitRef(dumbSingularize(this.yUnits));
+      }
+    };
 
     Datadef.prototype.getUrl = function() {
       return "" + (this.activity.getUrl()) + "/datadefs/" + this.name;
@@ -3337,11 +3409,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
         name: this.name,
         activity: this.activity.getUrl(),
         xUnits: (_ref = this.xUnitsRef) != null ? _ref.unit.getUrl() : void 0,
-        xLabel: this.xLabel,
-        xShortLabel: this.xLabel,
         yUnits: (_ref2 = this.yUnitsRef) != null ? _ref2.unit.getUrl() : void 0,
-        yLabel: this.yLabel,
-        yShortLabel: this.yLabel,
         points: this.points,
         pointType: this.pointType,
         lineType: this.lineType,
@@ -3385,8 +3453,8 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
     };
 
     function DataRef(_arg) {
-      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expression = _arg.expression, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index;
-      this.name = "dataref-" + this.index;
+      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expression = _arg.expression, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index, this.name = _arg.name;
+      if (!_arg.name) this.name = "dataref-" + this.index;
     }
 
     DataRef.prototype.getUrl = function() {
@@ -3444,6 +3512,90 @@ require.define("/runtime/tag.js", function (require, module, exports, __dirname,
     return Tag;
 
   })();
+
+}).call(this);
+
+});
+
+require.define("/author/expressionParser.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+
+  this.expressionParser = function() {};
+
+  this.expressionParser.parseExpression = function(expression) {
+    var expressionData, linearConstantRegExPattern, linearRegExPattern, params, regExpConstant, regExpNum, regExpNumberMultiplier, regExpSpace, sineRegExPattern, strResult;
+    this.expression = expression;
+    expressionData = {};
+    params = {};
+    regExpSpace = /\s+/g;
+    this.expression = this.expression.replace(regExpSpace, "");
+    regExpNum = "\\d+(?:\\.?\\d+)?";
+    regExpNumberMultiplier = "(?:(?:[+-]?(?:" + regExpNum + ")))\\*?|(?:(?:[+-]))";
+    regExpConstant = "[+-](?:" + regExpNum + ")";
+    strResult = "";
+    linearConstantRegExPattern = new RegExp('^y=([+-]?' + regExpNum + ')$', 'i');
+    linearRegExPattern = new RegExp('^y=(?:(' + regExpNumberMultiplier + ')?x)(' + regExpConstant + ')?$', 'i');
+    sineRegExPattern = new RegExp('^y=(' + regExpNumberMultiplier + ')?sin\\((' + regExpNumberMultiplier + ')?x(' + regExpConstant + ')?\\)(' + regExpConstant + ')?$', 'i');
+    if (linearConstantRegExPattern.test(this.expression)) {
+      expressionData['type'] = 'LinearEquation';
+      expressionData['form'] = 'slope-intercept';
+      params['slope'] = 0;
+      params['yIntercept'] = parseFloat(RegExp.$1);
+    } else if (linearRegExPattern.test(this.expression)) {
+      expressionData['type'] = 'LinearEquation';
+      expressionData['form'] = 'slope-intercept';
+      if (parseFloat(RegExp.$1) || parseFloat(RegExp.$1) === 0) {
+        params['slope'] = parseFloat(RegExp.$1);
+      } else if (RegExp.$1 === "-") {
+        params['slope'] = -1;
+      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
+        params['slope'] = 1;
+      }
+      if (RegExp.$2 === "") {
+        params['yIntercept'] = 0;
+      } else {
+        params['yIntercept'] = parseFloat(RegExp.$2);
+      }
+    } else if (sineRegExPattern.test(this.expression)) {
+      expressionData['type'] = 'SinusoidalEquation';
+      expressionData['form'] = 'sine-cosine';
+      expressionData['angularFunction'] = 'sine';
+      if (parseFloat(RegExp.$1) || parseFloat(RegExp.$1) === 0) {
+        params['amplitude'] = parseFloat(RegExp.$1);
+      } else if (RegExp.$1 === "-") {
+        params['amplitude'] = -1;
+      } else if (RegExp.$1 === "" || RegExp.$1 === "+") {
+        params['amplitude'] = 1;
+      }
+      if (parseFloat(RegExp.$2) || parseFloat(RegExp.$2) === 0) {
+        params['frequency'] = parseFloat(RegExp.$2);
+      } else if (RegExp.$2 === "-") {
+        params['frequency'] = -1;
+      } else if (RegExp.$2 === "" || RegExp.$2 === "+") {
+        params['frequency'] = 1;
+      }
+      if (parseFloat(RegExp.$3) || parseFloat(RegExp.$3) === 0) {
+        params['phase'] = parseFloat(RegExp.$3);
+      } else if (RegExp.$3 === "-") {
+        params['phase'] = 0;
+      } else if (RegExp.$3 === "") {
+        params['phase'] = 0;
+      }
+      if (parseFloat(RegExp.$4) || parseFloat(RegExp.$4) === 0) {
+        params['centerAmplitude'] = parseFloat(RegExp.$4);
+      } else if (RegExp.$4 === "-") {
+        params['centerAmplitude'] = 0;
+      } else if (RegExp.$4 === "") {
+        params['centerAmplitude'] = 0;
+      }
+    } else if (this.expression === "") {
+      expressionData['type'] = 'not supported';
+    } else {
+      expressionData['type'] = 'CompositeEquation';
+    }
+    expressionData['params'] = params;
+    return expressionData;
+  };
 
 }).call(this);
 

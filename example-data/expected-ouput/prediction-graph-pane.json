@@ -76,7 +76,6 @@
   "axes": [
     {
       "url": "/shared/prediction-graph-activity/axes/1",
-      "units": "/shared/prediction-graph-activity/units/Time",
       "min": 0,
       "max": 20,
       "nSteps": 10,
@@ -84,7 +83,6 @@
     },
     {
       "url": "/shared/prediction-graph-activity/axes/2",
-      "units": "/shared/prediction-graph-activity/units/Distance",
       "min": 0,
       "max": 5,
       "nSteps": 10,

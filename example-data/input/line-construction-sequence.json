@@ -2,6 +2,17 @@
   "type": "Activity",
   "name": "Activity with a line construction tool",
   "authorName": "Noah",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+      ],
+      "yUnits": null,
+      "xUnits": null
+    }
+   
+  ],
   "pages": [
     {
       "type": "Page",
@@ -12,25 +23,28 @@
           "type": "PredefinedGraphPane",
           "title": "Line Construction Graph Pane",
           "yLabel": "y",
-          "yUnits": null,
           "yMin": 0.0,
           "yMax": 10.0,
           "xLabel": "x",
-          "xUnits": null,
           "xMin": 0.0,
           "xMax": 10.0,
           "yTicks": 10.0,
           "xTicks": 10.0,
-          "data": [
-
-          ],
           "showCrossHairs": true,
           "showToolTipCoords": true,
-          "showGraphGrid": true
+          "showGraphGrid": true,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
         },
         {
           "type": "TablePane",
-          "title": "Line Construction Table"
+          "title": "Line Construction Table",
+          "yLabel": "y",
+          "xLabel": "x"
         }
       ],
       "sequence": {

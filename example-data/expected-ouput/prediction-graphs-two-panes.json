@@ -142,7 +142,6 @@
   "axes": [
     {
       "url": "/shared/prediction-graph-2_step-activity/axes/1",
-      "units": "/shared/prediction-graph-2_step-activity/units/Time",
       "min": 0,
       "max": 20,
       "nSteps": 10,
@@ -150,7 +149,6 @@
     },
     {
       "url": "/shared/prediction-graph-2_step-activity/axes/2",
-      "units": "/shared/prediction-graph-2_step-activity/units/Distance",
       "min": 0,
       "max": 5,
       "nSteps": 10,
@@ -158,7 +156,6 @@
     },
     {
       "url": "/shared/prediction-graph-2_step-activity/axes/3",
-      "units": "/shared/prediction-graph-2_step-activity/units/Time",
       "min": 0,
       "max": 20,
       "nSteps": 10,
@@ -166,7 +163,6 @@
     },
     {
       "url": "/shared/prediction-graph-2_step-activity/axes/4",
-      "units": "/shared/prediction-graph-2_step-activity/units/Distance",
       "min": 0,
       "max": 5,
       "nSteps": 10,

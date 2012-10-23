@@ -1,6 +1,18 @@
 	{
 	  "type": "Activity",
 	  "name": "Pick A Point With Composite Expression",
+    "datasets": [
+    {
+      "name": "dataRef-1",
+      "type": "dataRef",
+      "xPrecision":0.1,
+			"yPrecision":0.5,
+			"expression": "y = log(x) + sin(x)",
+			"lineSnapDistance": 0.5,
+			"lineType": "connected",
+			"pointType": "none"
+    }
+  ],
 	  "pages": [
 		{
 		  "type": "Page",
@@ -18,23 +30,25 @@
 			  "xMin": 0,
 			  "xMax": 100,
 			  "xTicks": 10,
-			  "xPrecision":0.1,
-			  "yPrecision":0.5,
-			  "expression": "y = log(x) + sin(x)",
-			  "lineSnapDistance": 0.5, 
-			  "lineType": "connected",
-			  "pointType": "none",
 			  "showCrossHairs": true,
 			  "showToolTipCoords": false,
 			  "showGraphGrid": true,
-			  "data": [ ]
-			},
+        "includedDataSets": [
+            {
+              "name": "dataRef-1",
+              "inLegend": true
+            }
+          ]
+       },
 			{
-			  "type": "TablePane"
+			  "type": "TablePane",
+        "yLabel": "y",
+			  "xLabel": "x"
 			}
 		  ],
 		  "sequence": {
 			"type": "PickAPointSequence",
+      "dataSetName": "dataRef-1",
 			"initialPrompt": {
 			  "text": "Click on the line where x is between 10 and 20",
 			  "visualPrompts": [

@@ -58,7 +58,15 @@
             "freehand-sketch-1"
           ],
           "highlightedAnnotations": [],
-          "data": []
+          "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
+          ]
         }
       },
       "tools": [
@@ -101,6 +109,12 @@
           ],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         }
@@ -162,12 +176,9 @@
           "name": "datadef-1",
           "activity": "/shared/sensor-graph-on-top-of-prediction-graph",
           "xUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Seconds",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/sensor-graph-on-top-of-prediction-graph/units/Meters",
-          "yLabel": "Position",
-          "yShortLabel": "Position",
-          "points": []
+          "points": [],
+          "lineSnapDistance": 0
         }
       ]
     }

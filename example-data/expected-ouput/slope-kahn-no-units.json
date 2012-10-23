@@ -247,11 +247,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -309,11 +317,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -376,11 +392,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1"
           ],
@@ -444,11 +468,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -521,11 +553,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -598,11 +638,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -675,11 +723,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -753,11 +809,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -824,11 +888,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -897,11 +969,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -973,11 +1053,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1052,11 +1140,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1097,11 +1193,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1174,11 +1278,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1253,11 +1365,19 @@
           ],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1295,11 +1415,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1369,11 +1497,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1443,11 +1579,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [
             "highlighted-point-1",
             "highlighted-point-2"
@@ -1484,11 +1628,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "X",
+          "yLabel": "Y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -1537,10 +1689,6 @@
           "url": "/shared/khan-academy-example/datadefs/datadef-1",
           "name": "datadef-1",
           "activity": "/shared/khan-academy-example",
-          "xLabel": "X",
-          "xShortLabel": "X",
-          "yLabel": "Y",
-          "yShortLabel": "Y",
           "points": [
             [
               -6,
@@ -1562,7 +1710,8 @@
               6,
               3
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }

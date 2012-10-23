@@ -1,26 +1,11 @@
 {
   "type": "Activity",
   "name": "Point Circles",
-  "pages": [
+"datasets": [
     {
-      "type": "Page",
-      "name": "Pick a point",
-      "text": "Pick a point page.",
-      "panes": [
-        {
-          "type": "PredefinedGraphPane",
-          "title": "Graph",
-          "yLabel": "Light",
-          "yUnits": "Intensity",
-          "yMin": 0.0,
-          "yMax": 11.0,
-          "xLabel": "Time",
-          "xUnits": "Time (s)",
-          "xMin": 0.0,
-          "xMax": 10.0,
-          "yTicks": 1.0,
-          "xTicks": 1.0,
-          "data": [
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
             [
               0.0,
               1.0
@@ -65,9 +50,37 @@
               10.0,
               11.0
             ]
+          ],
+      "yUnits": "Intensity",
+      "xUnits": "Time (s)"
+      }
+      
+   ],
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Pick a point",
+      "text": "Pick a point page.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Graph",
+          "yLabel": "Light",
+          "yMin": 0.0,
+          "yMax": 11.0,
+          "xLabel": "Time",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 1.0,
+          "xTicks": 1.0,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
           ]
-        }
-      ],
+         }     
+        ],
       "sequence": {
         "type": "PickAPointSequence",
         "initialPrompt": {
@@ -177,54 +190,14 @@
           "xMax": 10.0,
           "yTicks": 1.0,
           "xTicks": 1.0,
-          "data": [
-            [
-              0.0,
-              1.0
-            ],
-            [
-              1.0,
-              2.0
-            ],
-            [
-              2.0,
-              3.0
-            ],
-            [
-              3.0,
-              4.0
-            ],
-            [
-              4.0,
-              5.0
-            ],
-            [
-              5.0,
-              6.0
-            ],
-            [
-              6.0,
-              7.0
-            ],
-            [
-              7.0,
-              8.0
-            ],
-            [
-              8.0,
-              9.0
-            ],
-            [
-              9.0,
-              10.0
-            ],
-            [
-              10.0,
-              11.0
-            ]
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
           ]
-        }
-      ],
+        }     
+     ],
       "sequence": {
         "type": "NumericSequence",
         "initialPrompt": {

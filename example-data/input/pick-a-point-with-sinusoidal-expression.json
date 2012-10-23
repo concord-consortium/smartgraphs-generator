@@ -1,6 +1,23 @@
 	{
 	  "type": "Activity",
 	  "name": "Pick A Point With Sinusoidal Expression",
+    "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": []
+    },
+    {
+      "name": "dataRef-1",
+      "type": "dataRef",
+      "xPrecision":0.1,
+			"yPrecision":0.5,
+      "expression": "y = sin(2*x) + 5",
+			"lineSnapDistance": 0.5, 
+		  "lineType": "connected",
+		  "pointType": "none"
+    }
+  ],
 	  "pages": [
 		{
 		  "type": "Page",
@@ -18,23 +35,29 @@
 			  "xMin": 0,
 			  "xMax": 10,
 			  "xTicks": 10,
-			  "xPrecision":0.01,
-			  "yPrecision":0.01,
-			  "expression": "y = sin(2*x) + 5",
-			  "lineSnapDistance": 0.5, 
-			  "lineType": "connected",
-			  "pointType": "none",
 			  "showCrossHairs": true,
 			  "showToolTipCoords": false,
 			  "showGraphGrid": true,
-			  "data": [ ]
-			},
+         "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            },
+            {
+              "name": "dataRef-1",
+              "inLegend": true
+            }
+          ]
+       },
 			{
-			  "type": "TablePane"
+			  "type": "TablePane",
+        "xLabel": "x",
+        "yLabel": "Y"
 			}
 		  ],
 		  "sequence": {
 			"type": "PickAPointSequence",
+      "dataSetName": "dataRef-1",
 			"initialPrompt": {
 			  "text": "Click on the line where x is between 1 and 2",
 			  "visualPrompts": [

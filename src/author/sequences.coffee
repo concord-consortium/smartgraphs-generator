@@ -135,12 +135,14 @@ class CorrectableSequenceWithFeedback
 
   HIGHLIGHT_COLOR: '#1f77b4'
 
-  constructor: ({@initialPrompt, @hints, @giveUp, @confirmCorrect, @page}) ->
+  constructor: ({@initialPrompt, @hints, @giveUp, @confirmCorrect, @page, @dataSetName}) ->
     [@initialPrompt, @giveUp, @confirmCorrect] = [@initialPrompt, @giveUp, @confirmCorrect].map asObject
     
     for pane, i in @page.panes || []
       @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
       @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
+      
+    if @dataSetName then @graphPane.activeDatasetName = @dataSetName
 
   getRequiresGraphOrTable: ->
     @getHasVisualPrompts() || @getNeedsGraphData()
@@ -158,7 +160,7 @@ class CorrectableSequenceWithFeedback
 
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
-    runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}"
+    runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
 
   appendStepsWithModifier: (runtimePage, modifyForSequenceType) ->
     if @getRequiresGraphOrTable() and not @graphPane? and not @tablePane? then throw new Error "Sequence requires at least one graph or table pane"

@@ -54,11 +54,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -160,11 +168,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -272,11 +288,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -384,11 +408,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -496,11 +528,19 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         },
         "bottom": {
           "type": "table",
           "data": "datadef-1",
+          "xLabel": "x",
+          "yLabel": "y",
           "annotations": [],
           "highlightedAnnotations": []
         }
@@ -534,11 +574,8 @@
           "url": "/shared/activity-with-a-line-construction-tool/datadefs/datadef-1",
           "name": "datadef-1",
           "activity": "/shared/activity-with-a-line-construction-tool",
-          "xLabel": "x",
-          "xShortLabel": "x",
-          "yLabel": "y",
-          "yShortLabel": "y",
-          "points": []
+          "points": [],
+          "lineSnapDistance": 0
         }
       ]
     }

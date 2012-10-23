@@ -1,47 +1,70 @@
 {
-  "type": "Activity",
-  "name": "Graph and Table",
-  "pages": [
-    {
-      "type": "Page",
-      "name": "Graph",
-      "text": "in this activity....",
-      "panes": [
+    "type": "Activity",
+    "name": "Graph and Table",
+    "datasets": [
         {
-          "type": "PredefinedGraphPane",
-          "title": "Position vs. Time",
-          "yLabel": "Position",
+            "name": "datadef-1",
+            "type": "datadef",
+            "data": [
+                [
+                    1,
+                    200
+                ],
+                [
+                    2,
+                    400
+                ],
+                [
+                    3,
+                    600
+                ]
+            ],
           "yUnits": "meters",
-          "yMin": 0,
-          "yMax": 2000,
-          "yTicks": 10,
-          "xLabel": "Time",
-          "xUnits": "minutes",
-          "xMin": 0,
-          "xMax": 10,
-          "xTicks": 10,
-          "data": [
-            [1,200],
-            [2,400],
-            [3,600]
-          ]
+          "xUnits": "minutes"
+        }
+    ],
+    "pages": [
+        {
+            "type": "Page",
+            "name": "Graph",
+            "text": "in this activity....",
+            "panes": [
+                {
+                    "type": "PredefinedGraphPane",
+                    "title": "Position vs. Time",
+                    "yLabel": "Position",
+                    "yMin": 0,
+                    "yMax": 2000,
+                    "yTicks": 10,
+                    "xLabel": "Time",
+                    "xMin": 0,
+                    "xMax": 10,
+                    "xTicks": 10,
+                    "includedDataSets": [
+                        {
+                            "name": "datadef-1",
+                            "inLegend": true
+                        }
+                    ]
+                },
+                {
+                    "type": "TablePane",
+                    "xLabel": "Time",
+                    "yLabel": "Position"
+                }
+            ]
+        }
+    ],
+    "units": [
+        {
+            "type": "Unit",
+            "name": "meters",
+            "abbreviation": "m"
         },
         {
-          "type": "TablePane"
+            "type": "Unit",
+            "name": "minutes",
+            "abbreviation": "m"
         }
-      ]
-    }
-  ],
-  "units": [
-    {
-      "type": "Unit",
-      "name": "meters",
-      "abbreviation": "m"
-    },
-    {
-      "type": "Unit",
-      "name": "minutes",
-      "abbreviation": "m"
-    }
-  ]
+    ]
 }

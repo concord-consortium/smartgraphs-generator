@@ -165,7 +165,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
     @yMin,
     @yMax,
     @tolerance,
-    @page
+    @page,
+    @dataSetName
     }) ->
     @precision = 2; # TODO calculate or lookup precision from DB.
     @slopeVariableName = "slope" unless @slopeVariableName and @slopeVariableName.length > 0
@@ -175,6 +176,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
     for pane, i in @page.panes || []
       @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
       @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
+      
+    if @dataSetName then @graphPane.activeDatasetName = @dataSetName
 
 
   getRequiresGraphOrTable: ->
@@ -188,19 +191,24 @@ exports.SlopeToolSequence = class SlopeToolSequence
 
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
-    runtimeActivity.getDatadefRef "#{@page.index}-#{@graphPane.index}"
+    runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
   
   setupStep: ({runtimePage, stepdef}) ->
     step = @runtimeStepsByName[stepdef.name]
     step.addGraphPane
       title: @graphPane.title
-      datadefRef: @getDataDefRef(runtimePage.activity)
+      datadefRef: @graphPane.datadefRef
       xAxis: @xAxis
       yAxis: @yAxis
       index: @graphPane.index
+      includedDataSets: @graphPane.includedDataSets
+      activeDatasetName: @graphPane.activeDatasetName
+      dataRef: if @graphPane.dataRef then @graphPane.dataRef else []
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
+      xLabel: @tablePane.xLabel
+      yLabel: @tablePane.yLabel
     
     step.beforeText = stepdef.beforeText
     step.substitutedExpressions = stepdef.substitutedExpressions

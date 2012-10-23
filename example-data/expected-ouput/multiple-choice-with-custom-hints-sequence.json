@@ -47,6 +47,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -111,6 +117,12 @@
           "annotations": [],
           "highlightedAnnotations": [],
           "data": [
+            "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
             "datadef-1"
           ]
         }
@@ -177,6 +189,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -242,6 +260,12 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1"
+          ],
+          "legends": [
+            "datadef-1"
+          ],
+          "activeDatadefs": [
+            "datadef-1"
           ]
         }
       },
@@ -295,11 +319,7 @@
           "name": "datadef-1",
           "activity": "/shared/multiple-choice-2",
           "xUnits": "/shared/multiple-choice-2/units/seconds",
-          "xLabel": "Time",
-          "xShortLabel": "Time",
           "yUnits": "/shared/multiple-choice-2/units/meters",
-          "yLabel": "Distance",
-          "yShortLabel": "Distance",
           "points": [
             [
               0,
@@ -321,7 +341,8 @@
               4,
               40
             ]
-          ]
+          ],
+          "lineSnapDistance": 0
         }
       ]
     }
