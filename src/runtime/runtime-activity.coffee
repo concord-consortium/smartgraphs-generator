@@ -48,6 +48,12 @@ exports.RuntimeActivity = class RuntimeActivity
 
     @responseTemplates = {}
     @responseTemplatesCounts = {}
+    
+    @referenceDatadef
+    @referenceDataref
+    
+    @dataSetColors = [ "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" ]
+    @colorIndex = @dataSetColors.length - 1
 
 
   getUrl: ->
@@ -71,8 +77,8 @@ exports.RuntimeActivity = class RuntimeActivity
     unit.activity = this
     unit
 
-  createDatadef: ({ points, xLabel, yLabel, xUnits, yUnits, pointType, lineType, lineSnapDistance, name }) ->
-    datadef = new Datadef { points, xLabel, yLabel, index: ++@nDatadefs, pointType, lineType, lineSnapDistance, xUnits, yUnits, name }
+  createDatadef: ({ points, xLabel, yLabel, xUnits, yUnits, pointType, lineType, lineSnapDistance, name, color }) ->
+    datadef = new Datadef { points, xLabel, yLabel, index: ++@nDatadefs, pointType, lineType, lineSnapDistance, xUnits, yUnits, name, color }
     datadef.activity = this
     datadef.constructUnitRefs()
     datadef
@@ -112,6 +118,8 @@ exports.RuntimeActivity = class RuntimeActivity
   populateDataSet: (xLabel, yLabel, includedDataSets) ->
     populatedDataDefs = []
     populatedDataRefs = []
+    @currentXLabel = xLabel
+    @currentYLabel = yLabel
     activeDataSetIndex = 0
     for datasetEntry in includedDataSets
       for datasetObject in @datasets
@@ -120,6 +128,7 @@ exports.RuntimeActivity = class RuntimeActivity
             unless datadef = @getDatadefRef(datasetObject.name).datadef
               datadef = this.createDatadef({ points: datasetObject.data, xLabel, yLabel, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name })
             populatedDataDefs.push datadef
+            @referenceDatadef = datadef
           else if String(datasetObject.type).toLowerCase() is ("dataref").toLowerCase()
             @expression = datasetObject.expression
             if @expression isnt null and @expression isnt undefined
@@ -132,8 +141,29 @@ exports.RuntimeActivity = class RuntimeActivity
                   dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})
                 populatedDataDefs.push datadef
                 populatedDataRefs.push dataRef
+                @referenceDatadef = datadef
+                @referenceDataref = dataRef
 
     { datadef: populatedDataDefs, dataref: populatedDataRefs }
+
+  createNewEmptyDataRef: (name, expression, xPrecision, lineSnapDistance, color) ->
+    if expression isnt null and expression isnt undefined
+      expressionData = expressionParser.parseExpression(expression)
+      if expressionData.type? and expressionData.type isnt "not supported"
+        unless datadef = @getDatadefRef(name).datadef
+          datadef = this.createDatadef({ points: [], xLabel: @referenceDatadef.xLabel, yLabel: @referenceDatadef.yLabel, xUnits: @referenceDatadef.xUnits, yUnits: @referenceDatadef.yUnits, lineType: 'connected', pointType: 'none', lineSnapDistance: @referenceDatadef.lineSnapDistance, name: name, color: color})
+          dataRef = this.createDataRef ({ datadefname: datadef.name, expressionType: expressionData.type, xInterval: xPrecision, expressionForm: expressionData.form, expression: expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: lineSnapDistance })
+        else
+          dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})
+      @defineDatadef name, datadef
+      #datadef
+
+  getNewColor: ->
+    @dataSetColors[@colorIndex--]
+
+  setColorOfDatadef: (dataDefName, color) ->
+    if datadef = @getDatadefRef(dataDefName).datadef
+      datadef.setColor color
 
   getDataRefOfDatadef: ({dataDefName, expressionType}) ->
     for dataRef in @dataRefRefs[expressionType]

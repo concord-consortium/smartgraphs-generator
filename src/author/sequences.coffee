@@ -1,6 +1,7 @@
 {AuthorPane}          = require './author-panes'
 {SlopeToolSequence}   = require './slope_tool_sequence'
 {LineConstructionSequence} = require './line_construction_sequence' 
+{BestFitSequence} = require './best_fit_sequence' 
 asObject = (s) ->
   if typeof s is 'string' 
     text: s
@@ -287,3 +288,4 @@ Sequence.classFor['MultipleChoiceWithSequentialHintsSequence'] = class MultipleC
 
 Sequence.classFor['SlopeToolSequence'] = SlopeToolSequence
 Sequence.classFor['LineConstructionSequence'] = LineConstructionSequence
+Sequence.classFor['BestFitSequence'] = BestFitSequence

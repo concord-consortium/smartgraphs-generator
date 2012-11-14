@@ -468,7 +468,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, LineConstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, SlopeToolSequence, asObject,
+  var AuthorPane, BestFitSequence, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, LineConstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, SlopeToolSequence, asObject,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -477,6 +477,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   SlopeToolSequence = require('./slope_tool_sequence').SlopeToolSequence;
 
   LineConstructionSequence = require('./line_construction_sequence').LineConstructionSequence;
+
+  BestFitSequence = require('./best_fit_sequence').BestFitSequence;
 
   asObject = function(s) {
     if (typeof s === 'string') {
@@ -928,6 +930,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   Sequence.classFor['SlopeToolSequence'] = SlopeToolSequence;
 
   Sequence.classFor['LineConstructionSequence'] = LineConstructionSequence;
+
+  Sequence.classFor['BestFitSequence'] = BestFitSequence;
 
 }).call(this);
 
@@ -2223,6 +2227,373 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
 });
 
+require.define("/author/best_fit_sequence.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var AuthorPane, BestFitSequence;
+
+  AuthorPane = require('./author-panes').AuthorPane;
+
+  exports.BestFitSequence = BestFitSequence = (function() {
+
+    BestFitSequence.prototype.getDataDefRef = function(runtimeActivity) {
+      if (this.graphPane == null) return null;
+      return runtimeActivity.getDatadefRef("" + this.graphPane.activeDatasetName);
+    };
+
+    BestFitSequence.prototype.setupStep = function(_arg) {
+      var annotation, dataDefRefForStep, hasAnswer, legendsDataset, response_def, runtimePage, step, stepDataDefRef, stepIncludedDataSets, stepdef, tool, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
+      runtimePage = _arg.runtimePage, stepdef = _arg.stepdef, hasAnswer = _arg.hasAnswer;
+      dataDefRefForStep = this.graphPane.datadefRef;
+      step = this.runtimeStepsByName[stepdef.name];
+      stepDataDefRef = [];
+      stepIncludedDataSets = [];
+      legendsDataset = [this.learnerDataSet];
+      if (hasAnswer === "true") {
+        stepDataDefRef = this.graphPane.datadefRef.concat({
+          key: 'CorrectLine',
+          datadef: this.bestFitLineDataDef
+        });
+        stepIncludedDataSets = this.graphPane.includedDataSets.concat({
+          name: 'CorrectLine',
+          inLegend: true
+        });
+        legendsDataset.push('CorrectLine');
+      } else {
+        stepDataDefRef = this.graphPane.datadefRef;
+        stepIncludedDataSets = this.graphPane.includedDataSets;
+      }
+      step.addGraphPane({
+        title: this.graphPane.title,
+        datadefRef: stepDataDefRef,
+        xAxis: this.xAxis,
+        yAxis: this.yAxis,
+        index: this.graphPane.index,
+        showCrossHairs: stepdef.showCrossHairs,
+        showGraphGrid: stepdef.showGraphGrid,
+        showToolTipCoords: stepdef.showToolTipCoords,
+        includedDataSets: stepIncludedDataSets,
+        activeDatasetName: this.graphPane.activeDatasetName,
+        dataRef: this.graphPane.dataRef ? this.graphPane.dataRef : [],
+        sequenceType: {
+          title: "Sum of squares",
+          type: "AvgSumOfDeviation",
+          referenceDatadef: this.dataSetName,
+          legendDataSets: legendsDataset
+        }
+      });
+      step.addTablePane({
+        datadefRef: this.getDataDefRef(runtimePage.activity),
+        index: this.tablePane.index,
+        xLabel: this.tablePane.xLabel,
+        yLabel: this.tablePane.yLabel
+      });
+      step.beforeText = stepdef.beforeText;
+      step.substitutedExpressions = stepdef.substitutedExpressions;
+      step.variableAssignments = stepdef.variableAssignments;
+      step.submitButtonTitle = stepdef.submitButtonTitle;
+      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      step.setSubmissibilityCriterion(stepdef.submissibilityCriterion);
+      _ref = stepdef.graphAnnotations || [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        annotation = _ref[_i];
+        if (this.annotations[annotation]) {
+          step.addAnnotationToPane({
+            annotation: this.annotations[annotation],
+            index: this.graphPane.index
+          });
+        }
+      }
+      _ref2 = stepdef.tools || [];
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        tool = _ref2[_j];
+        step.addGraphingTool({
+          index: this.index || 0,
+          datadefRef: this.getDataDefRef(runtimePage.activity),
+          annotation: this.annotations["singleLineGraphing"],
+          shape: "singleLine"
+        });
+      }
+      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
+      _ref3 = stepdef.responseBranches || [];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        response_def = _ref3[_k];
+        step.appendResponseBranch({
+          criterion: response_def.criterion,
+          step: this.runtimeStepsByName[response_def.step]
+        });
+      }
+      return step;
+    };
+
+    BestFitSequence.prototype.check_correct_answer = function(nCounter) {
+      var closeTolerance, correctTolerance, criterianArray, nextCloseCorrect, nextIncorrect;
+      criterianArray = [];
+      correctTolerance = this.bestFitLineDeviationMeanSquare * this.correctTolerance / 100;
+      closeTolerance = this.bestFitLineDeviationMeanSquare * this.closeTolerance / 100;
+      if ((nCounter + 1) < this.maxAttempts) {
+        nextCloseCorrect = 'close_answer_after_' + (nCounter + 1) + '_try';
+        nextIncorrect = 'incorrect_answer_after_' + (nCounter + 1) + '_try';
+        criterianArray = [
+          {
+            "criterion": ["withinAbsTolerance", this.bestFitLineDeviationMeanSquare, ["deviationValue", this.learnerDataSet], correctTolerance],
+            "step": 'correct_answer'
+          }, {
+            "criterion": ["withinAbsTolerance", this.bestFitLineDeviationMeanSquare, ["deviationValue", this.learnerDataSet], closeTolerance],
+            "step": nextCloseCorrect
+          }
+        ];
+      } else {
+        criterianArray = [
+          {
+            "criterion": ["withinAbsTolerance", this.bestFitLineDeviationMeanSquare, ["deviationValue", this.learnerDataSet], correctTolerance],
+            "step": 'correct_answer'
+          }
+        ];
+      }
+      return criterianArray;
+    };
+
+    BestFitSequence.prototype.check_final_answer = function() {
+      return [
+        {
+          "criterion": ["withinAbsTolerance", this.bestFitLineDeviationMeanSquare, ["deviationValue", this.learnerDataSet], correctTolerance],
+          "step": 'correct_answer'
+        }
+      ];
+    };
+
+    function BestFitSequence(_arg) {
+      var i, pane, _len, _ref;
+      this.type = _arg.type, this.dataSetName = _arg.dataSetName, this.learnerDataSet = _arg.learnerDataSet, this.correctTolerance = _arg.correctTolerance, this.closeTolerance = _arg.closeTolerance, this.initialPrompt = _arg.initialPrompt, this.incorrectPrompt = _arg.incorrectPrompt, this.closePrompt = _arg.closePrompt, this.confirmCorrect = _arg.confirmCorrect, this.maxAttempts = _arg.maxAttempts, this.page = _arg.page;
+      this.bestFitLineslope = 0;
+      this.bestFitLineConstant = 0;
+      this.bestFitLineDeviationMeanSquare = 0;
+      this.bestFitLineDataDef;
+      this.bestFitLineColor;
+      this.bestFitLineDataref;
+      this.learnerDataSetColor = '#cc0000';
+      this.steps = [];
+      this.specialSteps = [];
+      this.runtimeStepsByName = {};
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor["PredefinedGraphPane"]) {
+          this.graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor["TablePane"]) {
+          this.tablePane = pane;
+        }
+      }
+      if (this.learnerDataSet) {
+        this.graphPane.activeDatasetName = this.learnerDataSet;
+      }
+    }
+
+    BestFitSequence.prototype.get_bestFitLine = function(runtimeActivity, graphPane) {
+      var bestFitLineDeviation, bestFitLineExpression, dataPointSet, dataSet, ditanceOfPointFromBestFitLine, i, j, nPointCounter, point, sumOfSquareX, sumOfX, sumOfXY, sumOfY;
+      dataPointSet = runtimeActivity.getDatadefRef("" + this.dataSetName);
+      dataSet = dataPointSet.datadef.points;
+      if (!(dataSet.length && dataSet.length > 5)) {
+        throw new Error("Not valid Dataset !!!!");
+      }
+      this.bestFitLineslope = 0;
+      this.bestFitLineConstant = 0;
+      sumOfX = 0;
+      sumOfY = 0;
+      sumOfXY = 0;
+      sumOfSquareX = 0;
+      nPointCounter = 0;
+      i = 0;
+      while (i < dataSet.length) {
+        point = dataSet[i];
+        sumOfX += point[0];
+        sumOfY += point[1];
+        sumOfXY += point[1] * point[0];
+        sumOfSquareX += point[0] * point[0];
+        nPointCounter++;
+        i++;
+      }
+      this.bestFitLineslope = ((nPointCounter * sumOfXY) - (sumOfX * sumOfY)) / ((nPointCounter * sumOfSquareX) - (sumOfX * sumOfX));
+      this.bestFitLineConstant = point[1] - (this.bestFitLineslope * point[0]);
+      nPointCounter = 0;
+      bestFitLineDeviation = 0;
+      j = 0;
+      while (j < dataSet.length) {
+        point = dataSet[j];
+        ditanceOfPointFromBestFitLine = Math.abs((this.bestFitLineslope * point[0]) - point[1] + this.bestFitLineConstant) / Math.sqrt((this.bestFitLineslope * this.bestFitLineslope) + 1);
+        bestFitLineDeviation += ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine;
+        nPointCounter++;
+        j++;
+      }
+      this.bestFitLineDeviationMeanSquare = bestFitLineDeviation / nPointCounter;
+      bestFitLineExpression = 'y = ' + this.bestFitLineslope + 'x + ' + this.bestFitLineConstant;
+      this.bestFitLineColor = runtimeActivity.getNewColor();
+      this.bestFitLineDataDef = runtimeActivity.createNewEmptyDataRef('CorrectLine', bestFitLineExpression, 0.1, 0, this.bestFitLineColor);
+      runtimeActivity.setColorOfDatadef(this.dataSetName, this.bestFitLineColor);
+      runtimeActivity.setColorOfDatadef(this.learnerDataSet, this.learnerDataSetColor);
+      return this.bestFitLineDataDef;
+    };
+
+    BestFitSequence.prototype.appendSteps = function(runtimePage) {
+      var annotation, otherAnnotations, runtimeActivity, runtimeStep, stepdef, _i, _j, _k, _l, _len, _len2, _len3, _len4, _len5, _m, _ref, _ref2, _ref3, _ref4, _results;
+      this.annotations = {};
+      this.yAxis = this.graphPane.yAxis;
+      this.xAxis = this.graphPane.xAxis;
+      this.x_axis_name = this.xAxis.label.toLowerCase();
+      this.y_axis_name = this.yAxis.label.toLowerCase();
+      runtimeActivity = runtimePage.activity;
+      this.get_bestFitLine(runtimeActivity, this.graphPane);
+      this.datadefRef = this.getDataDefRef(runtimeActivity);
+      this.tags = {};
+      this.annotations = {};
+      otherAnnotations = [
+        {
+          name: "singleLineGraphing",
+          type: "FreehandSketch"
+        }
+      ];
+      for (_i = 0, _len = otherAnnotations.length; _i < _len; _i++) {
+        annotation = otherAnnotations[_i];
+        this.annotations[annotation.name] = runtimeActivity.createAndAppendAnnotation({
+          type: "FreehandSketch"
+        });
+      }
+      this.assemble_steps();
+      _ref = this.steps;
+      for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+        stepdef = _ref[_j];
+        runtimeStep = runtimePage.appendStep();
+        this.runtimeStepsByName[stepdef.name] = runtimeStep;
+      }
+      _ref2 = this.specialSteps;
+      for (_k = 0, _len3 = _ref2.length; _k < _len3; _k++) {
+        stepdef = _ref2[_k];
+        runtimeStep = runtimePage.appendStep();
+        this.runtimeStepsByName[stepdef.name] = runtimeStep;
+      }
+      _ref3 = this.steps;
+      for (_l = 0, _len4 = _ref3.length; _l < _len4; _l++) {
+        stepdef = _ref3[_l];
+        this.setupStep({
+          stepdef: stepdef,
+          runtimePage: runtimePage
+        });
+      }
+      _ref4 = this.specialSteps;
+      _results = [];
+      for (_m = 0, _len5 = _ref4.length; _m < _len5; _m++) {
+        stepdef = _ref4[_m];
+        _results.push(this.setupStep({
+          stepdef: stepdef,
+          runtimePage: runtimePage,
+          hasAnswer: "true"
+        }));
+      }
+      return _results;
+    };
+
+    BestFitSequence.prototype.first_question = function() {
+      return {
+        name: "first_question",
+        defaultBranch: "incorrect_answer_after_1_try",
+        submitButtonTitle: "Check My Answer",
+        beforeText: this.initialPrompt,
+        substitutedExpressions: [],
+        submissibilityCriterion: ["=", ["lineCount"], 1],
+        showCrossHairs: this.graphPane.showCrossHairs,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"],
+        tableAnnotations: [],
+        tools: ["graphing"],
+        responseBranches: this.check_correct_answer(0)
+      };
+    };
+
+    BestFitSequence.prototype.incorrect_answer_after_try = function(nCounter) {
+      return {
+        name: "incorrect_answer_after_" + nCounter + "_try",
+        defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_after_" + (nCounter + 1) + "_try" : "attempts_over",
+        submitButtonTitle: "Check My Answer",
+        beforeText: "<b>" + this.incorrectPrompt + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: false,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"],
+        tableAnnotations: [],
+        tools: ["graphing"],
+        responseBranches: this.check_correct_answer(nCounter)
+      };
+    };
+
+    BestFitSequence.prototype.close_answer_after_try = function(nCounter) {
+      return {
+        name: "close_answer_after_" + nCounter + "_try",
+        defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_after_" + (nCounter + 1) + "_try" : "attempts_over",
+        submitButtonTitle: "Check My Answer",
+        beforeText: "<b>" + this.closePrompt + "</b><p>" + this.initialPrompt + "</p>",
+        substitutedExpressions: [],
+        submissibilityCriterion: ["or", ["pointMoved", this.datadefRef.datadef.name, 1], ["pointMoved", this.datadefRef.datadef.name, 2]],
+        showCrossHairs: false,
+        showToolTipCoords: this.graphPane.showToolTipCoords,
+        showGraphGrid: this.graphPane.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"],
+        tableAnnotations: [],
+        tools: ["graphing"],
+        responseBranches: this.check_correct_answer(nCounter)
+      };
+    };
+
+    BestFitSequence.prototype.attempts_over = function() {
+      return {
+        name: "attempts_over",
+        isFinalStep: true,
+        hideSubmitButton: true,
+        beforeText: "<b>Your estimate is incorrect.</b>",
+        showCrossHairs: false,
+        showToolTipCoords: false,
+        showGraphGrid: this.graphPane.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"]
+      };
+    };
+
+    BestFitSequence.prototype.correct_answer = function() {
+      return {
+        name: "correct_answer",
+        isFinalStep: true,
+        hideSubmitButton: true,
+        beforeText: "<b>" + this.confirmCorrect + "</b>",
+        showCrossHairs: false,
+        showToolTipCoords: false,
+        showGraphGrid: this.graphPane.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"]
+      };
+    };
+
+    BestFitSequence.prototype.assemble_steps = function() {
+      var nCounter;
+      nCounter = 1;
+      this.steps.push(this.first_question());
+      while (nCounter < this.maxAttempts) {
+        this.steps.push(this.incorrect_answer_after_try(nCounter));
+        this.steps.push(this.close_answer_after_try(nCounter));
+        nCounter++;
+      }
+      this.specialSteps.push(this.attempts_over());
+      return this.specialSteps.push(this.correct_answer());
+    };
+
+    return BestFitSequence;
+
+  })();
+
+}).call(this);
+
+});
+
 require.define("/author/author-unit.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var AuthorUnit, dumbSingularize;
@@ -2319,6 +2690,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.nTags = 0;
       this.responseTemplates = {};
       this.responseTemplatesCounts = {};
+      this.referenceDatadef;
+      this.referenceDataref;
+      this.dataSetColors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
+      this.colorIndex = this.dataSetColors.length - 1;
     }
 
     RuntimeActivity.prototype.getUrl = function() {
@@ -2351,8 +2726,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDatadef = function(_arg) {
-      var datadef, lineSnapDistance, lineType, name, pointType, points, xLabel, xUnits, yLabel, yUnits;
-      points = _arg.points, xLabel = _arg.xLabel, yLabel = _arg.yLabel, xUnits = _arg.xUnits, yUnits = _arg.yUnits, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name;
+      var color, datadef, lineSnapDistance, lineType, name, pointType, points, xLabel, xUnits, yLabel, yUnits;
+      points = _arg.points, xLabel = _arg.xLabel, yLabel = _arg.yLabel, xUnits = _arg.xUnits, yUnits = _arg.yUnits, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name, color = _arg.color;
       datadef = new Datadef({
         points: points,
         xLabel: xLabel,
@@ -2363,7 +2738,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         lineSnapDistance: lineSnapDistance,
         xUnits: xUnits,
         yUnits: yUnits,
-        name: name
+        name: name,
+        color: color
       });
       datadef.activity = this;
       datadef.constructUnitRefs();
@@ -2445,6 +2821,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       var activeDataSetIndex, dataRef, datadef, datasetEntry, datasetObject, expressionData, populatedDataDefs, populatedDataRefs, _i, _j, _len, _len2, _ref2;
       populatedDataDefs = [];
       populatedDataRefs = [];
+      this.currentXLabel = xLabel;
+      this.currentYLabel = yLabel;
       activeDataSetIndex = 0;
       for (_i = 0, _len = includedDataSets.length; _i < _len; _i++) {
         datasetEntry = includedDataSets[_i];
@@ -2467,6 +2845,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                 });
               }
               populatedDataDefs.push(datadef);
+              this.referenceDatadef = datadef;
             } else if (String(datasetObject.type).toLowerCase() === "dataref".toLowerCase()) {
               this.expression = datasetObject.expression;
               if (this.expression !== null && this.expression !== void 0) {
@@ -2502,6 +2881,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                   }
                   populatedDataDefs.push(datadef);
                   populatedDataRefs.push(dataRef);
+                  this.referenceDatadef = datadef;
+                  this.referenceDataref = dataRef;
                 }
               }
             }
@@ -2512,6 +2893,56 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         datadef: populatedDataDefs,
         dataref: populatedDataRefs
       };
+    };
+
+    RuntimeActivity.prototype.createNewEmptyDataRef = function(name, expression, xPrecision, lineSnapDistance, color) {
+      var dataRef, datadef, expressionData;
+      if (expression !== null && expression !== void 0) {
+        expressionData = expressionParser.parseExpression(expression);
+        if ((expressionData.type != null) && expressionData.type !== "not supported") {
+          if (!(datadef = this.getDatadefRef(name).datadef)) {
+            datadef = this.createDatadef({
+              points: [],
+              xLabel: this.referenceDatadef.xLabel,
+              yLabel: this.referenceDatadef.yLabel,
+              xUnits: this.referenceDatadef.xUnits,
+              yUnits: this.referenceDatadef.yUnits,
+              lineType: 'connected',
+              pointType: 'none',
+              lineSnapDistance: this.referenceDatadef.lineSnapDistance,
+              name: name,
+              color: color
+            });
+            dataRef = this.createDataRef({
+              datadefname: datadef.name,
+              expressionType: expressionData.type,
+              xInterval: xPrecision,
+              expressionForm: expressionData.form,
+              expression: expression,
+              angularFunction: expressionData.angularFunction,
+              params: expressionData.params,
+              lineSnapDistance: lineSnapDistance
+            });
+          } else {
+            dataRef = this.getDataRefOfDatadef({
+              dataDefName: datadef.name,
+              expressionType: expressionData.type
+            });
+          }
+        }
+        return this.defineDatadef(name, datadef);
+      }
+    };
+
+    RuntimeActivity.prototype.getNewColor = function() {
+      return this.dataSetColors[this.colorIndex--];
+    };
+
+    RuntimeActivity.prototype.setColorOfDatadef = function(dataDefName, color) {
+      var datadef;
+      if (datadef = this.getDatadefRef(dataDefName).datadef) {
+        return datadef.setColor(color);
+      }
     };
 
     RuntimeActivity.prototype.getDataRefOfDatadef = function(_arg) {
@@ -2965,8 +3396,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addGraphPane = function(_arg) {
-      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
-      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef;
+      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, sequenceType, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef, sequenceType = _arg.sequenceType;
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
@@ -3046,24 +3477,39 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
           if (this.activeDatasetName) return [this.activeDatasetName];
         },
         GetLegends: function() {
-          var datadefRef, dataset, oLegends, _i, _j, _len, _len2, _ref, _ref2;
+          var datadefRef, dataset, oLegendObject, oLegends, referenceDatadef, type, _i, _j, _len, _len2, _ref, _ref2;
           if (this.includedDataSets.length !== 0) {
+            title = "legend";
+            referenceDatadef = "";
+            type = "name";
+            oLegendObject = new Object();
             oLegends = new Array();
-            _ref = this.includedDataSets;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              dataset = _ref[_i];
-              if (dataset.inLegend) {
-                _ref2 = this.datadefRef;
-                for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-                  datadefRef = _ref2[_j];
-                  if (datadefRef.datadef.name === dataset.name) {
-                    oLegends.push(dataset.name);
-                    break;
+            if (sequenceType) {
+              title = sequenceType.title;
+              type = sequenceType.type;
+              referenceDatadef = sequenceType.referenceDatadef;
+              oLegends = sequenceType.legendDataSets;
+            } else {
+              _ref = this.includedDataSets;
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                dataset = _ref[_i];
+                if (dataset.inLegend) {
+                  _ref2 = this.datadefRef;
+                  for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+                    datadefRef = _ref2[_j];
+                    if (datadefRef.datadef.name === dataset.name) {
+                      oLegends.push(dataset.name);
+                      break;
+                    }
                   }
                 }
               }
             }
-            return oLegends;
+            oLegendObject.title = title;
+            oLegendObject.type = type;
+            oLegendObject.referenceDatadef = referenceDatadef;
+            oLegendObject.datadefs = oLegends;
+            return oLegendObject;
           }
         }
       };
@@ -3384,7 +3830,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
     };
 
     function Datadef(_arg) {
-      this.points = _arg.points, this.xLabel = _arg.xLabel, this.yLabel = _arg.yLabel, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name;
+      this.points = _arg.points, this.xLabel = _arg.xLabel, this.yLabel = _arg.yLabel, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name, this.color = _arg.color;
       if (!_arg.name) this.name = "datadef-" + this.index;
       if (!_arg.lineSnapDistance) this.lineSnapDistance = 0;
     }
@@ -3396,6 +3842,10 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
       if (this.yUnits) {
         return this.yUnitsRef = this.activity.getUnitRef(dumbSingularize(this.yUnits));
       }
+    };
+
+    Datadef.prototype.setColor = function(color) {
+      return this.color = color;
     };
 
     Datadef.prototype.getUrl = function() {
@@ -3413,7 +3863,8 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
         points: this.points,
         pointType: this.pointType,
         lineType: this.lineType,
-        lineSnapDistance: this.lineSnapDistance
+        lineSnapDistance: this.lineSnapDistance,
+        color: this.color
       };
     };
 
