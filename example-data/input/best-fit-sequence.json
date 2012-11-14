@@ -1,0 +1,87 @@
+{
+ "type": "Activity",
+ "name": "Best Fit Sequence",
+ "authorName": "Noah",
+ "datasets": [
+   {
+     "name": "scatter-points",
+     "type": "datadef",
+     "data": [
+       [1.8, 9.8],
+       [3.7, 8.0],
+       [3.1, 3.4],
+       [6.2, 8.5],
+       [7.0, 5.0],
+       [7.5, 7.6],
+	   	 [4.2, 2.4],
+	     [7.2, 2.7],
+	     [1.6, 9.9]
+     ],
+     "lineType": "none",
+     "pointType": "dot",
+     "yUnits": null,
+     "xUnits": null
+   },
+   {
+     "name": "datadef-1",
+     "type": "datadef",
+     "data": [],
+     "yUnits": null,
+     "lineType": "none",
+     "pointType": "dot",
+     "xUnits": null
+   }
+ ],
+ "pages": [
+   {
+     "type": "Page",
+     "name": "Best Fit Sequence Page 1",
+     "text": "On this page, students will be asked to find the line of best fit for a series of points.",
+     "panes": [
+       {
+         "type": "PredefinedGraphPane",
+         "title": "Line Construction Graph Pane",
+         "yLabel": "y",
+         "yMin": 0.0,
+         "yMax": 10.0,
+         "xLabel": "x",
+         "xMin": 0.0,
+         "xMax": 10.0,
+         "yTicks": 10.0,
+         "xTicks": 10.0,
+         "showCrossHairs": true,
+         "showToolTipCoords": true,
+         "showGraphGrid": true,
+         "includedDataSets": [
+           {
+             "name": "scatter-points",
+             "inLegend": true
+           },
+		   {
+             "name": "datadef-1",
+             "inLegend": true
+           }
+         ]
+       },
+       {
+         "type": "TablePane",
+         "title": "Best Fit table",
+         "yLabel": "y",
+         "xLabel": "x"
+       }
+     ],
+     "sequence": {
+       "type": "BestFitSequence",
+       "dataSetName": "scatter-points",
+       "learnerDataSet": "datadef-1",
+       "correctTolerance": 10,
+       "closeTolerance": 20,
+       "initialPrompt": "Find the line of best fit for this scatter plot.",
+       "incorrectPrompt": "Your estimate can be better; try again.",
+       "closePrompt": "Your estimate is close; try again",
+       "confirmCorrect": "You made an excellent estimate.",
+       "maxAttempts": 2
+     }
+   }
+ ]
+}
