@@ -112,7 +112,7 @@
                     "type": "array"
                   },
                   "legends": {
-                    "type": "array"
+                    "type": ["object", "array"]
                   },
                   "activeDatadefs": {
                     "type": "array"
@@ -166,7 +166,7 @@
                     "type": ["string", "array"]
                   },
                   "legends": {
-                    "type": "array"
+                    "type": ["object", "array"]
                   },
                   "activeDatadefs": {
                     "type": "array"
@@ -220,7 +220,7 @@
                     "type": ["string", "array"]
                   },
                   "legends": {
-                    "type": "array"
+                    "type": ["object", "array"]
                   },
                   "activeDatadefs": {
                     "type": "array"
