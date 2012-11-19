@@ -101,24 +101,24 @@
         {
           "criterion": [
             "withinAbsTolerance",
-            8.781432122214383,
+            5.560090968369096,
             [
               "deviationValue",
               "datadef-1"
             ],
-            0.8781432122214383
+            0.5560090968369096
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/5"
         },
         {
           "criterion": [
             "withinAbsTolerance",
-            8.781432122214383,
+            5.560090968369096,
             [
               "deviationValue",
               "datadef-1"
             ],
-            1.7562864244428766
+            1.1120181936738192
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/3"
         }
@@ -199,12 +199,12 @@
         {
           "criterion": [
             "withinAbsTolerance",
-            8.781432122214383,
+            5.560090968369096,
             [
               "deviationValue",
               "datadef-1"
             ],
-            0.8781432122214383
+            0.5560090968369096
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/5"
         }
@@ -285,12 +285,12 @@
         {
           "criterion": [
             "withinAbsTolerance",
-            8.781432122214383,
+            5.560090968369096,
             [
               "deviationValue",
               "datadef-1"
             ],
-            0.8781432122214383
+            0.5560090968369096
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/5"
         }
@@ -319,7 +319,10 @@
           "data": [
             "scatter-points",
             "datadef-1",
-            "CorrectLine"
+            "CorrectLine-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": {
             "title": "Sum of squares",
@@ -327,7 +330,7 @@
             "referenceDatadef": "scatter-points",
             "datadefs": [
               "datadef-1",
-              "CorrectLine"
+              "CorrectLine-1"
             ]
           },
           "activeDatadefs": [
@@ -367,7 +370,10 @@
           "data": [
             "scatter-points",
             "datadef-1",
-            "CorrectLine"
+            "CorrectLine-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": {
             "title": "Sum of squares",
@@ -375,7 +381,7 @@
             "referenceDatadef": "scatter-points",
             "datadefs": [
               "datadef-1",
-              "CorrectLine"
+              "CorrectLine-1"
             ]
           },
           "activeDatadefs": [
@@ -474,8 +480,8 @@
           "color": "#cc0000"
         },
         {
-          "url": "/shared/best-fit-sequence/datadefs/CorrectLine",
-          "name": "CorrectLine",
+          "url": "/shared/best-fit-sequence/datadefs/CorrectLine-1",
+          "name": "CorrectLine-1",
           "activity": "/shared/best-fit-sequence",
           "points": [],
           "pointType": "none",
@@ -494,12 +500,12 @@
           "url": "/shared/best-fit-sequence/datarefs/dataref-1",
           "name": "dataref-1",
           "activity": "/shared/best-fit-sequence",
-          "datadefName": "CorrectLine",
+          "datadefName": "CorrectLine-1",
           "expressionForm": "slope-intercept",
           "xInterval": 0.1,
           "params": {
             "slope": -0.494017487344685,
-            "yIntercept": 10.690427979751496
+            "yIntercept": 8.688548857186683
           }
         }
       ]

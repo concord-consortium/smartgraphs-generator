@@ -2,6 +2,37 @@
 
 exports.BestFitSequence = class BestFitSequence
 
+  constructor: ({
+    @type,
+    @dataSetName,
+    @learnerDataSet,
+    @correctTolerance,
+    @closeTolerance,
+    @initialPrompt,
+    @incorrectPrompt,
+    @closePrompt,
+    @confirmCorrect,
+    @maxAttempts,
+    @page
+    }) ->
+    @bestFitLineslope = 0
+    @bestFitLineConstant = 0
+    @bestFitLineDeviationMeanSquare = 0
+    @bestFitLineDataDef
+    @bestFitLineDataRef
+    @bestFitLineColor
+    @bestFitLineDataref
+    @learnerDataSetColor = '#cc0000'
+    @steps = []
+    @specialSteps = []
+    @runtimeStepsByName = {}
+    @correctLineDataSetName = "CorrectLine-"+ @page.index
+    for pane, i in @page.panes || []
+      @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
+      @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
+
+    if @learnerDataSet then @graphPane.activeDatasetName = @learnerDataSet
+
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
     runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
@@ -11,18 +42,21 @@ exports.BestFitSequence = class BestFitSequence
     step = @runtimeStepsByName[stepdef.name]
     stepDataDefRef = []
     stepIncludedDataSets = []
+    stepDataRefs = []
     legendsDataset = [@learnerDataSet]
     if hasAnswer is "true"
-      stepDataDefRef = @graphPane.datadefRef.concat({ key: 'CorrectLine', datadef: @bestFitLineDataDef })
-      stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: 'CorrectLine', inLegend: true })
-      legendsDataset.push 'CorrectLine'
+      stepDataRefs = @graphPane.dataRef.concat(@bestFitLineDataRef)
+      stepDataDefRef = @graphPane.datadefRef.concat({ key: @correctLineDataSetName, datadef: @bestFitLineDataDef })
+      stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
+      legendsDataset.push @correctLineDataSetName
     else
+      stepDataRefs = if @graphPane.dataRef then @graphPane.dataRef else []
       stepDataDefRef = @graphPane.datadefRef
       stepIncludedDataSets = @graphPane.includedDataSets
 
     step.addGraphPane
       title: @graphPane.title
-      datadefRef: stepDataDefRef #if blah is "blah" then { arr = []; arr.push.apply(@graphPane.datadefRef, [{key: 'CorrectLine', datadef: @bestFitLineDataDef}]) } else @graphPane.datadefRef  #    @graphPane.datadefRef # dataDefRefForStep
+      datadefRef: stepDataDefRef
       xAxis: @xAxis
       yAxis: @yAxis
       index: @graphPane.index
@@ -31,7 +65,7 @@ exports.BestFitSequence = class BestFitSequence
       showToolTipCoords: stepdef.showToolTipCoords
       includedDataSets: stepIncludedDataSets
       activeDatasetName: @graphPane.activeDatasetName
-      dataRef: if @graphPane.dataRef then @graphPane.dataRef else []
+      dataRef: stepDataRefs
       sequenceType: { title : "Sum of squares", type : "AvgSumOfDeviation", referenceDatadef : @dataSetName, legendDataSets: legendsDataset }
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
@@ -101,35 +135,6 @@ exports.BestFitSequence = class BestFitSequence
       }
     ]
 
-  constructor: ({
-    @type,
-    @dataSetName,
-    @learnerDataSet,
-    @correctTolerance,
-    @closeTolerance,
-    @initialPrompt,
-    @incorrectPrompt,
-    @closePrompt,
-    @confirmCorrect,
-    @maxAttempts,
-    @page
-    }) ->
-    @bestFitLineslope = 0
-    @bestFitLineConstant = 0
-    @bestFitLineDeviationMeanSquare = 0
-    @bestFitLineDataDef
-    @bestFitLineColor
-    @bestFitLineDataref
-    @learnerDataSetColor = '#cc0000'
-    @steps = []
-    @specialSteps = []
-    @runtimeStepsByName = {}
-    for pane, i in @page.panes || []
-      @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
-      @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
-
-    if @learnerDataSet then @graphPane.activeDatasetName = @learnerDataSet
-
   get_bestFitLine: (runtimeActivity, graphPane) ->
 
     dataPointSet = runtimeActivity.getDatadefRef "#{@dataSetName}"
@@ -154,7 +159,7 @@ exports.BestFitSequence = class BestFitSequence
       nPointCounter++
       i++
     @bestFitLineslope = ((nPointCounter * sumOfXY)-(sumOfX * sumOfY))/((nPointCounter * sumOfSquareX)-(sumOfX * sumOfX))
-    @bestFitLineConstant = point[1] - ( @bestFitLineslope * point[0] )
+    @bestFitLineConstant = ((sumOfSquareX * sumOfY) - (sumOfX * sumOfXY)) / ((nPointCounter * sumOfSquareX) - (sumOfX * sumOfX))
 
     nPointCounter = 0
     bestFitLineDeviation = 0
@@ -167,13 +172,14 @@ exports.BestFitSequence = class BestFitSequence
       j++
 
     @bestFitLineDeviationMeanSquare = bestFitLineDeviation / nPointCounter
-    bestFitLineExpression = 'y = '+@bestFitLineslope+'x + '+@bestFitLineConstant
+    sign = if @bestFitLineConstant is 0 then '+' else @bestFitLineConstant / Math.abs(@bestFitLineConstant)
+    bestFitLineExpression = 'y = '+@bestFitLineslope+'x' + (if sign is 1 then '+' else '-') + Math.abs(@bestFitLineConstant)
     @bestFitLineColor = runtimeActivity.getNewColor()
-    @bestFitLineDataDef = runtimeActivity.createNewEmptyDataRef('CorrectLine',bestFitLineExpression, 0.1, 0, @bestFitLineColor)
+    NewEmptyData = runtimeActivity.createNewEmptyDataRef(@correctLineDataSetName, bestFitLineExpression, 0.1, 0, @bestFitLineColor)
+    @bestFitLineDataDef = NewEmptyData.dataDef
+    @bestFitLineDataRef = NewEmptyData.dataRef
     runtimeActivity.setColorOfDatadef @dataSetName,@bestFitLineColor
     runtimeActivity.setColorOfDatadef @learnerDataSet,@learnerDataSetColor
-    #unless graphPane.datadefRef['CorrectLine']
-      #graphPane.datadefRef.push runtimeActivity.getDatadefRef 'CorrectLine'
     @bestFitLineDataDef
 
   appendSteps: (runtimePage) ->
@@ -288,8 +294,6 @@ exports.BestFitSequence = class BestFitSequence
   assemble_steps: ->
     nCounter = 1
     @steps.push(@first_question())
-    #@steps.push(@incorrect_answer_after_try())
-    #@steps.push(@close_answer_after_try())
 
     while (nCounter) < @maxAttempts
       @steps.push(@incorrect_answer_after_try(nCounter))

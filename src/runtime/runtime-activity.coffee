@@ -143,7 +143,6 @@ exports.RuntimeActivity = class RuntimeActivity
                 populatedDataRefs.push dataRef
                 @referenceDatadef = datadef
                 @referenceDataref = dataRef
-
     { datadef: populatedDataDefs, dataref: populatedDataRefs }
 
   createNewEmptyDataRef: (name, expression, xPrecision, lineSnapDistance, color) ->
@@ -155,8 +154,8 @@ exports.RuntimeActivity = class RuntimeActivity
           dataRef = this.createDataRef ({ datadefname: datadef.name, expressionType: expressionData.type, xInterval: xPrecision, expressionForm: expressionData.form, expression: expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: lineSnapDistance })
         else
           dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})
-      @defineDatadef name, datadef
-      #datadef
+        @defineDatadef name, datadef
+        { dataDef: datadef, dataRef: dataRef }
 
   getNewColor: ->
     @dataSetColors[@colorIndex--]
