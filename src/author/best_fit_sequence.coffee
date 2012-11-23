@@ -15,6 +15,7 @@ exports.BestFitSequence = class BestFitSequence
     @maxAttempts,
     @page
     }) ->
+    if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
     @bestFitLineslope = 0
     @bestFitLineConstant = 0
     @bestFitLineDeviationMeanSquare = 0
@@ -32,6 +33,7 @@ exports.BestFitSequence = class BestFitSequence
       @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
 
     if @learnerDataSet then @graphPane.activeDatasetName = @learnerDataSet
+    @maxAttempts = 1  unless @maxAttempts
 
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
@@ -222,7 +224,7 @@ exports.BestFitSequence = class BestFitSequence
       ##         first_question             ##
       ############################################
       name:                         "first_question"
-      defaultBranch:                "incorrect_answer_after_1_try"
+      defaultBranch:                if @maxAttempts is 1 then "attempts_over" else "incorrect_answer_after_1_try"
       submitButtonTitle:            "Check My Answer"
       beforeText:                   @initialPrompt
       substitutedExpressions:       []

@@ -2238,6 +2238,9 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
     function BestFitSequence(_arg) {
       var i, pane, _len, _ref;
       this.type = _arg.type, this.dataSetName = _arg.dataSetName, this.learnerDataSet = _arg.learnerDataSet, this.correctTolerance = _arg.correctTolerance, this.closeTolerance = _arg.closeTolerance, this.initialPrompt = _arg.initialPrompt, this.incorrectPrompt = _arg.incorrectPrompt, this.closePrompt = _arg.closePrompt, this.confirmCorrect = _arg.confirmCorrect, this.maxAttempts = _arg.maxAttempts, this.page = _arg.page;
+      if (this.maxAttempts === 0) {
+        throw new Error("Number of attempts should be more than 0");
+      }
       this.bestFitLineslope = 0;
       this.bestFitLineConstant = 0;
       this.bestFitLineDeviationMeanSquare = 0;
@@ -2263,6 +2266,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
       if (this.learnerDataSet) {
         this.graphPane.activeDatasetName = this.learnerDataSet;
       }
+      if (!this.maxAttempts) this.maxAttempts = 1;
     }
 
     BestFitSequence.prototype.getDataDefRef = function(runtimeActivity) {
@@ -2504,7 +2508,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
     BestFitSequence.prototype.first_question = function() {
       return {
         name: "first_question",
-        defaultBranch: "incorrect_answer_after_1_try",
+        defaultBranch: this.maxAttempts === 1 ? "attempts_over" : "incorrect_answer_after_1_try",
         submitButtonTitle: "Check My Answer",
         beforeText: this.initialPrompt,
         substitutedExpressions: [],
