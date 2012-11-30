@@ -22,7 +22,6 @@ exports.BestFitSequence = class BestFitSequence
     @bestFitLineDataDef
     @bestFitLineDataRef
     @bestFitLineColor
-    @bestFitLineDataref
     @learnerDataSetColor = '#cc0000'
     @steps = []
     @specialSteps = []
@@ -68,7 +67,7 @@ exports.BestFitSequence = class BestFitSequence
       includedDataSets: stepIncludedDataSets
       activeDatasetName: @graphPane.activeDatasetName
       dataRef: stepDataRefs
-      sequenceType: { title : "Sum of squares", type : "AvgSumOfDeviation", referenceDatadef : @dataSetName, legendDataSets: legendsDataset }
+      sequenceType: { title : "Distance measure", type : "AvgSumOfDeviation", referenceDatadef : @dataSetName, legendDataSets: legendsDataset }
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
@@ -108,7 +107,6 @@ exports.BestFitSequence = class BestFitSequence
     closeTolerance = @bestFitLineDeviationMeanSquare * @closeTolerance / 100
     if((nCounter+1) < @maxAttempts)
       nextCloseCorrect = 'close_answer_after_'+(nCounter+1)+'_try'
-      nextIncorrect = 'incorrect_answer_after_'+(nCounter+1)+'_try'
       criterianArray = [
                           {
                             "criterion": [ "withinAbsTolerance", @bestFitLineDeviationMeanSquare, ["deviationValue", @learnerDataSet], correctTolerance ],
@@ -126,7 +124,6 @@ exports.BestFitSequence = class BestFitSequence
                             "step": 'correct_answer'
                           }
                         ]          
-
     criterianArray
 
   check_final_answer: ->
@@ -148,29 +145,40 @@ exports.BestFitSequence = class BestFitSequence
     @bestFitLineConstant = 0
     sumOfX = 0
     sumOfY = 0
-    sumOfXY = 0
-    sumOfSquareX = 0
-    nPointCounter = 0
+    nPointCounter = dataSet.length
+    xDifference = 0
+    yDifference = 0
+    xMean = 0
+    yMean = 0
+    squareOfXDifference = 0
     i = 0
-    while i < dataSet.length
+    while i < nPointCounter
       point = dataSet[i]
-      sumOfX += point[0]
-      sumOfY += point[1]
-      sumOfXY += point[1] * point[0]
-      sumOfSquareX += point[0] * point[0]
-      nPointCounter++
+      sumOfX += point[0] * 10000
+      sumOfY += point[1] * 10000
       i++
-    @bestFitLineslope = ((nPointCounter * sumOfXY)-(sumOfX * sumOfY))/((nPointCounter * sumOfSquareX)-(sumOfX * sumOfX))
-    @bestFitLineConstant = ((sumOfSquareX * sumOfY) - (sumOfX * sumOfXY)) / ((nPointCounter * sumOfSquareX) - (sumOfX * sumOfX))
+    xMean = sumOfX / nPointCounter
+    yMean = sumOfY / nPointCounter
+    i = 0
+    productOfXDiffYDiff = 0
+    while i < nPointCounter
+      point = dataSet[i]
+      xDifference = (point[0] * 10000) - xMean
+      yDifference = (point[1] * 10000) - yMean
+      productOfXDiffYDiff += xDifference * yDifference
+      squareOfXDifference += xDifference * xDifference
+      i++
 
-    nPointCounter = 0
+    @bestFitLineslope = productOfXDiffYDiff / squareOfXDifference
+    if @bestFitLineslope is Infinity or @bestFitLineslope is -Infinity or isNaN(@bestFitLineslope) then throw new Error "Invalid scatter-plot"
+    @bestFitLineConstant = (yMean - (@bestFitLineslope * xMean)) / 10000
+    
     bestFitLineDeviation = 0
     j = 0
-    while j < dataSet.length
+    while j < nPointCounter
       point = dataSet[j]
-      ditanceOfPointFromBestFitLine = Math.abs((@bestFitLineslope * point[0]) - point[1] + @bestFitLineConstant)/Math.sqrt((@bestFitLineslope * @bestFitLineslope ) + 1)
+      ditanceOfPointFromBestFitLine = Math.abs((@bestFitLineslope * point[0]) - point[1] + @bestFitLineConstant)
       bestFitLineDeviation += (ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine) 
-      nPointCounter++
       j++
 
     @bestFitLineDeviationMeanSquare = bestFitLineDeviation / nPointCounter

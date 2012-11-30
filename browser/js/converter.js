@@ -2247,7 +2247,6 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
       this.bestFitLineDataDef;
       this.bestFitLineDataRef;
       this.bestFitLineColor;
-      this.bestFitLineDataref;
       this.learnerDataSetColor = '#cc0000';
       this.steps = [];
       this.specialSteps = [];
@@ -2312,7 +2311,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
         activeDatasetName: this.graphPane.activeDatasetName,
         dataRef: stepDataRefs,
         sequenceType: {
-          title: "Sum of squares",
+          title: "Distance measure",
           type: "AvgSumOfDeviation",
           referenceDatadef: this.dataSetName,
           legendDataSets: legendsDataset
@@ -2400,7 +2399,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
     };
 
     BestFitSequence.prototype.get_bestFitLine = function(runtimeActivity, graphPane) {
-      var NewEmptyData, bestFitLineDeviation, bestFitLineExpression, dataPointSet, dataSet, ditanceOfPointFromBestFitLine, i, j, nPointCounter, point, sign, sumOfSquareX, sumOfX, sumOfXY, sumOfY;
+      var NewEmptyData, bestFitLineDeviation, bestFitLineExpression, dataPointSet, dataSet, ditanceOfPointFromBestFitLine, i, j, nPointCounter, point, productOfXDiffYDiff, sign, squareOfXDifference, sumOfX, sumOfY, xDifference, xMean, yDifference, yMean;
       dataPointSet = runtimeActivity.getDatadefRef("" + this.dataSetName);
       dataSet = dataPointSet.datadef.points;
       if (!(dataSet.length && dataSet.length > 5)) {
@@ -2410,29 +2409,42 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
       this.bestFitLineConstant = 0;
       sumOfX = 0;
       sumOfY = 0;
-      sumOfXY = 0;
-      sumOfSquareX = 0;
-      nPointCounter = 0;
+      nPointCounter = dataSet.length;
+      xDifference = 0;
+      yDifference = 0;
+      xMean = 0;
+      yMean = 0;
+      squareOfXDifference = 0;
       i = 0;
-      while (i < dataSet.length) {
+      while (i < nPointCounter) {
         point = dataSet[i];
-        sumOfX += point[0];
-        sumOfY += point[1];
-        sumOfXY += point[1] * point[0];
-        sumOfSquareX += point[0] * point[0];
-        nPointCounter++;
+        sumOfX += point[0] * 10000;
+        sumOfY += point[1] * 10000;
         i++;
       }
-      this.bestFitLineslope = ((nPointCounter * sumOfXY) - (sumOfX * sumOfY)) / ((nPointCounter * sumOfSquareX) - (sumOfX * sumOfX));
-      this.bestFitLineConstant = ((sumOfSquareX * sumOfY) - (sumOfX * sumOfXY)) / ((nPointCounter * sumOfSquareX) - (sumOfX * sumOfX));
-      nPointCounter = 0;
+      xMean = sumOfX / nPointCounter;
+      yMean = sumOfY / nPointCounter;
+      i = 0;
+      productOfXDiffYDiff = 0;
+      while (i < nPointCounter) {
+        point = dataSet[i];
+        xDifference = (point[0] * 10000) - xMean;
+        yDifference = (point[1] * 10000) - yMean;
+        productOfXDiffYDiff += xDifference * yDifference;
+        squareOfXDifference += xDifference * xDifference;
+        i++;
+      }
+      this.bestFitLineslope = productOfXDiffYDiff / squareOfXDifference;
+      if (this.bestFitLineslope === Infinity || this.bestFitLineslope === -Infinity || isNaN(this.bestFitLineslope)) {
+        throw new Error("Invalid scatter-plot");
+      }
+      this.bestFitLineConstant = (yMean - (this.bestFitLineslope * xMean)) / 10000;
       bestFitLineDeviation = 0;
       j = 0;
-      while (j < dataSet.length) {
+      while (j < nPointCounter) {
         point = dataSet[j];
-        ditanceOfPointFromBestFitLine = Math.abs((this.bestFitLineslope * point[0]) - point[1] + this.bestFitLineConstant) / Math.sqrt((this.bestFitLineslope * this.bestFitLineslope) + 1);
+        ditanceOfPointFromBestFitLine = Math.abs((this.bestFitLineslope * point[0]) - point[1] + this.bestFitLineConstant);
         bestFitLineDeviation += ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine;
-        nPointCounter++;
         j++;
       }
       this.bestFitLineDeviationMeanSquare = bestFitLineDeviation / nPointCounter;
