@@ -2362,13 +2362,12 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
     };
 
     BestFitSequence.prototype.check_correct_answer = function(nCounter) {
-      var closeTolerance, correctTolerance, criterianArray, nextCloseCorrect, nextIncorrect;
+      var closeTolerance, correctTolerance, criterianArray, nextCloseCorrect;
       criterianArray = [];
       correctTolerance = this.bestFitLineDeviationMeanSquare * this.correctTolerance / 100;
       closeTolerance = this.bestFitLineDeviationMeanSquare * this.closeTolerance / 100;
       if ((nCounter + 1) < this.maxAttempts) {
         nextCloseCorrect = 'close_answer_after_' + (nCounter + 1) + '_try';
-        nextIncorrect = 'incorrect_answer_after_' + (nCounter + 1) + '_try';
         criterianArray = [
           {
             "criterion": ["withinAbsTolerance", this.bestFitLineDeviationMeanSquare, ["deviationValue", this.learnerDataSet], correctTolerance],
@@ -2447,7 +2446,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
         bestFitLineDeviation += ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine;
         j++;
       }
-      this.bestFitLineDeviationMeanSquare = bestFitLineDeviation / nPointCounter;
+      this.bestFitLineDeviationMeanSquare = Math.sqrt(bestFitLineDeviation / nPointCounter);
       sign = this.bestFitLineConstant === 0 ? '+' : this.bestFitLineConstant / Math.abs(this.bestFitLineConstant);
       bestFitLineExpression = 'y = ' + this.bestFitLineslope + 'x' + (sign === 1 ? '+' : '-') + Math.abs(this.bestFitLineConstant);
       this.bestFitLineColor = runtimeActivity.getNewColor();

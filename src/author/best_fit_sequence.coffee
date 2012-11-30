@@ -181,7 +181,7 @@ exports.BestFitSequence = class BestFitSequence
       bestFitLineDeviation += (ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine) 
       j++
 
-    @bestFitLineDeviationMeanSquare = bestFitLineDeviation / nPointCounter
+    @bestFitLineDeviationMeanSquare = Math.sqrt(bestFitLineDeviation / nPointCounter)
     sign = if @bestFitLineConstant is 0 then '+' else @bestFitLineConstant / Math.abs(@bestFitLineConstant)
     bestFitLineExpression = 'y = '+@bestFitLineslope+'x' + (if sign is 1 then '+' else '-') + Math.abs(@bestFitLineConstant)
     @bestFitLineColor = runtimeActivity.getNewColor()
