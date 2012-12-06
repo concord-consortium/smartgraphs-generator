@@ -57,7 +57,7 @@
             "datadef-1"
           ],
           "legends": {
-            "title": "Distance measure",
+            "title": "Sum of squares",
             "type": "AvgSumOfDeviation",
             "referenceDatadef": "scatter-points",
             "datadefs": [
@@ -101,24 +101,24 @@
         {
           "criterion": [
             "withinAbsTolerance",
-            1.2358381262987912,
+            13.745662869723363,
             [
               "deviationValue",
               "datadef-1"
             ],
-            0.12358381262987912
+            1.3745662869723363
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/5"
         },
         {
           "criterion": [
             "withinAbsTolerance",
-            1.2358381262987912,
+            13.745662869723363,
             [
               "deviationValue",
               "datadef-1"
             ],
-            0.24716762525975824
+            2.7491325739446726
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/3"
         }
@@ -149,7 +149,7 @@
             "datadef-1"
           ],
           "legends": {
-            "title": "Distance measure",
+            "title": "Sum of squares",
             "type": "AvgSumOfDeviation",
             "referenceDatadef": "scatter-points",
             "datadefs": [
@@ -199,12 +199,12 @@
         {
           "criterion": [
             "withinAbsTolerance",
-            1.2358381262987912,
+            13.745662869723363,
             [
               "deviationValue",
               "datadef-1"
             ],
-            0.12358381262987912
+            1.3745662869723363
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/5"
         }
@@ -235,7 +235,7 @@
             "datadef-1"
           ],
           "legends": {
-            "title": "Distance measure",
+            "title": "Sum of squares",
             "type": "AvgSumOfDeviation",
             "referenceDatadef": "scatter-points",
             "datadefs": [
@@ -285,12 +285,12 @@
         {
           "criterion": [
             "withinAbsTolerance",
-            1.2358381262987912,
+            13.745662869723363,
             [
               "deviationValue",
               "datadef-1"
             ],
-            0.12358381262987912
+            1.3745662869723363
           ],
           "step": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/5"
         }
@@ -325,7 +325,7 @@
             "dataref-1"
           ],
           "legends": {
-            "title": "Distance measure",
+            "title": "Sum of squares",
             "type": "AvgSumOfDeviation",
             "referenceDatadef": "scatter-points",
             "datadefs": [
@@ -376,7 +376,7 @@
             "dataref-1"
           ],
           "legends": {
-            "title": "Distance measure",
+            "title": "Sum of squares",
             "type": "AvgSumOfDeviation",
             "referenceDatadef": "scatter-points",
             "datadefs": [
