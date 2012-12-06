@@ -18,7 +18,7 @@ exports.BestFitSequence = class BestFitSequence
     if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
     @bestFitLineslope = 0
     @bestFitLineConstant = 0
-    @bestFitLineDeviationMeanSquare = 0
+    @SumofSquares = 0
     @bestFitLineDataDef
     @bestFitLineDataRef
     @bestFitLineColor
@@ -67,7 +67,7 @@ exports.BestFitSequence = class BestFitSequence
       includedDataSets: stepIncludedDataSets
       activeDatasetName: @graphPane.activeDatasetName
       dataRef: stepDataRefs
-      sequenceType: { title : "Distance measure", type : "AvgSumOfDeviation", referenceDatadef : @dataSetName, legendDataSets: legendsDataset }
+      sequenceType: { title : "Sum of squares", type : "AvgSumOfDeviation", referenceDatadef : @dataSetName, legendDataSets: legendsDataset }
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
@@ -103,24 +103,24 @@ exports.BestFitSequence = class BestFitSequence
 
   check_correct_answer:(nCounter) ->
     criterianArray = []
-    correctTolerance = @bestFitLineDeviationMeanSquare * @correctTolerance / 100
-    closeTolerance = @bestFitLineDeviationMeanSquare * @closeTolerance / 100
+    correctTolerance = @SumofSquares * @correctTolerance / 100
+    closeTolerance = @SumofSquares * @closeTolerance / 100
     if((nCounter+1) < @maxAttempts)
       nextCloseCorrect = 'close_answer_after_'+(nCounter+1)+'_try'
       criterianArray = [
                           {
-                            "criterion": [ "withinAbsTolerance", @bestFitLineDeviationMeanSquare, ["deviationValue", @learnerDataSet], correctTolerance ],
+                            "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], correctTolerance ],
                             "step": 'correct_answer'
                           },
                           {
-                            "criterion": [ "withinAbsTolerance", @bestFitLineDeviationMeanSquare, ["deviationValue", @learnerDataSet], closeTolerance ] ,
+                            "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], closeTolerance ] ,
                             "step": nextCloseCorrect
                           }
                         ] 
     else
       criterianArray = [
                           {
-                            "criterion": [ "withinAbsTolerance", @bestFitLineDeviationMeanSquare, ["deviationValue", @learnerDataSet], correctTolerance ],
+                            "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], correctTolerance ],
                             "step": 'correct_answer'
                           }
                         ]          
@@ -129,7 +129,7 @@ exports.BestFitSequence = class BestFitSequence
   check_final_answer: ->
     [
       {
-        "criterion": [ "withinAbsTolerance", @bestFitLineDeviationMeanSquare, ["deviationValue", @learnerDataSet], correctTolerance ],
+        "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], correctTolerance ],
         "step": 'correct_answer'
       }
     ]
@@ -173,15 +173,15 @@ exports.BestFitSequence = class BestFitSequence
     if @bestFitLineslope is Infinity or @bestFitLineslope is -Infinity or isNaN(@bestFitLineslope) then throw new Error "Invalid scatter-plot"
     @bestFitLineConstant = (yMean - (@bestFitLineslope * xMean)) / 10000
     
-    bestFitLineDeviation = 0
+    @SumofSquares = 0
     j = 0
     while j < nPointCounter
       point = dataSet[j]
       ditanceOfPointFromBestFitLine = Math.abs((@bestFitLineslope * point[0]) - point[1] + @bestFitLineConstant)
-      bestFitLineDeviation += (ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine) 
+      @SumofSquares += (ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine) 
       j++
 
-    @bestFitLineDeviationMeanSquare = Math.sqrt(bestFitLineDeviation / nPointCounter)
+    #@SumofSquares = Math.sqrt(@SumofSquares / nPointCounter)
     sign = if @bestFitLineConstant is 0 then '+' else @bestFitLineConstant / Math.abs(@bestFitLineConstant)
     bestFitLineExpression = 'y = '+@bestFitLineslope+'x' + (if sign is 1 then '+' else '-') + Math.abs(@bestFitLineConstant)
     @bestFitLineColor = runtimeActivity.getNewColor()
