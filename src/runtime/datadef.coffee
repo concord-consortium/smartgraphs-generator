@@ -11,13 +11,16 @@ exports.Datadef = class Datadef
   @serializeDatadefs = (datadefs) ->
     if datadefs.length == 0 then [] else [{ type: 'UnorderedDataPoints', records: (datadef.toHash() for datadef in datadefs) }]
 
-  constructor: ({@points, @xLabel, @yLabel, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name }) ->
+  constructor: ({@points, @xLabel, @yLabel, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color}) ->
     if !_arg.name then @name = "datadef-#{@index}"
     if !_arg.lineSnapDistance then @lineSnapDistance = 0
 
   constructUnitRefs: ->
     @xUnitsRef = @activity.getUnitRef dumbSingularize @xUnits if @xUnits
     @yUnitsRef = @activity.getUnitRef dumbSingularize @yUnits if @yUnits
+
+  setColor: (color) ->
+    @color = color
 
   getUrl: ->
     "#{@activity.getUrl()}/datadefs/#{@name}"
@@ -32,3 +35,4 @@ exports.Datadef = class Datadef
     pointType:         @pointType
     lineType:          @lineType
     lineSnapDistance:  @lineSnapDistance
+    color:             @color

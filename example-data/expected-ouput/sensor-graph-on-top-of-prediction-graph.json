@@ -61,9 +61,14 @@
           "data": [
             "datadef-1"
           ],
-          "legends": [
-            "datadef-1"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "datadef-1"
+            ]
+          },
           "activeDatadefs": [
             "datadef-1"
           ]
@@ -111,9 +116,14 @@
           "data": [
             "datadef-1"
           ],
-          "legends": [
-            "datadef-1"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "datadef-1"
+            ]
+          },
           "activeDatadefs": [
             "datadef-1"
           ]

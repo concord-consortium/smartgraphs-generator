@@ -60,10 +60,15 @@
             "dataref-1",
             "dataref-2"
           ],
-          "legends": [
-            "dataSetA",
-            "dataSetB"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA",
+              "dataSetB"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
@@ -132,10 +137,15 @@
             "dataref-1",
             "dataref-2"
           ],
-          "legends": [
-            "dataSetA",
-            "dataSetB"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA",
+              "dataSetB"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
@@ -205,10 +215,15 @@
             "dataref-1",
             "dataref-2"
           ],
-          "legends": [
-            "dataSetA",
-            "dataSetB"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA",
+              "dataSetB"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
@@ -276,10 +291,15 @@
             "dataref-1",
             "dataref-2"
           ],
-          "legends": [
-            "dataSetA",
-            "dataSetB"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA",
+              "dataSetB"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
@@ -322,10 +342,15 @@
             "dataref-1",
             "dataref-2"
           ],
-          "legends": [
-            "dataSetA",
-            "dataSetB"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA",
+              "dataSetB"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]

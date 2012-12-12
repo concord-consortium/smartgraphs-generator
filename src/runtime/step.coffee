@@ -38,7 +38,7 @@ exports.Step = class Step
         caption: "#{@license} #{@attribution}"
     }
 
-  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataRef }) ->
+  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataRef, sequenceType }) ->
     @panes[index] = {
       title,
       datadefRef,
@@ -72,14 +72,30 @@ exports.Step = class Step
 
       GetLegends: ->
         unless @includedDataSets.length is 0
+          title = "legend"
+          referenceDatadef = ""
+          type = "name"
+          oLegendObject = new Object()
           oLegends = new Array()
-          for dataset in @includedDataSets
-            if dataset.inLegend
-              for datadefRef in @datadefRef
-                if datadefRef.datadef.name is dataset.name
-                  oLegends.push dataset.name
-                  break
-          oLegends
+
+          if sequenceType
+            title = sequenceType.title
+            type = sequenceType.type
+            referenceDatadef = sequenceType.referenceDatadef
+            oLegends = sequenceType.legendDataSets
+          else
+            for dataset in @includedDataSets
+              if dataset.inLegend
+                for datadefRef in @datadefRef
+                  if datadefRef.datadef.name is dataset.name
+                    oLegends.push dataset.name
+                    break
+          oLegendObject.title = title
+          oLegendObject.type = type
+          oLegendObject.referenceDatadef = referenceDatadef
+
+          oLegendObject.datadefs = oLegends
+          oLegendObject
     }
 
   addTablePane: ({ datadefRef, index, xLabel, yLabel }) ->

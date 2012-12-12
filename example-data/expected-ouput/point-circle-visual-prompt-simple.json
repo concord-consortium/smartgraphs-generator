@@ -51,9 +51,14 @@
           "data": [
             "dataSetA"
           ],
-          "legends": [
-            "dataSetA"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
@@ -113,9 +118,14 @@
           "data": [
             "dataSetA"
           ],
-          "legends": [
-            "dataSetA"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
@@ -173,9 +183,14 @@
           "data": [
             "dataSetA"
           ],
-          "legends": [
-            "dataSetA"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
@@ -210,9 +225,14 @@
           "data": [
             "dataSetA"
           ],
-          "legends": [
-            "dataSetA"
-          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "dataSetA"
+            ]
+          },
           "activeDatadefs": [
             "dataSetA"
           ]
