@@ -158,7 +158,8 @@ exports.RuntimeActivity = class RuntimeActivity
         { dataDef: datadef, dataRef: dataRef }
 
   getNewColor: ->
-    @dataSetColors[@colorIndex--]
+    unless @colorIndex <= 0 then @dataSetColors[@colorIndex--] else throw new Error "No new color available."
+    
 
   setColorOfDatadef: (dataDefName, color) ->
     if datadef = @getDatadefRef(dataDefName).datadef

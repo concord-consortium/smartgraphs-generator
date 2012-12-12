@@ -2284,7 +2284,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
       legendsDataset = [this.learnerDataSet];
       if (hasAnswer === "true") {
         stepDataRefs = this.graphPane.dataRef.concat(this.bestFitLineDataRef);
-        stepDataDefRef = this.graphPane.datadefRef.concat({
+        stepDataDefRef = dataDefRefForStep.concat({
           key: this.correctLineDataSetName,
           datadef: this.bestFitLineDataDef
         });
@@ -2295,7 +2295,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
         legendsDataset.push(this.correctLineDataSetName);
       } else {
         stepDataRefs = this.graphPane.dataRef ? this.graphPane.dataRef : [];
-        stepDataDefRef = this.graphPane.datadefRef;
+        stepDataDefRef = dataDefRefForStep;
         stepIncludedDataSets = this.graphPane.includedDataSets;
       }
       step.addGraphPane({
@@ -2349,7 +2349,6 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
           shape: "singleLine"
         });
       }
-      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
       _ref3 = stepdef.responseBranches || [];
       for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
         response_def = _ref3[_k];
@@ -2398,7 +2397,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
     };
 
     BestFitSequence.prototype.get_bestFitLine = function(runtimeActivity, graphPane) {
-      var NewEmptyData, bestFitLineExpression, dataPointSet, dataSet, ditanceOfPointFromBestFitLine, i, j, nPointCounter, point, productOfXDiffYDiff, sign, squareOfXDifference, sumOfX, sumOfY, xDifference, xMean, yDifference, yMean;
+      var NewEmptyData, bestFitLineExpression, dataPointSet, dataSet, ditanceOfPointFromBestFitLine, i, j, negated_sign_char, numPoints, point, productOfXDiffYDiff, scaleFactor, squareOfXDifference, sumOfX, sumOfY, xDifference, xMean, yDifference, yMean;
       dataPointSet = runtimeActivity.getDatadefRef("" + this.dataSetName);
       dataSet = dataPointSet.datadef.points;
       if (!(dataSet.length && dataSet.length > 5)) {
@@ -2408,27 +2407,28 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
       this.bestFitLineConstant = 0;
       sumOfX = 0;
       sumOfY = 0;
-      nPointCounter = dataSet.length;
+      numPoints = dataSet.length;
       xDifference = 0;
       yDifference = 0;
       xMean = 0;
       yMean = 0;
       squareOfXDifference = 0;
       i = 0;
-      while (i < nPointCounter) {
+      scaleFactor = 10000;
+      while (i < numPoints) {
         point = dataSet[i];
-        sumOfX += point[0] * 10000;
-        sumOfY += point[1] * 10000;
+        sumOfX += point[0] * scaleFactor;
+        sumOfY += point[1] * scaleFactor;
         i++;
       }
-      xMean = sumOfX / nPointCounter;
-      yMean = sumOfY / nPointCounter;
+      xMean = sumOfX / numPoints;
+      yMean = sumOfY / numPoints;
       i = 0;
       productOfXDiffYDiff = 0;
-      while (i < nPointCounter) {
+      while (i < numPoints) {
         point = dataSet[i];
-        xDifference = (point[0] * 10000) - xMean;
-        yDifference = (point[1] * 10000) - yMean;
+        xDifference = (point[0] * scaleFactor) - xMean;
+        yDifference = (point[1] * scaleFactor) - yMean;
         productOfXDiffYDiff += xDifference * yDifference;
         squareOfXDifference += xDifference * xDifference;
         i++;
@@ -2437,17 +2437,17 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
       if (this.bestFitLineslope === Infinity || this.bestFitLineslope === -Infinity || isNaN(this.bestFitLineslope)) {
         throw new Error("Invalid scatter-plot");
       }
-      this.bestFitLineConstant = (yMean - (this.bestFitLineslope * xMean)) / 10000;
+      this.bestFitLineConstant = (yMean - (this.bestFitLineslope * xMean)) / scaleFactor;
       this.SumofSquares = 0;
       j = 0;
-      while (j < nPointCounter) {
+      while (j < numPoints) {
         point = dataSet[j];
         ditanceOfPointFromBestFitLine = Math.abs((this.bestFitLineslope * point[0]) - point[1] + this.bestFitLineConstant);
         this.SumofSquares += ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine;
         j++;
       }
-      sign = this.bestFitLineConstant === 0 ? '+' : this.bestFitLineConstant / Math.abs(this.bestFitLineConstant);
-      bestFitLineExpression = 'y = ' + this.bestFitLineslope + 'x' + (sign === 1 ? '+' : '-') + Math.abs(this.bestFitLineConstant);
+      negated_sign_char = this.bestFitLineConstant >= 0 ? '+' : '-';
+      bestFitLineExpression = 'y = ' + this.bestFitLineslope + 'x' + negated_sign_char + Math.abs(this.bestFitLineConstant);
       this.bestFitLineColor = runtimeActivity.getNewColor();
       NewEmptyData = runtimeActivity.createNewEmptyDataRef(this.correctLineDataSetName, bestFitLineExpression, 0.1, 0, this.bestFitLineColor);
       this.bestFitLineDataDef = NewEmptyData.dataDef;
@@ -2961,7 +2961,11 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.getNewColor = function() {
-      return this.dataSetColors[this.colorIndex--];
+      if (!(this.colorIndex <= 0)) {
+        return this.dataSetColors[this.colorIndex--];
+      } else {
+        throw new Error("No new color available.");
+      }
     };
 
     RuntimeActivity.prototype.setColorOfDatadef = function(dataDefName, color) {

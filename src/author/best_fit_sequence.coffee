@@ -47,12 +47,12 @@ exports.BestFitSequence = class BestFitSequence
     legendsDataset = [@learnerDataSet]
     if hasAnswer is "true"
       stepDataRefs = @graphPane.dataRef.concat(@bestFitLineDataRef)
-      stepDataDefRef = @graphPane.datadefRef.concat({ key: @correctLineDataSetName, datadef: @bestFitLineDataDef })
+      stepDataDefRef = dataDefRefForStep.concat({ key: @correctLineDataSetName, datadef: @bestFitLineDataDef })
       stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
       legendsDataset.push @correctLineDataSetName
     else
       stepDataRefs = if @graphPane.dataRef then @graphPane.dataRef else []
-      stepDataDefRef = @graphPane.datadefRef
+      stepDataDefRef = dataDefRefForStep
       stepIncludedDataSets = @graphPane.includedDataSets
 
     step.addGraphPane
@@ -94,7 +94,6 @@ exports.BestFitSequence = class BestFitSequence
         annotation: @annotations["singleLineGraphing"]
         shape: "singleLine"
 
-    step.defaultBranch = @runtimeStepsByName[stepdef.defaultBranch]
     for response_def in stepdef.responseBranches || []
       step.appendResponseBranch
         criterion: response_def.criterion
@@ -145,45 +144,46 @@ exports.BestFitSequence = class BestFitSequence
     @bestFitLineConstant = 0
     sumOfX = 0
     sumOfY = 0
-    nPointCounter = dataSet.length
+    numPoints = dataSet.length
     xDifference = 0
     yDifference = 0
     xMean = 0
     yMean = 0
     squareOfXDifference = 0
     i = 0
-    while i < nPointCounter
+    # Using scaleFactor to minimize floating point arithmetic precision error
+    scaleFactor = 10000
+    while i < numPoints
       point = dataSet[i]
-      sumOfX += point[0] * 10000
-      sumOfY += point[1] * 10000
+      sumOfX += point[0] * scaleFactor
+      sumOfY += point[1] * scaleFactor
       i++
-    xMean = sumOfX / nPointCounter
-    yMean = sumOfY / nPointCounter
+    xMean = sumOfX / numPoints
+    yMean = sumOfY / numPoints
     i = 0
     productOfXDiffYDiff = 0
-    while i < nPointCounter
+    while i < numPoints
       point = dataSet[i]
-      xDifference = (point[0] * 10000) - xMean
-      yDifference = (point[1] * 10000) - yMean
+      xDifference = (point[0] * scaleFactor) - xMean
+      yDifference = (point[1] * scaleFactor) - yMean
       productOfXDiffYDiff += xDifference * yDifference
       squareOfXDifference += xDifference * xDifference
       i++
 
     @bestFitLineslope = productOfXDiffYDiff / squareOfXDifference
     if @bestFitLineslope is Infinity or @bestFitLineslope is -Infinity or isNaN(@bestFitLineslope) then throw new Error "Invalid scatter-plot"
-    @bestFitLineConstant = (yMean - (@bestFitLineslope * xMean)) / 10000
+    @bestFitLineConstant = (yMean - (@bestFitLineslope * xMean)) / scaleFactor
     
     @SumofSquares = 0
     j = 0
-    while j < nPointCounter
+    while j < numPoints
       point = dataSet[j]
       ditanceOfPointFromBestFitLine = Math.abs((@bestFitLineslope * point[0]) - point[1] + @bestFitLineConstant)
       @SumofSquares += (ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine) 
       j++
 
-    #@SumofSquares = Math.sqrt(@SumofSquares / nPointCounter)
-    sign = if @bestFitLineConstant is 0 then '+' else @bestFitLineConstant / Math.abs(@bestFitLineConstant)
-    bestFitLineExpression = 'y = '+@bestFitLineslope+'x' + (if sign is 1 then '+' else '-') + Math.abs(@bestFitLineConstant)
+    negated_sign_char = if @bestFitLineConstant >= 0 then '+' else '-'
+    bestFitLineExpression = 'y = '+@bestFitLineslope+'x' + (negated_sign_char) + Math.abs(@bestFitLineConstant)
     @bestFitLineColor = runtimeActivity.getNewColor()
     NewEmptyData = runtimeActivity.createNewEmptyDataRef(@correctLineDataSetName, bestFitLineExpression, 0.1, 0, @bestFitLineColor)
     @bestFitLineDataDef = NewEmptyData.dataDef
