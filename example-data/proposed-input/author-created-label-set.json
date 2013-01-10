@@ -1,0 +1,54 @@
+{
+  "type": "Activity",
+  "name": "Simple Graph with Author Created Labels",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+            [1,200],
+            [2,400],
+            [3,600]
+          ]
+   }
+ ],
+ "labelSets": [
+   {
+     "name": "my-labels",
+     "labels": [
+       {
+         "point": [1,200],
+         "text": "This is the first point."
+       }
+     ]
+   }
+ ],
+ "pages": [
+    {
+      "type": "Page",
+      "name": "Graph",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "labelSets": ["my-labels"],
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
+        }
+      ]
+  ],
+  "units": []
+}
