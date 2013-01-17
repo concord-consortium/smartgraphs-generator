@@ -195,21 +195,8 @@ exports.SlopeToolSequence = class SlopeToolSequence
   
   setupStep: ({runtimePage, stepdef}) ->
     step = @runtimeStepsByName[stepdef.name]
-    step.addGraphPane
-      title: @graphPane.title
-      datadefRef: @graphPane.datadefRef
-      xAxis: @xAxis
-      yAxis: @yAxis
-      index: @graphPane.index
-      includedDataSets: @graphPane.includedDataSets
-      activeDatasetName: @graphPane.activeDatasetName
-      dataRef: if @graphPane.dataRef then @graphPane.dataRef else []
-    step.addTablePane
-      datadefRef: @getDataDefRef(runtimePage.activity)
-      index: @tablePane.index
-      xLabel: @tablePane.xLabel
-      yLabel: @tablePane.yLabel
-    
+    pane.addToStep(step) for pane in @page.panes
+
     step.beforeText = stepdef.beforeText
     step.substitutedExpressions = stepdef.substitutedExpressions
     step.variableAssignments = stepdef.variableAssignments
