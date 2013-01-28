@@ -33,7 +33,7 @@ exports.AuthorActivity = class AuthorActivity
     @units = (new AuthorUnit(unit, this) for unit in hash.units || [])
 
   toRuntimeActivity: ->
-    runtimeActivity = new RuntimeActivity @owner, @name, @authorName, @hash.datasets
+    runtimeActivity = new RuntimeActivity @owner, @name, @authorName, @hash.datasets, @hash.labelSets
     runtimeActivity.defineUnit( (runtimeUnit = unit.toRuntimeUnit(runtimeActivity)).name, runtimeUnit ) for unit in @units
     # Remember, input models call builder methods on output models. At least for now.
     runtimeActivity.appendPage page.toRuntimePage(runtimeActivity) for page in @pages

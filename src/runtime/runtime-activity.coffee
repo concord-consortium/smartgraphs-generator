@@ -26,7 +26,7 @@
 
 exports.RuntimeActivity = class RuntimeActivity
 
-  constructor: (@owner, @name, @authorName, @datasets) ->
+  constructor: (@owner, @name, @authorName, @datasets, @labelSets) ->
     @pages     = []
     @steps     = []
     @unitRefs  = {}
@@ -186,6 +186,10 @@ exports.RuntimeActivity = class RuntimeActivity
 
   createAndAppendAnnotation: (hash) ->
     {type} = hash
+    if @annotations[type]
+      for createdAnnotation in @annotations[type]
+        if createdAnnotation.name is hash.name
+          return createdAnnotation
     AnnotationClass = AnnotationCollection.classFor[type]
     @annotationCounts[type] ?= 0
     hash.index = ++@annotationCounts[type]

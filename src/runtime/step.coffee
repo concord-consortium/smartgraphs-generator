@@ -38,7 +38,7 @@ exports.Step = class Step
         caption: "#{@license} #{@attribution}"
     }
 
-  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataRef, sequenceType }) ->
+  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataRef, sequenceType , labelSets}) ->
     @panes[index] = {
       title,
       datadefRef,
@@ -52,6 +52,7 @@ exports.Step = class Step
       highlightedAnnotations: [],
       includedDataSets,
       activeDatasetName,
+      labelSets
       toHash: ->
         type:                   'graph'
         title:                  @title

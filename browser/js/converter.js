@@ -383,7 +383,7 @@ require.define("/author/author-activity.js", function (require, module, exports,
 
     AuthorActivity.prototype.toRuntimeActivity = function() {
       var page, runtimeActivity, runtimeUnit, unit, _i, _j, _len, _len2, _ref, _ref2;
-      runtimeActivity = new RuntimeActivity(this.owner, this.name, this.authorName, this.hash.datasets);
+      runtimeActivity = new RuntimeActivity(this.owner, this.name, this.authorName, this.hash.datasets, this.hash.labelSets);
       _ref = this.units;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         unit = _ref[_i];
@@ -518,9 +518,11 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     }
 
     NoSequence.prototype.appendSteps = function(runtimePage) {
-      var i, isActiveInputPane, n, numSteps, pane, previousAnnotation, step, steps, _len, _ref;
+      var annotation, i, isActiveInputPane, label, labelObject, labelSetName, labelsArray, n, numSteps, pane, previousAnnotation, runtimeActivity, runtimeLabelSet, step, steps, _i, _j, _k, _len, _len2, _len3, _len4, _len5, _ref, _ref2, _ref3, _ref4, _ref5;
       steps = [];
       numSteps = this.predictionPanes.length || 1;
+      runtimeActivity = runtimePage.activity;
+      this.annotations = [];
       for (n = 0; 0 <= numSteps ? n < numSteps : n > numSteps; 0 <= numSteps ? n++ : n--) {
         step = runtimePage.appendStep();
         if (n !== 0) steps[n - 1].setDefaultBranch(step);
@@ -539,6 +541,38 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
           step.setSubmissibilityDependsOn(["annotation", this.predictionPanes[n].annotation.name]);
         }
         steps.push(step);
+      }
+      _ref2 = this.page.panes || [];
+      for (i = 0, _len2 = _ref2.length; i < _len2; i++) {
+        pane = _ref2[i];
+        _ref3 = pane.labelSets;
+        for (_i = 0, _len3 = _ref3.length; _i < _len3; _i++) {
+          labelSetName = _ref3[_i];
+          _ref4 = runtimeActivity.labelSets;
+          for (_j = 0, _len4 = _ref4.length; _j < _len4; _j++) {
+            runtimeLabelSet = _ref4[_j];
+            if (runtimeLabelSet.name === labelSetName) {
+              labelsArray = [];
+              _ref5 = runtimeLabelSet.labels;
+              for (_k = 0, _len5 = _ref5.length; _k < _len5; _k++) {
+                label = _ref5[_k];
+                label.type = 'Label';
+                label.namePrefix = labelSetName;
+                labelObject = runtimeActivity.createAndAppendAnnotation(label);
+                labelsArray.push(labelObject.name);
+              }
+              annotation = runtimeActivity.createAndAppendAnnotation({
+                name: labelSetName,
+                labels: labelsArray,
+                type: 'LabelSet'
+              });
+              step.addAnnotationToPane({
+                annotation: annotation,
+                index: i
+              });
+            }
+          }
+        }
       }
       return steps;
     };
@@ -961,12 +995,13 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function GraphPane(_arg) {
       var includeAnnotationsFrom;
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets, this.labelSets = _arg.labelSets;
       this.activeDataSetIndex = 0;
       this.totalDatasetsIndex = 0;
       this.activeDatasetName;
       this.datadefRef = [];
       if (!this.includedDataSets) this.includedDataSets = [];
+      if (!this.labelSets) this.labelSets = [];
       this.annotationSources = includeAnnotationsFrom != null ? includeAnnotationsFrom.map(function(source) {
         var page, pane, _ref;
         _ref = (source.match(/^page\/(\d)+\/pane\/(\d)+$/)).slice(1, 3).map(function(s) {
@@ -1039,7 +1074,8 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         showToolTipCoords: this.showToolTipCoords,
         includedDataSets: this.includedDataSets,
         activeDatasetName: this.activeDatasetName,
-        dataRef: this.dataRef
+        dataRef: this.dataRef,
+        labelSets: this.labelSets
       });
       return (_ref = this.annotationSources) != null ? _ref.forEach(function(source) {
         var page, pages, pane;
@@ -2732,11 +2768,12 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
 
   exports.RuntimeActivity = RuntimeActivity = (function() {
 
-    function RuntimeActivity(owner, name, authorName, datasets) {
+    function RuntimeActivity(owner, name, authorName, datasets, labelSets) {
       this.owner = owner;
       this.name = name;
       this.authorName = authorName;
       this.datasets = datasets;
+      this.labelSets = labelSets;
       this.pages = [];
       this.steps = [];
       this.unitRefs = {};
@@ -3056,8 +3093,15 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createAndAppendAnnotation = function(hash) {
-      var AnnotationClass, annotation, type, _base, _base2;
+      var AnnotationClass, annotation, createdAnnotation, type, _base, _base2, _i, _len, _ref2;
       type = hash.type;
+      if (this.annotations[type]) {
+        _ref2 = this.annotations[type];
+        for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+          createdAnnotation = _ref2[_i];
+          if (createdAnnotation.name === hash.name) return createdAnnotation;
+        }
+      }
       AnnotationClass = AnnotationCollection.classFor[type];
       if ((_base = this.annotationCounts)[type] == null) _base[type] = 0;
       hash.index = ++this.annotationCounts[type];
@@ -3466,8 +3510,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addGraphPane = function(_arg) {
-      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, sequenceType, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
-      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef, sequenceType = _arg.sequenceType;
+      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, labelSets, sequenceType, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef, sequenceType = _arg.sequenceType, labelSets = _arg.labelSets;
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
@@ -3481,6 +3525,7 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         highlightedAnnotations: [],
         includedDataSets: includedDataSets,
         activeDatasetName: activeDatasetName,
+        labelSets: labelSets,
         toHash: function() {
           var annotation, datadefref, dataref, _ref, _ref2, _ref3;
           return {
@@ -4129,7 +4174,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
 */
 
 (function() {
-  var Annotation, AnnotationCollection, FreehandSketch, HighlightedPoint, LineThroughPoints, PointAxisLineVisualPrompt, PointCircleVisualPrompt, RangeVisualPrompt, RiseArrow, RiseBracket, RunArrow, RunBracket, SimpleAnnotation, annotations,
+  var Annotation, AnnotationCollection, FreehandSketch, HighlightedPoint, Label, LabelSet, LineThroughPoints, PointAxisLineVisualPrompt, PointCircleVisualPrompt, RangeVisualPrompt, RiseArrow, RiseBracket, RunArrow, RunBracket, SimpleAnnotation, annotations,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -4334,6 +4379,59 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
     };
 
     return SimpleAnnotation;
+
+  })(Annotation);
+
+  AnnotationCollection.classFor["Label"] = exports.Label = Label = (function(_super) {
+
+    __extends(Label, _super);
+
+    Label.prototype.RECORD_TYPE = 'Label';
+
+    function Label(_arg) {
+      this.index = _arg.index, this.point = _arg.point, this.text = _arg.text, this.name = _arg.name, this.namePrefix = _arg.namePrefix;
+      if (this.namePrefix == null) this.namePrefix = 'label';
+      if (this.name == null) this.name = "" + this.namePrefix + "-" + this.index;
+      if (this.offset == null) this.offset = [void 0, void 0];
+      if (this.point == null) this.point = [void 0, void 0];
+    }
+
+    Label.prototype.toHash = function() {
+      var hash;
+      hash = Label.__super__.toHash.call(this);
+      hash.text = this.text;
+      hash.x = this.point[0];
+      hash.y = this.point[1];
+      hash.xOffset = this.offset[0];
+      hash.yOffset = this.offset[1];
+      return hash;
+    };
+
+    return Label;
+
+  })(Annotation);
+
+  AnnotationCollection.classFor["LabelSet"] = exports.LabelSet = LabelSet = (function(_super) {
+
+    __extends(LabelSet, _super);
+
+    LabelSet.prototype.RECORD_TYPE = 'LabelSet';
+
+    LabelSet.prototype.namePrefix = 'labelSet';
+
+    function LabelSet(_arg) {
+      this.index = _arg.index, this.labels = _arg.labels, this.name = _arg.name;
+      if (this.name == null) this.name = "" + this.namePrefix + "-" + this.index;
+    }
+
+    LabelSet.prototype.toHash = function() {
+      var hash;
+      hash = LabelSet.__super__.toHash.call(this);
+      hash.labels = this.labels;
+      return hash;
+    };
+
+    return LabelSet;
 
   })(Annotation);
 
