@@ -434,7 +434,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["HighlightedPoint", "SegmentOverlay", "CircledPoint", "LineToAxis", "FreehandSketch", "RunArrow", "RiseArrow", "RunBracket", "RiseBracket", "LineThroughPoints"]
+            "enum": ["HighlightedPoint", "SegmentOverlay", "CircledPoint", "LineToAxis", "FreehandSketch", "RunArrow", "RiseArrow", "RunBracket", "RiseBracket", "LineThroughPoints","Label","LabelSet"]
           },
           "records": {
             "type": "array",
@@ -484,7 +484,15 @@
                 "isUnboundedRight": {
                   "type": "boolean",
                   "optional": true
-                }
+                },
+								"Label":{
+									"type": "array",
+                  "optional": true
+								},
+								"LabelSet":{
+									"type": "array",
+                  "optional": true
+								}
               }
             }
           }
