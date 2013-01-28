@@ -80,6 +80,7 @@
        "incorrectPrompt": "Your estimate can be better; try again.",
        "closePrompt": "Your estimate is close; try again",
        "confirmCorrect": "You made an excellent estimate.",
+       "giveUp": "Your estimate is incorrect.",
        "maxAttempts": 2
      }
    }

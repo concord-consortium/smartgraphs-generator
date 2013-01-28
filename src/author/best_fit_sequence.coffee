@@ -12,6 +12,7 @@ exports.BestFitSequence = class BestFitSequence
     @incorrectPrompt,
     @closePrompt,
     @confirmCorrect,
+    @giveUp,
     @maxAttempts,
     @page
     }) ->
@@ -284,7 +285,7 @@ exports.BestFitSequence = class BestFitSequence
       name:                   "attempts_over"
       isFinalStep:            true  
       hideSubmitButton:       true
-      beforeText:             "<b>Your estimate is incorrect.</b>"
+      beforeText:             "<b>#{@giveUp}</b>"
       showCrossHairs:         false
       showToolTipCoords:      false
       showGraphGrid:          @graphPane.showGraphGrid
