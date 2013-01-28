@@ -545,31 +545,33 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       _ref2 = this.page.panes || [];
       for (i = 0, _len2 = _ref2.length; i < _len2; i++) {
         pane = _ref2[i];
-        _ref3 = pane.labelSets;
-        for (_i = 0, _len3 = _ref3.length; _i < _len3; _i++) {
-          labelSetName = _ref3[_i];
-          _ref4 = runtimeActivity.labelSets;
-          for (_j = 0, _len4 = _ref4.length; _j < _len4; _j++) {
-            runtimeLabelSet = _ref4[_j];
-            if (runtimeLabelSet.name === labelSetName) {
-              labelsArray = [];
-              _ref5 = runtimeLabelSet.labels;
-              for (_k = 0, _len5 = _ref5.length; _k < _len5; _k++) {
-                label = _ref5[_k];
-                label.type = 'Label';
-                label.namePrefix = labelSetName;
-                labelObject = runtimeActivity.createAndAppendAnnotation(label);
-                labelsArray.push(labelObject.name);
+        if (pane.labelSets) {
+          _ref3 = pane.labelSets;
+          for (_i = 0, _len3 = _ref3.length; _i < _len3; _i++) {
+            labelSetName = _ref3[_i];
+            _ref4 = runtimeActivity.labelSets;
+            for (_j = 0, _len4 = _ref4.length; _j < _len4; _j++) {
+              runtimeLabelSet = _ref4[_j];
+              if (runtimeLabelSet.name === labelSetName) {
+                labelsArray = [];
+                _ref5 = runtimeLabelSet.labels;
+                for (_k = 0, _len5 = _ref5.length; _k < _len5; _k++) {
+                  label = _ref5[_k];
+                  label.type = 'Label';
+                  label.namePrefix = labelSetName;
+                  labelObject = runtimeActivity.createAndAppendAnnotation(label);
+                  labelsArray.push(labelObject.name);
+                }
+                annotation = runtimeActivity.createAndAppendAnnotation({
+                  name: labelSetName,
+                  labels: labelsArray,
+                  type: 'LabelSet'
+                });
+                step.addAnnotationToPane({
+                  annotation: annotation,
+                  index: i
+                });
               }
-              annotation = runtimeActivity.createAndAppendAnnotation({
-                name: labelSetName,
-                labels: labelsArray,
-                type: 'LabelSet'
-              });
-              step.addAnnotationToPane({
-                annotation: annotation,
-                index: i
-              });
             }
           }
         }

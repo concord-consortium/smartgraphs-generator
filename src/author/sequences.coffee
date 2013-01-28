@@ -52,22 +52,23 @@ Sequence.classFor['NoSequence'] = class NoSequence
     
     # Creating LabelSets
     for pane, i in @page.panes || []
-      for labelSetName in pane.labelSets
-        for runtimeLabelSet in runtimeActivity.labelSets
-          if runtimeLabelSet.name is labelSetName
-            labelsArray = []
-            for label in runtimeLabelSet.labels
-              label.type = 'Label'
-              label.namePrefix = labelSetName
-              labelObject = runtimeActivity.createAndAppendAnnotation label
-              labelsArray.push labelObject.name
-            annotation = runtimeActivity.createAndAppendAnnotation
-              name: labelSetName
-              labels: labelsArray
-              type: 'LabelSet'
-            step.addAnnotationToPane
-              annotation: annotation
-              index: i
+      if pane.labelSets
+        for labelSetName in pane.labelSets
+          for runtimeLabelSet in runtimeActivity.labelSets
+            if runtimeLabelSet.name is labelSetName
+              labelsArray = []
+              for label in runtimeLabelSet.labels
+                label.type = 'Label'
+                label.namePrefix = labelSetName
+                labelObject = runtimeActivity.createAndAppendAnnotation label
+                labelsArray.push labelObject.name
+              annotation = runtimeActivity.createAndAppendAnnotation
+                name: labelSetName
+                labels: labelsArray
+                type: 'LabelSet'
+              step.addAnnotationToPane
+                annotation: annotation
+                index: i
 
     steps
 
