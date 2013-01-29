@@ -560,7 +560,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
                   label.type = 'Label';
                   label.namePrefix = labelSetName;
                   labelObject = runtimeActivity.createAndAppendAnnotation(label);
-                  labelsArray.push(labelObject.name);
+                  labelsArray.push(labelObject.getUrl());
                 }
                 annotation = runtimeActivity.createAndAppendAnnotation({
                   name: labelSetName,
@@ -4391,7 +4391,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
     Label.prototype.RECORD_TYPE = 'Label';
 
     function Label(_arg) {
-      this.index = _arg.index, this.point = _arg.point, this.text = _arg.text, this.name = _arg.name, this.namePrefix = _arg.namePrefix;
+      this.index = _arg.index, this.point = _arg.point, this.text = _arg.text, this.name = _arg.name, this.namePrefix = _arg.namePrefix, this.offset = _arg.offset;
       if (this.namePrefix == null) this.namePrefix = 'label';
       if (this.name == null) this.name = "" + this.namePrefix + "-" + this.index;
       if (this.offset == null) this.offset = [void 0, void 0];

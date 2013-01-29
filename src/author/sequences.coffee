@@ -61,7 +61,7 @@ Sequence.classFor['NoSequence'] = class NoSequence
                 label.type = 'Label'
                 label.namePrefix = labelSetName
                 labelObject = runtimeActivity.createAndAppendAnnotation label
-                labelsArray.push labelObject.name
+                labelsArray.push labelObject.getUrl()
               annotation = runtimeActivity.createAndAppendAnnotation
                 name: labelSetName
                 labels: labelsArray

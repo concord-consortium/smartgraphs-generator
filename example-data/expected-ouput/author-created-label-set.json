@@ -118,7 +118,9 @@
           "activity": "/shared/simple-graph-with-author-created-labels",
           "text": "This is the first point.",
           "x": 1,
-          "y": 200
+          "y": 200,
+          "xOffset": 100,
+          "yOffset": -40
         }
       ]
     },
@@ -130,7 +132,7 @@
           "name": "my-labels",
           "activity": "/shared/simple-graph-with-author-created-labels",
           "labels": [
-            "my-labels-1"
+            "/shared/simple-graph-with-author-created-labels/annotations/my-labels-1"
           ]
         }
       ]

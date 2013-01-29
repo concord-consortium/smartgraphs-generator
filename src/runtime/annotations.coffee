@@ -136,7 +136,7 @@ class SimpleAnnotation extends Annotation
     
 AnnotationCollection.classFor["Label"] = exports.Label = class Label extends Annotation
   RECORD_TYPE: 'Label'
-  constructor: ({@index, @point, @text, @name, @namePrefix}) ->
+  constructor: ({@index, @point, @text, @name, @namePrefix, @offset}) ->
     @namePrefix ?=  'label'
     @name ?= "#{@namePrefix}-#{@index}"
     @offset ?= [ undefined, undefined ]
