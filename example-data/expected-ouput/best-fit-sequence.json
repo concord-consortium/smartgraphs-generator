@@ -301,7 +301,7 @@
     {
       "url": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1/step/4",
       "activityPage": "/shared/best-fit-sequence/page/1-best-fit-sequence-page-1",
-      "beforeText": "<b>Your estimate is incorrect.</b>",
+      "beforeText": "<b>Your estimate is WRONG.</b>",
       "paneConfig": "split",
       "panes": {
         "top": {
