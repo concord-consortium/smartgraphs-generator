@@ -34,6 +34,18 @@ exports.AuthorActivity = class AuthorActivity
 
   toRuntimeActivity: ->
     runtimeActivity = new RuntimeActivity @owner, @name, @authorName, @hash.datasets, @hash.labelSets
+    if @hash.labelSets
+      for labelSet, i in @hash.labelSets
+        labelsArray = []
+        for label in labelSet.labels
+          label.type = 'Label'
+          label.namePrefix = labelSet.name
+          labelObject = runtimeActivity.createAndAppendAnnotation label
+          labelsArray.push labelObject.getUrl()
+        runtimeActivity.createAndAppendAnnotation
+          name: labelSet.name
+          labels: labelsArray
+          type: 'LabelSet'
     runtimeActivity.defineUnit( (runtimeUnit = unit.toRuntimeUnit(runtimeActivity)).name, runtimeUnit ) for unit in @units
     # Remember, input models call builder methods on output models. At least for now.
     runtimeActivity.appendPage page.toRuntimePage(runtimeActivity) for page in @pages

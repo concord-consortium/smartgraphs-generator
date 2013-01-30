@@ -49,27 +49,6 @@ Sequence.classFor['NoSequence'] = class NoSequence
         step.setSubmissibilityCriterion [">=", ["sketchLength", @predictionPanes[n].annotation.name], 0.2]
         step.setSubmissibilityDependsOn ["annotation", @predictionPanes[n].annotation.name]
       steps.push step
-    
-    # Creating LabelSets
-    for pane, i in @page.panes || []
-      if pane.labelSets
-        for labelSetName in pane.labelSets
-          for runtimeLabelSet in runtimeActivity.labelSets
-            if runtimeLabelSet.name is labelSetName
-              labelsArray = []
-              for label in runtimeLabelSet.labels
-                label.type = 'Label'
-                label.namePrefix = labelSetName
-                labelObject = runtimeActivity.createAndAppendAnnotation label
-                labelsArray.push labelObject.getUrl()
-              annotation = runtimeActivity.createAndAppendAnnotation
-                name: labelSetName
-                labels: labelsArray
-                type: 'LabelSet'
-              step.addAnnotationToPane
-                annotation: annotation
-                index: i
-
     steps
 
 Sequence.classFor['InstructionSequence'] = class InstructionSequence extends NoSequence

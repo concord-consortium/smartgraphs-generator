@@ -24,7 +24,7 @@ class GraphPane
       { page, pane }
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
-
+    @runtimeActivity = runtimeActivity
     if @includedDataSets?
       unless @includedDataSets.length is 0
         populatedDataSets = runtimeActivity.populateDataSet @xLabel, @yLabel, @includedDataSets
@@ -52,6 +52,14 @@ class GraphPane
 
   addToStep: (step) ->
     step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef, @labelSets}
+    if @labelSets
+      for labelSetName in @labelSets
+        if @runtimeActivity.annotations['LabelSet']
+          for createdAnnotation in @runtimeActivity.annotations['LabelSet']
+            if createdAnnotation.name is labelSetName
+              step.addAnnotationToPane
+                annotation: createdAnnotation
+                index: @index
 
     @annotationSources?.forEach (source) =>
       pages = @page.activity.pages

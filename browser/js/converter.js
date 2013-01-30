@@ -382,16 +382,36 @@ require.define("/author/author-activity.js", function (require, module, exports,
     }
 
     AuthorActivity.prototype.toRuntimeActivity = function() {
-      var page, runtimeActivity, runtimeUnit, unit, _i, _j, _len, _len2, _ref, _ref2;
+      var i, label, labelObject, labelSet, labelsArray, page, runtimeActivity, runtimeUnit, unit, _i, _j, _k, _len, _len2, _len3, _len4, _ref, _ref2, _ref3, _ref4;
       runtimeActivity = new RuntimeActivity(this.owner, this.name, this.authorName, this.hash.datasets, this.hash.labelSets);
-      _ref = this.units;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        unit = _ref[_i];
+      if (this.hash.labelSets) {
+        _ref = this.hash.labelSets;
+        for (i = 0, _len = _ref.length; i < _len; i++) {
+          labelSet = _ref[i];
+          labelsArray = [];
+          _ref2 = labelSet.labels;
+          for (_i = 0, _len2 = _ref2.length; _i < _len2; _i++) {
+            label = _ref2[_i];
+            label.type = 'Label';
+            label.namePrefix = labelSet.name;
+            labelObject = runtimeActivity.createAndAppendAnnotation(label);
+            labelsArray.push(labelObject.getUrl());
+          }
+          runtimeActivity.createAndAppendAnnotation({
+            name: labelSet.name,
+            labels: labelsArray,
+            type: 'LabelSet'
+          });
+        }
+      }
+      _ref3 = this.units;
+      for (_j = 0, _len3 = _ref3.length; _j < _len3; _j++) {
+        unit = _ref3[_j];
         runtimeActivity.defineUnit((runtimeUnit = unit.toRuntimeUnit(runtimeActivity)).name, runtimeUnit);
       }
-      _ref2 = this.pages;
-      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-        page = _ref2[_j];
+      _ref4 = this.pages;
+      for (_k = 0, _len4 = _ref4.length; _k < _len4; _k++) {
+        page = _ref4[_k];
         runtimeActivity.appendPage(page.toRuntimePage(runtimeActivity));
       }
       return runtimeActivity;
@@ -518,7 +538,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
     }
 
     NoSequence.prototype.appendSteps = function(runtimePage) {
-      var annotation, i, isActiveInputPane, label, labelObject, labelSetName, labelsArray, n, numSteps, pane, previousAnnotation, runtimeActivity, runtimeLabelSet, step, steps, _i, _j, _k, _len, _len2, _len3, _len4, _len5, _ref, _ref2, _ref3, _ref4, _ref5;
+      var i, isActiveInputPane, n, numSteps, pane, previousAnnotation, runtimeActivity, step, steps, _len, _ref;
       steps = [];
       numSteps = this.predictionPanes.length || 1;
       runtimeActivity = runtimePage.activity;
@@ -541,40 +561,6 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
           step.setSubmissibilityDependsOn(["annotation", this.predictionPanes[n].annotation.name]);
         }
         steps.push(step);
-      }
-      _ref2 = this.page.panes || [];
-      for (i = 0, _len2 = _ref2.length; i < _len2; i++) {
-        pane = _ref2[i];
-        if (pane.labelSets) {
-          _ref3 = pane.labelSets;
-          for (_i = 0, _len3 = _ref3.length; _i < _len3; _i++) {
-            labelSetName = _ref3[_i];
-            _ref4 = runtimeActivity.labelSets;
-            for (_j = 0, _len4 = _ref4.length; _j < _len4; _j++) {
-              runtimeLabelSet = _ref4[_j];
-              if (runtimeLabelSet.name === labelSetName) {
-                labelsArray = [];
-                _ref5 = runtimeLabelSet.labels;
-                for (_k = 0, _len5 = _ref5.length; _k < _len5; _k++) {
-                  label = _ref5[_k];
-                  label.type = 'Label';
-                  label.namePrefix = labelSetName;
-                  labelObject = runtimeActivity.createAndAppendAnnotation(label);
-                  labelsArray.push(labelObject.getUrl());
-                }
-                annotation = runtimeActivity.createAndAppendAnnotation({
-                  name: labelSetName,
-                  labels: labelsArray,
-                  type: 'LabelSet'
-                });
-                step.addAnnotationToPane({
-                  annotation: annotation,
-                  index: i
-                });
-              }
-            }
-          }
-        }
       }
       return steps;
     };
@@ -1018,6 +1004,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     GraphPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
       var dataKey, dataRef, populatedDataDef, populatedDataDefs, populatedDataSets, _i, _j, _len, _len2, _ref;
+      this.runtimeActivity = runtimeActivity;
       if (this.includedDataSets != null) {
         if (this.includedDataSets.length !== 0) {
           populatedDataSets = runtimeActivity.populateDataSet(this.xLabel, this.yLabel, this.includedDataSets);
@@ -1063,7 +1050,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     };
 
     GraphPane.prototype.addToStep = function(step) {
-      var _ref,
+      var createdAnnotation, labelSetName, _i, _j, _len, _len2, _ref, _ref2, _ref3,
         _this = this;
       step.addGraphPane({
         title: this.title,
@@ -1079,7 +1066,25 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         dataRef: this.dataRef,
         labelSets: this.labelSets
       });
-      return (_ref = this.annotationSources) != null ? _ref.forEach(function(source) {
+      if (this.labelSets) {
+        _ref = this.labelSets;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          labelSetName = _ref[_i];
+          if (this.runtimeActivity.annotations['LabelSet']) {
+            _ref2 = this.runtimeActivity.annotations['LabelSet'];
+            for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+              createdAnnotation = _ref2[_j];
+              if (createdAnnotation.name === labelSetName) {
+                step.addAnnotationToPane({
+                  annotation: createdAnnotation,
+                  index: this.index
+                });
+              }
+            }
+          }
+        }
+      }
+      return (_ref3 = this.annotationSources) != null ? _ref3.forEach(function(source) {
         var page, pages, pane;
         pages = _this.page.activity.pages;
         page = pages[source.page];
