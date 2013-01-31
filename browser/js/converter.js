@@ -3517,8 +3517,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addGraphPane = function(_arg) {
-      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, labelSets, sequenceType, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
-      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef, sequenceType = _arg.sequenceType, labelSets = _arg.labelSets;
+      var activeDatasetName, dataRef, datadefRef, includedDataSets, index, sequenceType, showCrossHairs, showGraphGrid, showToolTipCoords, title, xAxis, yAxis;
+      title = _arg.title, datadefRef = _arg.datadefRef, xAxis = _arg.xAxis, yAxis = _arg.yAxis, index = _arg.index, showCrossHairs = _arg.showCrossHairs, showGraphGrid = _arg.showGraphGrid, showToolTipCoords = _arg.showToolTipCoords, includedDataSets = _arg.includedDataSets, activeDatasetName = _arg.activeDatasetName, dataRef = _arg.dataRef, sequenceType = _arg.sequenceType;
       return this.panes[index] = {
         title: title,
         datadefRef: datadefRef,
@@ -3532,7 +3532,6 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         highlightedAnnotations: [],
         includedDataSets: includedDataSets,
         activeDatasetName: activeDatasetName,
-        labelSets: labelSets,
         toHash: function() {
           var annotation, datadefref, dataref, _ref, _ref2, _ref3;
           return {
