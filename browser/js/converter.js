@@ -852,6 +852,37 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       return ["coordinatesInRange", this.tag.name, this.correctAnswerRange.xMin, this.correctAnswerRange.yMin, this.correctAnswerRange.xMax, this.correctAnswerRange.yMax];
     };
 
+    PickAPointSequence.prototype.appendStepsWithModifier = function(runtimePage, modifyForSequenceType) {
+      var index, runtimeActivity, step, steps, _len, _results;
+      PickAPointSequence.__super__.appendStepsWithModifier.apply(this, arguments);
+      runtimeActivity = runtimePage.activity;
+      if (this.initialPrompt.label) {
+        this.label = runtimeActivity.createAndAppendAnnotation({
+          type: 'Label',
+          name: this.initialPrompt.label,
+          text: 'New Label'
+        });
+        steps = runtimePage.steps;
+        _results = [];
+        for (index = 0, _len = steps.length; index < _len; index++) {
+          step = steps[index];
+          if (index !== 0) {
+            if (this.graphPane != null) {
+              _results.push(step.addAnnotationToPane({
+                annotation: this.label,
+                index: this.graphPane.index
+              }));
+            } else {
+              _results.push(void 0);
+            }
+          } else {
+            _results.push(void 0);
+          }
+        }
+        return _results;
+      }
+    };
+
     PickAPointSequence.prototype.appendSteps = function(runtimePage) {
       var datadefRef, modifierForSequenceType, runtimeActivity,
         _this = this;
@@ -865,10 +896,24 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
         color: this.HIGHLIGHT_COLOR
       });
       modifierForSequenceType = function(step) {
-        step.addTaggingTool({
-          tag: _this.tag,
-          datadefRef: _this.datadefRef
-        });
+        if (_this.initialPrompt.label) {
+          step.addLabelTool({
+            labelName: _this.initialPrompt.label,
+            index: _this.graphPane.index,
+            datadefRef: _this.datadefRef,
+            markOnDataPoints: true
+          });
+          step.addTaggingTool({
+            tag: _this.tag,
+            datadefRef: _this.datadefRef,
+            labelName: _this.initialPrompt.label
+          });
+        } else {
+          step.addTaggingTool({
+            tag: _this.tag,
+            datadefRef: _this.datadefRef
+          });
+        }
         if (_this.graphPane != null) {
           step.addAnnotationToPane({
             annotation: _this.highlightedPoint,
@@ -3688,17 +3733,39 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addTaggingTool = function(_arg) {
-      var datadefRef, tag;
-      tag = _arg.tag, datadefRef = _arg.datadefRef;
+      var datadefRef, labelName, tag;
+      tag = _arg.tag, datadefRef = _arg.datadefRef, labelName = _arg.labelName;
       return this.tools['tagging'] = {
         tag: tag,
         datadefRef: datadefRef,
+        labelName: labelName,
         toHash: function() {
           return {
             name: 'tagging',
             setup: {
               tag: this.tag.name,
-              data: this.datadefRef.datadef.name
+              data: this.datadefRef.datadef.name,
+              labelName: this.labelName
+            }
+          };
+        }
+      };
+    };
+
+    Step.prototype.addLabelTool = function(_arg) {
+      var datadefRef, index, labelName, markOnDataPoints;
+      labelName = _arg.labelName, index = _arg.index, datadefRef = _arg.datadefRef, markOnDataPoints = _arg.markOnDataPoints;
+      return this.tools['label'] = {
+        pane: index === 0 ? 'top' : 'bottom',
+        datadefRef: datadefRef,
+        toHash: function() {
+          return {
+            name: 'label',
+            setup: {
+              pane: this.pane,
+              labelName: labelName,
+              markOnDataPoints: markOnDataPoints,
+              datadefName: this.datadefRef.datadef.name
             }
           };
         }

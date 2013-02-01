@@ -221,7 +221,6 @@ class CorrectableSequenceWithFeedback
       else
         step.setDefaultBranch answerableSteps[index+1]
 
-
 Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends CorrectableSequenceWithFeedback
 
   constructor: ({@correctAnswerPoint, @correctAnswerRange}) ->
@@ -233,6 +232,17 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends Corre
   getCriterion: ->
     return ["coordinates=", @tag.name, @correctAnswerPoint[0], @correctAnswerPoint[1]] if @correctAnswerPoint?
     return ["coordinatesInRange", @tag.name, @correctAnswerRange.xMin, @correctAnswerRange.yMin, @correctAnswerRange.xMax, @correctAnswerRange.yMax]
+    
+  appendStepsWithModifier: (runtimePage, modifyForSequenceType) ->
+    super arguments...
+    runtimeActivity = runtimePage.activity
+    if @initialPrompt.label
+      @label = runtimeActivity.createAndAppendAnnotation { type: 'Label' , name: @initialPrompt.label, text:'New Label' }
+      steps = runtimePage.steps
+      for step, index in steps
+        unless index is 0
+          if @graphPane? then step.addAnnotationToPane { annotation: @label, index: @graphPane.index }
+    
 
   appendSteps: (runtimePage) ->
     runtimeActivity = runtimePage.activity
@@ -241,7 +251,12 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends Corre
     @highlightedPoint = runtimeActivity.createAndAppendAnnotation { type: "HighlightedPoint", datadefRef, @tag, color: @HIGHLIGHT_COLOR }
 
     modifierForSequenceType = (step) =>
-      step.addTaggingTool { @tag, @datadefRef }
+      if @initialPrompt.label
+        step.addLabelTool { labelName: @initialPrompt.label, index: @graphPane.index, @datadefRef, markOnDataPoints: true }
+        step.addTaggingTool { @tag, @datadefRef, labelName: @initialPrompt.label }
+      else
+        step.addTaggingTool { @tag, @datadefRef }
+
       if @graphPane? then step.addAnnotationToPane { annotation: @highlightedPoint, index: @graphPane.index }
       if @tablePane? then step.addAnnotationToPane { annotation: @highlightedPoint, index: @tablePane.index }
 

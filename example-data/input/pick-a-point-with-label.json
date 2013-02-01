@@ -1,0 +1,123 @@
+{
+  "type": "Activity",
+  "name": "Pick A Point Sequence using Labels",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+            [1,200],
+            [2,400],
+            [3,600],
+            [4,800],
+            [5,1000]
+          ]
+    }
+  ],
+  "pages": [
+    {
+      "type": "Page",
+      "name": "Introduction",
+      "text": "in this activity....",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
+        },
+        {
+          "type": "TablePane",
+          "yLabel": "Position",
+          "xLabel": "Time"
+        }
+      ],
+      "sequence": {
+        "type": "PickAPointSequence",
+        "initialPrompt": {
+          "text": "Click to label the point with x = 4...",
+          "label": "student-point",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#000000"
+            }
+          ]
+        },
+        "correctAnswerPoint": [4, 800],
+        "hints": [
+          {
+            "name": "1st wrong answer",
+            "text": "Look at the graph...",
+            "visualPrompts": [
+              {
+                "type": "RangeVisualPrompt",
+                "name": "1 to 3",
+                "xMin": 1,
+                "xMax": 3,
+                "color": "#ff0000"
+              }
+            ]
+          },
+          {
+            "name": "2nd wrong answer",
+            "text": "In these two intervals....",
+            "visualPrompts": [
+              {
+                "type": "RangeVisualPrompt",
+                "name": "Unbounded left",
+                "xMax": 3,
+                "color": "#00ff00"
+              },
+              {
+                "type": "RangeVisualPrompt",
+                "name": "Unbounded right",
+                "xMin": 4,
+                "color": "#0000ff"
+              }
+            ]
+          }
+        ],
+        "giveUp": {
+          "text": "If you look carefully, ....",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#000000"
+            }
+          ]
+        },
+        "confirmCorrect": {
+          "text": "Four minutes into her run ....",
+          "visualPrompts": [
+            {
+              "type": "RangeVisualPrompt",
+              "name": "1 to 2",
+              "xMin": 1,
+              "xMax": 2,
+              "color": "#ffffff"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

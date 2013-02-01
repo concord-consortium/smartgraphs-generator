@@ -118,15 +118,30 @@ exports.Step = class Step
   addHighlightedAnnotationToPane:({ annotation, index }) ->
     @panes[index].highlightedAnnotations.push annotation
 
-  addTaggingTool: ({ tag, datadefRef }) ->
+  addTaggingTool: ({ tag, datadefRef, labelName }) ->
     @tools['tagging'] = {
       tag,
       datadefRef,
+      labelName, # Optional. Exist only if initialPrompt has label.
       toHash: ->
         name: 'tagging'
         setup:
           tag:  @tag.name
           data: @datadefRef.datadef.name
+          labelName: @labelName
+    }
+
+  addLabelTool: ({ labelName, index, datadefRef, markOnDataPoints }) ->
+    @tools['label'] = {
+      pane: if index == 0 then 'top' else 'bottom',
+      datadefRef,
+      toHash: ->
+        name: 'label'
+        setup:
+          pane: @pane
+          labelName: labelName
+          markOnDataPoints: markOnDataPoints
+          datadefName: @datadefRef.datadef.name
     }
 
   addSensorTool: ({ index, datadefRef }) ->
