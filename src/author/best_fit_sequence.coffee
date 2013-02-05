@@ -102,12 +102,12 @@ exports.BestFitSequence = class BestFitSequence
     step
 
   check_correct_answer:(nCounter) ->
-    criterianArray = []
+    criterionArray = []
     correctTolerance = @SumofSquares * @correctTolerance / 100
     closeTolerance = @SumofSquares * @closeTolerance / 100
     if((nCounter+1) < @maxAttempts)
       nextCloseCorrect = 'close_answer_after_'+(nCounter+1)+'_try'
-      criterianArray = [
+      criterionArray = [
                           {
                             "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], correctTolerance ],
                             "step": 'correct_answer'
@@ -118,13 +118,13 @@ exports.BestFitSequence = class BestFitSequence
                           }
                         ] 
     else
-      criterianArray = [
+      criterionArray = [
                           {
                             "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], correctTolerance ],
                             "step": 'correct_answer'
                           }
                         ]          
-    criterianArray
+    criterionArray
 
   check_final_answer: ->
     [
