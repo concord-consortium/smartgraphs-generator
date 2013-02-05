@@ -27,8 +27,7 @@
         "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
         "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3",
         "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4",
-        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5",
-        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/6"
+        "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
       ],
       "firstStep": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/1",
       "contextVars": []
@@ -122,7 +121,7 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/6"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
         },
         {
           "criterion": [
@@ -208,7 +207,7 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5",
+      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
       "submissibilityCriterion": [
         "or",
         [
@@ -247,7 +246,33 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/6"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+        },
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            1,
+            [
+              "lineSlope",
+              "freehand-sketch-1",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4"
+        },
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            0,
+            [
+              "yIntercept",
+              "freehand-sketch-1",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3"
         }
       ],
       "isFinalStep": false,
@@ -307,7 +332,7 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5",
+      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
       "submissibilityCriterion": [
         "or",
         [
@@ -346,7 +371,33 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/6"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+        },
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            1,
+            [
+              "lineSlope",
+              "freehand-sketch-1",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4"
+        },
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            0,
+            [
+              "yIntercept",
+              "freehand-sketch-1",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3"
         }
       ],
       "isFinalStep": false,
@@ -406,7 +457,7 @@
         }
       ],
       "submitButtonTitle": "Check My Answer",
-      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5",
+      "defaultBranch": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/2",
       "submissibilityCriterion": [
         "or",
         [
@@ -445,7 +496,33 @@
               0.1
             ]
           ],
-          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/6"
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5"
+        },
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            1,
+            [
+              "lineSlope",
+              "freehand-sketch-1",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/4"
+        },
+        {
+          "criterion": [
+            "withinAbsTolerance",
+            0,
+            [
+              "yIntercept",
+              "freehand-sketch-1",
+              1
+            ],
+            0.1
+          ],
+          "step": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/3"
         }
       ],
       "isFinalStep": false,
@@ -453,51 +530,6 @@
     },
     {
       "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/5",
-      "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
-      "beforeText": "<b>The correct line is shown on the graph.</b>",
-      "paneConfig": "split",
-      "panes": {
-        "top": {
-          "type": "graph",
-          "title": "Line Construction Graph Pane",
-          "xAxis": "/shared/activity-with-a-line-construction-tool/axes/1",
-          "yAxis": "/shared/activity-with-a-line-construction-tool/axes/2",
-          "showCrossHairs": false,
-          "showGraphGrid": true,
-          "showToolTipCoords": false,
-          "annotations": [
-            "freehand-sketch-1"
-          ],
-          "highlightedAnnotations": [],
-          "data": [
-            "datadef-1"
-          ],
-          "legends": {
-            "title": "legend",
-            "type": "name",
-            "referenceDatadef": "",
-            "datadefs": [
-              "datadef-1"
-            ]
-          },
-          "activeDatadefs": [
-            "datadef-1"
-          ]
-        },
-        "bottom": {
-          "type": "table",
-          "data": "datadef-1",
-          "xLabel": "x",
-          "yLabel": "y",
-          "annotations": [],
-          "highlightedAnnotations": []
-        }
-      },
-      "isFinalStep": true,
-      "nextButtonShouldSubmit": true
-    },
-    {
-      "url": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1/step/6",
       "activityPage": "/shared/activity-with-a-line-construction-tool/page/1-construct-a-line-page-1",
       "beforeText": "<b>Thats Correct</b>",
       "paneConfig": "split",
