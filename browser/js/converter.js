@@ -2040,24 +2040,50 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       return step;
     };
 
-    LineConstructionSequence.prototype.check_correct_answer = function() {
+    LineConstructionSequence.prototype.check_correct_answer = function(nCounter) {
+      var criterionArray, nextInterceptCorrect, nextSlopeCorrect;
+      criterionArray = [];
+      if ((nCounter + 1) < this.maxAttempts) {
+        nextSlopeCorrect = 'incorrect_answer_but_slope_correct_after_' + (nCounter + 1) + '_try';
+        nextInterceptCorrect = 'incorrect_answer_but_y_intercept_correct_after_' + (nCounter + 1) + '_try';
+        criterionArray = [
+          {
+            "criterion": ["and", ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance], ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance]],
+            "step": "confirm_correct"
+          }, {
+            "criterion": ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance],
+            "step": nextSlopeCorrect
+          }, {
+            "criterion": ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance],
+            "step": nextInterceptCorrect
+          }
+        ];
+      } else {
+        criterionArray = [
+          {
+            "criterion": ["and", ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance], ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance]],
+            "step": "confirm_correct"
+          }
+        ];
+      }
+      return criterionArray;
+    };
+
+    LineConstructionSequence.prototype.check_final_answer = function() {
       return [
         {
           "criterion": ["and", ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance], ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance]],
           "step": "confirm_correct"
-        }, {
-          "criterion": ["withinAbsTolerance", this.slope, ["lineSlope", this.annotations["singleLineGraphing"].name, 1], this.slopeTolerance],
-          "step": "incorrect_answer_but_slope_correct"
-        }, {
-          "criterion": ["withinAbsTolerance", this.yIntercept, ["yIntercept", this.annotations["singleLineGraphing"].name, 1], this.yInterceptTolerance],
-          "step": "incorrect_answer_but_y_intercept_correct"
         }
       ];
     };
 
     function LineConstructionSequence(_arg) {
       var i, pane, _len, _ref;
-      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
+      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.maxAttempts = _arg.maxAttempts, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
+      if (this.maxAttempts === 0) {
+        throw new Error("Number of attempts should be more than 0");
+      }
       this.steps = [];
       this.runtimeStepsByName = {};
       _ref = this.page.panes || [];
@@ -2071,6 +2097,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         }
       }
       if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
+      if (!this.maxAttempts) this.maxAttempts = 1;
     }
 
     LineConstructionSequence.prototype.appendSteps = function(runtimePage) {
@@ -2118,7 +2145,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     LineConstructionSequence.prototype.first_question = function() {
       return {
         name: "question",
-        defaultBranch: "incorrect_answer_all",
+        defaultBranch: this.maxAttempts === 1 ? "attempts_over" : "incorrect_answer_all_after_1_try",
         submitButtonTitle: "Check My Answer",
         beforeText: this.initialPrompt,
         substitutedExpressions: [],
@@ -2129,14 +2156,14 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
-        responseBranches: this.check_correct_answer()
+        responseBranches: this.check_correct_answer(0)
       };
     };
 
-    LineConstructionSequence.prototype.incorrect_answer_all = function() {
+    LineConstructionSequence.prototype.incorrect_answer_all_after_try = function(nCounter) {
       return {
-        name: "incorrect_answer_all",
-        defaultBranch: "incorrect_answer_all",
+        name: "incorrect_answer_all_after_" + nCounter + "_try",
+        defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_all_after_" + (nCounter + 1) + "_try" : "attempts_over",
         submitButtonTitle: "Check My Answer",
         beforeText: "<b>" + this.allIncorrect + "</b><p>" + this.initialPrompt + "</p>",
         substitutedExpressions: [],
@@ -2147,14 +2174,14 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
-        responseBranches: this.check_correct_answer()
+        responseBranches: this.check_correct_answer(nCounter)
       };
     };
 
-    LineConstructionSequence.prototype.incorrect_answer_but_y_intercept_correct = function() {
+    LineConstructionSequence.prototype.incorrect_answer_but_y_intercept_correct_after_try = function() {
       return {
-        name: "incorrect_answer_but_y_intercept_correct",
-        defaultBranch: "incorrect_answer_all",
+        name: "incorrect_answer_but_y_intercept_correct_after_" + nCounter + "_try",
+        defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_all_after_" + (nCounter + 1) + "_try" : "attempts_over",
         submitButtonTitle: "Check My Answer",
         beforeText: "<b>" + this.slopeIncorrect + "</b><p>" + this.initialPrompt + "</p>",
         substitutedExpressions: [],
@@ -2165,14 +2192,14 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
-        responseBranches: this.check_correct_answer()
+        responseBranches: this.check_correct_answer(nCounter)
       };
     };
 
     LineConstructionSequence.prototype.incorrect_answer_but_slope_correct = function() {
       return {
-        name: "incorrect_answer_but_slope_correct",
-        defaultBranch: "incorrect_answer_all",
+        name: "incorrect_answer_but_slope_correct_after_" + nCounter + "_try",
+        defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_all_after_" + (nCounter + 1) + "_try" : "attempts_over",
         submitButtonTitle: "Check My Answer",
         beforeText: "<b>" + this.yInterceptIncorrect + "</b><p>" + this.initialPrompt + "</p>",
         substitutedExpressions: [],
@@ -2183,7 +2210,20 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         graphAnnotations: ["singleLineGraphing"],
         tableAnnotations: [],
         tools: ["graphing"],
-        responseBranches: this.check_correct_answer()
+        responseBranches: this.check_correct_answer(nCounter)
+      };
+    };
+
+    LineConstructionSequence.prototype.attempts_over = function() {
+      return {
+        name: "attempts_over",
+        isFinalStep: true,
+        hideSubmitButton: true,
+        beforeText: "<b>" + this.giveUp + "</b>",
+        showCrossHairs: false,
+        showToolTipCoords: false,
+        showGraphGrid: this.graphPane.showGraphGrid,
+        graphAnnotations: ["singleLineGraphing"]
       };
     };
 
@@ -2202,9 +2242,13 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
     LineConstructionSequence.prototype.assemble_steps = function() {
       this.steps.push(this.first_question());
-      this.steps.push(this.incorrect_answer_all());
-      this.steps.push(this.incorrect_answer_but_y_intercept_correct());
-      this.steps.push(this.incorrect_answer_but_slope_correct());
+      while (nCounter < this.maxAttempts) {
+        this.steps.push(this.incorrect_answer_all_after_try(nCounter));
+        this.steps.push(this.incorrect_answer_but_y_intercept_correct_after_try(nCounter));
+        this.steps.push(this.incorrect_answer_but_slope_correct_after_try(nCounter));
+        nCounter++;
+      }
+      this.steps.push(this.attempts_over());
       return this.steps.push(this.confirm_correct());
     };
 
@@ -2350,13 +2394,13 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
     };
 
     BestFitSequence.prototype.check_correct_answer = function(nCounter) {
-      var closeTolerance, correctTolerance, criterianArray, nextCloseCorrect;
-      criterianArray = [];
+      var closeTolerance, correctTolerance, criterionArray, nextCloseCorrect;
+      criterionArray = [];
       correctTolerance = this.SumofSquares * this.correctTolerance / 100;
       closeTolerance = this.SumofSquares * this.closeTolerance / 100;
       if ((nCounter + 1) < this.maxAttempts) {
         nextCloseCorrect = 'close_answer_after_' + (nCounter + 1) + '_try';
-        criterianArray = [
+        criterionArray = [
           {
             "criterion": ["withinAbsTolerance", this.SumofSquares, ["deviationValue", this.learnerDataSet], correctTolerance],
             "step": 'correct_answer'
@@ -2366,14 +2410,14 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
           }
         ];
       } else {
-        criterianArray = [
+        criterionArray = [
           {
             "criterion": ["withinAbsTolerance", this.SumofSquares, ["deviationValue", this.learnerDataSet], correctTolerance],
             "step": 'correct_answer'
           }
         ];
       }
-      return criterianArray;
+      return criterionArray;
     };
 
     BestFitSequence.prototype.check_final_answer = function() {
