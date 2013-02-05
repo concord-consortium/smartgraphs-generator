@@ -233,6 +233,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
     }
    
   assemble_steps: ->
+    nCounter = 1
     @steps.push(@first_question())
 
     while (nCounter) < @maxAttempts
