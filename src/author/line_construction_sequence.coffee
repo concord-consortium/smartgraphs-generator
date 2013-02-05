@@ -56,8 +56,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
   check_correct_answer:(nCounter) ->
     criterionArray = []
     if((nCounter+1) < @maxAttempts)
-      nextSlopeCorrect = 'incorrect_answer_but_slope_correct_after_'+(nCounter+1)+'_try';
-      nextInterceptCorrect = 'incorrect_answer_but_y_intercept_correct_after_'+(nCounter+1)+'_try';
+      nextSlopeCorrect = 'incorrect_answer_but_slope_correct_after_'+(nCounter+1)+'_try'
+      nextInterceptCorrect = 'incorrect_answer_but_y_intercept_correct_after_'+(nCounter+1)+'_try'
       criterionArray = [
                           {
                             "criterion": ["and", [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance],
