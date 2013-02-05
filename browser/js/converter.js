@@ -1980,9 +1980,14 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     };
 
     LineConstructionSequence.prototype.setupStep = function(_arg) {
-      var annotation, response_def, runtimePage, step, stepdef, tool, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
+      var annotation, dataDefRefForStep, legendsDataset, response_def, runtimePage, step, stepDataDefRef, stepDataRefs, stepIncludedDataSets, stepdef, tool, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
       runtimePage = _arg.runtimePage, stepdef = _arg.stepdef;
+      dataDefRefForStep = this.graphPane.datadefRef;
       step = this.runtimeStepsByName[stepdef.name];
+      stepDataDefRef = [];
+      stepIncludedDataSets = [];
+      stepDataRefs = [];
+      legendsDataset = [this.learnerDataSet];
       step.addGraphPane({
         title: this.graphPane.title,
         datadefRef: this.graphPane.datadefRef,
@@ -2080,7 +2085,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
     function LineConstructionSequence(_arg) {
       var i, pane, _len, _ref;
-      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.maxAttempts = _arg.maxAttempts, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
+      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.giveUp = _arg.giveUp, this.maxAttempts = _arg.maxAttempts, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
       if (this.maxAttempts === 0) {
         throw new Error("Number of attempts should be more than 0");
       }
@@ -2178,7 +2183,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       };
     };
 
-    LineConstructionSequence.prototype.incorrect_answer_but_y_intercept_correct_after_try = function() {
+    LineConstructionSequence.prototype.incorrect_answer_but_y_intercept_correct_after_try = function(nCounter) {
       return {
         name: "incorrect_answer_but_y_intercept_correct_after_" + nCounter + "_try",
         defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_all_after_" + (nCounter + 1) + "_try" : "attempts_over",
@@ -2196,7 +2201,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       };
     };
 
-    LineConstructionSequence.prototype.incorrect_answer_but_slope_correct = function() {
+    LineConstructionSequence.prototype.incorrect_answer_but_slope_correct = function(nCounter) {
       return {
         name: "incorrect_answer_but_slope_correct_after_" + nCounter + "_try",
         defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_all_after_" + (nCounter + 1) + "_try" : "attempts_over",
@@ -2241,6 +2246,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
     };
 
     LineConstructionSequence.prototype.assemble_steps = function() {
+      var nCounter;
+      nCounter = 1;
       this.steps.push(this.first_question());
       while (nCounter < this.maxAttempts) {
         this.steps.push(this.incorrect_answer_all_after_try(nCounter));
@@ -2248,8 +2255,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         this.steps.push(this.incorrect_answer_but_slope_correct_after_try(nCounter));
         nCounter++;
       }
-      this.steps.push(this.attempts_over());
-      return this.steps.push(this.confirm_correct());
+      this.specialSteps.push(this.attempts_over());
+      return this.specialSteps.push(this.confirm_correct());
     };
 
     return LineConstructionSequence;
