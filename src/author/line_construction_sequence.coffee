@@ -53,20 +53,42 @@ exports.LineConstructionSequence = class LineConstructionSequence
         step: @runtimeStepsByName[response_def.step]
     step
   
-  check_correct_answer:->
+  check_correct_answer:(nCounter) ->
+    criterionArray = []
+    if((nCounter+1) < @maxAttempts)
+      nextSlopeCorrect = 'incorrect_answer_but_slope_correct_after_'+(nCounter+1)+'_try';
+      nextInterceptCorrect = 'incorrect_answer_but_y_intercept_correct_after_'+(nCounter+1)+'_try';
+      criterionArray = [
+                          {
+                            "criterion": ["and", [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance],
+                                        [ "withinAbsTolerance", @yIntercept, ["yIntercept", @annotations["singleLineGraphing"].name, 1], @yInterceptTolerance] ],
+                            "step": "confirm_correct"
+                          },
+                          {
+                            "criterion": [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance ],
+                            "step": nextSlopeCorrect
+                          },
+                          {
+                            "criterion": [ "withinAbsTolerance", @yIntercept, ["yIntercept", @annotations["singleLineGraphing"].name, 1], @yInterceptTolerance ] ,
+                            "step": nextInterceptCorrect
+                          }
+                        ]
+    else
+      criterionArray = [
+                          {
+                            "criterion": ["and", [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance],
+                                        [ "withinAbsTolerance", @yIntercept, ["yIntercept", @annotations["singleLineGraphing"].name, 1], @yInterceptTolerance] ],
+                            "step": "confirm_correct"
+                          }
+                        ]
+    criterionArray
+
+  check_final_answer: ->
     [
       {
         "criterion": ["and", [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance],
                     [ "withinAbsTolerance", @yIntercept, ["yIntercept", @annotations["singleLineGraphing"].name, 1], @yInterceptTolerance] ],
         "step": "confirm_correct"
-      },
-      {
-        "criterion": [ "withinAbsTolerance", @slope, ["lineSlope", @annotations["singleLineGraphing"].name, 1], @slopeTolerance ],
-        "step": "incorrect_answer_but_slope_correct"
-      },
-      {
-        "criterion": [ "withinAbsTolerance", @yIntercept, ["yIntercept", @annotations["singleLineGraphing"].name, 1], @yInterceptTolerance ] ,
-        "step": "incorrect_answer_but_y_intercept_correct"
       }
     ]
     
@@ -80,9 +102,11 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @slopeIncorrect,
     @yInterceptIncorrect,
     @allIncorrect,
+    @maxAttempts,
     @page,
     @dataSetName
     }) ->
+    if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
     @steps = []
     @runtimeStepsByName = {}
     for pane, i in @page.panes || []
@@ -90,7 +114,8 @@ exports.LineConstructionSequence = class LineConstructionSequence
       @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
 
     if @dataSetName then @graphPane.activeDatasetName = @dataSetName
- 
+    @maxAttempts = 1 unless @maxAttempts
+
   appendSteps: (runtimePage) ->
     @annotations = {}
   
@@ -122,7 +147,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
       ##         first_question             ##
       ############################################
       name:                         "question"
-      defaultBranch:                "incorrect_answer_all"
+      defaultBranch:                if @maxAttempts is 1 then "attempts_over" else "incorrect_answer_all_after_1_try"
       submitButtonTitle:            "Check My Answer"
       beforeText:                   @initialPrompt
       substitutedExpressions:       []
@@ -133,13 +158,13 @@ exports.LineConstructionSequence = class LineConstructionSequence
       graphAnnotations:             ["singleLineGraphing"]
       tableAnnotations:             []
       tools:                        ["graphing"]
-      responseBranches:             @check_correct_answer()
+      responseBranches:             @check_correct_answer(0)
     } 
     
-  incorrect_answer_all: ->
+  incorrect_answer_all_after_try: (nCounter) ->
     {
-      name:                        "incorrect_answer_all"
-      defaultBranch:               "incorrect_answer_all" 
+      name:                        "incorrect_answer_all_after_"+nCounter+"_try"
+      defaultBranch:               if (nCounter+1) < @maxAttempts then "incorrect_answer_all_after_"+(nCounter+1)+"_try" else "attempts_over" 
       submitButtonTitle:           "Check My Answer"
       beforeText:                  "<b>#{@allIncorrect}</b><p>#{@initialPrompt}</p>"
       substitutedExpressions:      []
@@ -150,12 +175,12 @@ exports.LineConstructionSequence = class LineConstructionSequence
       graphAnnotations:            ["singleLineGraphing"]
       tableAnnotations:            []
       tools:                       ["graphing"]
-      responseBranches:            @check_correct_answer()
+      responseBranches:            @check_correct_answer(nCounter)
     }
-  incorrect_answer_but_y_intercept_correct: ->
+  incorrect_answer_but_y_intercept_correct_after_try: ->
     {
-      name:                        "incorrect_answer_but_y_intercept_correct"
-      defaultBranch:               "incorrect_answer_all" 
+      name:                        "incorrect_answer_but_y_intercept_correct_after_"+nCounter+"_try"
+      defaultBranch:               if (nCounter+1) < @maxAttempts then "incorrect_answer_all_after_"+(nCounter+1)+"_try" else "attempts_over"
       submitButtonTitle:           "Check My Answer"
       beforeText:                  "<b>#{@slopeIncorrect}</b><p>#{@initialPrompt}</p>"
       substitutedExpressions:      []
@@ -166,12 +191,12 @@ exports.LineConstructionSequence = class LineConstructionSequence
       graphAnnotations  :          ["singleLineGraphing"]
       tableAnnotations:            []
       tools:                       ["graphing"]
-      responseBranches:            @check_correct_answer()
+      responseBranches:            @check_correct_answer(nCounter)
     }    
   incorrect_answer_but_slope_correct: ->
     {
-      name:                       "incorrect_answer_but_slope_correct"
-      defaultBranch:              "incorrect_answer_all" 
+      name:                       "incorrect_answer_but_slope_correct_after_"+nCounter+"_try"
+      defaultBranch:              if (nCounter+1) < @maxAttempts then "incorrect_answer_all_after_"+(nCounter+1)+"_try" else "attempts_over"
       submitButtonTitle:          "Check My Answer"
       beforeText:                 "<b>#{@yInterceptIncorrect}</b><p>#{@initialPrompt}</p>"
       substitutedExpressions:     []
@@ -182,7 +207,18 @@ exports.LineConstructionSequence = class LineConstructionSequence
       graphAnnotations:           ["singleLineGraphing"]
       tableAnnotations:           []
       tools:                      ["graphing"]
-      responseBranches:           @check_correct_answer()
+      responseBranches:           @check_correct_answer(nCounter)
+    }
+  attempts_over: ->
+    {
+      name:                   "attempts_over"
+      isFinalStep:            true
+      hideSubmitButton:       true
+      beforeText:             "<b>#{@giveUp}</b>"
+      showCrossHairs:         false
+      showToolTipCoords:      false
+      showGraphGrid:          @graphPane.showGraphGrid
+      graphAnnotations  :     ["singleLineGraphing"]
     }
   confirm_correct: ->
     {
@@ -198,7 +234,12 @@ exports.LineConstructionSequence = class LineConstructionSequence
    
   assemble_steps: ->
     @steps.push(@first_question())
-    @steps.push(@incorrect_answer_all())
-    @steps.push(@incorrect_answer_but_y_intercept_correct())
-    @steps.push(@incorrect_answer_but_slope_correct())
+
+    while (nCounter) < @maxAttempts
+      @steps.push(@incorrect_answer_all_after_try(nCounter))
+      @steps.push(@incorrect_answer_but_y_intercept_correct_after_try(nCounter))
+      @steps.push(@incorrect_answer_but_slope_correct_after_try(nCounter))
+      nCounter++
+
+    @steps.push(@attempts_over())
     @steps.push(@confirm_correct())
