@@ -7,7 +7,13 @@ exports.LineConstructionSequence = class LineConstructionSequence
     runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
 
   setupStep: ({runtimePage, stepdef}) ->
+    dataDefRefForStep = @graphPane.datadefRef
     step = @runtimeStepsByName[stepdef.name]
+    stepDataDefRef = []
+    stepIncludedDataSets = []
+    stepDataRefs = []
+    legendsDataset = [@learnerDataSet]
+
     step.addGraphPane
       title: @graphPane.title
       datadefRef: @graphPane.datadefRef
@@ -102,6 +108,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @slopeIncorrect,
     @yInterceptIncorrect,
     @allIncorrect,
+    @giveUp,
     @maxAttempts,
     @page,
     @dataSetName
@@ -177,7 +184,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
       tools:                       ["graphing"]
       responseBranches:            @check_correct_answer(nCounter)
     }
-  incorrect_answer_but_y_intercept_correct_after_try: ->
+  incorrect_answer_but_y_intercept_correct_after_try: (nCounter) ->
     {
       name:                        "incorrect_answer_but_y_intercept_correct_after_"+nCounter+"_try"
       defaultBranch:               if (nCounter+1) < @maxAttempts then "incorrect_answer_all_after_"+(nCounter+1)+"_try" else "attempts_over"
@@ -193,7 +200,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
       tools:                       ["graphing"]
       responseBranches:            @check_correct_answer(nCounter)
     }    
-  incorrect_answer_but_slope_correct: ->
+  incorrect_answer_but_slope_correct_after_try: (nCounter) ->
     {
       name:                       "incorrect_answer_but_slope_correct_after_"+nCounter+"_try"
       defaultBranch:              if (nCounter+1) < @maxAttempts then "incorrect_answer_all_after_"+(nCounter+1)+"_try" else "attempts_over"
