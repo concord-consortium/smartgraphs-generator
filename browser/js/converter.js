@@ -2289,7 +2289,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       };
     };
 
-    LineConstructionSequence.prototype.incorrect_answer_but_slope_correct = function(nCounter) {
+    LineConstructionSequence.prototype.incorrect_answer_but_slope_correct_after_try = function(nCounter) {
       return {
         name: "incorrect_answer_but_slope_correct_after_" + nCounter + "_try",
         defaultBranch: (nCounter + 1) < this.maxAttempts ? "incorrect_answer_all_after_" + (nCounter + 1) + "_try" : "attempts_over",
@@ -2343,8 +2343,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         this.steps.push(this.incorrect_answer_but_slope_correct_after_try(nCounter));
         nCounter++;
       }
-      this.specialSteps.push(this.attempts_over());
-      return this.specialSteps.push(this.confirm_correct());
+      this.steps.push(this.attempts_over());
+      return this.steps.push(this.confirm_correct());
     };
 
     return LineConstructionSequence;
