@@ -901,7 +901,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
             labelName: _this.initialPrompt.label,
             index: _this.graphPane.index,
             datadefRef: _this.datadefRef,
-            markOnDataPoints: true
+            markOnDataPoints: true,
+            allowCoordinatesChange: true
           });
           step.addTaggingTool({
             tag: _this.tag,
@@ -3753,8 +3754,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addLabelTool = function(_arg) {
-      var datadefRef, index, labelName, markOnDataPoints;
-      labelName = _arg.labelName, index = _arg.index, datadefRef = _arg.datadefRef, markOnDataPoints = _arg.markOnDataPoints;
+      var allowCoordinatesChange, datadefRef, index, labelName, markOnDataPoints;
+      labelName = _arg.labelName, index = _arg.index, datadefRef = _arg.datadefRef, markOnDataPoints = _arg.markOnDataPoints, allowCoordinatesChange = _arg.allowCoordinatesChange;
       return this.tools['label'] = {
         pane: index === 0 ? 'top' : 'bottom',
         datadefRef: datadefRef,
@@ -3765,7 +3766,8 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
               pane: this.pane,
               labelName: labelName,
               markOnDataPoints: markOnDataPoints,
-              datadefName: this.datadefRef.datadef.name
+              datadefName: this.datadefRef.datadef.name,
+              allowCoordinatesChange: allowCoordinatesChange
             }
           };
         }

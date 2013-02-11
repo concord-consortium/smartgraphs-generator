@@ -252,7 +252,7 @@ Sequence.classFor['PickAPointSequence'] = class PickAPointSequence extends Corre
 
     modifierForSequenceType = (step) =>
       if @initialPrompt.label
-        step.addLabelTool { labelName: @initialPrompt.label, index: @graphPane.index, @datadefRef, markOnDataPoints: true }
+        step.addLabelTool { labelName: @initialPrompt.label, index: @graphPane.index, @datadefRef, markOnDataPoints: true, allowCoordinatesChange: true }
         step.addTaggingTool { @tag, @datadefRef, labelName: @initialPrompt.label }
       else
         step.addTaggingTool { @tag, @datadefRef }

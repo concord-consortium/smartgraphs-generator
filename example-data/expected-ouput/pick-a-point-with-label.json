@@ -82,7 +82,8 @@
             "pane": "top",
             "labelName": "student-point",
             "markOnDataPoints": true,
-            "datadefName": "datadef-1"
+            "datadefName": "datadef-1",
+            "allowCoordinatesChange": true
           }
         },
         {
@@ -159,7 +160,8 @@
             "pane": "top",
             "labelName": "student-point",
             "markOnDataPoints": true,
-            "datadefName": "datadef-1"
+            "datadefName": "datadef-1",
+            "allowCoordinatesChange": true
           }
         },
         {
@@ -237,7 +239,8 @@
             "pane": "top",
             "labelName": "student-point",
             "markOnDataPoints": true,
-            "datadefName": "datadef-1"
+            "datadefName": "datadef-1",
+            "allowCoordinatesChange": true
           }
         },
         {
