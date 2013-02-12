@@ -18,6 +18,9 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @dataSetName
     }) ->
     if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
+    @correctLineDataRef
+    @correctLineDataDef
+    @correctLineDataSetName = "CorrectLine-"+ @page.index
     @steps = []
     @runtimeStepsByName = {}
     for pane, i in @page.panes || []
@@ -31,13 +34,23 @@ exports.LineConstructionSequence = class LineConstructionSequence
     return null unless @graphPane?
     runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
 
-  setupStep: ({runtimePage, stepdef}) ->
+  setupStep: ({runtimePage, stepdef, hasAnswer}) ->
     dataDefRefForStep = @graphPane.datadefRef
     step = @runtimeStepsByName[stepdef.name]
     stepDataDefRef = []
     stepIncludedDataSets = []
     stepDataRefs = []
     legendsDataset = [@learnerDataSet]
+    if hasAnswer is "true"
+      # TODO: This whole conditional needs values defined.
+      stepDataRefs = @graphPane.dataRef.concat(@correctLineDataRef)
+      stepDataDefRef = dataDefRefForStep.concat({ key: @correctLineDataSetName, datadef: @correctLineDataDef })
+      stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
+      legendsDataset.push @correctLineDataSetName
+    else
+      stepDataRefs = if @graphPane.dataRef then @graphPane.dataRef else []
+      stepDataDefRef = dataDefRefForStep
+      stepIncludedDataSets = @graphPane.includedDataSets
 
     step.addGraphPane
       title: @graphPane.title
@@ -123,6 +136,21 @@ exports.LineConstructionSequence = class LineConstructionSequence
       }
     ]
     
+  # Set up a dataset which holds the line of the correct answer
+  get_correctSlopeLine: (runtimeActivity, graphPane) ->
+    @correctLineSlope = @slope
+    @correctLineIntercept = @yIntercept
+
+    negated_sign_char = if @correctLineIntercept >= 0 then '+' else '-'
+    correctLineExpression = 'y = '+@correctLineSlope+'x' + (negated_sign_char) + Math.abs(@correctLineIntercept)
+    @correctLineColor = runtimeActivity.getNewColor()
+    NewEmptyData = runtimeActivity.createNewEmptyDataRef(@correctLineDataSetName, correctLineExpression , 0.1, 0, @correctLineColor)
+    @correctLineDataDef = NewEmptyData.dataDef
+    @correctLineDataRef = NewEmptyData.dataRef
+    runtimeActivity.setColorOfDatadef @dataSetName,@correctLineColor
+    runtimeActivity.setColorOfDatadef @learnerDataSet,@learnerDataSetColor
+    @correctLineDataDef
+
   appendSteps: (runtimePage) ->
     @annotations = {}
   
@@ -133,6 +161,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @y_axis_name = @yAxis.label.toLowerCase()
     
     runtimeActivity = runtimePage.activity
+    @get_correctSlopeLine runtimeActivity, @graphPane
     @datadefRef      = @getDataDefRef runtimeActivity
     @tags = {}
     @annotations = {}
