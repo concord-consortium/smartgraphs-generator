@@ -2,6 +2,31 @@
 
 exports.LineConstructionSequence = class LineConstructionSequence
   
+  constructor: ({
+    @slope,
+    @slopeTolerance,
+    @yIntercept,
+    @yInterceptTolerance,
+    @initialPrompt,
+    @confirmCorrect,
+    @slopeIncorrect,
+    @yInterceptIncorrect,
+    @allIncorrect,
+    @giveUp,
+    @maxAttempts,
+    @page,
+    @dataSetName
+    }) ->
+    if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
+    @steps = []
+    @runtimeStepsByName = {}
+    for pane, i in @page.panes || []
+      @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
+      @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
+
+    if @dataSetName then @graphPane.activeDatasetName = @dataSetName
+    @maxAttempts = 1 unless @maxAttempts
+
   getDataDefRef: (runtimeActivity) ->
     return null unless @graphPane?
     runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
@@ -98,31 +123,6 @@ exports.LineConstructionSequence = class LineConstructionSequence
       }
     ]
     
-  constructor: ({
-    @slope,
-    @slopeTolerance,
-    @yIntercept,
-    @yInterceptTolerance,
-    @initialPrompt,
-    @confirmCorrect,
-    @slopeIncorrect,
-    @yInterceptIncorrect,
-    @allIncorrect,
-    @giveUp,
-    @maxAttempts,
-    @page,
-    @dataSetName
-    }) ->
-    if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
-    @steps = []
-    @runtimeStepsByName = {}
-    for pane, i in @page.panes || []
-      @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
-      @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
-
-    if @dataSetName then @graphPane.activeDatasetName = @dataSetName
-    @maxAttempts = 1 unless @maxAttempts
-
   appendSteps: (runtimePage) ->
     @annotations = {}
   
