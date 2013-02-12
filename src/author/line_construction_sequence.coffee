@@ -20,6 +20,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
     if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
     @correctLineDataRef
     @correctLineDataDef
+    @correctLineColor
     @correctLineDataSetName = "CorrectLine-"+ @page.index
     @steps = []
     @runtimeStepsByName = {}
@@ -42,7 +43,6 @@ exports.LineConstructionSequence = class LineConstructionSequence
     stepDataRefs = []
     legendsDataset = [@learnerDataSet]
     if hasAnswer is "true"
-      # TODO: This whole conditional needs values defined.
       stepDataRefs = @graphPane.dataRef.concat(@correctLineDataRef)
       stepDataDefRef = dataDefRefForStep.concat({ key: @correctLineDataSetName, datadef: @correctLineDataDef })
       stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
@@ -173,10 +173,18 @@ exports.LineConstructionSequence = class LineConstructionSequence
     for stepdef in @steps
       runtimeStep = runtimePage.appendStep()
       @runtimeStepsByName[stepdef.name] = runtimeStep
+    for stepdef in @specialSteps
+      runtimeStep = runtimePage.appendStep()
+      @runtimeStepsByName[stepdef.name] = runtimeStep
     for stepdef in @steps
       @setupStep
         stepdef: stepdef
         runtimePage: runtimePage
+    for stepdef in @specialSteps
+      @setupStep
+        stepdef: stepdef
+        runtimePage: runtimePage
+        hasAnswer: "true"
   
   first_question: ->
     { ############################################
@@ -278,5 +286,5 @@ exports.LineConstructionSequence = class LineConstructionSequence
       @steps.push(@incorrect_answer_but_slope_correct_after_try(nCounter))
       nCounter++
 
-    @steps.push(@attempts_over())
-    @steps.push(@confirm_correct())
+    @specialSteps.push(@attempts_over())
+    @specialSteps.push(@confirm_correct())
