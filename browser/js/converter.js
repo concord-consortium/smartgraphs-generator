@@ -2063,32 +2063,75 @@ require.define("/author/line_construction_sequence.js", function (require, modul
 
   exports.LineConstructionSequence = LineConstructionSequence = (function() {
 
+    function LineConstructionSequence(_arg) {
+      var i, pane, _len, _ref;
+      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.giveUp = _arg.giveUp, this.maxAttempts = _arg.maxAttempts, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
+      if (this.maxAttempts === 0) {
+        throw new Error("Number of attempts should be more than 0");
+      }
+      this.correctLineDataRef;
+      this.correctLineDataDef;
+      this.correctLineColor;
+      this.correctLineDataSetName = "CorrectLine-" + this.page.index;
+      this.steps = [];
+      this.specialSteps = [];
+      this.runtimeStepsByName = {};
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor["PredefinedGraphPane"]) {
+          this.graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor["TablePane"]) {
+          this.tablePane = pane;
+        }
+      }
+      if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
+      if (!this.maxAttempts) this.maxAttempts = 1;
+    }
+
     LineConstructionSequence.prototype.getDataDefRef = function(runtimeActivity) {
       if (this.graphPane == null) return null;
       return runtimeActivity.getDatadefRef("" + this.graphPane.activeDatasetName);
     };
 
     LineConstructionSequence.prototype.setupStep = function(_arg) {
-      var annotation, dataDefRefForStep, legendsDataset, response_def, runtimePage, step, stepDataDefRef, stepDataRefs, stepIncludedDataSets, stepdef, tool, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
-      runtimePage = _arg.runtimePage, stepdef = _arg.stepdef;
+      var annotation, dataDefRefForStep, hasAnswer, legendsDataset, response_def, runtimePage, step, stepDataDefRef, stepDataRefs, stepIncludedDataSets, stepdef, tool, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
+      runtimePage = _arg.runtimePage, stepdef = _arg.stepdef, hasAnswer = _arg.hasAnswer;
       dataDefRefForStep = this.graphPane.datadefRef;
       step = this.runtimeStepsByName[stepdef.name];
       stepDataDefRef = [];
       stepIncludedDataSets = [];
       stepDataRefs = [];
       legendsDataset = [this.learnerDataSet];
+      if (hasAnswer === "true") {
+        stepDataRefs = this.graphPane.dataRef.concat(this.correctLineDataRef);
+        stepDataDefRef = dataDefRefForStep.concat({
+          key: this.correctLineDataSetName,
+          datadef: this.correctLineDataDef
+        });
+        stepIncludedDataSets = this.graphPane.includedDataSets.concat({
+          name: this.correctLineDataSetName,
+          inLegend: true
+        });
+        legendsDataset.push(this.correctLineDataSetName);
+      } else {
+        stepDataRefs = this.graphPane.dataRef ? this.graphPane.dataRef : [];
+        stepDataDefRef = dataDefRefForStep;
+        stepIncludedDataSets = this.graphPane.includedDataSets;
+      }
       step.addGraphPane({
         title: this.graphPane.title,
-        datadefRef: this.graphPane.datadefRef,
+        datadefRef: stepDataDefRef,
         xAxis: this.xAxis,
         yAxis: this.yAxis,
         index: this.graphPane.index,
         showCrossHairs: stepdef.showCrossHairs,
         showGraphGrid: stepdef.showGraphGrid,
         showToolTipCoords: stepdef.showToolTipCoords,
-        includedDataSets: this.graphPane.includedDataSets,
+        includedDataSets: stepIncludedDataSets,
         activeDatasetName: this.graphPane.activeDatasetName,
-        dataRef: this.graphPane.dataRef ? this.graphPane.dataRef : []
+        dataRef: stepDataRefs
       });
       step.addTablePane({
         datadefRef: this.getDataDefRef(runtimePage.activity),
@@ -2122,7 +2165,6 @@ require.define("/author/line_construction_sequence.js", function (require, modul
           shape: "singleLine"
         });
       }
-      step.defaultBranch = this.runtimeStepsByName[stepdef.defaultBranch];
       _ref3 = stepdef.responseBranches || [];
       for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
         response_def = _ref3[_k];
@@ -2172,36 +2214,29 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       ];
     };
 
-    function LineConstructionSequence(_arg) {
-      var i, pane, _len, _ref;
-      this.slope = _arg.slope, this.slopeTolerance = _arg.slopeTolerance, this.yIntercept = _arg.yIntercept, this.yInterceptTolerance = _arg.yInterceptTolerance, this.initialPrompt = _arg.initialPrompt, this.confirmCorrect = _arg.confirmCorrect, this.slopeIncorrect = _arg.slopeIncorrect, this.yInterceptIncorrect = _arg.yInterceptIncorrect, this.allIncorrect = _arg.allIncorrect, this.giveUp = _arg.giveUp, this.maxAttempts = _arg.maxAttempts, this.page = _arg.page, this.dataSetName = _arg.dataSetName;
-      if (this.maxAttempts === 0) {
-        throw new Error("Number of attempts should be more than 0");
-      }
-      this.steps = [];
-      this.runtimeStepsByName = {};
-      _ref = this.page.panes || [];
-      for (i = 0, _len = _ref.length; i < _len; i++) {
-        pane = _ref[i];
-        if (pane instanceof AuthorPane.classFor["PredefinedGraphPane"]) {
-          this.graphPane = pane;
-        }
-        if (pane instanceof AuthorPane.classFor["TablePane"]) {
-          this.tablePane = pane;
-        }
-      }
-      if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
-      if (!this.maxAttempts) this.maxAttempts = 1;
-    }
+    LineConstructionSequence.prototype.get_correctSlopeLine = function(runtimeActivity, graphPane) {
+      var NewEmptyData, correctLineExpression, negated_sign_char;
+      this.correctLineSlope = this.slope;
+      this.correctLineIntercept = this.yIntercept;
+      negated_sign_char = this.correctLineIntercept >= 0 ? '+' : '-';
+      correctLineExpression = 'y = ' + this.correctLineSlope + 'x' + negated_sign_char + Math.abs(this.correctLineIntercept);
+      this.correctLineColor = runtimeActivity.getNewColor();
+      debugger;
+      NewEmptyData = runtimeActivity.createNewEmptyDataRef(this.correctLineDataSetName, correctLineExpression, 0.1, 0, this.correctLineColor);
+      this.correctLineDataDef = NewEmptyData.dataDef;
+      this.correctLineDataRef = NewEmptyData.dataRef;
+      return this.correctLineDataDef;
+    };
 
     LineConstructionSequence.prototype.appendSteps = function(runtimePage) {
-      var annotation, otherAnnotations, runtimeActivity, runtimeStep, stepdef, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _results;
+      var annotation, otherAnnotations, runtimeActivity, runtimeStep, stepdef, _i, _j, _k, _l, _len, _len2, _len3, _len4, _len5, _m, _ref, _ref2, _ref3, _ref4, _results;
       this.annotations = {};
       this.yAxis = this.graphPane.yAxis;
       this.xAxis = this.graphPane.xAxis;
       this.x_axis_name = this.xAxis.label.toLowerCase();
       this.y_axis_name = this.yAxis.label.toLowerCase();
       runtimeActivity = runtimePage.activity;
+      this.get_correctSlopeLine(runtimeActivity, this.graphPane);
       this.datadefRef = this.getDataDefRef(runtimeActivity);
       this.tags = {};
       this.annotations = {};
@@ -2224,13 +2259,28 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         runtimeStep = runtimePage.appendStep();
         this.runtimeStepsByName[stepdef.name] = runtimeStep;
       }
-      _ref2 = this.steps;
-      _results = [];
+      _ref2 = this.specialSteps;
       for (_k = 0, _len3 = _ref2.length; _k < _len3; _k++) {
         stepdef = _ref2[_k];
-        _results.push(this.setupStep({
+        runtimeStep = runtimePage.appendStep();
+        this.runtimeStepsByName[stepdef.name] = runtimeStep;
+      }
+      _ref3 = this.steps;
+      for (_l = 0, _len4 = _ref3.length; _l < _len4; _l++) {
+        stepdef = _ref3[_l];
+        this.setupStep({
           stepdef: stepdef,
           runtimePage: runtimePage
+        });
+      }
+      _ref4 = this.specialSteps;
+      _results = [];
+      for (_m = 0, _len5 = _ref4.length; _m < _len5; _m++) {
+        stepdef = _ref4[_m];
+        _results.push(this.setupStep({
+          stepdef: stepdef,
+          runtimePage: runtimePage,
+          hasAnswer: "true"
         }));
       }
       return _results;
@@ -2344,8 +2394,8 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         this.steps.push(this.incorrect_answer_but_slope_correct_after_try(nCounter));
         nCounter++;
       }
-      this.steps.push(this.attempts_over());
-      return this.steps.push(this.confirm_correct());
+      this.specialSteps.push(this.attempts_over());
+      return this.specialSteps.push(this.confirm_correct());
     };
 
     return LineConstructionSequence;
