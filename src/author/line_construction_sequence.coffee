@@ -23,6 +23,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @correctLineColor
     @correctLineDataSetName = "CorrectLine-"+ @page.index
     @steps = []
+    @specialSteps = []
     @runtimeStepsByName = {}
     for pane, i in @page.panes || []
       @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
@@ -54,16 +55,16 @@ exports.LineConstructionSequence = class LineConstructionSequence
 
     step.addGraphPane
       title: @graphPane.title
-      datadefRef: @graphPane.datadefRef
+      datadefRef: stepDataDefRef
       xAxis: @xAxis
       yAxis: @yAxis
       index: @graphPane.index
       showCrossHairs: stepdef.showCrossHairs
       showGraphGrid: stepdef.showGraphGrid
       showToolTipCoords: stepdef.showToolTipCoords
-      includedDataSets: @graphPane.includedDataSets
+      includedDataSets: stepIncludedDataSets
       activeDatasetName: @graphPane.activeDatasetName
-      dataRef: if @graphPane.dataRef then @graphPane.dataRef else []
+      dataRef: stepDataRefs
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
       index: @tablePane.index
@@ -90,7 +91,6 @@ exports.LineConstructionSequence = class LineConstructionSequence
         annotation: @annotations["singleLineGraphing"]
         shape: "singleLine"
            
-    step.defaultBranch = @runtimeStepsByName[stepdef.defaultBranch]
     for response_def in stepdef.responseBranches || []
       step.appendResponseBranch
         criterion: response_def.criterion
@@ -147,8 +147,6 @@ exports.LineConstructionSequence = class LineConstructionSequence
     NewEmptyData = runtimeActivity.createNewEmptyDataRef(@correctLineDataSetName, correctLineExpression , 0.1, 0, @correctLineColor)
     @correctLineDataDef = NewEmptyData.dataDef
     @correctLineDataRef = NewEmptyData.dataRef
-    runtimeActivity.setColorOfDatadef @dataSetName,@correctLineColor
-    runtimeActivity.setColorOfDatadef @learnerDataSet,@learnerDataSetColor
     @correctLineDataDef
 
   appendSteps: (runtimePage) ->
