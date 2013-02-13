@@ -470,14 +470,19 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "CorrectLine-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": {
             "title": "legend",
             "type": "name",
             "referenceDatadef": "",
             "datadefs": [
-              "datadef-1"
+              "datadef-1",
+              "CorrectLine-1"
             ]
           },
           "activeDatadefs": [
@@ -515,14 +520,19 @@
           ],
           "highlightedAnnotations": [],
           "data": [
-            "datadef-1"
+            "datadef-1",
+            "CorrectLine-1"
+          ],
+          "datarefs": [
+            "dataref-1"
           ],
           "legends": {
             "title": "legend",
             "type": "name",
             "referenceDatadef": "",
             "datadefs": [
-              "datadef-1"
+              "datadef-1",
+              "CorrectLine-1"
             ]
           },
           "activeDatadefs": [
@@ -569,6 +579,35 @@
           "activity": "/shared/activity-with-a-line-construction-tool",
           "points": [],
           "lineSnapDistance": 0
+        },
+        {
+          "url": "/shared/activity-with-a-line-construction-tool/datadefs/CorrectLine-1",
+          "name": "CorrectLine-1",
+          "activity": "/shared/activity-with-a-line-construction-tool",
+          "points": [],
+          "pointType": "none",
+          "lineType": "connected",
+          "lineSnapDistance": 0,
+          "color": "#17becf"
+        }
+      ]
+    }
+  ],
+  "datarefs": [
+    {
+      "type": "LinearEquation",
+      "records": [
+        {
+          "url": "/shared/activity-with-a-line-construction-tool/datarefs/dataref-1",
+          "name": "dataref-1",
+          "activity": "/shared/activity-with-a-line-construction-tool",
+          "datadefName": "CorrectLine-1",
+          "expressionForm": "slope-intercept",
+          "xInterval": 0.1,
+          "params": {
+            "slope": 1,
+            "yIntercept": 0
+          }
         }
       ]
     }
