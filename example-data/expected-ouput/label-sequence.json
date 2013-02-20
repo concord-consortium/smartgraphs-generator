@@ -1,0 +1,211 @@
+{
+  "_id": "simple-graph-with-label-sequence.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "Simple Graph with Label Sequence",
+    "url": "/shared/simple-graph-with-label-sequence",
+    "owner": "shared",
+    "pages": [
+      "/shared/simple-graph-with-label-sequence/page/1-graph",
+      "/shared/simple-graph-with-label-sequence/page/2-graph"
+    ],
+    "axes": [
+      "/shared/simple-graph-with-label-sequence/axes/1",
+      "/shared/simple-graph-with-label-sequence/axes/2",
+      "/shared/simple-graph-with-label-sequence/axes/3",
+      "/shared/simple-graph-with-label-sequence/axes/4"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Graph",
+      "url": "/shared/simple-graph-with-label-sequence/page/1-graph",
+      "activity": "/shared/simple-graph-with-label-sequence",
+      "index": 1,
+      "introText": "Here is some data.",
+      "steps": [
+        "/shared/simple-graph-with-label-sequence/page/1-graph/step/1"
+      ],
+      "firstStep": "/shared/simple-graph-with-label-sequence/page/1-graph/step/1",
+      "contextVars": []
+    },
+    {
+      "name": "Graph",
+      "url": "/shared/simple-graph-with-label-sequence/page/2-graph",
+      "activity": "/shared/simple-graph-with-label-sequence",
+      "index": 2,
+      "introText": "Here is the data again, with your labels.",
+      "steps": [
+        "/shared/simple-graph-with-label-sequence/page/2-graph/step/1"
+      ],
+      "firstStep": "/shared/simple-graph-with-label-sequence/page/2-graph/step/1",
+      "contextVars": []
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/simple-graph-with-label-sequence/page/1-graph/step/1",
+      "activityPage": "/shared/simple-graph-with-label-sequence/page/1-graph",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Position vs. Time",
+          "xAxis": "/shared/simple-graph-with-label-sequence/axes/1",
+          "yAxis": "/shared/simple-graph-with-label-sequence/axes/2",
+          "annotations": [
+            "student-labels"
+          ],
+          "highlightedAnnotations": [],
+          "data": [
+            "datadef-1"
+          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "datadef-1"
+            ]
+          },
+          "activeDatadefs": [
+            "datadef-1"
+          ]
+        }
+      },
+      "tools": [
+        {
+          "name": "label",
+          "setup": {
+            "pane": "single",
+            "labelSetName": "student-labels",
+            "markOnDataPoints": true,
+            "datadefName": "datadef-1",
+            "maxNoOfLabels": 2
+          }
+        }
+      ],
+      "submissibilityCriterion": [
+        "=",
+        [
+          "numberOfLabels",
+          "student-labels"
+        ],
+        2
+      ],
+      "submissibilityDependsOn": [
+        "annotation",
+        "student-labels"
+      ],
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    },
+    {
+      "url": "/shared/simple-graph-with-label-sequence/page/2-graph/step/1",
+      "activityPage": "/shared/simple-graph-with-label-sequence/page/2-graph",
+      "paneConfig": "single",
+      "panes": {
+        "single": {
+          "type": "graph",
+          "title": "Position vs. Time",
+          "xAxis": "/shared/simple-graph-with-label-sequence/axes/3",
+          "yAxis": "/shared/simple-graph-with-label-sequence/axes/4",
+          "annotations": [
+            "student-labels"
+          ],
+          "highlightedAnnotations": [],
+          "data": [
+            "datadef-1"
+          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+              "datadef-1"
+            ]
+          },
+          "activeDatadefs": [
+            "datadef-1"
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [],
+  "axes": [
+    {
+      "url": "/shared/simple-graph-with-label-sequence/axes/1",
+      "min": 0,
+      "max": 10,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/simple-graph-with-label-sequence/axes/2",
+      "min": 0,
+      "max": 2000,
+      "nSteps": 10,
+      "label": "Position"
+    },
+    {
+      "url": "/shared/simple-graph-with-label-sequence/axes/3",
+      "min": 0,
+      "max": 10,
+      "nSteps": 10,
+      "label": "Time"
+    },
+    {
+      "url": "/shared/simple-graph-with-label-sequence/axes/4",
+      "min": 0,
+      "max": 2000,
+      "nSteps": 10,
+      "label": "Position"
+    }
+  ],
+  "datadefs": [
+    {
+      "type": "UnorderedDataPoints",
+      "records": [
+        {
+          "url": "/shared/simple-graph-with-label-sequence/datadefs/datadef-1",
+          "name": "datadef-1",
+          "activity": "/shared/simple-graph-with-label-sequence",
+          "points": [
+            [
+              1,
+              200
+            ],
+            [
+              2,
+              400
+            ],
+            [
+              3,
+              600
+            ]
+          ],
+          "lineSnapDistance": 0
+        }
+      ]
+    }
+  ],
+  "tags": [],
+  "annotations": [
+    {
+      "type": "LabelSet",
+      "records": [
+        {
+          "url": "/shared/simple-graph-with-label-sequence/annotations/student-labels",
+          "name": "student-labels",
+          "activity": "/shared/simple-graph-with-label-sequence"
+        }
+      ]
+    }
+  ],
+  "variables": [],
+  "units": []
+}

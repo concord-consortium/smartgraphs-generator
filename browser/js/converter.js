@@ -488,7 +488,7 @@ require.define("/author/author-page.js", function (require, module, exports, __d
 
 require.define("/author/sequences.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, BestFitSequence, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, LineConstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, SlopeToolSequence, asObject,
+  var AuthorPane, BestFitSequence, ConstructedResponseSequence, CorrectableSequenceWithFeedback, InstructionSequence, LabelSequence, LineConstructionSequence, MultipleChoiceWithCustomHintsSequence, MultipleChoiceWithSequentialHintsSequence, NoSequence, NumericSequence, PickAPointSequence, Sequence, SlopeToolSequence, asObject,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -499,6 +499,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   LineConstructionSequence = require('./line_construction_sequence').LineConstructionSequence;
 
   BestFitSequence = require('./best_fit_sequence').BestFitSequence;
+
+  LabelSequence = require('./label_sequence').LabelSequence;
 
   asObject = function(s) {
     if (typeof s === 'string') {
@@ -1000,6 +1002,8 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   Sequence.classFor['LineConstructionSequence'] = LineConstructionSequence;
 
   Sequence.classFor['BestFitSequence'] = BestFitSequence;
+
+  Sequence.classFor['LabelSequence'] = LabelSequence;
 
 }).call(this);
 
@@ -2795,6 +2799,81 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
 
 });
 
+require.define("/author/label_sequence.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var AuthorPane, LabelSequence;
+
+  AuthorPane = require('./author-panes').AuthorPane;
+
+  exports.LabelSequence = LabelSequence = (function() {
+
+    function LabelSequence(_arg) {
+      var i, pane, _len, _ref;
+      this.type = _arg.type, this.prompt = _arg.prompt, this.labelSet = _arg.labelSet, this.numberOfLabels = _arg.numberOfLabels, this.dataset = _arg.dataset, this.page = _arg.page;
+      if (!this.numberOfLabels) this.numberOfLabels = 1;
+      this.anyLabel = this.dataset ? true : false;
+      this.steps = [];
+      this.runtimeStepsByName = {};
+      _ref = this.page.panes || [];
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        pane = _ref[i];
+        if (pane instanceof AuthorPane.classFor["PredefinedGraphPane"]) {
+          this.graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor["TablePane"]) {
+          this.tablePane = pane;
+        }
+      }
+    }
+
+    LabelSequence.prototype.appendSteps = function(runtimePage) {
+      var datadefRef, pane, runtimeActivity, step, _i, _len, _ref;
+      runtimeActivity = runtimePage.activity;
+      step = runtimePage.appendStep();
+      step.setBeforeText(this.prompt.text);
+      step.setSubmissibilityCriterion(["=", ["numberOfLabels", this.labelSet], this.numberOfLabels], step.setSubmissibilityDependsOn(["annotation", this.labelSet]));
+      _ref = this.page.panes;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pane = _ref[_i];
+        pane.addToStep(step);
+      }
+      if (this.dataset) {
+        datadefRef = runtimeActivity.getDatadefRef(this.dataset);
+        step.addLabelTool({
+          labelSetName: this.labelSet,
+          index: this.graphPane.index,
+          datadefRef: datadefRef,
+          markOnDataPoints: true,
+          maxNoOfLabels: this.numberOfLabels
+        });
+      } else {
+        step.addLabelTool({
+          labelSetName: this.labelSet,
+          index: this.graphPane.index,
+          markOnDataPoints: false,
+          maxNoOfLabels: this.numberOfLabels
+        });
+      }
+      if (this.labelSet) {
+        this.labelSetObject = runtimeActivity.createAndAppendAnnotation({
+          type: 'LabelSet',
+          name: this.labelSet
+        });
+        return step.addAnnotationToPane({
+          annotation: this.labelSetObject,
+          index: this.graphPane.index
+        });
+      }
+    };
+
+    return LabelSequence;
+
+  })();
+
+}).call(this);
+
+});
+
 require.define("/author/author-unit.js", function (require, module, exports, __dirname, __filename) {
     (function() {
   var AuthorUnit, dumbSingularize;
@@ -3804,10 +3883,10 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addLabelTool = function(_arg) {
-      var allowCoordinatesChange, datadefRef, index, labelName, markOnDataPoints;
-      labelName = _arg.labelName, index = _arg.index, datadefRef = _arg.datadefRef, markOnDataPoints = _arg.markOnDataPoints, allowCoordinatesChange = _arg.allowCoordinatesChange;
+      var allowCoordinatesChange, datadefRef, index, labelName, labelSetName, markOnDataPoints, maxNoOfLabels;
+      labelName = _arg.labelName, labelSetName = _arg.labelSetName, index = _arg.index, datadefRef = _arg.datadefRef, markOnDataPoints = _arg.markOnDataPoints, maxNoOfLabels = _arg.maxNoOfLabels, allowCoordinatesChange = _arg.allowCoordinatesChange;
       return this.tools['label'] = {
-        pane: index === 0 ? 'top' : 'bottom',
+        pane: this.panes.length === 1 ? 'single' : index === 0 ? 'top' : 'bottom',
         datadefRef: datadefRef,
         toHash: function() {
           return {
@@ -3815,9 +3894,11 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
             setup: {
               pane: this.pane,
               labelName: labelName,
+              labelSetName: labelSetName,
               markOnDataPoints: markOnDataPoints,
-              datadefName: this.datadefRef.datadef.name,
-              allowCoordinatesChange: allowCoordinatesChange
+              datadefName: this.datadefRef ? this.datadefRef.datadef.name : void 0,
+              allowCoordinatesChange: allowCoordinatesChange,
+              maxNoOfLabels: maxNoOfLabels
             }
           };
         }
