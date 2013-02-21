@@ -4,6 +4,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
   
   constructor: ({
     @slope,
+    @dataSetName,
     @slopeTolerance,
     @yIntercept,
     @yInterceptTolerance,
@@ -14,14 +15,14 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @allIncorrect,
     @giveUp,
     @maxAttempts,
-    @page,
-    @dataSetName
+    @page
     }) ->
     if @maxAttempts is 0 then throw new Error "Number of attempts should be more than 0"
     @correctLineDataRef
     @correctLineDataDef
     @correctLineColor
     @correctLineDataSetName = "CorrectLine-"+ @page.index
+    @learnerDataSetColor = '#cc0000'
     @steps = []
     @specialSteps = []
     @runtimeStepsByName = {}
@@ -143,7 +144,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
 
     negated_sign_char = if @correctLineIntercept >= 0 then '+' else '-'
     correctLineExpression = 'y = '+@correctLineSlope+'x' + (negated_sign_char) + Math.abs(@correctLineIntercept)
-    @correctLineColor = runtimeActivity.getNewColor()
+    @correctLineColor = '#17becf'
     NewEmptyData = runtimeActivity.createNewEmptyDataRef(@correctLineDataSetName, correctLineExpression , 0.1, 0, @correctLineColor)
     @correctLineDataDef = NewEmptyData.dataDef
     @correctLineDataRef = NewEmptyData.dataRef
