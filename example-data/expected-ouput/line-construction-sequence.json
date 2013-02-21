@@ -471,7 +471,7 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1",
-            "CorrectLine-1"
+            "Correct Line (Page 1)"
           ],
           "datarefs": [
             "dataref-1"
@@ -482,7 +482,7 @@
             "referenceDatadef": "",
             "datadefs": [
               "datadef-1",
-              "CorrectLine-1"
+              "Correct Line (Page 1)"
             ]
           },
           "activeDatadefs": [
@@ -521,7 +521,7 @@
           "highlightedAnnotations": [],
           "data": [
             "datadef-1",
-            "CorrectLine-1"
+            "Correct Line (Page 1)"
           ],
           "datarefs": [
             "dataref-1"
@@ -532,7 +532,7 @@
             "referenceDatadef": "",
             "datadefs": [
               "datadef-1",
-              "CorrectLine-1"
+              "Correct Line (Page 1)"
             ]
           },
           "activeDatadefs": [
@@ -581,8 +581,8 @@
           "lineSnapDistance": 0
         },
         {
-          "url": "/shared/activity-with-a-line-construction-tool/datadefs/CorrectLine-1",
-          "name": "CorrectLine-1",
+          "url": "/shared/activity-with-a-line-construction-tool/datadefs/Correct Line (Page 1)",
+          "name": "Correct Line (Page 1)",
           "activity": "/shared/activity-with-a-line-construction-tool",
           "points": [],
           "pointType": "none",
@@ -601,7 +601,7 @@
           "url": "/shared/activity-with-a-line-construction-tool/datarefs/dataref-1",
           "name": "dataref-1",
           "activity": "/shared/activity-with-a-line-construction-tool",
-          "datadefName": "CorrectLine-1",
+          "datadefName": "Correct Line (Page 1)",
           "expressionForm": "slope-intercept",
           "xInterval": 0.1,
           "params": {
