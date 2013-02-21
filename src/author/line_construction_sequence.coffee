@@ -21,7 +21,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
     @correctLineDataRef
     @correctLineDataDef
     @correctLineColor
-    @correctLineDataSetName = "CorrectLine-"+ @page.index
+    @correctLineDataSetName = "Correct Line (Page " + @page.index + ")"
     @learnerDataSetColor = '#cc0000'
     @steps = []
     @specialSteps = []
