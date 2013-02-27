@@ -31,9 +31,9 @@ exports.LabelSequence = class LabelSequence
 
     if @dataset
       datadefRef = runtimeActivity.getDatadefRef(@dataset)
-      step.addLabelTool { labelSetName: @labelSet, index: @graphPane.index, datadefRef, markOnDataPoints: true, maxNoOfLabels : @numberOfLabels }
+      step.addLabelTool { labelSetName: @labelSet, index: @graphPane.index, datadefRef, markOnDataPoints: true, maxNoOfLabels : @numberOfLabels, allowCoordinatesChange : false }
     else
-      step.addLabelTool { labelSetName: @labelSet, index: @graphPane.index, markOnDataPoints: false, maxNoOfLabels : @numberOfLabels }
+      step.addLabelTool { labelSetName: @labelSet, index: @graphPane.index, markOnDataPoints: false, maxNoOfLabels : @numberOfLabels, allowCoordinatesChange : true }
 
     if @labelSet
       @labelSetObject = runtimeActivity.createAndAppendAnnotation { type: 'LabelSet' , name: @labelSet }

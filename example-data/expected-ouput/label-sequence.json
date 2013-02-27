@@ -82,6 +82,7 @@
             "labelSetName": "student-labels",
             "markOnDataPoints": true,
             "datadefName": "datadef-1",
+            "allowCoordinatesChange": false,
             "maxNoOfLabels": 2
           }
         }

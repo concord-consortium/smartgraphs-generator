@@ -2844,14 +2844,16 @@ require.define("/author/label_sequence.js", function (require, module, exports, 
           index: this.graphPane.index,
           datadefRef: datadefRef,
           markOnDataPoints: true,
-          maxNoOfLabels: this.numberOfLabels
+          maxNoOfLabels: this.numberOfLabels,
+          allowCoordinatesChange: false
         });
       } else {
         step.addLabelTool({
           labelSetName: this.labelSet,
           index: this.graphPane.index,
           markOnDataPoints: false,
-          maxNoOfLabels: this.numberOfLabels
+          maxNoOfLabels: this.numberOfLabels,
+          allowCoordinatesChange: true
         });
       }
       if (this.labelSet) {
