@@ -89,14 +89,27 @@ Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = class MultipleChoic
     indexed = []
     indexed[hint.choiceIndex] = hint for hint in @hints
 
+    for pane, i in @page.panes || []
+      @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
+      @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
+
     @orderedHints = (hint for hint in indexed when hint?)
 
   getCriterionForChoice: (choiceIndex) ->
     ["=", ["responseField", 1], 1 + choiceIndex]
     
+  getHasVisualPrompts: ->
+    for feedback in @hints.concat @initialPrompt, @giveUp, @confirmCorrect
+      return true if feedback.visualPrompts?.length > 0
+    false
+
+  getDataDefRef: (runtimeActivity) ->
+    return null unless @graphPane?
+    runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
 
   appendSteps: (runtimePage) ->
     runtimeActivity = runtimePage.activity
+    @datadefRef = @getDataDefRef runtimeActivity
     responseTemplate = runtimeActivity.createAndAppendResponseTemplate 'MultipleChoiceTemplate', [''], @choices
 
     steps = []
@@ -115,6 +128,20 @@ Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = class MultipleChoic
       pane.addToStep step for pane in @page.panes
       step.setBeforeText stepInfo.text
 
+      for prompt in stepInfo.visualPrompts ? []
+        promptHash =
+          type:       prompt.type
+          datadefRef: @datadefRef
+          color:      prompt.color
+          x:          prompt.point?[0] ? undefined
+          y:          prompt.point?[1] ? undefined
+          xMin:       prompt.xMin ? -Infinity
+          xMax:       prompt.xMax ? Infinity
+          axis:       prompt.axis?.replace "_axis", ""
+
+        step.addAnnotationToPane
+          annotation: runtimeActivity.createAndAppendAnnotation promptHash
+          index:      @graphPane.index
 
     # add branching, submit button, & multiple choice template to the answerable steps
     for step, index in answerableSteps
