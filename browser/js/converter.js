@@ -624,7 +624,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
   Sequence.classFor['MultipleChoiceWithCustomHintsSequence'] = MultipleChoiceWithCustomHintsSequence = (function() {
 
     function MultipleChoiceWithCustomHintsSequence(_arg) {
-      var hint, indexed, _i, _len, _ref, _ref2;
+      var hint, i, indexed, pane, _i, _len, _len2, _ref, _ref2, _ref3;
       this.initialPrompt = _arg.initialPrompt, this.choices = _arg.choices, this.correctAnswerIndex = _arg.correctAnswerIndex, this.hints = _arg.hints, this.confirmCorrect = _arg.confirmCorrect, this.page = _arg.page;
       _ref = [this.initialPrompt, this.confirmCorrect].map(asObject), this.initialPrompt = _ref[0], this.confirmCorrect = _ref[1];
       indexed = [];
@@ -633,10 +633,20 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
         hint = _ref2[_i];
         indexed[hint.choiceIndex] = hint;
       }
+      _ref3 = this.page.panes || [];
+      for (i = 0, _len2 = _ref3.length; i < _len2; i++) {
+        pane = _ref3[i];
+        if (pane instanceof AuthorPane.classFor['PredefinedGraphPane']) {
+          this.graphPane = pane;
+        }
+        if (pane instanceof AuthorPane.classFor['TablePane']) {
+          this.tablePane = pane;
+        }
+      }
       this.orderedHints = (function() {
-        var _j, _len2, _results;
+        var _j, _len3, _results;
         _results = [];
-        for (_j = 0, _len2 = indexed.length; _j < _len2; _j++) {
+        for (_j = 0, _len3 = indexed.length; _j < _len3; _j++) {
           hint = indexed[_j];
           if (hint != null) _results.push(hint);
         }
@@ -648,9 +658,27 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
       return ["=", ["responseField", 1], 1 + choiceIndex];
     };
 
+    MultipleChoiceWithCustomHintsSequence.prototype.getHasVisualPrompts = function() {
+      var feedback, _i, _len, _ref, _ref2;
+      _ref = this.hints.concat(this.initialPrompt, this.giveUp, this.confirmCorrect);
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        feedback = _ref[_i];
+        if (((_ref2 = feedback.visualPrompts) != null ? _ref2.length : void 0) > 0) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    MultipleChoiceWithCustomHintsSequence.prototype.getDataDefRef = function(runtimeActivity) {
+      if (this.graphPane == null) return null;
+      return runtimeActivity.getDatadefRef("" + this.graphPane.activeDatasetName);
+    };
+
     MultipleChoiceWithCustomHintsSequence.prototype.appendSteps = function(runtimePage) {
-      var answerableSteps, confirmCorrectStep, hint, hintStepsByChoiceIndex, index, pane, responseTemplate, runtimeActivity, step, stepInfo, steps, _i, _j, _k, _len, _len2, _len3, _len4, _ref, _ref2, _ref3, _results;
+      var answerableSteps, confirmCorrectStep, hint, hintStepsByChoiceIndex, index, pane, prompt, promptHash, responseTemplate, runtimeActivity, step, stepInfo, steps, _i, _j, _k, _l, _len, _len2, _len3, _len4, _len5, _ref, _ref10, _ref11, _ref12, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results;
       runtimeActivity = runtimePage.activity;
+      this.datadefRef = this.getDataDefRef(runtimeActivity);
       responseTemplate = runtimeActivity.createAndAppendResponseTemplate('MultipleChoiceTemplate', [''], this.choices);
       steps = [];
       answerableSteps = [];
@@ -671,9 +699,27 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
           pane.addToStep(step);
         }
         step.setBeforeText(stepInfo.text);
+        _ref4 = (_ref3 = stepInfo.visualPrompts) != null ? _ref3 : [];
+        for (_k = 0, _len3 = _ref4.length; _k < _len3; _k++) {
+          prompt = _ref4[_k];
+          promptHash = {
+            type: prompt.type,
+            datadefRef: this.datadefRef,
+            color: prompt.color,
+            x: (_ref5 = (_ref6 = prompt.point) != null ? _ref6[0] : void 0) != null ? _ref5 : void 0,
+            y: (_ref7 = (_ref8 = prompt.point) != null ? _ref8[1] : void 0) != null ? _ref7 : void 0,
+            xMin: (_ref9 = prompt.xMin) != null ? _ref9 : -Infinity,
+            xMax: (_ref10 = prompt.xMax) != null ? _ref10 : Infinity,
+            axis: (_ref11 = prompt.axis) != null ? _ref11.replace("_axis", "") : void 0
+          };
+          step.addAnnotationToPane({
+            annotation: runtimeActivity.createAndAppendAnnotation(promptHash),
+            index: this.graphPane.index
+          });
+        }
       }
       _results = [];
-      for (index = 0, _len3 = answerableSteps.length; index < _len3; index++) {
+      for (index = 0, _len4 = answerableSteps.length; index < _len4; index++) {
         step = answerableSteps[index];
         step.setSubmitButtonTitle("Check My Answer");
         step.setSubmissibilityCriterion(["isNumeric", ["responseField", 1]]);
@@ -682,9 +728,9 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
           criterion: this.getCriterionForChoice(this.correctAnswerIndex),
           step: confirmCorrectStep
         });
-        _ref3 = this.orderedHints;
-        for (_k = 0, _len4 = _ref3.length; _k < _len4; _k++) {
-          hint = _ref3[_k];
+        _ref12 = this.orderedHints;
+        for (_l = 0, _len5 = _ref12.length; _l < _len5; _l++) {
+          hint = _ref12[_l];
           step.appendResponseBranch({
             criterion: this.getCriterionForChoice(hint.choiceIndex),
             step: hintStepsByChoiceIndex[hint.choiceIndex]
