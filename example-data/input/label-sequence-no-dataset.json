@@ -1,0 +1,58 @@
+{
+  "type": "Activity",
+  "name": "Simple Graph with Label Sequence and no dataset",
+  "datasets": [
+ ],
+ "pages": [
+    {
+      "type": "Page",
+      "name": "Graph",
+      "text": "Here is some data.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "includedDataSets": [
+          ]
+        }
+      ],
+     "sequence": {
+        "type": "LabelSequence",
+        "prompt": "<p>Label 2 Points</p>",
+        "labelSet": "student-labels",
+        "numberOfLabels": 2
+      }
+    },
+    {
+      "type": "Page",
+      "name": "Graph",
+      "text": "Here is the data again, with your labels.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "labelSets": ["student-labels"],
+          "includedDataSets": [
+          ]
+        }
+      ]
+    }
+  ],
+  "units": []
+}
