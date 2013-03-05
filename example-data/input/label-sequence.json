@@ -1,0 +1,76 @@
+{
+  "type": "Activity",
+  "name": "Simple Graph with Label Sequence",
+  "datasets": [
+    {
+      "name": "datadef-1",
+      "type": "datadef",
+      "data": [
+            [1,200],
+            [2,400],
+            [3,600]
+          ]
+   }
+ ],
+ "pages": [
+    {
+      "type": "Page",
+      "name": "Graph",
+      "text": "Here is some data.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
+        }
+      ],
+     "sequence": {
+        "type": "LabelSequence",
+        "prompt": "<p>Label 2 Points</p>",
+        "labelSet": "student-labels",
+        "numberOfLabels": 2,
+        "dataset": "datadef-1"
+      }
+    },
+    {
+      "type": "Page",
+      "name": "Graph",
+      "text": "Here is the data again, with your labels.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Position vs. Time",
+          "yLabel": "Position",
+          "yMin": 0,
+          "yMax": 2000,
+          "yTicks": 10,
+          "xLabel": "Time",
+          "xMin": 0,
+          "xMax": 10,
+          "xTicks": 10,
+          "labelSets": ["student-labels"],
+          "includedDataSets": [
+            {
+              "name": "datadef-1",
+              "inLegend": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "units": []
+}

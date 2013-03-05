@@ -131,18 +131,20 @@ exports.Step = class Step
           labelName: @labelName
     }
 
-  addLabelTool: ({ labelName, index, datadefRef, markOnDataPoints, allowCoordinatesChange }) ->
+  addLabelTool: ({ labelName, labelSetName, index, datadefRef, markOnDataPoints, maxNoOfLabels, allowCoordinatesChange }) ->
     @tools['label'] = {
-      pane: if index == 0 then 'top' else 'bottom',
+      pane: if @panes.length is 1 then 'single' else if index is 0 then 'top' else 'bottom'
       datadefRef,
       toHash: ->
         name: 'label'
         setup:
           pane: @pane
           labelName: labelName
+          labelSetName: labelSetName
           markOnDataPoints: markOnDataPoints
-          datadefName: @datadefRef.datadef.name
+          datadefName: if @datadefRef then @datadefRef.datadef.name
           allowCoordinatesChange: allowCoordinatesChange
+          maxNoOfLabels: maxNoOfLabels
     }
 
   addSensorTool: ({ index, datadefRef }) ->
