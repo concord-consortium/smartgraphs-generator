@@ -1,6 +1,6 @@
 {
   "type": "Activity",
-  "name": "Label Stories Base Activity",
+  "name": "Label Stories Label Set",
   "authorName": "Richard Klancer",
   "pages": [
     {
@@ -19,6 +19,7 @@
           "xMax": 4.0,
           "yTicks": 10.0,
           "xTicks": 16.0,
+          "labelSets": ["my-labels"],
           "includedDataSets": [
             {
               "name": "0.8 sin(x)",
@@ -47,6 +48,28 @@
 
       ],
       "expression": "y  = 0.8 sin(x)"
+    }
+  ],
+  "labelSets": [
+    {
+      "name": "my-labels",
+      "labels": [
+        {
+          "point": [0, 0],
+          "offset": [100,-40],
+          "text": "This is the zero crossing."
+        },
+        {
+          "point": [1.5707, 0.8],
+          "offset": [100,-40],
+          "text": "This is the maximum."
+        },
+        {
+          "point": [-1.5707, -0.8],
+          "offset": [100,-40],
+          "text": "This is the minimum."
+        }
+      ]
     }
   ],
   "units": [
