@@ -1,59 +1,59 @@
 {
-  "_id": "simple-graph-with-label-sequence-and-no-dataset.df6",
+  "_id": "label-sequence-no-dataset.df6",
   "_rev": 1,
   "data_format_version": 6,
   "activity": {
-    "title": "Simple Graph with Label Sequence and no dataset",
-    "url": "/shared/simple-graph-with-label-sequence-and-no-dataset",
+    "title": "Label Sequence No Dataset",
+    "url": "/shared/label-sequence-no-dataset",
     "owner": "shared",
     "pages": [
-      "/shared/simple-graph-with-label-sequence-and-no-dataset/page/1-graph",
-      "/shared/simple-graph-with-label-sequence-and-no-dataset/page/2-graph"
+      "/shared/label-sequence-no-dataset/page/1-graph",
+      "/shared/label-sequence-no-dataset/page/2-graph"
     ],
     "axes": [
-      "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/1",
-      "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/2",
-      "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/3",
-      "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/4"
+      "/shared/label-sequence-no-dataset/axes/1",
+      "/shared/label-sequence-no-dataset/axes/2",
+      "/shared/label-sequence-no-dataset/axes/3",
+      "/shared/label-sequence-no-dataset/axes/4"
     ]
   },
   "pages": [
     {
       "name": "Graph",
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/1-graph",
-      "activity": "/shared/simple-graph-with-label-sequence-and-no-dataset",
+      "url": "/shared/label-sequence-no-dataset/page/1-graph",
+      "activity": "/shared/label-sequence-no-dataset",
       "index": 1,
       "introText": "Here is some data.",
       "steps": [
-        "/shared/simple-graph-with-label-sequence-and-no-dataset/page/1-graph/step/1"
+        "/shared/label-sequence-no-dataset/page/1-graph/step/1"
       ],
-      "firstStep": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/1-graph/step/1",
+      "firstStep": "/shared/label-sequence-no-dataset/page/1-graph/step/1",
       "contextVars": []
     },
     {
       "name": "Graph",
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/2-graph",
-      "activity": "/shared/simple-graph-with-label-sequence-and-no-dataset",
+      "url": "/shared/label-sequence-no-dataset/page/2-graph",
+      "activity": "/shared/label-sequence-no-dataset",
       "index": 2,
       "introText": "Here is the data again, with your labels.",
       "steps": [
-        "/shared/simple-graph-with-label-sequence-and-no-dataset/page/2-graph/step/1"
+        "/shared/label-sequence-no-dataset/page/2-graph/step/1"
       ],
-      "firstStep": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/2-graph/step/1",
+      "firstStep": "/shared/label-sequence-no-dataset/page/2-graph/step/1",
       "contextVars": []
     }
   ],
   "steps": [
     {
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/1-graph/step/1",
-      "activityPage": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/1-graph",
+      "url": "/shared/label-sequence-no-dataset/page/1-graph/step/1",
+      "activityPage": "/shared/label-sequence-no-dataset/page/1-graph",
       "paneConfig": "single",
       "panes": {
         "single": {
           "type": "graph",
           "title": "Position vs. Time",
-          "xAxis": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/1",
-          "yAxis": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/2",
+          "xAxis": "/shared/label-sequence-no-dataset/axes/1",
+          "yAxis": "/shared/label-sequence-no-dataset/axes/2",
           "annotations": [
             "student-labels"
           ],
@@ -89,15 +89,15 @@
       "nextButtonShouldSubmit": true
     },
     {
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/2-graph/step/1",
-      "activityPage": "/shared/simple-graph-with-label-sequence-and-no-dataset/page/2-graph",
+      "url": "/shared/label-sequence-no-dataset/page/2-graph/step/1",
+      "activityPage": "/shared/label-sequence-no-dataset/page/2-graph",
       "paneConfig": "single",
       "panes": {
         "single": {
           "type": "graph",
           "title": "Position vs. Time",
-          "xAxis": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/3",
-          "yAxis": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/4",
+          "xAxis": "/shared/label-sequence-no-dataset/axes/3",
+          "yAxis": "/shared/label-sequence-no-dataset/axes/4",
           "annotations": [
             "student-labels"
           ],
@@ -112,28 +112,28 @@
   "responseTemplates": [],
   "axes": [
     {
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/1",
+      "url": "/shared/label-sequence-no-dataset/axes/1",
       "min": 0,
       "max": 10,
       "nSteps": 10,
       "label": "Time"
     },
     {
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/2",
+      "url": "/shared/label-sequence-no-dataset/axes/2",
       "min": 0,
       "max": 2000,
       "nSteps": 10,
       "label": "Position"
     },
     {
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/3",
+      "url": "/shared/label-sequence-no-dataset/axes/3",
       "min": 0,
       "max": 10,
       "nSteps": 10,
       "label": "Time"
     },
     {
-      "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/axes/4",
+      "url": "/shared/label-sequence-no-dataset/axes/4",
       "min": 0,
       "max": 2000,
       "nSteps": 10,
@@ -147,9 +147,9 @@
       "type": "LabelSet",
       "records": [
         {
-          "url": "/shared/simple-graph-with-label-sequence-and-no-dataset/annotations/student-labels",
+          "url": "/shared/label-sequence-no-dataset/annotations/student-labels",
           "name": "student-labels",
-          "activity": "/shared/simple-graph-with-label-sequence-and-no-dataset"
+          "activity": "/shared/label-sequence-no-dataset"
         }
       ]
     }

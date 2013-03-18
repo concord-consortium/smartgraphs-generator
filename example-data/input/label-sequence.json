@@ -1,6 +1,6 @@
 {
   "type": "Activity",
-  "name": "Simple Graph with Label Sequence",
+  "name": "Label Sequence",
   "datasets": [
     {
       "name": "datadef-1",
