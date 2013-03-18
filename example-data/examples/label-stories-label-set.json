@@ -1,0 +1,139 @@
+{
+  "type": "Activity",
+  "name": "Label Stories Base Activity",
+  "authorName": "Richard Klancer",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "1 First Page",
+      "text": "The following is a graph of <em>0.8 sin(x)</em>.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Sinusoidal motion",
+          "yLabel": "Distance",
+          "yMin": -1.0,
+          "yMax": 1.0,
+          "xLabel": "Time",
+          "xMin": -4.0,
+          "xMax": 4.0,
+          "yTicks": 10.0,
+          "xTicks": 16.0,
+          "includedDataSets": [
+            {
+              "name": "0.8 sin(x)",
+              "inLegend": false
+            }
+          ],
+          "showCrossHairs": false,
+          "showToolTipCoords": false,
+          "showGraphGrid": true
+        }
+      ]
+    }
+  ],
+  "datasets": [
+    {
+      "type": "dataref",
+      "name": "0.8 sin(x)",
+      "yUnits": "meters",
+      "xUnits": "Time",
+      "xPrecision": 0.1,
+      "yPrecision": 0.1,
+      "lineSnapDistance": 0.1,
+      "lineType": "connected",
+      "pointType": "none",
+      "data": [
+
+      ],
+      "expression": "y  = 0.8 sin(x)"
+    }
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Distance",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "degrees Celsius",
+      "abbreviation": "deg C"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "min."
+    },
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "centimeters",
+      "abbreviation": "cm"
+    },
+    {
+      "type": "Unit",
+      "name": "grams",
+      "abbreviation": "gr"
+    },
+    {
+      "type": "Unit",
+      "name": "miles",
+      "abbreviation": "mi"
+    },
+    {
+      "type": "Unit",
+      "name": "hours",
+      "abbreviation": "hr"
+    },
+    {
+      "type": "Unit",
+      "name": "Celsius",
+      "abbreviation": "° C."
+    },
+    {
+      "type": "Unit",
+      "name": "dollars",
+      "abbreviation": "$"
+    },
+    {
+      "type": "Unit",
+      "name": "inches",
+      "abbreviation": "in"
+    },
+    {
+      "type": "Unit",
+      "name": "years",
+      "abbreviation": "yr"
+    },
+    {
+      "type": "Unit",
+      "name": "millimeters",
+      "abbreviation": "mm"
+    },
+    {
+      "type": "Unit",
+      "name": "parts per million",
+      "abbreviation": "ppm"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    }
+  ]
+}
