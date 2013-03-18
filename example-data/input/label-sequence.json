@@ -39,7 +39,7 @@
       ],
      "sequence": {
         "type": "LabelSequence",
-        "prompt": "<p>Label 2 Points</p>",
+        "text": "<p>Label 2 Points</p>",
         "labelSet": "student-labels",
         "numberOfLabels": 2,
         "dataset": "datadef-1"

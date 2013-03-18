@@ -2855,7 +2855,7 @@ require.define("/author/label_sequence.js", function (require, module, exports, 
 
     function LabelSequence(_arg) {
       var i, pane, _len, _ref;
-      this.type = _arg.type, this.prompt = _arg.prompt, this.labelSet = _arg.labelSet, this.numberOfLabels = _arg.numberOfLabels, this.dataset = _arg.dataset, this.page = _arg.page;
+      this.type = _arg.type, this.text = _arg.text, this.labelSet = _arg.labelSet, this.numberOfLabels = _arg.numberOfLabels, this.dataset = _arg.dataset, this.page = _arg.page;
       if (!this.numberOfLabels) this.numberOfLabels = 1;
       this.anyLabel = this.dataset ? true : false;
       this.steps = [];
@@ -2876,7 +2876,7 @@ require.define("/author/label_sequence.js", function (require, module, exports, 
       var datadefRef, pane, runtimeActivity, step, _i, _len, _ref;
       runtimeActivity = runtimePage.activity;
       step = runtimePage.appendStep();
-      step.setBeforeText(this.prompt.text);
+      step.setBeforeText(this.text);
       step.setSubmissibilityCriterion(["=", ["numberOfLabels", this.labelSet], this.numberOfLabels], step.setSubmissibilityDependsOn(["annotation", this.labelSet]));
       _ref = this.page.panes;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {

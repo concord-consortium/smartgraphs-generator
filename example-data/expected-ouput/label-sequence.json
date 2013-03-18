@@ -47,6 +47,7 @@
     {
       "url": "/shared/label-sequence/page/1-graph/step/1",
       "activityPage": "/shared/label-sequence/page/1-graph",
+      "beforeText": "<p>Label 2 Points</p>",
       "paneConfig": "single",
       "panes": {
         "single": {

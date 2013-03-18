@@ -3,7 +3,7 @@
 exports.LabelSequence = class LabelSequence
   constructor: ({
     @type,
-    @prompt,
+    @text,
     @labelSet,
     @numberOfLabels,
     @dataset,
@@ -23,7 +23,7 @@ exports.LabelSequence = class LabelSequence
     runtimeActivity = runtimePage.activity
     step = runtimePage.appendStep()
 
-    step.setBeforeText @prompt.text
+    step.setBeforeText @text
     step.setSubmissibilityCriterion ["=", ["numberOfLabels", @labelSet], @numberOfLabels],
     step.setSubmissibilityDependsOn ["annotation", @labelSet]
 
