@@ -1,6 +1,6 @@
 {
   "type": "Activity",
-  "name": "Label Stories Base Activity",
+  "name": "Label Stories Label Sequence",
   "authorName": "Richard Klancer",
   "pages": [
     {
@@ -29,6 +29,41 @@
           "showToolTipCoords": false,
           "showGraphGrid": true
         }
+      ],
+      "sequence": {
+        "type": "LabelSequence",
+        "text": "<p>Label the zero crossings</p>",
+        "labelSet": "student-labels",
+        "numberOfLabels": 3
+      }
+    },
+    {
+      "type": "Page",
+      "name": "2 Second Page",
+      "text": "The following is a graph of <em>0.8 sin(x)</em>, with the zero crossings you labeled.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Sinusoidal motion",
+          "yLabel": "Distance",
+          "yMin": -1.0,
+          "yMax": 1.0,
+          "xLabel": "Time",
+          "xMin": -4.0,
+          "xMax": 4.0,
+          "yTicks": 10.0,
+          "xTicks": 16.0,
+          "labelSets": ["student-labels"],
+          "includedDataSets": [
+            {
+              "name": "0.8 sin(x)",
+              "inLegend": false
+            }
+          ],
+          "showCrossHairs": false,
+          "showToolTipCoords": false,
+          "showGraphGrid": true
+        }
       ]
     }
   ],
@@ -42,7 +77,7 @@
       "yPrecision": 0.1,
       "lineSnapDistance": 0.1,
       "lineType": "connected",
-      "pointType": "none",
+      "pointType": "dot",
       "data": [
 
       ],
