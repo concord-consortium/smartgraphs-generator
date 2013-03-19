@@ -39,7 +39,8 @@
       "sequence": {
         "type": "PickAPointSequence",
         "initialPrompt": {
-          "text": "Label the <em>maximum</em> of the function"
+          "text": "Label the <em>maximum</em> of the function",
+          "label": "labeled-point"
         },
         "giveUp": {
           "text": "The maximum point of the sine function is at π/2, or 1.57, where it attains the value 1. Since we're multiplying it by 0.8, the y-value of the maximum point is 0.8.",
@@ -90,6 +91,7 @@
           "xMax": 4.0,
           "yTicks": 10.0,
           "xTicks": 16.0,
+          "labels": ["labeled-point"],
           "includedDataSets": [
             {
               "name": "0.8 sin(x)",
