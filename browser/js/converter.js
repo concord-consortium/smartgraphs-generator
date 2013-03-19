@@ -1079,7 +1079,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function GraphPane(_arg) {
       var includeAnnotationsFrom;
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets, this.labelSets = _arg.labelSets;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets, this.labelSets = _arg.labelSets, this.labels = _arg.labels;
       this.activeDataSetIndex = 0;
       this.totalDatasetsIndex = 0;
       this.activeDatasetName;
@@ -1146,7 +1146,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     };
 
     GraphPane.prototype.addToStep = function(step) {
-      var createdAnnotation, labelSetName, _i, _j, _len, _len2, _ref, _ref2, _ref3,
+      var createdAnnotation, label, labelName, labelSetName, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref, _ref2, _ref3, _ref4, _ref5,
         _this = this;
       step.addGraphPane({
         title: this.title,
@@ -1180,7 +1180,21 @@ require.define("/author/author-panes.js", function (require, module, exports, __
           }
         }
       }
-      return (_ref3 = this.annotationSources) != null ? _ref3.forEach(function(source) {
+      _ref3 = this.labels || [];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        labelName = _ref3[_k];
+        _ref4 = this.runtimeActivity.annotations.Label || [];
+        for (_l = 0, _len4 = _ref4.length; _l < _len4; _l++) {
+          label = _ref4[_l];
+          if (label.name === labelName) {
+            step.addAnnotationToPane({
+              annotation: label,
+              index: this.index
+            });
+          }
+        }
+      }
+      return (_ref5 = this.annotationSources) != null ? _ref5.forEach(function(source) {
         var page, pages, pane;
         pages = _this.page.activity.pages;
         page = pages[source.page];

@@ -12,7 +12,7 @@ AuthorPane = exports.AuthorPane =
 
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @labelSets}) ->
+  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @labelSets, @labels}) ->
     @activeDataSetIndex = 0
     @totalDatasetsIndex = 0
     @activeDatasetName
@@ -60,6 +60,13 @@ class GraphPane
               step.addAnnotationToPane
                 annotation: createdAnnotation
                 index: @index
+                
+    for labelName in (@labels || [])
+      for label in (@runtimeActivity.annotations.Label || [])
+        if label.name is labelName
+          step.addAnnotationToPane
+            annotation: label
+            index: @index
 
     @annotationSources?.forEach (source) =>
       pages = @page.activity.pages
