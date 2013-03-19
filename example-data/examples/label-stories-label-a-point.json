@@ -1,6 +1,6 @@
 {
   "type": "Activity",
-  "name": "Label Stories Label-A-Point",
+  "name": "Label Stories Label A Point",
   "authorName": "Richard Klancer",
   "pages": [
     {
@@ -73,6 +73,34 @@
           }
         ]
       }
+    },
+    {
+      "type": "Page",
+      "name": "2 Second Page",
+      "text": "The following is a graph of <em>0.8 sin(x)</em>, with the point you labeled.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "Sinusoidal motion",
+          "yLabel": "Distance",
+          "yMin": -1.0,
+          "yMax": 1.0,
+          "xLabel": "Time",
+          "xMin": -4.0,
+          "xMax": 4.0,
+          "yTicks": 10.0,
+          "xTicks": 16.0,
+          "includedDataSets": [
+            {
+              "name": "0.8 sin(x)",
+              "inLegend": false
+            }
+          ],
+          "showCrossHairs": false,
+          "showToolTipCoords": false,
+          "showGraphGrid": true
+        }
+      ]
     }
   ],
   "datasets": [
