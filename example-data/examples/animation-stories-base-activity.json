@@ -9,25 +9,6 @@
       "text": "<h1>Discovery Question</h1>",
       "panes": [
         {
-          "type": "PredefinedGraphPane",
-          "title": "Position vs. Time",
-          "yLabel": "Distance",
-          "yMin": 0.0,
-          "yMax": 40.0,
-          "xLabel": "Time",
-          "xMin": 0.0,
-          "xMax": 9.0,
-          "yTicks": 8.0,
-          "xTicks": 9.0,
-          "includedDataSets": [
-            {
-              "name": "position-data",
-              "inLegend": false
-            }
-          ],
-          "showCrossHairs": false,
-          "showToolTipCoords": false,
-          "showGraphGrid": false
         }
       ],
       "sequence": {
