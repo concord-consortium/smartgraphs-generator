@@ -19,6 +19,9 @@
         {
           "type": "AnimationPane",
           "animation": "position-data-animation"
+        },
+        {
+          "type": "EmptyPane"
         }
       ],
       "sequence": {
@@ -53,6 +56,9 @@
           "showCrossHairs": false,
           "showToolTipCoords": false,
           "showGraphGrid": false
+        },
+        {
+          "type": "EmptyPane"
         }
       ],
       "sequence": {
