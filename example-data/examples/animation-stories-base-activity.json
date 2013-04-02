@@ -7,7 +7,8 @@
       "name": "position-data-animation",
       "yMin": 0.0,
       "yMax": 40.0,
-      "markedCoordinates": [0]
+      "markedCoordinates": [0],
+      "dataset": "position-data"
     }
   ],
   "pages": [
