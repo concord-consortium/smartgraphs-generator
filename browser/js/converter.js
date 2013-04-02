@@ -341,18 +341,20 @@ require.define("/author/author-activity.js", function (require, module, exports,
 */
 
 (function() {
-  var AuthorActivity, AuthorPage, AuthorUnit, RuntimeActivity;
+  var Animation, AuthorActivity, AuthorPage, AuthorUnit, RuntimeActivity;
 
   AuthorPage = require('./author-page').AuthorPage;
 
   AuthorUnit = require('./author-unit').AuthorUnit;
+
+  Animation = require('./animation').Animation;
 
   RuntimeActivity = require('../runtime/runtime-activity').RuntimeActivity;
 
   exports.AuthorActivity = AuthorActivity = (function() {
 
     function AuthorActivity(hash) {
-      var i, page, unit;
+      var animation, dataset, i, page, unit, _i, _j, _len, _len2, _ref, _ref2;
       this.hash = hash;
       if (this.hash.type !== 'Activity') {
         throw new Error("smartgraphs-generator: AuthorActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\"");
@@ -379,6 +381,35 @@ require.define("/author/author-activity.js", function (require, module, exports,
         }
         return _results;
       }).call(this);
+      this.animations = (function() {
+        var _i, _len, _ref, _results;
+        _ref = hash.animations || [];
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          animation = _ref[_i];
+          _results.push(new Animation(animation, this));
+        }
+        return _results;
+      }).call(this);
+      this.animationsByName = {};
+      _ref = this.animations;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        animation = _ref[_i];
+        if (this.animationsByName[animation.name]) {
+          throw new Error("More than one animation object named " + animation.name);
+        }
+        this.animationsByName[animation.name] = animation;
+      }
+      this.datasets = hash.datasets || [];
+      this.datasetsByName = {};
+      _ref2 = this.datasets;
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        dataset = _ref2[_j];
+        if (this.datasetsByName[dataset.name]) {
+          throw new Error("More than one dataset named " + dataset.name);
+        }
+        this.datasetsByName[dataset.name] = dataset;
+      }
     }
 
     AuthorActivity.prototype.toRuntimeActivity = function() {
@@ -1057,7 +1088,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
+  var AnimationPane, AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -1349,6 +1380,55 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     };
 
     return TablePane;
+
+  })();
+
+  AuthorPane.classFor['AnimationPane'] = AnimationPane = (function() {
+
+    function AnimationPane(_arg) {
+      this.animation = _arg.animation;
+    }
+
+    AnimationPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
+      var animation, xMax, xMin;
+      animation = this.page.activity.animationsByName[this.animation];
+      xMin = animation.getXMin();
+      xMax = animation.getXMax();
+      this.graphPane = new GraphPane({
+        title: "dummy",
+        xLabel: "dummy",
+        yLabel: "dummy",
+        xMin: xMin,
+        xMax: xMax,
+        xTicks: 1,
+        yLabel: "dummy",
+        yMin: animation.yMin,
+        yMax: animation.yMax,
+        yTicks: 1,
+        includedDataSets: [
+          {
+            name: animation.dataset,
+            inLegend: false
+          }
+        ]
+      });
+      this.graphPane.index = this.index;
+      this.graphPane.page = this.page;
+      return this.graphPane.addToPageAndActivity(runtimePage, runtimeActivity);
+    };
+
+    AnimationPane.prototype.addToStep = function(step) {
+      var animation;
+      animation = this.page.activity.animationsByName[this.animation];
+      this.graphPane.addToStep(step);
+      return step.addAnimationTool({
+        index: this.index,
+        animation: animation,
+        hideGraph: true
+      });
+    };
+
+    return AnimationPane;
 
   })();
 
@@ -2969,6 +3049,117 @@ require.define("/author/author-unit.js", function (require, module, exports, __d
 
 });
 
+require.define("/author/animation.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var Animation, AnimationTool;
+
+  AnimationTool = require('../runtime/animation-tool').AnimationTool;
+
+  exports.Animation = Animation = (function() {
+
+    function Animation(_arg, activity) {
+      this.name = _arg.name, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.markedCoordinates = _arg.markedCoordinates, this.dataset = _arg.dataset;
+      this.activity = activity;
+      if (this.markedCoodinates == null) this.markedCoodinates = [];
+    }
+
+    Animation.prototype.getXMin = function() {
+      var dataset;
+      dataset = this.activity.datasetsByName[this.dataset];
+      return dataset.data[0][0];
+    };
+
+    Animation.prototype.getXMax = function() {
+      var dataset;
+      dataset = this.activity.datasetsByName[this.dataset];
+      return dataset.data[dataset.data.length - 1][0];
+    };
+
+    Animation.prototype.toAnimationTool = function() {
+      return new AnimationTool({
+        datasetName: this.dataset,
+        staticImageYValues: this.markedCoordinates
+      });
+    };
+
+    return Animation;
+
+  })();
+
+}).call(this);
+
+});
+
+require.define("/runtime/animation-tool.js", function (require, module, exports, __dirname, __filename) {
+    (function() {
+  var AnimationTool;
+
+  exports.AnimationTool = AnimationTool = (function() {
+
+    AnimationTool.prototype.index = null;
+
+    AnimationTool.prototype.panes = null;
+
+    AnimationTool.prototype.hideGraph = false;
+
+    function AnimationTool(_arg) {
+      this.datasetName = _arg.datasetName, this.staticImageYValues = _arg.staticImageYValues;
+    }
+
+    AnimationTool.prototype.toHash = function() {
+      var y;
+      return {
+        name: "animation",
+        setup: {
+          pane: this.panes.length === 1 ? 'single' : this.index === 0 ? 'top' : 'bottom',
+          hideGraph: this.hideGraph,
+          duration: 9000,
+          channelWidth: 70,
+          staticImages: [
+            {
+              name: "finish",
+              image: "finish.png",
+              width: 70,
+              height: 10,
+              xOffset: 0,
+              yOffset: 5,
+              instances: (function() {
+                var _i, _len, _ref, _results;
+                _ref = this.staticImageYValues;
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  y = _ref[_i];
+                  _results.push({
+                    y: y
+                  });
+                }
+                return _results;
+              }).call(this)
+            }
+          ],
+          backgroundImage: "road-dashed.png",
+          animations: [
+            {
+              data: this.datasetName,
+              image: "carWhite2.png",
+              width: 30,
+              height: 61,
+              xOffset: 40,
+              yOffset: 0
+            }
+          ]
+        }
+      };
+    };
+
+    return AnimationTool;
+
+  })();
+
+}).call(this);
+
+});
+
 require.define("/runtime/runtime-activity.js", function (require, module, exports, __dirname, __filename) {
     
 /*
@@ -4025,6 +4216,15 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
           };
         }
       };
+    };
+
+    Step.prototype.addAnimationTool = function(_arg) {
+      var animation, hideGraph, index;
+      index = _arg.index, animation = _arg.animation, hideGraph = _arg.hideGraph;
+      this.tools.animation = animation.toAnimationTool();
+      this.tools.animation.hideGraph = hideGraph;
+      this.tools.animation.index = index;
+      return this.tools.animation.panes = this.panes;
     };
 
     Step.prototype.appendResponseBranch = function(_arg) {

@@ -60,7 +60,7 @@ class GraphPane
               step.addAnnotationToPane
                 annotation: createdAnnotation
                 index: @index
-                
+
     for labelName in (@labels || [])
       for label in (@runtimeActivity.annotations.Label || [])
         if label.name is labelName
@@ -145,3 +145,37 @@ AuthorPane.classFor['TablePane'] = class TablePane
     dataKey = "#{@page.panes[otherPaneIndex].activeDatasetName}"
     datadefRef = @runtimeActivity.getDatadefRef dataKey     # get the datadef defined in the *other* pane on this page
     step.addTablePane { datadefRef, @index, @xLabel, @yLabel }
+
+
+AuthorPane.classFor['AnimationPane'] = class AnimationPane
+
+  constructor: ({ @animation }) ->
+
+  addToPageAndActivity: (runtimePage, runtimeActivity) ->
+    animation = @page.activity.animationsByName[@animation]
+    xMin = animation.getXMin()
+    xMax = animation.getXMax()
+    # we need to add a graph pane, even though it will be hidden from the user!
+    @graphPane = new GraphPane
+      title: "dummy"
+      xLabel: "dummy"
+      yLabel: "dummy"
+      xMin: xMin
+      xMax: xMax
+      xTicks: 1
+      yLabel: "dummy"
+      yMin: animation.yMin
+      yMax: animation.yMax
+      yTicks: 1
+      includedDataSets: [
+        name: animation.dataset
+        inLegend: false
+      ]
+    @graphPane.index = @index
+    @graphPane.page = @page
+    @graphPane.addToPageAndActivity(runtimePage, runtimeActivity)
+
+  addToStep: (step) ->
+    animation = @page.activity.animationsByName[@animation]
+    @graphPane.addToStep step
+    step.addAnimationTool { @index, animation, hideGraph: true }

@@ -186,6 +186,12 @@ exports.Step = class Step
           data:           @datadefRef.datadef.name
     }
 
+  addAnimationTool: ({ index, animation, hideGraph }) ->
+    @tools.animation = animation.toAnimationTool()
+    @tools.animation.hideGraph = hideGraph
+    @tools.animation.index = index
+    @tools.animation.panes = @panes
+
   appendResponseBranch: ({ criterion, step }) ->
     @responseBranches.push {
       criterion,

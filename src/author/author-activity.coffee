@@ -19,6 +19,7 @@
 
 {AuthorPage}      = require './author-page'
 {AuthorUnit}      = require './author-unit'
+{Animation}       = require './animation'
 {RuntimeActivity} = require '../runtime/runtime-activity'
 
 exports.AuthorActivity = class AuthorActivity
@@ -31,6 +32,18 @@ exports.AuthorActivity = class AuthorActivity
     @owner ||= 'shared'        # until we get owner's username into the input hash
     @pages = (new AuthorPage(page, this, i + 1) for page, i in hash.pages)
     @units = (new AuthorUnit(unit, this) for unit in hash.units || [])
+    @animations = (new Animation(animation, this) for animation in hash.animations || [])
+    @animationsByName = {}
+
+    for animation in @animations
+      if @animationsByName[animation.name] then throw new Error "More than one animation object named #{animation.name}"
+      @animationsByName[animation.name] = animation
+
+    @datasets = hash.datasets || []
+    @datasetsByName = {}
+    for dataset in @datasets
+      if @datasetsByName[dataset.name] then throw new Error "More than one dataset named #{dataset.name}"
+      @datasetsByName[dataset.name] = dataset
 
   toRuntimeActivity: ->
     runtimeActivity = new RuntimeActivity @owner, @name, @authorName, @hash.datasets, @hash.labelSets
