@@ -112,6 +112,11 @@ exports.Step = class Step
         highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
     }
 
+  addEmptyPane: ({ index }) ->
+    @panes[index] = {
+      toHash: -> undefined
+    }
+
   addAnnotationToPane: ({ annotation, index }) ->
     @panes[index].annotations.push annotation
 

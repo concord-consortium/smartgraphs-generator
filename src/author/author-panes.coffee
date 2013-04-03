@@ -179,3 +179,10 @@ AuthorPane.classFor['AnimationPane'] = class AnimationPane
     animation = @page.activity.animationsByName[@animation]
     @graphPane.addToStep step
     step.addAnimationTool { @index, animation, hideGraph: true }
+
+
+AuthorPane.classFor['EmptyPane'] = class EmptyPane
+  addToPageAndActivity: ->
+  addToStep: (step) ->
+    step.addEmptyPane { @index }
+

@@ -1088,7 +1088,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AnimationPane, AuthorPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
+  var AnimationPane, AuthorPane, EmptyPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -1429,6 +1429,22 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     };
 
     return AnimationPane;
+
+  })();
+
+  AuthorPane.classFor['EmptyPane'] = EmptyPane = (function() {
+
+    function EmptyPane() {}
+
+    EmptyPane.prototype.addToPageAndActivity = function() {};
+
+    EmptyPane.prototype.addToStep = function(step) {
+      return step.addEmptyPane({
+        index: this.index
+      });
+    };
+
+    return EmptyPane;
 
   })();
 
@@ -4099,6 +4115,16 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
               return _results;
             }).call(this)
           };
+        }
+      };
+    };
+
+    Step.prototype.addEmptyPane = function(_arg) {
+      var index;
+      index = _arg.index;
+      return this.panes[index] = {
+        toHash: function() {
+          return;
         }
       };
     };
