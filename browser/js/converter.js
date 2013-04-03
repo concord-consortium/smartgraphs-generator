@@ -1110,7 +1110,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function GraphPane(_arg) {
       var includeAnnotationsFrom;
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets, this.labelSets = _arg.labelSets, this.labels = _arg.labels;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets, this.labelSets = _arg.labelSets, this.labels = _arg.labels, this.animation = _arg.animation;
       this.activeDataSetIndex = 0;
       this.totalDatasetsIndex = 0;
       this.activeDatasetName;
@@ -1177,7 +1177,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     };
 
     GraphPane.prototype.addToStep = function(step) {
-      var createdAnnotation, label, labelName, labelSetName, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref, _ref2, _ref3, _ref4, _ref5,
+      var animation, createdAnnotation, label, labelName, labelSetName, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref, _ref2, _ref3, _ref4, _ref5,
         _this = this;
       step.addGraphPane({
         title: this.title,
@@ -1193,6 +1193,14 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         dataRef: this.dataRef,
         labelSets: this.labelSets
       });
+      if (this.animation) {
+        animation = this.page.activity.animationsByName[this.animation];
+        step.addAnimationTool({
+          index: this.index,
+          animation: animation,
+          hideGraph: false
+        });
+      }
       if (this.labelSets) {
         _ref = this.labelSets;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {

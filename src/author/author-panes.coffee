@@ -12,7 +12,7 @@ AuthorPane = exports.AuthorPane =
 
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @labelSets, @labels}) ->
+  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @labelSets, @labels, @animation}) ->
     @activeDataSetIndex = 0
     @totalDatasetsIndex = 0
     @activeDatasetName
@@ -52,6 +52,11 @@ class GraphPane
 
   addToStep: (step) ->
     step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef, @labelSets}
+
+    if @animation
+      animation = @page.activity.animationsByName[@animation]
+      step.addAnimationTool { @index, animation, hideGraph: false }
+
     if @labelSets
       for labelSetName in @labelSets
         if @runtimeActivity.annotations['LabelSet']
