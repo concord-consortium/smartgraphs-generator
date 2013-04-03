@@ -2,6 +2,15 @@
   "type": "Activity",
   "name": "Describing Velocity Animations",
   "authorName": "Richard Klancer",
+  "animations": [
+    {
+      "name": "position-data-animation",
+      "yMin": 0.0,
+      "yMax": 40.0,
+      "markedCoordinates": [0],
+      "dataset": "position-data"
+    }
+  ],
   "pages": [
     {
       "type": "Page",
@@ -9,6 +18,11 @@
       "text": "<h1>Discovery Question</h1>",
       "panes": [
         {
+          "type": "AnimationPane",
+          "animation": "position-data-animation"
+        },
+        {
+          "type": "EmptyPane"
         }
       ],
       "sequence": {
@@ -39,9 +53,13 @@
               "inLegend": false
             }
           ],
+          "animation": "position-data-animation",
           "showCrossHairs": false,
           "showToolTipCoords": false,
           "showGraphGrid": false
+        },
+        {
+          "type": "EmptyPane"
         }
       ],
       "sequence": {
