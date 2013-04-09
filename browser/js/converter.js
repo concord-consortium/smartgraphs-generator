@@ -1110,13 +1110,13 @@ require.define("/author/author-panes.js", function (require, module, exports, __
 
     function GraphPane(_arg) {
       var includeAnnotationsFrom;
-      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets, this.labelSets = _arg.labelSets, this.labels = _arg.labels, this.animation = _arg.animation;
+      this.title = _arg.title, this.xLabel = _arg.xLabel, this.xMin = _arg.xMin, this.xMax = _arg.xMax, this.xTicks = _arg.xTicks, this.yLabel = _arg.yLabel, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.yTicks = _arg.yTicks, includeAnnotationsFrom = _arg.includeAnnotationsFrom, this.showCrossHairs = _arg.showCrossHairs, this.showGraphGrid = _arg.showGraphGrid, this.showToolTipCoords = _arg.showToolTipCoords, this.includedDataSets = _arg.includedDataSets, this.labelSetNames = _arg.labelSetNames, this.labels = _arg.labels, this.animation = _arg.animation;
       this.activeDataSetIndex = 0;
       this.totalDatasetsIndex = 0;
       this.activeDatasetName;
       this.datadefRef = [];
       if (!this.includedDataSets) this.includedDataSets = [];
-      if (!this.labelSets) this.labelSets = [];
+      if (!this.labelSetNames) this.labelSetNames = [];
       this.annotationSources = includeAnnotationsFrom != null ? includeAnnotationsFrom.map(function(source) {
         var page, pane, _ref;
         _ref = (source.match(/^page\/(\d)+\/pane\/(\d)+$/)).slice(1, 3).map(function(s) {
@@ -1191,7 +1191,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         includedDataSets: this.includedDataSets,
         activeDatasetName: this.activeDatasetName,
         dataRef: this.dataRef,
-        labelSets: this.labelSets
+        labelSetNames: this.labelSetNames
       });
       if (this.animation) {
         animation = this.page.activity.animationsByName[this.animation];
@@ -1201,8 +1201,8 @@ require.define("/author/author-panes.js", function (require, module, exports, __
           hideGraph: false
         });
       }
-      if (this.labelSets) {
-        _ref = this.labelSets;
+      if (this.labelSetNames) {
+        _ref = this.labelSetNames;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           labelSetName = _ref[_i];
           if (this.runtimeActivity.annotations['LabelSet']) {
@@ -2973,7 +2973,7 @@ require.define("/author/label_sequence.js", function (require, module, exports, 
 
     function LabelSequence(_arg) {
       var i, pane, _len, _ref;
-      this.type = _arg.type, this.text = _arg.text, this.labelSet = _arg.labelSet, this.numberOfLabels = _arg.numberOfLabels, this.dataset = _arg.dataset, this.page = _arg.page;
+      this.type = _arg.type, this.text = _arg.text, this.labelSetName = _arg.labelSetName, this.numberOfLabels = _arg.numberOfLabels, this.dataset = _arg.dataset, this.page = _arg.page;
       if (!this.numberOfLabels) this.numberOfLabels = 1;
       this.anyLabel = this.dataset ? true : false;
       this.steps = [];
@@ -2995,7 +2995,7 @@ require.define("/author/label_sequence.js", function (require, module, exports, 
       runtimeActivity = runtimePage.activity;
       step = runtimePage.appendStep();
       step.setBeforeText(this.text);
-      step.setSubmissibilityCriterion(["=", ["numberOfLabels", this.labelSet], this.numberOfLabels], step.setSubmissibilityDependsOn(["annotation", this.labelSet]));
+      step.setSubmissibilityCriterion(["=", ["numberOfLabels", this.labelSetName], this.numberOfLabels], step.setSubmissibilityDependsOn(["annotation", this.labelSetName]));
       _ref = this.page.panes;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         pane = _ref[_i];
@@ -3004,7 +3004,7 @@ require.define("/author/label_sequence.js", function (require, module, exports, 
       if (this.dataset) {
         datadefRef = runtimeActivity.getDatadefRef(this.dataset);
         step.addLabelTool({
-          labelSetName: this.labelSet,
+          labelSetName: this.labelSetName,
           index: this.graphPane.index,
           datadefRef: datadefRef,
           markOnDataPoints: true,
@@ -3013,17 +3013,17 @@ require.define("/author/label_sequence.js", function (require, module, exports, 
         });
       } else {
         step.addLabelTool({
-          labelSetName: this.labelSet,
+          labelSetName: this.labelSetName,
           index: this.graphPane.index,
           markOnDataPoints: false,
           maxNoOfLabels: this.numberOfLabels,
           allowCoordinatesChange: true
         });
       }
-      if (this.labelSet) {
+      if (this.labelSetName) {
         this.labelSetObject = runtimeActivity.createAndAppendAnnotation({
           type: 'LabelSet',
-          name: this.labelSet
+          name: this.labelSetName
         });
         return step.addAnnotationToPane({
           annotation: this.labelSetObject,
