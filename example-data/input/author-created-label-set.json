@@ -41,7 +41,7 @@
           "xMin": 0,
           "xMax": 10,
           "xTicks": 10,
-          "labelSets": ["my-labels"],
+          "labelSetNames": ["my-labels"],
           "includedDataSets": [
             {
               "name": "datadef-1",

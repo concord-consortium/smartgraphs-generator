@@ -40,7 +40,7 @@
      "sequence": {
         "type": "LabelSequence",
         "text": "<p>Label 2 Points</p>",
-        "labelSet": "student-labels",
+        "labelSetName": "student-labels",
         "numberOfLabels": 2,
         "dataset": "datadef-1"
       }
@@ -61,7 +61,7 @@
           "xMin": 0,
           "xMax": 10,
           "xTicks": 10,
-          "labelSets": ["student-labels"],
+          "labelSetNames": ["student-labels"],
           "includedDataSets": [
             {
               "name": "datadef-1",
