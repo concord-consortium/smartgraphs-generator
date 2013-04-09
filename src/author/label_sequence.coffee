@@ -4,7 +4,7 @@ exports.LabelSequence = class LabelSequence
   constructor: ({
     @type,
     @text,
-    @labelSet,
+    @labelSetName,
     @numberOfLabels,
     @dataset,
     @page
@@ -24,17 +24,17 @@ exports.LabelSequence = class LabelSequence
     step = runtimePage.appendStep()
 
     step.setBeforeText @text
-    step.setSubmissibilityCriterion ["=", ["numberOfLabels", @labelSet], @numberOfLabels],
-    step.setSubmissibilityDependsOn ["annotation", @labelSet]
+    step.setSubmissibilityCriterion ["=", ["numberOfLabels", @labelSetName], @numberOfLabels],
+    step.setSubmissibilityDependsOn ["annotation", @labelSetName]
 
     pane.addToStep(step) for pane in @page.panes
 
     if @dataset
       datadefRef = runtimeActivity.getDatadefRef(@dataset)
-      step.addLabelTool { labelSetName: @labelSet, index: @graphPane.index, datadefRef, markOnDataPoints: true, maxNoOfLabels : @numberOfLabels, allowCoordinatesChange : false }
+      step.addLabelTool { labelSetName: @labelSetName, index: @graphPane.index, datadefRef, markOnDataPoints: true, maxNoOfLabels : @numberOfLabels, allowCoordinatesChange : false }
     else
-      step.addLabelTool { labelSetName: @labelSet, index: @graphPane.index, markOnDataPoints: false, maxNoOfLabels : @numberOfLabels, allowCoordinatesChange : true }
+      step.addLabelTool { labelSetName: @labelSetName, index: @graphPane.index, markOnDataPoints: false, maxNoOfLabels : @numberOfLabels, allowCoordinatesChange : true }
 
-    if @labelSet
-      @labelSetObject = runtimeActivity.createAndAppendAnnotation { type: 'LabelSet' , name: @labelSet }
+    if @labelSetName
+      @labelSetObject = runtimeActivity.createAndAppendAnnotation { type: 'LabelSet' , name: @labelSetName }
       step.addAnnotationToPane { annotation: @labelSetObject, index: @graphPane.index }

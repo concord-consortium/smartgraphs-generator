@@ -12,13 +12,13 @@ AuthorPane = exports.AuthorPane =
 
 class GraphPane
 
-  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @labelSets, @labels, @animation}) ->
+  constructor: ({@title, @xLabel, @xMin, @xMax, @xTicks, @yLabel, @yMin, @yMax, @yTicks, includeAnnotationsFrom, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @labelSetNames, @labels, @animation}) ->
     @activeDataSetIndex = 0
     @totalDatasetsIndex = 0
     @activeDatasetName
     @datadefRef = []
     unless @includedDataSets then @includedDataSets = []
-    unless @labelSets then @labelSets = []
+    unless @labelSetNames then @labelSetNames = []
     @annotationSources = includeAnnotationsFrom?.map (source) ->
       [page, pane] = (source.match /^page\/(\d)+\/pane\/(\d)+$/)[1..2].map (s) -> parseInt(s, 10) - 1
       { page, pane }
@@ -51,14 +51,14 @@ class GraphPane
     @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
 
   addToStep: (step) ->
-    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef, @labelSets}
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef, @labelSetNames}
 
     if @animation
       animation = @page.activity.animationsByName[@animation]
       step.addAnimationTool { @index, animation, hideGraph: false }
 
-    if @labelSets
-      for labelSetName in @labelSets
+    if @labelSetNames
+      for labelSetName in @labelSetNames
         if @runtimeActivity.annotations['LabelSet']
           for createdAnnotation in @runtimeActivity.annotations['LabelSet']
             if createdAnnotation.name is labelSetName
