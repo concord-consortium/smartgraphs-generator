@@ -1403,13 +1403,12 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       xMin = animation.getXMin();
       xMax = animation.getXMax();
       this.graphPane = new GraphPane({
-        title: "dummy",
-        xLabel: "dummy",
-        yLabel: "dummy",
+        title: "",
+        xLabel: "",
         xMin: xMin,
         xMax: xMax,
         xTicks: 1,
-        yLabel: "dummy",
+        yLabel: "",
         yMin: animation.yMin,
         yMax: animation.yMax,
         yTicks: 1,

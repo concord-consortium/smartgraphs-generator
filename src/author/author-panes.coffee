@@ -162,13 +162,12 @@ AuthorPane.classFor['AnimationPane'] = class AnimationPane
     xMax = animation.getXMax()
     # we need to add a graph pane, even though it will be hidden from the user!
     @graphPane = new GraphPane
-      title: "dummy"
-      xLabel: "dummy"
-      yLabel: "dummy"
+      title: ""
+      xLabel: ""
       xMin: xMin
       xMax: xMax
       xTicks: 1
-      yLabel: "dummy"
+      yLabel: ""
       yMin: animation.yMin
       yMax: animation.yMax
       yTicks: 1
