@@ -83,9 +83,9 @@ exports.RuntimeActivity = class RuntimeActivity
     datadef
 
   createDataref: ({ datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index, lineSnapDistance, name }) ->
-    dataRef = new DataRef { datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index: ++@nDatarefs, lineSnapDistance, name }
-    dataRef.activity = this
-    dataRef
+    dataref = new DataRef { datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index: ++@nDatarefs, lineSnapDistance, name }
+    dataref.activity = this
+    dataref
 
   ###
     Forward references. Some of this is repetitious and should be factored out.
@@ -143,11 +143,11 @@ exports.RuntimeActivity = class RuntimeActivity
               if expressionData.type? and expressionData.type isnt "not supported"
                 unless datadef = @getDatadefRef(datasetObject.name).datadef
                   datadef = this.defineDatadef(datasetObject.name, { points: [], xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits,  lineType: datasetObject.lineType, lineSnapDistance: datasetObject.lineSnapDistance, pointType: datasetObject.pointType, name: datasetObject.name })
-                  dataRef = this.defineDataref(datasetObject.name, { datadefname: datadef.name, expressionType: expressionData.type, xInterval: datasetObject.xPrecision, expressionForm: expressionData.form, expression: datasetObject.expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: datasetObject.lineSnapDistance })
+                  dataref = this.defineDataref(datasetObject.name, { datadefname: datadef.name, expressionType: expressionData.type, xInterval: datasetObject.xPrecision, expressionForm: expressionData.form, expression: datasetObject.expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: datasetObject.lineSnapDistance })
                 else
-                  dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})
+                  dataref = this.getDataRefOfDatadef ({datadefName: datadef.name, expressionType: expressionData.type})
                 populatedDataDefs.push datadef
-                populatedDataRefs.push dataRef
+                populatedDataRefs.push dataref
 
     @referenceDatadef = datadef
     { datadef: populatedDataDefs, dataref: populatedDataRefs }
@@ -158,23 +158,23 @@ exports.RuntimeActivity = class RuntimeActivity
       if expressionData.type? and expressionData.type isnt "not supported"
         unless datadef = @getDatadefRef(name).datadef
           datadef = this.defineDatadef(name, { points: [], xUnits: @referenceDatadef.xUnits, yUnits: @referenceDatadef.yUnits, lineType: 'connected', pointType: 'none', lineSnapDistance: @referenceDatadef.lineSnapDistance, name: name, color: color})
-          dataRef = this.defineDataref(name, { datadefname: datadef.name, expressionType: expressionData.type, xInterval: xPrecision, expressionForm: expressionData.form, expression: expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: lineSnapDistance })
+          dataref = this.defineDataref(name, { datadefname: datadef.name, expressionType: expressionData.type, xInterval: xPrecision, expressionForm: expressionData.form, expression: expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: lineSnapDistance })
         else
-          dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})
+          dataref = this.getDataRefOfDatadef ({datadefName: datadef.name, expressionType: expressionData.type})
 
-        { dataDef: datadef, dataRef: dataRef }
+        { datadef: datadef, dataref: dataref }
 
   getNewColor: ->
     unless @colorIndex <= 0 then @dataSetColors[@colorIndex--] else throw new Error "No new color available."
 
 
-  setColorOfDatadef: (dataDefName, color) ->
-    if datadef = @getDatadefRef(dataDefName).datadef
+  setColorOfDatadef: (datadefName, color) ->
+    if datadef = @getDatadefRef(datadefName).datadef
       datadef.setColor color
 
-  getDataRefOfDatadef: ({dataDefName, expressionType}) ->
-    for dataRef in @datarefRefs[expressionType]
-      return dataRef  if dataRef.datadefname is dataDefName
+  getDataRefOfDatadef: ({datadefName, expressionType}) ->
+    for dataref in @datarefRefs[expressionType]
+      return dataref  if dataref.datadefname is datadefName
 
   ###
     Things that are defined only inline (for now) and therefore don't need to be treated as forward references.
