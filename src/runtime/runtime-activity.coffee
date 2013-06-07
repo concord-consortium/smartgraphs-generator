@@ -48,10 +48,9 @@ exports.RuntimeActivity = class RuntimeActivity
 
     @responseTemplates = {}
     @responseTemplatesCounts = {}
-    
+
     @referenceDatadef
-    @referenceDataref
-    
+
     @dataSetColors = [ "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" ]
     @colorIndex = @dataSetColors.length - 1
 
@@ -115,21 +114,21 @@ exports.RuntimeActivity = class RuntimeActivity
     ref.datadef = datadef
     datadef
 
+  # Called when a graph or table pane having includedDataSets is added to the (runtime) activity
+  # returns a list of datadefs and datarefs corresponding to the dataset names in includedDataSets
+
   populateDataSet: (xLabel, yLabel, includedDataSets) ->
     populatedDataDefs = []
     populatedDataRefs = []
-    @currentXLabel = xLabel
-    @currentYLabel = yLabel
     activeDataSetIndex = 0
     for datasetEntry in includedDataSets
       for datasetObject in @datasets
         if datasetObject.name is datasetEntry.name
-          if String(datasetObject.type).toLowerCase() is ("datadef").toLowerCase()
+          if String(datasetObject.type).toLowerCase() is "datadef"
             unless datadef = @getDatadefRef(datasetObject.name).datadef
               datadef = this.createDatadef({ points: datasetObject.data, xLabel, yLabel, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name })
             populatedDataDefs.push datadef
-            @referenceDatadef = datadef
-          else if String(datasetObject.type).toLowerCase() is ("dataref").toLowerCase()
+          else if String(datasetObject.type).toLowerCase() is "dataref"
             @expression = datasetObject.expression
             if @expression isnt null and @expression isnt undefined
               expressionData = expressionParser.parseExpression(@expression)
@@ -141,8 +140,8 @@ exports.RuntimeActivity = class RuntimeActivity
                   dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})
                 populatedDataDefs.push datadef
                 populatedDataRefs.push dataRef
-                @referenceDatadef = datadef
-                @referenceDataref = dataRef
+
+    @referenceDatadef = datadef
     { datadef: populatedDataDefs, dataref: populatedDataRefs }
 
   createNewEmptyDataRef: (name, expression, xPrecision, lineSnapDistance, color) ->
@@ -159,7 +158,7 @@ exports.RuntimeActivity = class RuntimeActivity
 
   getNewColor: ->
     unless @colorIndex <= 0 then @dataSetColors[@colorIndex--] else throw new Error "No new color available."
-    
+
 
   setColorOfDatadef: (dataDefName, color) ->
     if datadef = @getDatadefRef(dataDefName).datadef

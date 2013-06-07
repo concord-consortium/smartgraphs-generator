@@ -3248,7 +3248,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       this.responseTemplates = {};
       this.responseTemplatesCounts = {};
       this.referenceDatadef;
-      this.referenceDataref;
       this.dataSetColors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
       this.colorIndex = this.dataSetColors.length - 1;
     }
@@ -3378,8 +3377,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       var activeDataSetIndex, dataRef, datadef, datasetEntry, datasetObject, expressionData, populatedDataDefs, populatedDataRefs, _i, _j, _len, _len2, _ref2;
       populatedDataDefs = [];
       populatedDataRefs = [];
-      this.currentXLabel = xLabel;
-      this.currentYLabel = yLabel;
       activeDataSetIndex = 0;
       for (_i = 0, _len = includedDataSets.length; _i < _len; _i++) {
         datasetEntry = includedDataSets[_i];
@@ -3387,7 +3384,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
           datasetObject = _ref2[_j];
           if (datasetObject.name === datasetEntry.name) {
-            if (String(datasetObject.type).toLowerCase() === "datadef".toLowerCase()) {
+            if (String(datasetObject.type).toLowerCase() === "datadef") {
               if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
                 datadef = this.createDatadef({
                   points: datasetObject.data,
@@ -3402,8 +3399,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                 });
               }
               populatedDataDefs.push(datadef);
-              this.referenceDatadef = datadef;
-            } else if (String(datasetObject.type).toLowerCase() === "dataref".toLowerCase()) {
+            } else if (String(datasetObject.type).toLowerCase() === "dataref") {
               this.expression = datasetObject.expression;
               if (this.expression !== null && this.expression !== void 0) {
                 expressionData = expressionParser.parseExpression(this.expression);
@@ -3438,14 +3434,13 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                   }
                   populatedDataDefs.push(datadef);
                   populatedDataRefs.push(dataRef);
-                  this.referenceDatadef = datadef;
-                  this.referenceDataref = dataRef;
                 }
               }
             }
           }
         }
       }
+      this.referenceDatadef = datadef;
       return {
         datadef: populatedDataDefs,
         dataref: populatedDataRefs
