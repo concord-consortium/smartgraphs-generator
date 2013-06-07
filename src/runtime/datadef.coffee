@@ -9,12 +9,35 @@ exports.Datadef = class Datadef
 
   # a "class method"
   @serializeDatadefs = (datadefs) ->
-    if datadefs.length == 0 then [] else [{ type: 'UnorderedDataPoints', records: (datadef.toHash() for datadef in datadefs) }]
+    udps = []
+    derivatives = []
+    ret = []
+
+    # Duck type the two record types. UnorderedDataPointses have no 'derivativeOf' field
+    for datadef in datadefs
+      if datadef.derivativeOf?
+        derivatives.push datadef
+      else
+        udps.push datadef
+
+    if udps.length > 0
+      ret.push
+        type: 'UnorderedDataPoints'
+        records: (udp.toHash() for udp in udps)
+
+    if derivatives.length > 0
+      ret.push
+        type: 'FirstDerivative'
+        records: (derivative.toHash() for derivative in derivatives)
+
+    ret
 
   constructor: ({@points, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color, @derivativeOf}) ->
     @name ?= "datadef-#{@index}"
-    if @derivativeOf then @activity.populateDataSet [@derivativeOf]
     @lineSnapDistance ?= 0
+
+  populateSourceDatasets: ->
+    if @derivativeOf? then @activity.populateDataSet [@derivativeOf]
 
   constructUnitRefs: ->
     @xUnitsRef = @activity.getUnitRef dumbSingularize @xUnits if @xUnits
@@ -23,8 +46,8 @@ exports.Datadef = class Datadef
   setColor: (color) ->
     @color = color
 
-  getDatarefUrl: (source) ->
-    "TODO: dataref-url"
+  getDatarefUrl: (sourceDataName) ->
+    @activity.getDatarefRef(sourceDataName).dataref.getUrl()
 
   getUrl: ->
     "#{@activity.getUrl()}/datadefs/#{@name}"

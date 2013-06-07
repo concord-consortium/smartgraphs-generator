@@ -162,6 +162,7 @@
           "url": "/shared/first-derivative-of-dataref/datadefs/firstDerivative",
           "name": "firstDerivative",
           "activity": "/shared/first-derivative-of-dataref",
+          "points": [],
           "pointType": "none",
           "lineType": "connected",
           "lineSnapDistance": 0.1,
