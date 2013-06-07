@@ -76,8 +76,8 @@ exports.RuntimeActivity = class RuntimeActivity
     unit.activity = this
     unit
 
-  createDatadef: ({ points, xLabel, yLabel, xUnits, yUnits, pointType, lineType, lineSnapDistance, name, color }) ->
-    datadef = new Datadef { points, xLabel, yLabel, index: ++@nDatadefs, pointType, lineType, lineSnapDistance, xUnits, yUnits, name, color }
+  createDatadef: ({ points, xUnits, yUnits, pointType, lineType, lineSnapDistance, name, color, derivativeOf }) ->
+    datadef = new Datadef { points, index: ++@nDatadefs, pointType, lineType, lineSnapDistance, xUnits, yUnits, name, color, derivativeOf }
     datadef.activity = this
     datadef.constructUnitRefs()
     datadef
@@ -117,7 +117,7 @@ exports.RuntimeActivity = class RuntimeActivity
   # Called when a graph or table pane having includedDataSets is added to the (runtime) activity
   # returns a list of datadefs and datarefs corresponding to the dataset names in includedDataSets
 
-  populateDataSet: (xLabel, yLabel, includedDataSets) ->
+  populateDataSet: (includedDataSets) ->
     populatedDataDefs = []
     populatedDataRefs = []
     activeDataSetIndex = 0
@@ -126,15 +126,16 @@ exports.RuntimeActivity = class RuntimeActivity
         if datasetObject.name is datasetEntry.name
           if String(datasetObject.type).toLowerCase() is "datadef"
             unless datadef = @getDatadefRef(datasetObject.name).datadef
-              datadef = this.createDatadef({ points: datasetObject.data, xLabel, yLabel, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name })
+              datadef = this.createDatadef({ points: datasetObject.data, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name })
             populatedDataDefs.push datadef
+
           else if String(datasetObject.type).toLowerCase() is "dataref"
             @expression = datasetObject.expression
             if @expression isnt null and @expression isnt undefined
               expressionData = expressionParser.parseExpression(@expression)
               if expressionData.type? and expressionData.type isnt "not supported"
                 unless datadef = @getDatadefRef(datasetObject.name).datadef
-                  datadef = this.createDatadef({ points: [], xLabel, yLabel, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits,  lineType: datasetObject.lineType, lineSnapDistance: datasetObject.lineSnapDistance, pointType: datasetObject.pointType, name: datasetObject.name })
+                  datadef = this.createDatadef({ points: [], xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits,  lineType: datasetObject.lineType, lineSnapDistance: datasetObject.lineSnapDistance, pointType: datasetObject.pointType, name: datasetObject.name })
                   dataRef = this.createDataRef ({ datadefname: datadef.name, expressionType: expressionData.type, xInterval: datasetObject.xPrecision, expressionForm: expressionData.form, expression: datasetObject.expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: datasetObject.lineSnapDistance })
                 else
                   dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})
@@ -149,7 +150,7 @@ exports.RuntimeActivity = class RuntimeActivity
       expressionData = expressionParser.parseExpression(expression)
       if expressionData.type? and expressionData.type isnt "not supported"
         unless datadef = @getDatadefRef(name).datadef
-          datadef = this.createDatadef({ points: [], xLabel: @referenceDatadef.xLabel, yLabel: @referenceDatadef.yLabel, xUnits: @referenceDatadef.xUnits, yUnits: @referenceDatadef.yUnits, lineType: 'connected', pointType: 'none', lineSnapDistance: @referenceDatadef.lineSnapDistance, name: name, color: color})
+          datadef = this.createDatadef({ points: [], xUnits: @referenceDatadef.xUnits, yUnits: @referenceDatadef.yUnits, lineType: 'connected', pointType: 'none', lineSnapDistance: @referenceDatadef.lineSnapDistance, name: name, color: color})
           dataRef = this.createDataRef ({ datadefname: datadef.name, expressionType: expressionData.type, xInterval: xPrecision, expressionForm: expressionData.form, expression: expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: lineSnapDistance })
         else
           dataRef = this.getDataRefOfDatadef ({dataDefName: datadef.name, expressionType: expressionData.type})

@@ -11,7 +11,7 @@ exports.Datadef = class Datadef
   @serializeDatadefs = (datadefs) ->
     if datadefs.length == 0 then [] else [{ type: 'UnorderedDataPoints', records: (datadef.toHash() for datadef in datadefs) }]
 
-  constructor: ({@points, @xLabel, @yLabel, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color}) ->
+  constructor: ({@points, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color}) ->
     @name ?= "datadef-#{@index}"
     @lineSnapDistance ?= 0
 

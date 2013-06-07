@@ -27,7 +27,7 @@ class GraphPane
     @runtimeActivity = runtimeActivity
     if @includedDataSets?
       unless @includedDataSets.length is 0
-        populatedDataSets = runtimeActivity.populateDataSet @xLabel, @yLabel, @includedDataSets
+        populatedDataSets = runtimeActivity.populateDataSet @includedDataSets
         populatedDataDefs = populatedDataSets.datadef
         @dataRef = populatedDataSets.dataref
 

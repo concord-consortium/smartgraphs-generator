@@ -1134,7 +1134,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       this.runtimeActivity = runtimeActivity;
       if (this.includedDataSets != null) {
         if (this.includedDataSets.length !== 0) {
-          populatedDataSets = runtimeActivity.populateDataSet(this.xLabel, this.yLabel, this.includedDataSets);
+          populatedDataSets = runtimeActivity.populateDataSet(this.includedDataSets);
           populatedDataDefs = populatedDataSets.datadef;
           this.dataRef = populatedDataSets.dataref;
           if (!this.activeDatasetName) {
@@ -3282,12 +3282,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDatadef = function(_arg) {
-      var color, datadef, lineSnapDistance, lineType, name, pointType, points, xLabel, xUnits, yLabel, yUnits;
-      points = _arg.points, xLabel = _arg.xLabel, yLabel = _arg.yLabel, xUnits = _arg.xUnits, yUnits = _arg.yUnits, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name, color = _arg.color;
+      var color, datadef, derivativeOf, lineSnapDistance, lineType, name, pointType, points, xUnits, yUnits;
+      points = _arg.points, xUnits = _arg.xUnits, yUnits = _arg.yUnits, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name, color = _arg.color, derivativeOf = _arg.derivativeOf;
       datadef = new Datadef({
         points: points,
-        xLabel: xLabel,
-        yLabel: yLabel,
         index: ++this.nDatadefs,
         pointType: pointType,
         lineType: lineType,
@@ -3295,7 +3293,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         xUnits: xUnits,
         yUnits: yUnits,
         name: name,
-        color: color
+        color: color,
+        derivativeOf: derivativeOf
       });
       datadef.activity = this;
       datadef.constructUnitRefs();
@@ -3373,7 +3372,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return datadef;
     };
 
-    RuntimeActivity.prototype.populateDataSet = function(xLabel, yLabel, includedDataSets) {
+    RuntimeActivity.prototype.populateDataSet = function(includedDataSets) {
       var activeDataSetIndex, dataRef, datadef, datasetEntry, datasetObject, expressionData, populatedDataDefs, populatedDataRefs, _i, _j, _len, _len2, _ref2;
       populatedDataDefs = [];
       populatedDataRefs = [];
@@ -3388,8 +3387,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
               if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
                 datadef = this.createDatadef({
                   points: datasetObject.data,
-                  xLabel: xLabel,
-                  yLabel: yLabel,
                   xUnits: datasetObject.xUnits,
                   yUnits: datasetObject.yUnits,
                   lineType: datasetObject.lineType,
@@ -3407,8 +3404,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                   if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
                     datadef = this.createDatadef({
                       points: [],
-                      xLabel: xLabel,
-                      yLabel: yLabel,
                       xUnits: datasetObject.xUnits,
                       yUnits: datasetObject.yUnits,
                       lineType: datasetObject.lineType,
@@ -3455,8 +3450,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           if (!(datadef = this.getDatadefRef(name).datadef)) {
             datadef = this.createDatadef({
               points: [],
-              xLabel: this.referenceDatadef.xLabel,
-              yLabel: this.referenceDatadef.yLabel,
               xUnits: this.referenceDatadef.xUnits,
               yUnits: this.referenceDatadef.yUnits,
               lineType: 'connected',
@@ -4441,7 +4434,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
     };
 
     function Datadef(_arg) {
-      this.points = _arg.points, this.xLabel = _arg.xLabel, this.yLabel = _arg.yLabel, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name, this.color = _arg.color;
+      this.points = _arg.points, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name, this.color = _arg.color;
       if (this.name == null) this.name = "datadef-" + this.index;
       if (this.lineSnapDistance == null) this.lineSnapDistance = 0;
     }
