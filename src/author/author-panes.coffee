@@ -40,12 +40,10 @@ class GraphPane
             break
 
         for populatedDataDef in populatedDataDefs
-          dataKey = "#{populatedDataDef.name}"
-          runtimeActivity.defineDatadef dataKey, populatedDataDef
           if @activeDatasetName is populatedDataDef.name
             @xUnitsRef = populatedDataDef.xUnitsRef
             @yUnitsRef = populatedDataDef.yUnitsRef
-          @datadefRef.push runtimeActivity.getDatadefRef dataKey
+          @datadefRef.push runtimeActivity.getDatadefRef(populatedDataDef.name)
 
     @xAxis = runtimeActivity.createAndAppendAxis { label: @xLabel, unitRef: @xUnitsRef, min: @xMin, max: @xMax, nSteps: @xTicks }
     @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
