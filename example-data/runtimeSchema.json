@@ -335,7 +335,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["UnorderedDataPoints"]
+            "enum": ["UnorderedDataPoints", "FirstDerivative"]
           },
           "records": {
             "type": "array",
@@ -368,6 +368,10 @@
                 },
                 "lineSnapDistance": {
                   "type": "number"
+                },
+                "derivativeOf": {
+                  "type": "string",
+                  "optional": true
                 }
               }
             }

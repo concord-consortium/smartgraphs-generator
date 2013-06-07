@@ -3295,6 +3295,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         derivativeOf: derivativeOf
       });
       datadef.activity = this;
+      datadef.populateSourceDatasets();
       datadef.constructUnitRefs();
       return datadef;
     };
@@ -3403,7 +3404,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                   lineType: datasetObject.lineType,
                   pointType: datasetObject.pointType,
                   lineSnapDistance: datasetObject.lineSnapDistance,
-                  name: datasetObject.name
+                  name: datasetObject.name,
+                  derivativeOf: datasetObject.derivativeOf
                 });
               }
               populatedDataDefs.push(datadef);
@@ -4422,32 +4424,60 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
   exports.Datadef = Datadef = (function() {
 
     Datadef.serializeDatadefs = function(datadefs) {
-      var datadef;
-      if (datadefs.length === 0) {
-        return [];
-      } else {
-        return [
-          {
-            type: 'UnorderedDataPoints',
-            records: (function() {
-              var _i, _len, _results;
-              _results = [];
-              for (_i = 0, _len = datadefs.length; _i < _len; _i++) {
-                datadef = datadefs[_i];
-                _results.push(datadef.toHash());
-              }
-              return _results;
-            })()
-          }
-        ];
+      var datadef, derivative, derivatives, ret, udp, udps, _i, _len;
+      udps = [];
+      derivatives = [];
+      ret = [];
+      for (_i = 0, _len = datadefs.length; _i < _len; _i++) {
+        datadef = datadefs[_i];
+        if (datadef.derivativeOf != null) {
+          derivatives.push(datadef);
+        } else {
+          udps.push(datadef);
+        }
       }
+      if (udps.length > 0) {
+        ret.push({
+          type: 'UnorderedDataPoints',
+          records: (function() {
+            var _j, _len2, _results;
+            _results = [];
+            for (_j = 0, _len2 = udps.length; _j < _len2; _j++) {
+              udp = udps[_j];
+              _results.push(udp.toHash());
+            }
+            return _results;
+          })()
+        });
+      }
+      if (derivatives.length > 0) {
+        ret.push({
+          type: 'FirstDerivative',
+          records: (function() {
+            var _j, _len2, _results;
+            _results = [];
+            for (_j = 0, _len2 = derivatives.length; _j < _len2; _j++) {
+              derivative = derivatives[_j];
+              _results.push(derivative.toHash());
+            }
+            return _results;
+          })()
+        });
+      }
+      return ret;
     };
 
     function Datadef(_arg) {
-      this.points = _arg.points, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name, this.color = _arg.color;
+      this.points = _arg.points, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name, this.color = _arg.color, this.derivativeOf = _arg.derivativeOf;
       if (this.name == null) this.name = "datadef-" + this.index;
       if (this.lineSnapDistance == null) this.lineSnapDistance = 0;
     }
+
+    Datadef.prototype.populateSourceDatasets = function() {
+      if (this.derivativeOf != null) {
+        return this.activity.populateDataSet([this.derivativeOf]);
+      }
+    };
 
     Datadef.prototype.constructUnitRefs = function() {
       if (this.xUnits) {
@@ -4460,6 +4490,10 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
 
     Datadef.prototype.setColor = function(color) {
       return this.color = color;
+    };
+
+    Datadef.prototype.getDatarefUrl = function(sourceDataName) {
+      return this.activity.getDatarefRef(sourceDataName).dataref.getUrl();
     };
 
     Datadef.prototype.getUrl = function() {
@@ -4478,7 +4512,8 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
         pointType: this.pointType,
         lineType: this.lineType,
         lineSnapDistance: this.lineSnapDistance,
-        color: this.color
+        color: this.color,
+        source: this.derivativeOf != null ? this.getDatarefUrl(this.derivativeOf) : void 0
       };
     };
 

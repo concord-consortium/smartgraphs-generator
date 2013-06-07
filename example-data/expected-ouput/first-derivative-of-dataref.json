@@ -1,0 +1,321 @@
+{
+  "_id": "first-derivative-of-dataref.df6",
+  "_rev": 1,
+  "data_format_version": 6,
+  "activity": {
+    "title": "First Derivative Of Dataref",
+    "url": "/shared/first-derivative-of-dataref",
+    "owner": "shared",
+    "pages": [
+      "/shared/first-derivative-of-dataref/page/1-1-graphs-page"
+    ],
+    "axes": [
+      "/shared/first-derivative-of-dataref/axes/1",
+      "/shared/first-derivative-of-dataref/axes/2",
+      "/shared/first-derivative-of-dataref/axes/3",
+      "/shared/first-derivative-of-dataref/axes/4"
+    ],
+    "authorName": "Richard Klancer"
+  },
+  "pages": [
+    {
+      "name": "1 Graphs page",
+      "url": "/shared/first-derivative-of-dataref/page/1-1-graphs-page",
+      "activity": "/shared/first-derivative-of-dataref",
+      "index": 1,
+      "introText": "Here is a graph of x^2 and its derivative",
+      "steps": [
+        "/shared/first-derivative-of-dataref/page/1-1-graphs-page/step/1"
+      ],
+      "firstStep": "/shared/first-derivative-of-dataref/page/1-1-graphs-page/step/1",
+      "contextVars": [
+
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "url": "/shared/first-derivative-of-dataref/page/1-1-graphs-page/step/1",
+      "activityPage": "/shared/first-derivative-of-dataref/page/1-1-graphs-page",
+      "paneConfig": "split",
+      "panes": {
+        "top": {
+          "type": "graph",
+          "title": "GRAPH",
+          "xAxis": "/shared/first-derivative-of-dataref/axes/1",
+          "yAxis": "/shared/first-derivative-of-dataref/axes/2",
+          "showCrossHairs": false,
+          "showGraphGrid": true,
+          "showToolTipCoords": false,
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "expressionData"
+          ],
+          "datarefs": [
+            "dataref-1"
+          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+
+            ]
+          },
+          "activeDatadefs": [
+            "expressionData"
+          ]
+        },
+        "bottom": {
+          "type": "graph",
+          "title": "DERIVATIVE",
+          "xAxis": "/shared/first-derivative-of-dataref/axes/3",
+          "yAxis": "/shared/first-derivative-of-dataref/axes/4",
+          "showCrossHairs": false,
+          "showGraphGrid": true,
+          "showToolTipCoords": false,
+          "annotations": [
+
+          ],
+          "highlightedAnnotations": [
+
+          ],
+          "data": [
+            "firstDerivative"
+          ],
+          "legends": {
+            "title": "legend",
+            "type": "name",
+            "referenceDatadef": "",
+            "datadefs": [
+
+            ]
+          },
+          "activeDatadefs": [
+            "firstDerivative"
+          ]
+        }
+      },
+      "isFinalStep": true,
+      "nextButtonShouldSubmit": true
+    }
+  ],
+  "responseTemplates": [
+
+  ],
+  "axes": [
+    {
+      "url": "/shared/first-derivative-of-dataref/axes/1",
+      "min": -3,
+      "max": 3,
+      "nSteps": 6,
+      "label": "X"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/axes/2",
+      "min": 0,
+      "max": 10,
+      "nSteps": 10,
+      "label": "Y"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/axes/3",
+      "min": -3,
+      "max": 3,
+      "nSteps": 6,
+      "label": "X"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/axes/4",
+      "min": -6,
+      "max": 6,
+      "nSteps": 12,
+      "label": "Y"
+    }
+  ],
+  "datadefs": [
+    {
+      "type": "UnorderedDataPoints",
+      "records": [
+        {
+          "url": "/shared/first-derivative-of-dataref/datadefs/expressionData",
+          "name": "expressionData",
+          "activity": "/shared/first-derivative-of-dataref",
+          "points": [
+
+          ],
+          "pointType": "none",
+          "lineType": "connected",
+          "lineSnapDistance": 1
+        }
+      ]
+    },
+    {
+      "type": "FirstDerivative",
+      "records": [
+        {
+          "url": "/shared/first-derivative-of-dataref/datadefs/firstDerivative",
+          "name": "firstDerivative",
+          "activity": "/shared/first-derivative-of-dataref",
+          "points": [],
+          "pointType": "none",
+          "lineType": "connected",
+          "lineSnapDistance": 0.1,
+          "source": "/shared/first-derivative-of-dataref/datarefs/dataref-1"
+        }
+      ]
+    }
+  ],
+  "datarefs": [
+    {
+      "type": "CompositeEquation",
+      "records": [
+        {
+          "url": "/shared/first-derivative-of-dataref/datarefs/dataref-1",
+          "name": "dataref-1",
+          "activity": "/shared/first-derivative-of-dataref",
+          "datadefName": "expressionData",
+          "expression": "y = x*x",
+          "xInterval": 0.1,
+          "params": {
+          }
+        }
+      ]
+    }
+  ],
+  "tags": [
+
+  ],
+  "annotations": [
+
+  ],
+  "variables": [
+
+  ],
+  "units": [
+    {
+      "url": "/shared/first-derivative-of-dataref/units/Time",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "Time",
+      "abbreviation": "s",
+      "pluralName": "Time"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/Distance",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "Distance",
+      "abbreviation": "m",
+      "pluralName": "Distance"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/degrees Celsius",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "degrees Celsiu",
+      "abbreviation": "deg C",
+      "pluralName": "degrees Celsius"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/minutes",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "minute",
+      "abbreviation": "min.",
+      "pluralName": "minutes"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/meters",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "meter",
+      "abbreviation": "m",
+      "pluralName": "meters"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/seconds",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "second",
+      "abbreviation": "s",
+      "pluralName": "seconds"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/centimeters",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "centimeter",
+      "abbreviation": "cm",
+      "pluralName": "centimeters"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/grams",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "gram",
+      "abbreviation": "gr",
+      "pluralName": "grams"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/miles",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "mile",
+      "abbreviation": "mi",
+      "pluralName": "miles"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/hours",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "hour",
+      "abbreviation": "hr",
+      "pluralName": "hours"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/Celsius",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "Celsiu",
+      "abbreviation": "° C.",
+      "pluralName": "Celsius"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/dollars",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "dollar",
+      "abbreviation": "$",
+      "pluralName": "dollars"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/inches",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "inche",
+      "abbreviation": "in",
+      "pluralName": "inches"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/years",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "year",
+      "abbreviation": "yr",
+      "pluralName": "years"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/millimeters",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "millimeter",
+      "abbreviation": "mm",
+      "pluralName": "millimeters"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/parts per million",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "parts per million",
+      "abbreviation": "ppm",
+      "pluralName": "parts per million"
+    },
+    {
+      "url": "/shared/first-derivative-of-dataref/units/meters per second",
+      "activity": "/shared/first-derivative-of-dataref",
+      "name": "meters per second",
+      "abbreviation": "m/s",
+      "pluralName": "meters per second"
+    }
+  ]
+}
