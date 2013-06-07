@@ -11,8 +11,9 @@ exports.Datadef = class Datadef
   @serializeDatadefs = (datadefs) ->
     if datadefs.length == 0 then [] else [{ type: 'UnorderedDataPoints', records: (datadef.toHash() for datadef in datadefs) }]
 
-  constructor: ({@points, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color}) ->
+  constructor: ({@points, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color, @derivativeOf}) ->
     @name ?= "datadef-#{@index}"
+    if @derivativeOf then @activity.populateDataSet [@derivativeOf]
     @lineSnapDistance ?= 0
 
   constructUnitRefs: ->
@@ -21,6 +22,9 @@ exports.Datadef = class Datadef
 
   setColor: (color) ->
     @color = color
+
+  getDatarefUrl: (source) ->
+    "TODO: dataref-url"
 
   getUrl: ->
     "#{@activity.getUrl()}/datadefs/#{@name}"
@@ -36,3 +40,4 @@ exports.Datadef = class Datadef
     lineType:          @lineType
     lineSnapDistance:  @lineSnapDistance
     color:             @color
+    source:            if @derivativeOf? then @getDatarefUrl(@derivativeOf) else undefined
