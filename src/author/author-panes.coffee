@@ -29,14 +29,14 @@ class GraphPane
       unless @includedDataSets.length is 0
         populatedDataSets = runtimeActivity.populateDataSet @includedDataSets
         populatedDataDefs = populatedDataSets.datadef
-        @dataRef = populatedDataSets.dataref
+        @dataref = populatedDataSets.dataref
 
         unless @activeDatasetName
           @activeDatasetName = populatedDataDefs[@activeDataSetIndex].name
 
-        for dataRef in @dataRef
-          if @activeDatasetName is dataRef.name
-            @activeDatasetName = dataRef.datadefname
+        for dataref in @dataref
+          if @activeDatasetName is dataref.name
+            @activeDatasetName = dataref.datadefname
             break
 
         for populatedDataDef in populatedDataDefs
@@ -49,7 +49,7 @@ class GraphPane
     @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
 
   addToStep: (step) ->
-    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataRef, @labelSetNames}
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataref, @labelSetNames}
 
     if @animation
       animation = @page.activity.animationsByName[@animation]
@@ -102,9 +102,9 @@ AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
     super
     dataKey = "#{@activeDatasetName}"
     datadefRef
-    for dataDefRef in @datadefRef
-      if dataDefRef.key is dataKey
-        datadefRef = dataDefRef
+    for datadefRef in @datadefRef
+      if datadefRef.key is dataKey
+        datadefRef = datadefRef
     step.addSensorTool { @index, datadefRef }
 
 

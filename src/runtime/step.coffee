@@ -38,11 +38,11 @@ exports.Step = class Step
         caption: "#{@license} #{@attribution}"
     }
 
-  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataRef, sequenceType }) ->
+  addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataref, sequenceType }) ->
     @panes[index] = {
       title,
       datadefRef,
-      dataRef: if dataRef then dataRef else [],
+      dataref: if dataref then dataref else [],
       xAxis,
       yAxis,
       showCrossHairs,
@@ -63,7 +63,7 @@ exports.Step = class Step
         annotations:            annotation.name for annotation in @annotations
         highlightedAnnotations: annotation.name for annotation in @highlightedAnnotations
         data:                   if @datadefRef.length is 0 then [] else datadefref.datadef.name for datadefref in @datadefRef
-        datarefs:               if @dataRef.length is 0 then undefined else dataref.name for dataref in @dataRef
+        datarefs:               if @dataref.length is 0 then undefined else dataref.name for dataref in @dataref
         legends:                @GetLegends()
         activeDatadefs:         @GetActiveDatasetNames()
 
@@ -176,7 +176,7 @@ exports.Step = class Step
           uiBehavior:      uiBehavior
           annotationName:  annotation.name
     }
-    
+
   addGraphingTool: ({ index, datadefRef, annotation, shape}) ->
     @tools['graphing'] = {
       index,

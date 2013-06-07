@@ -40,20 +40,20 @@ exports.BestFitSequence = class BestFitSequence
     runtimeActivity.getDatadefRef "#{@graphPane.activeDatasetName}"
 
   setupStep: ({runtimePage, stepdef, hasAnswer}) ->
-    dataDefRefForStep = @graphPane.datadefRef
+    datadefRefForStep = @graphPane.datadefRef
     step = @runtimeStepsByName[stepdef.name]
     stepDataDefRef = []
     stepIncludedDataSets = []
     stepDataRefs = []
     legendsDataset = [@learnerDataSet]
     if hasAnswer is "true"
-      stepDataRefs = @graphPane.dataRef.concat(@bestFitLineDataRef)
-      stepDataDefRef = dataDefRefForStep.concat({ key: @correctLineDataSetName, datadef: @bestFitLineDataDef })
+      stepDataRefs = @graphPane.dataref.concat(@bestFitLineDataRef)
+      stepDataDefRef = datadefRefForStep.concat({ key: @correctLineDataSetName, datadef: @bestFitLineDataDef })
       stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
       legendsDataset.push @correctLineDataSetName
     else
-      stepDataRefs = if @graphPane.dataRef then @graphPane.dataRef else []
-      stepDataDefRef = dataDefRefForStep
+      stepDataRefs = if @graphPane.dataref then @graphPane.dataref else []
+      stepDataDefRef = datadefRefForStep
       stepIncludedDataSets = @graphPane.includedDataSets
 
     step.addGraphPane
@@ -67,7 +67,7 @@ exports.BestFitSequence = class BestFitSequence
       showToolTipCoords: stepdef.showToolTipCoords
       includedDataSets: stepIncludedDataSets
       activeDatasetName: @graphPane.activeDatasetName
-      dataRef: stepDataRefs
+      dataref: stepDataRefs
       sequenceType: { title : "Sum of squares", type : "AvgSumOfDeviation", referenceDatadef : @dataSetName, legendDataSets: legendsDataset }
     step.addTablePane
       datadefRef: @getDataDefRef(runtimePage.activity)
@@ -89,7 +89,7 @@ exports.BestFitSequence = class BestFitSequence
           index:      @graphPane.index
 
     for tool in stepdef.tools || []
-      step.addGraphingTool 
+      step.addGraphingTool
         index: @index || 0
         datadefRef: @getDataDefRef(runtimePage.activity)
         annotation: @annotations["singleLineGraphing"]
@@ -116,14 +116,14 @@ exports.BestFitSequence = class BestFitSequence
                             "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], closeTolerance ] ,
                             "step": nextCloseCorrect
                           }
-                        ] 
+                        ]
     else
       criterionArray = [
                           {
                             "criterion": [ "withinAbsTolerance", @SumofSquares, ["deviationValue", @learnerDataSet], correctTolerance ],
                             "step": 'correct_answer'
                           }
-                        ]          
+                        ]
     criterionArray
 
   check_final_answer: ->
@@ -174,21 +174,21 @@ exports.BestFitSequence = class BestFitSequence
     @bestFitLineslope = productOfXDiffYDiff / squareOfXDifference
     if @bestFitLineslope is Infinity or @bestFitLineslope is -Infinity or isNaN(@bestFitLineslope) then throw new Error "Invalid scatter-plot"
     @bestFitLineConstant = (yMean - (@bestFitLineslope * xMean)) / scaleFactor
-    
+
     @SumofSquares = 0
     j = 0
     while j < numPoints
       point = dataSet[j]
       ditanceOfPointFromBestFitLine = Math.abs((@bestFitLineslope * point[0]) - point[1] + @bestFitLineConstant)
-      @SumofSquares += (ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine) 
+      @SumofSquares += (ditanceOfPointFromBestFitLine * ditanceOfPointFromBestFitLine)
       j++
 
     negated_sign_char = if @bestFitLineConstant >= 0 then '+' else '-'
     bestFitLineExpression = 'y = '+@bestFitLineslope+'x' + (negated_sign_char) + Math.abs(@bestFitLineConstant)
     @bestFitLineColor = runtimeActivity.getNewColor()
     NewEmptyData = runtimeActivity.createNewEmptyDataRef(@correctLineDataSetName, bestFitLineExpression, 0.1, 0, @bestFitLineColor)
-    @bestFitLineDataDef = NewEmptyData.dataDef
-    @bestFitLineDataRef = NewEmptyData.dataRef
+    @bestFitLineDataDef = NewEmptyData.datadef
+    @bestFitLineDataRef = NewEmptyData.dataref
     runtimeActivity.setColorOfDatadef @dataSetName,@bestFitLineColor
     runtimeActivity.setColorOfDatadef @learnerDataSet,@learnerDataSetColor
     @bestFitLineDataDef
@@ -245,7 +245,7 @@ exports.BestFitSequence = class BestFitSequence
       tableAnnotations:             []
       tools:                        ["graphing"]
       responseBranches:             @check_correct_answer(0)
-    } 
+    }
 
   incorrect_answer_after_try: (nCounter) ->
     {
@@ -283,7 +283,7 @@ exports.BestFitSequence = class BestFitSequence
   attempts_over: ->
     {
       name:                   "attempts_over"
-      isFinalStep:            true  
+      isFinalStep:            true
       hideSubmitButton:       true
       beforeText:             "<b>#{@giveUp}</b>"
       showCrossHairs:         false
@@ -294,7 +294,7 @@ exports.BestFitSequence = class BestFitSequence
   correct_answer: ->
     {
       name:                   "correct_answer"
-      isFinalStep:            true  
+      isFinalStep:            true
       hideSubmitButton:       true
       beforeText:             "<b>#{@confirmCorrect}</b>"
       showCrossHairs:         false
