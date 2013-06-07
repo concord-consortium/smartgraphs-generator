@@ -1,11 +1,20 @@
 exports.DataRef = class DataRef
 
-  @serializeDataRefs = (dataRefRefs) ->
+  @serializeDataRefs = (datarefRefs) ->
     ret = []
-    for key, dataRefOfOneType of dataRefRefs
+    datarefsByType = {}
+
+    for key, datarefRef of datarefRefs
+      dataref = datarefRef.dataref
+      type = dataref.expressionType
+      datarefsByType[type] ||= []
+      datarefsByType[type].push dataref
+
+    for type, datarefsOfOneType of datarefsByType
       ret.push
-        type:    dataRefOfOneType[0].expressionType
-        records: (dataRef.toHash() for dataRef in dataRefOfOneType)
+        type: type
+        records: (dataref.toHash() for dataref in datarefsOfOneType)
+
     ret
 
   constructor: ({ @datadefname, @expressionType, @expression, @expressionForm, @angularFunction, @xInterval, @params, @index, @name }) ->
