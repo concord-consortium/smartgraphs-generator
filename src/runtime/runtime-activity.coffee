@@ -107,10 +107,16 @@ exports.RuntimeActivity = class RuntimeActivity
     else ref = @datadefRefs[key] = { key, datadef: null }
     ref
 
+  hasDatadef: (key) ->
+    @datadefRefs[key]?
+
   getDatarefRef: (key) ->
     if ref = @datarefRefs[key] then return ref
     else ref = @datarefRefs[key] = { key, dataref: null }
     ref
+
+  hasDataref: (key) ->
+    @datarefRefs[key]?
 
   defineDatadef: (key, hash) ->
     ref = @getDatadefRef key

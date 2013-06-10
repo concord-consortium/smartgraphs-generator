@@ -1,0 +1,225 @@
+{
+  "type": "Activity",
+  "name": "First Derivative of Datadef",
+  "authorName": "Richard Klancer",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "1 Graphs page",
+      "text": "Here is a graph of x^2 and its derivative",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "GRAPH",
+          "yLabel": "Y",
+          "yMin": 0.0,
+          "yMax": 10.0,
+          "xLabel": "X",
+          "xMin": -3.0,
+          "xMax": 3.0,
+          "yTicks": 10.0,
+          "xTicks": 6.0,
+          "includedDataSets": [
+            {
+              "name": "expressionData",
+              "inLegend": false
+            }
+          ],
+          "showCrossHairs": false,
+          "showToolTipCoords": false,
+          "showGraphGrid": true
+        },
+        {
+          "type": "PredefinedGraphPane",
+          "title": "DERIVATIVE",
+          "yLabel": "Y",
+          "yMin": -6.0,
+          "yMax": 6.0,
+          "xLabel": "X",
+          "xMin": -3.0,
+          "xMax": 3.0,
+          "yTicks": 12.0,
+          "xTicks": 6.0,
+          "includedDataSets": [
+            {
+              "name": "firstDerivative",
+              "inLegend": false
+            }
+          ],
+          "showCrossHairs": false,
+          "showToolTipCoords": false,
+          "showGraphGrid": true
+        }
+      ]
+    }
+  ],
+  "datasets": [
+    {
+      "type": "datadef",
+      "name": "expressionData",
+      "yUnits": null,
+      "xUnits": null,
+      "xPrecision": 0.1,
+      "yPrecision": 0.1,
+      "lineSnapDistance": 1.0,
+      "lineType": "connected",
+      "pointType": "none",
+      "data": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          2.0,
+          4.0
+        ],
+        [
+          3.0,
+          9.0
+        ],
+        [
+          4.0,
+          16.0
+        ],
+        [
+          5.0,
+          25.0
+        ],
+        [
+          6.0,
+          36.0
+        ],
+        [
+          7.0,
+          49.0
+        ],
+        [
+          8.0,
+          64.0
+        ],
+        [
+          9.0,
+          81.0
+        ],
+        [
+          10.0,
+          100.0
+        ]
+      ],
+      "expression": ""
+    },
+    {
+      "type": "datadef",
+      "name": "firstDerivative",
+      "yUnits": null,
+      "xUnits": null,
+      "xPrecision": 0.1,
+      "yPrecision": 0.1,
+      "lineSnapDistance": 0.1,
+      "lineType": "connected",
+      "pointType": "none",
+      "data": [
+
+      ],
+      "expression": "",
+      "derivativeOf": "expressionData"
+    }
+  ],
+  "animations": [
+
+  ],
+  "labelSets": [
+
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Distance",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "degrees Celsius",
+      "abbreviation": "deg C"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "min."
+    },
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "centimeters",
+      "abbreviation": "cm"
+    },
+    {
+      "type": "Unit",
+      "name": "grams",
+      "abbreviation": "gr"
+    },
+    {
+      "type": "Unit",
+      "name": "miles",
+      "abbreviation": "mi"
+    },
+    {
+      "type": "Unit",
+      "name": "hours",
+      "abbreviation": "hr"
+    },
+    {
+      "type": "Unit",
+      "name": "Celsius",
+      "abbreviation": "° C."
+    },
+    {
+      "type": "Unit",
+      "name": "dollars",
+      "abbreviation": "$"
+    },
+    {
+      "type": "Unit",
+      "name": "inches",
+      "abbreviation": "in"
+    },
+    {
+      "type": "Unit",
+      "name": "years",
+      "abbreviation": "yr"
+    },
+    {
+      "type": "Unit",
+      "name": "millimeters",
+      "abbreviation": "mm"
+    },
+    {
+      "type": "Unit",
+      "name": "parts per million",
+      "abbreviation": "ppm"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    }
+  ]
+}

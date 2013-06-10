@@ -3357,6 +3357,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return ref;
     };
 
+    RuntimeActivity.prototype.hasDatadef = function(key) {
+      return this.datadefRefs[key] != null;
+    };
+
     RuntimeActivity.prototype.getDatarefRef = function(key) {
       var ref;
       if (ref = this.datarefRefs[key]) {
@@ -3368,6 +3372,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
         };
       }
       return ref;
+    };
+
+    RuntimeActivity.prototype.hasDataref = function(key) {
+      return this.datarefRefs[key] != null;
     };
 
     RuntimeActivity.prototype.defineDatadef = function(key, hash) {
@@ -4492,8 +4500,21 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
       return this.color = color;
     };
 
-    Datadef.prototype.getDatarefUrl = function(sourceDataName) {
-      return this.activity.getDatarefRef(sourceDataName).dataref.getUrl();
+    Datadef.prototype.getDerivativeSourceType = function(sourceDataName) {
+      if (this.activity.hasDataref(sourceDataName)) {
+        return 'dataref';
+      } else if (this.activity.hasDatadef(sourceDataName)) {
+        return 'datadef';
+      } else {
+        throw new Error("unknown source data: " + sourceDataName);
+      }
+    };
+
+    Datadef.prototype.getDerivativeSourceName = function(sourceDataName) {
+      var sourceType;
+      sourceType = this.getDerivativeSourceType(sourceDataName);
+      if (sourceType === 'datadef') return sourceDataName;
+      return this.activity.getDatarefRef(sourceDataName).dataref.name;
     };
 
     Datadef.prototype.getUrl = function() {
@@ -4501,8 +4522,8 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
     };
 
     Datadef.prototype.toHash = function() {
-      var _ref, _ref2;
-      return {
+      var hash, _ref, _ref2;
+      hash = {
         url: this.getUrl(),
         name: this.name,
         activity: this.activity.getUrl(),
@@ -4512,9 +4533,13 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
         pointType: this.pointType,
         lineType: this.lineType,
         lineSnapDistance: this.lineSnapDistance,
-        color: this.color,
-        source: this.derivativeOf != null ? this.getDatarefUrl(this.derivativeOf) : void 0
+        color: this.color
       };
+      if (this.derivativeOf != null) {
+        hash.sourceType = this.getDerivativeSourceType(this.derivativeOf);
+        hash.source = this.getDerivativeSourceName(this.derivativeOf);
+      }
+      return hash;
     };
 
     return Datadef;

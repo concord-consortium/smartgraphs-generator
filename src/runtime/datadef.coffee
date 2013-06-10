@@ -46,21 +46,41 @@ exports.Datadef = class Datadef
   setColor: (color) ->
     @color = color
 
-  getDatarefUrl: (sourceDataName) ->
-    @activity.getDatarefRef(sourceDataName).dataref.getUrl()
+  getDerivativeSourceType: (sourceDataName) ->
+    # First check for a dataref. Datarefs are associated with a Datadef stored under the same key.
+    if @activity.hasDataref sourceDataName
+      return 'dataref'
+    else if @activity.hasDatadef sourceDataName
+      return 'datadef'
+    else
+      throw new Error "unknown source data: #{sourceDataName}"
+
+  getDerivativeSourceName: (sourceDataName) ->
+    sourceType = this.getDerivativeSourceType sourceDataName
+    if sourceType is 'datadef' then return sourceDataName
+
+    # But if it's a dataref, look up the name of the dataref itself, rather than the name of the
+    # datadef it populates.
+    @activity.getDatarefRef(sourceDataName).dataref.name
 
   getUrl: ->
     "#{@activity.getUrl()}/datadefs/#{@name}"
 
   toHash: ->
-    url:               @getUrl()
-    name:              @name
-    activity:          @activity.getUrl()
-    xUnits:            @xUnitsRef?.unit.getUrl()
-    yUnits:            @yUnitsRef?.unit.getUrl()
-    points:            @points
-    pointType:         @pointType
-    lineType:          @lineType
-    lineSnapDistance:  @lineSnapDistance
-    color:             @color
-    source:            if @derivativeOf? then @getDatarefUrl(@derivativeOf) else undefined
+    hash =
+      url:               @getUrl()
+      name:              @name
+      activity:          @activity.getUrl()
+      xUnits:            @xUnitsRef?.unit.getUrl()
+      yUnits:            @yUnitsRef?.unit.getUrl()
+      points:            @points
+      pointType:         @pointType
+      lineType:          @lineType
+      lineSnapDistance:  @lineSnapDistance
+      color:             @color
+
+    if @derivativeOf?
+      hash.sourceType = this.getDerivativeSourceType @derivativeOf
+      hash.source     = this.getDerivativeSourceName @derivativeOf
+
+    hash

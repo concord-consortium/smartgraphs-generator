@@ -166,7 +166,8 @@
           "pointType": "none",
           "lineType": "connected",
           "lineSnapDistance": 0.1,
-          "source": "/shared/first-derivative-of-dataref/datarefs/dataref-1"
+          "sourceType": "dataref",
+          "source": "dataref-1"
         }
       ]
     }

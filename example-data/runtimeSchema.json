@@ -369,7 +369,12 @@
                 "lineSnapDistance": {
                   "type": "number"
                 },
-                "derivativeOf": {
+                "sourceType": {
+                  "type": "string",
+                  "enum": ["datadef", "dataref"],
+                  "optional": true
+                },
+                "source": {
                   "type": "string",
                   "optional": true
                 }
