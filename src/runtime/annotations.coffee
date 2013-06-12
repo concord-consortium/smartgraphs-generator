@@ -117,9 +117,6 @@ AnnotationCollection.classFor["FreehandSketch"] = exports.FreehandSketch = class
 
     hash
 
-annotations = [
-
-]
 class SimpleAnnotation extends Annotation
   RECORD_TYPE: 'SimpleAnnotation'
   namePrefix:  'rise-and-run'
@@ -133,7 +130,7 @@ class SimpleAnnotation extends Annotation
     hash.p1Tag = @p1Tag.getUrl()
     hash.p2Tag = @p2Tag.getUrl()
     hash
-    
+
 AnnotationCollection.classFor["Label"] = exports.Label = class Label extends Annotation
   RECORD_TYPE: 'Label'
   constructor: ({@index, @point, @text, @name, @namePrefix, @offset}) ->
@@ -149,7 +146,7 @@ AnnotationCollection.classFor["Label"] = exports.Label = class Label extends Ann
     hash.xOffset = @offset[0]
     hash.yOffset = @offset[1]
     hash
-  
+
 AnnotationCollection.classFor["LabelSet"] = exports.LabelSet = class LabelSet extends Annotation
   RECORD_TYPE: 'LabelSet'
   namePrefix:  'labelSet'
@@ -159,7 +156,6 @@ AnnotationCollection.classFor["LabelSet"] = exports.LabelSet = class LabelSet ex
     hash = super()
     hash.labels = @labels
     hash
-
 AnnotationCollection.classFor["RunArrow"] = exports.RunArrow = class RunArrow extends SimpleAnnotation
   RECORD_TYPE: 'RunArrow'
   namePrefix:  'run-arrow'
@@ -179,4 +175,4 @@ AnnotationCollection.classFor["RiseBracket"] = exports.RiseBracket = class RiseB
 AnnotationCollection.classFor["LineThroughPoints"] = exports.LineThroughPoints = class LineThroughPoints extends SimpleAnnotation
   RECORD_TYPE: 'LineThroughPoints'
   namePrefix:  'line-throughpoints'
-  
+

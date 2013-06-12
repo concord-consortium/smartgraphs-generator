@@ -4727,7 +4727,7 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
 */
 
 (function() {
-  var Annotation, AnnotationCollection, FreehandSketch, HighlightedPoint, Label, LabelSet, LineThroughPoints, PointAxisLineVisualPrompt, PointCircleVisualPrompt, RangeVisualPrompt, RiseArrow, RiseBracket, RunArrow, RunBracket, SimpleAnnotation, annotations,
+  var Annotation, AnnotationCollection, FreehandSketch, HighlightedPoint, Label, LabelSet, LineThroughPoints, PointAxisLineVisualPrompt, PointCircleVisualPrompt, RangeVisualPrompt, RiseArrow, RiseBracket, RunArrow, RunBracket, SimpleAnnotation,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -4905,8 +4905,6 @@ require.define("/runtime/annotations.js", function (require, module, exports, __
     return FreehandSketch;
 
   })(Annotation);
-
-  annotations = [];
 
   SimpleAnnotation = (function(_super) {
 
