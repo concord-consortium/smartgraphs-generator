@@ -17,7 +17,7 @@ exports.DataRef = class DataRef
 
     ret
 
-  constructor: ({ @datadefname, @expressionType, @expression, @expressionForm, @angularFunction, @xInterval, @params, @index, @name }) ->
+  constructor: ({ @datadefName, @expressionType, @expression, @expressionForm, @angularFunction, @xInterval, @params, @index, @name }) ->
     if !_arg.name then @name = "dataref-#{@index}"
 
   getUrl: ->
@@ -27,7 +27,7 @@ exports.DataRef = class DataRef
     url:             @getUrl()
     name:            @name
     activity:        @activity.getUrl()
-    datadefName:     @datadefname
+    datadefName:     @datadefName
     expressionForm:  @expressionForm
     expression:      if @expressionType is 'CompositeEquation' then @expression else undefined
     angularFunction: @angularFunction

@@ -83,8 +83,8 @@ exports.RuntimeActivity = class RuntimeActivity
     datadef.constructUnitRefs()
     datadef
 
-  createDataref: ({ datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index, lineSnapDistance, name }) ->
-    dataref = new DataRef { datadefname, expressionType, expressionForm, expression, angularFunction, xInterval, params, index: ++@nDatarefs, lineSnapDistance, name }
+  createDataref: ({ datadefName, expressionType, expressionForm, expression, angularFunction, xInterval, params, index, lineSnapDistance, name }) ->
+    dataref = new DataRef { datadefName, expressionType, expressionForm, expression, angularFunction, xInterval, params, index: ++@nDatarefs, lineSnapDistance, name }
     dataref.activity = this
     dataref
 
@@ -139,7 +139,8 @@ exports.RuntimeActivity = class RuntimeActivity
       for datasetObject in @datasets
         if datasetObject.name is datasetEntry.name
           if String(datasetObject.type).toLowerCase() is "datadef"
-            unless datadef = @getDatadefRef(datasetObject.name).datadef
+            datadef = @getDatadefRef(datasetObject.name).datadef
+            if not datadef?
               datadef = this.defineDatadef(datasetObject.name, { points: datasetObject.data, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name, derivativeOf: datasetObject.derivativeOf })
             populatedDataDefs.push datadef
 
@@ -148,16 +149,18 @@ exports.RuntimeActivity = class RuntimeActivity
             if @expression isnt null and @expression isnt undefined
               expressionData = expressionParser.parseExpression(@expression)
               if expressionData.type? and expressionData.type isnt "not supported"
-                unless datadef = @getDatadefRef(datasetObject.name).datadef
-                  datadef = this.defineDatadef(datasetObject.name, { points: [], xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits,  lineType: datasetObject.lineType, lineSnapDistance: datasetObject.lineSnapDistance, pointType: datasetObject.pointType, name: datasetObject.name })
-                  dataref = this.defineDataref(datasetObject.name, { datadefname: datadef.name, expressionType: expressionData.type, xInterval: datasetObject.xPrecision, expressionForm: expressionData.form, expression: datasetObject.expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: datasetObject.lineSnapDistance })
+                datadef = @getDatadefRef(datasetObject.name).datadef
+                if datadef?
+                  dataref = this.getDatarefRef(datasetObject.name).dataref
                 else
-                  dataref = this.getDataRefOfDatadef ({datadefName: datadef.name, expressionType: expressionData.type})
+                  datadef = this.defineDatadef(datasetObject.name, { points: [], xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits,  lineType: datasetObject.lineType, lineSnapDistance: datasetObject.lineSnapDistance, pointType: datasetObject.pointType, name: datasetObject.name })
+                  dataref = this.defineDataref(datasetObject.name, { datadefName: datadef.name, expressionType: expressionData.type, xInterval: datasetObject.xPrecision, expressionForm: expressionData.form, expression: datasetObject.expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: datasetObject.lineSnapDistance })
+
                 populatedDataDefs.push datadef
                 populatedDataRefs.push dataref
 
     @referenceDatadef = datadef
-    { datadef: populatedDataDefs, dataref: populatedDataRefs }
+    { datadefs: populatedDataDefs, datarefs: populatedDataRefs }
 
   createNewEmptyDataRef: (name, expression, xPrecision, lineSnapDistance, color) ->
     if expression isnt null and expression isnt undefined
@@ -165,9 +168,9 @@ exports.RuntimeActivity = class RuntimeActivity
       if expressionData.type? and expressionData.type isnt "not supported"
         unless datadef = @getDatadefRef(name).datadef
           datadef = this.defineDatadef(name, { points: [], xUnits: @referenceDatadef.xUnits, yUnits: @referenceDatadef.yUnits, lineType: 'connected', pointType: 'none', lineSnapDistance: @referenceDatadef.lineSnapDistance, name: name, color: color})
-          dataref = this.defineDataref(name, { datadefname: datadef.name, expressionType: expressionData.type, xInterval: xPrecision, expressionForm: expressionData.form, expression: expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: lineSnapDistance })
+          dataref = this.defineDataref(name, { datadefName: datadef.name, expressionType: expressionData.type, xInterval: xPrecision, expressionForm: expressionData.form, expression: expression, angularFunction: expressionData.angularFunction, params: expressionData.params, lineSnapDistance: lineSnapDistance })
         else
-          dataref = this.getDataRefOfDatadef ({datadefName: datadef.name, expressionType: expressionData.type})
+          dataref = this.getDatarefRef(datasetObject.name).dataref
 
         { datadef: datadef, dataref: dataref }
 
@@ -178,10 +181,6 @@ exports.RuntimeActivity = class RuntimeActivity
   setColorOfDatadef: (datadefName, color) ->
     if datadef = @getDatadefRef(datadefName).datadef
       datadef.setColor color
-
-  getDataRefOfDatadef: ({datadefName, expressionType}) ->
-    for dataref in @datarefRefs[expressionType]
-      return dataref  if dataref.datadefname is datadefName
 
   ###
     Things that are defined only inline (for now) and therefore don't need to be treated as forward references.

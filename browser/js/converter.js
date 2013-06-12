@@ -1135,16 +1135,16 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       if (this.includedDataSets != null) {
         if (this.includedDataSets.length !== 0) {
           populatedDataSets = runtimeActivity.populateDataSet(this.includedDataSets);
-          populatedDataDefs = populatedDataSets.datadef;
-          this.dataref = populatedDataSets.dataref;
+          populatedDataDefs = populatedDataSets.datadefs;
+          this.datarefs = populatedDataSets.datarefs;
           if (!this.activeDatasetName) {
             this.activeDatasetName = populatedDataDefs[this.activeDataSetIndex].name;
           }
-          _ref = this.dataref;
+          _ref = this.datarefs;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             dataref = _ref[_i];
             if (this.activeDatasetName === dataref.name) {
-              this.activeDatasetName = dataref.datadefname;
+              this.activeDatasetName = dataref.datadefName;
               break;
             }
           }
@@ -1188,7 +1188,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         showToolTipCoords: this.showToolTipCoords,
         includedDataSets: this.includedDataSets,
         activeDatasetName: this.activeDatasetName,
-        dataref: this.dataref,
+        dataref: this.datarefs,
         labelSetNames: this.labelSetNames
       });
       if (this.animation) {
@@ -2271,7 +2271,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
       stepDataRefs = [];
       legendsDataset = [this.learnerDataSet];
       if (hasAnswer === "true") {
-        stepDataRefs = this.graphPane.dataref.concat(this.correctLineDataRef);
+        stepDataRefs = this.graphPane.datarefs.concat(this.correctLineDataRef);
         stepDataDefRef = datadefRefForStep.concat({
           key: this.correctLineDataSetName,
           datadef: this.correctLineDataDef
@@ -2627,7 +2627,7 @@ require.define("/author/best_fit_sequence.js", function (require, module, export
       stepDataRefs = [];
       legendsDataset = [this.learnerDataSet];
       if (hasAnswer === "true") {
-        stepDataRefs = this.graphPane.dataref.concat(this.bestFitLineDataRef);
+        stepDataRefs = this.graphPane.datarefs.concat(this.bestFitLineDataRef);
         stepDataDefRef = datadefRefForStep.concat({
           key: this.correctLineDataSetName,
           datadef: this.bestFitLineDataDef
@@ -3301,10 +3301,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
     };
 
     RuntimeActivity.prototype.createDataref = function(_arg) {
-      var angularFunction, datadefname, dataref, expression, expressionForm, expressionType, index, lineSnapDistance, name, params, xInterval;
-      datadefname = _arg.datadefname, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name;
+      var angularFunction, datadefName, dataref, expression, expressionForm, expressionType, index, lineSnapDistance, name, params, xInterval;
+      datadefName = _arg.datadefName, expressionType = _arg.expressionType, expressionForm = _arg.expressionForm, expression = _arg.expression, angularFunction = _arg.angularFunction, xInterval = _arg.xInterval, params = _arg.params, index = _arg.index, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name;
       dataref = new DataRef({
-        datadefname: datadefname,
+        datadefName: datadefName,
         expressionType: expressionType,
         expressionForm: expressionForm,
         expression: expression,
@@ -3404,7 +3404,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
           datasetObject = _ref2[_j];
           if (datasetObject.name === datasetEntry.name) {
             if (String(datasetObject.type).toLowerCase() === "datadef") {
-              if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
+              datadef = this.getDatadefRef(datasetObject.name).datadef;
+              if (!(datadef != null)) {
                 datadef = this.defineDatadef(datasetObject.name, {
                   points: datasetObject.data,
                   xUnits: datasetObject.xUnits,
@@ -3422,7 +3423,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
               if (this.expression !== null && this.expression !== void 0) {
                 expressionData = expressionParser.parseExpression(this.expression);
                 if ((expressionData.type != null) && expressionData.type !== "not supported") {
-                  if (!(datadef = this.getDatadefRef(datasetObject.name).datadef)) {
+                  datadef = this.getDatadefRef(datasetObject.name).datadef;
+                  if (datadef != null) {
+                    dataref = this.getDatarefRef(datasetObject.name).dataref;
+                  } else {
                     datadef = this.defineDatadef(datasetObject.name, {
                       points: [],
                       xUnits: datasetObject.xUnits,
@@ -3433,7 +3437,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                       name: datasetObject.name
                     });
                     dataref = this.defineDataref(datasetObject.name, {
-                      datadefname: datadef.name,
+                      datadefName: datadef.name,
                       expressionType: expressionData.type,
                       xInterval: datasetObject.xPrecision,
                       expressionForm: expressionData.form,
@@ -3441,11 +3445,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                       angularFunction: expressionData.angularFunction,
                       params: expressionData.params,
                       lineSnapDistance: datasetObject.lineSnapDistance
-                    });
-                  } else {
-                    dataref = this.getDataRefOfDatadef({
-                      datadefName: datadef.name,
-                      expressionType: expressionData.type
                     });
                   }
                   populatedDataDefs.push(datadef);
@@ -3458,8 +3457,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       }
       this.referenceDatadef = datadef;
       return {
-        datadef: populatedDataDefs,
-        dataref: populatedDataRefs
+        datadefs: populatedDataDefs,
+        datarefs: populatedDataRefs
       };
     };
 
@@ -3480,7 +3479,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
               color: color
             });
             dataref = this.defineDataref(name, {
-              datadefname: datadef.name,
+              datadefName: datadef.name,
               expressionType: expressionData.type,
               xInterval: xPrecision,
               expressionForm: expressionData.form,
@@ -3490,10 +3489,7 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
               lineSnapDistance: lineSnapDistance
             });
           } else {
-            dataref = this.getDataRefOfDatadef({
-              datadefName: datadef.name,
-              expressionType: expressionData.type
-            });
+            dataref = this.getDatarefRef(datasetObject.name).dataref;
           }
           return {
             datadef: datadef,
@@ -3515,16 +3511,6 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       var datadef;
       if (datadef = this.getDatadefRef(datadefName).datadef) {
         return datadef.setColor(color);
-      }
-    };
-
-    RuntimeActivity.prototype.getDataRefOfDatadef = function(_arg) {
-      var datadefName, dataref, expressionType, _i, _len, _ref2;
-      datadefName = _arg.datadefName, expressionType = _arg.expressionType;
-      _ref2 = this.datarefRefs[expressionType];
-      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-        dataref = _ref2[_i];
-        if (dataref.datadefname === datadefName) return dataref;
       }
     };
 
@@ -4586,7 +4572,7 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
     };
 
     function DataRef(_arg) {
-      this.datadefname = _arg.datadefname, this.expressionType = _arg.expressionType, this.expression = _arg.expression, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index, this.name = _arg.name;
+      this.datadefName = _arg.datadefName, this.expressionType = _arg.expressionType, this.expression = _arg.expression, this.expressionForm = _arg.expressionForm, this.angularFunction = _arg.angularFunction, this.xInterval = _arg.xInterval, this.params = _arg.params, this.index = _arg.index, this.name = _arg.name;
       if (!_arg.name) this.name = "dataref-" + this.index;
     }
 
@@ -4599,7 +4585,7 @@ require.define("/runtime/dataref.js", function (require, module, exports, __dirn
         url: this.getUrl(),
         name: this.name,
         activity: this.activity.getUrl(),
-        datadefName: this.datadefname,
+        datadefName: this.datadefName,
         expressionForm: this.expressionForm,
         expression: this.expressionType === 'CompositeEquation' ? this.expression : void 0,
         angularFunction: this.angularFunction,

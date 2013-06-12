@@ -45,7 +45,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
     stepDataRefs = []
     legendsDataset = [@learnerDataSet]
     if hasAnswer is "true"
-      stepDataRefs = @graphPane.dataref.concat(@correctLineDataRef)
+      stepDataRefs = @graphPane.datarefs.concat(@correctLineDataRef)
       stepDataDefRef = datadefRefForStep.concat({ key: @correctLineDataSetName, datadef: @correctLineDataDef })
       stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
       legendsDataset.push @correctLineDataSetName

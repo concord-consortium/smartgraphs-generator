@@ -28,15 +28,15 @@ class GraphPane
     if @includedDataSets?
       unless @includedDataSets.length is 0
         populatedDataSets = runtimeActivity.populateDataSet @includedDataSets
-        populatedDataDefs = populatedDataSets.datadef
-        @dataref = populatedDataSets.dataref
+        populatedDataDefs = populatedDataSets.datadefs
+        @datarefs = populatedDataSets.datarefs
 
         unless @activeDatasetName
           @activeDatasetName = populatedDataDefs[@activeDataSetIndex].name
 
-        for dataref in @dataref
+        for dataref in @datarefs
           if @activeDatasetName is dataref.name
-            @activeDatasetName = dataref.datadefname
+            @activeDatasetName = dataref.datadefName
             break
 
         for populatedDataDef in populatedDataDefs
@@ -49,7 +49,7 @@ class GraphPane
     @yAxis = runtimeActivity.createAndAppendAxis { label: @yLabel, unitRef: @yUnitsRef, min: @yMin, max: @yMax, nSteps: @yTicks }
 
   addToStep: (step) ->
-    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, @dataref, @labelSetNames}
+    step.addGraphPane { @title, @datadefRef, @xAxis, @yAxis, @index, @showCrossHairs, @showGraphGrid, @showToolTipCoords, @includedDataSets, @activeDatasetName, dataref: @datarefs, @labelSetNames}
 
     if @animation
       animation = @page.activity.animationsByName[@animation]

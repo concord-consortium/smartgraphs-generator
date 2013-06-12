@@ -47,7 +47,7 @@ exports.BestFitSequence = class BestFitSequence
     stepDataRefs = []
     legendsDataset = [@learnerDataSet]
     if hasAnswer is "true"
-      stepDataRefs = @graphPane.dataref.concat(@bestFitLineDataRef)
+      stepDataRefs = @graphPane.datarefs.concat(@bestFitLineDataRef)
       stepDataDefRef = datadefRefForStep.concat({ key: @correctLineDataSetName, datadef: @bestFitLineDataDef })
       stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
       legendsDataset.push @correctLineDataSetName
