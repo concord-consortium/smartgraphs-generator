@@ -76,8 +76,9 @@ exports.RuntimeActivity = class RuntimeActivity
     unit.activity = this
     unit
 
-  createDatadef: ({ points, xUnits, yUnits, pointType, lineType, lineSnapDistance, name, color, derivativeOf }) ->
-    datadef = new Datadef { points, index: ++@nDatadefs, pointType, lineType, lineSnapDistance, xUnits, yUnits, name, color, derivativeOf }
+  createDatadef: (hash) ->
+    hash.index = ++@nDatadefs
+    datadef = new Datadef hash
     datadef.activity = this
     datadef.populateSourceDatasets()
     datadef.constructUnitRefs()
@@ -141,7 +142,7 @@ exports.RuntimeActivity = class RuntimeActivity
           if String(datasetObject.type).toLowerCase() is "datadef"
             datadef = @getDatadefRef(datasetObject.name).datadef
             if not datadef?
-              datadef = this.defineDatadef(datasetObject.name, { points: datasetObject.data, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name, derivativeOf: datasetObject.derivativeOf })
+              datadef = this.defineDatadef(datasetObject.name, { points: datasetObject.data, xUnits: datasetObject.xUnits, yUnits: datasetObject.yUnits, lineType: datasetObject.lineType, pointType: datasetObject.pointType, lineSnapDistance: datasetObject.lineSnapDistance, name: datasetObject.name, derivativeOf: datasetObject.derivativeOf, piecewiseLinear: datasetObject.piecewiseLinear })
             populatedDataDefs.push datadef
 
           else if String(datasetObject.type).toLowerCase() is "dataref"

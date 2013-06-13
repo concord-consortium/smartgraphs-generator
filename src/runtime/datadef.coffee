@@ -32,7 +32,7 @@ exports.Datadef = class Datadef
 
     ret
 
-  constructor: ({@points, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color, @derivativeOf}) ->
+  constructor: ({@points, @index, @pointType, @lineType, @lineSnapDistance, @xUnits, @yUnits, @name , @color, @derivativeOf, @piecewiseLinear}) ->
     @name ?= "datadef-#{@index}"
     @lineSnapDistance ?= 0
 
@@ -82,5 +82,6 @@ exports.Datadef = class Datadef
     if @derivativeOf?
       hash.sourceType = this.getDerivativeSourceType @derivativeOf
       hash.source     = this.getDerivativeSourceName @derivativeOf
+      hash.sourceIsPiecewiseLinear = @piecewiseLinear || false
 
     hash

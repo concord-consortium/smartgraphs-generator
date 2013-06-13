@@ -3279,21 +3279,10 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
       return unit;
     };
 
-    RuntimeActivity.prototype.createDatadef = function(_arg) {
-      var color, datadef, derivativeOf, lineSnapDistance, lineType, name, pointType, points, xUnits, yUnits;
-      points = _arg.points, xUnits = _arg.xUnits, yUnits = _arg.yUnits, pointType = _arg.pointType, lineType = _arg.lineType, lineSnapDistance = _arg.lineSnapDistance, name = _arg.name, color = _arg.color, derivativeOf = _arg.derivativeOf;
-      datadef = new Datadef({
-        points: points,
-        index: ++this.nDatadefs,
-        pointType: pointType,
-        lineType: lineType,
-        lineSnapDistance: lineSnapDistance,
-        xUnits: xUnits,
-        yUnits: yUnits,
-        name: name,
-        color: color,
-        derivativeOf: derivativeOf
-      });
+    RuntimeActivity.prototype.createDatadef = function(hash) {
+      var datadef;
+      hash.index = ++this.nDatadefs;
+      datadef = new Datadef(hash);
       datadef.activity = this;
       datadef.populateSourceDatasets();
       datadef.constructUnitRefs();
@@ -3414,7 +3403,8 @@ require.define("/runtime/runtime-activity.js", function (require, module, export
                   pointType: datasetObject.pointType,
                   lineSnapDistance: datasetObject.lineSnapDistance,
                   name: datasetObject.name,
-                  derivativeOf: datasetObject.derivativeOf
+                  derivativeOf: datasetObject.derivativeOf,
+                  piecewiseLinear: datasetObject.piecewiseLinear
                 });
               }
               populatedDataDefs.push(datadef);
@@ -4462,7 +4452,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
     };
 
     function Datadef(_arg) {
-      this.points = _arg.points, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name, this.color = _arg.color, this.derivativeOf = _arg.derivativeOf;
+      this.points = _arg.points, this.index = _arg.index, this.pointType = _arg.pointType, this.lineType = _arg.lineType, this.lineSnapDistance = _arg.lineSnapDistance, this.xUnits = _arg.xUnits, this.yUnits = _arg.yUnits, this.name = _arg.name, this.color = _arg.color, this.derivativeOf = _arg.derivativeOf, this.piecewiseLinear = _arg.piecewiseLinear;
       if (this.name == null) this.name = "datadef-" + this.index;
       if (this.lineSnapDistance == null) this.lineSnapDistance = 0;
     }
@@ -4524,6 +4514,7 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
       if (this.derivativeOf != null) {
         hash.sourceType = this.getDerivativeSourceType(this.derivativeOf);
         hash.source = this.getDerivativeSourceName(this.derivativeOf);
+        hash.sourceIsPiecewiseLinear = this.piecewiseLinear || false;
       }
       return hash;
     };

@@ -167,7 +167,8 @@
           "lineType": "connected",
           "lineSnapDistance": 0.1,
           "sourceType": "dataref",
-          "source": "dataref-1"
+          "source": "dataref-1",
+          "sourceIsPiecewiseLinear": false
         }
       ]
     }

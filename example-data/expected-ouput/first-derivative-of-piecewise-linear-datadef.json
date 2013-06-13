@@ -208,7 +208,7 @@
           "lineSnapDistance": 0.1,
           "sourceType": "datadef",
           "source": "expressionData",
-          "sourceIsPiecewiseLinear": false
+          "sourceIsPiecewiseLinear": true
         }
       ]
     }
