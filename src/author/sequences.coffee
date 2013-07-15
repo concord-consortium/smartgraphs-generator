@@ -173,7 +173,7 @@ class CorrectableSequenceWithFeedback
       @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
       @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
       
-    if @dataSetName then @graphPane.activeDatasetName = @dataSetName
+    if @dataSetName? and @graphPane? then @graphPane.activeDatasetName = @dataSetName
 
   getRequiresGraphOrTable: ->
     @getHasVisualPrompts() || @getNeedsGraphData()

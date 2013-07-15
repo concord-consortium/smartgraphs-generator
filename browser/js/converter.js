@@ -796,7 +796,9 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
           this.tablePane = pane;
         }
       }
-      if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
+      if ((this.dataSetName != null) && (this.graphPane != null)) {
+        this.graphPane.activeDatasetName = this.dataSetName;
+      }
     }
 
     CorrectableSequenceWithFeedback.prototype.getRequiresGraphOrTable = function() {
@@ -1312,10 +1314,15 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       });
     };
 
-    PredictionGraphPane.prototype.addToStep = function(step, _arg) {
+    PredictionGraphPane.prototype.addToStep = function(step, args) {
       var isActiveInputPane, previousAnnotation, uiBehavior;
-      isActiveInputPane = _arg.isActiveInputPane, previousAnnotation = _arg.previousAnnotation;
       PredictionGraphPane.__super__.addToStep.apply(this, arguments);
+      if (args != null) {
+        isActiveInputPane = args.isActiveInputPane, previousAnnotation = args.previousAnnotation;
+      } else {
+        isActiveInputPane = true;
+        previousAnnotation = false;
+      }
       if (isActiveInputPane) {
         uiBehavior = this.predictionType === "continuous_curves" ? "freehand" : "extend";
         step.addPredictionTool({
@@ -1329,7 +1336,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
           annotation: this.annotation
         });
       }
-      if (previousAnnotation) {
+      if (previousAnnotation != null) {
         return step.addAnnotationToPane({
           index: this.index,
           annotation: previousAnnotation

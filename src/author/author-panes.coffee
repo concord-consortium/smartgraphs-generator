@@ -117,13 +117,19 @@ AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends G
     super
     @annotation = runtimeActivity.createAndAppendAnnotation {type: 'FreehandSketch'}
 
-  addToStep: (step, {isActiveInputPane, previousAnnotation}) ->
+  addToStep: (step, args) ->
     super
+    if args?
+      { isActiveInputPane, previousAnnotation } = args
+    else
+      isActiveInputPane = true
+      previousAnnotation = false
+
     if isActiveInputPane
       uiBehavior = if @predictionType is "continuous_curves" then "freehand" else "extend"
       step.addPredictionTool { @index, @datadefRef,  @annotation, uiBehavior }
       step.addAnnotationToPane { @index, @annotation }
-    if previousAnnotation
+    if previousAnnotation?
       step.addAnnotationToPane { @index, annotation: previousAnnotation }
 
 
