@@ -123,7 +123,7 @@ AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends G
       { isActiveInputPane, previousAnnotation } = args
     else
       isActiveInputPane = true
-      previousAnnotation = false
+      previousAnnotation = undefined
 
     if isActiveInputPane
       uiBehavior = if @predictionType is "continuous_curves" then "freehand" else "extend"

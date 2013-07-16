@@ -1321,7 +1321,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         isActiveInputPane = args.isActiveInputPane, previousAnnotation = args.previousAnnotation;
       } else {
         isActiveInputPane = true;
-        previousAnnotation = false;
+        previousAnnotation = void 0;
       }
       if (isActiveInputPane) {
         uiBehavior = this.predictionType === "continuous_curves" ? "freehand" : "extend";
