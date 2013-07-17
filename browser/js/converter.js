@@ -2289,7 +2289,7 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         });
         legendsDataset.push(this.correctLineDataSetName);
       } else {
-        stepDataRefs = this.graphPane.dataref ? this.graphPane.dataref : [];
+        stepDataRefs = this.graphPane.datarefs ? this.graphPane.datarefs : [];
         stepDataDefRef = datadefRefForStep;
         stepIncludedDataSets = this.graphPane.includedDataSets;
       }

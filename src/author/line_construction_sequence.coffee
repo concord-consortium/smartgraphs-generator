@@ -50,7 +50,7 @@ exports.LineConstructionSequence = class LineConstructionSequence
       stepIncludedDataSets = @graphPane.includedDataSets.concat({ name: @correctLineDataSetName, inLegend: true })
       legendsDataset.push @correctLineDataSetName
     else
-      stepDataRefs = if @graphPane.dataref then @graphPane.dataref else []
+      stepDataRefs = if @graphPane.datarefs then @graphPane.datarefs else []
       stepDataDefRef = datadefRefForStep
       stepIncludedDataSets = @graphPane.includedDataSets
 
