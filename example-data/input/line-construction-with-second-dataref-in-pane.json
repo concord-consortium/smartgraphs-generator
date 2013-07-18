@@ -1,0 +1,189 @@
+{
+  "type": "Activity",
+  "name": "Reflect a line",
+  "authorName": "Andy Zucker",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "1 Reflect a line",
+      "text": "Here is a one-page draft of reflecting a line.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "y=3-X",
+          "yLabel": "Y",
+          "yMin": -5.0,
+          "yMax": 5.0,
+          "xLabel": "X",
+          "xMin": -5.0,
+          "xMax": 5.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "includedDataSets": [
+            {
+              "name": "Empty dataset",
+              "inLegend": false
+            },
+            {
+              "name": "y=3-x",
+              "inLegend": true
+            }
+          ],
+          "showCrossHairs": false,
+          "showToolTipCoords": true,
+          "showGraphGrid": true
+        },
+        {
+          "type": "TablePane",
+          "xLabel": "X",
+          "yLabel": "Y",
+          "title": "Table"
+        }
+      ],
+      "sequence": {
+        "type": "LineConstructionSequence",
+        "slope": 1.0,
+        "slopeTolerance": 0.1,
+        "yIntercept": -3.0,
+        "yInterceptTolerance": 0.1,
+        "maxAttempts": 3,
+        "initialPrompt": "Construct a line that is a reflection across the X-axis of Y=3-X.",
+        "confirmCorrect": "Yes, that is correct.",
+        "slopeIncorrect": "Your slope is not correct. Try again.",
+        "yInterceptIncorrect": "Your y-intercept is not correct. Try again.",
+        "allIncorrect": "No, please try again.",
+        "giveUp": "Here is the correct line.",
+        "dataSetName": "Empty dataset"
+      }
+    }
+  ],
+  "datasets": [
+    {
+      "type": "datadef",
+      "name": "Empty dataset",
+      "yUnits": null,
+      "xUnits": null,
+      "xPrecision": 0.1,
+      "yPrecision": 0.1,
+      "lineSnapDistance": 0.1,
+      "lineType": "none",
+      "pointType": "dot",
+      "data": [
+
+      ],
+      "expression": "",
+      "derivativeOf": null,
+      "piecewiseLinear": null
+    },
+    {
+      "type": "dataref",
+      "name": "y=3-x",
+      "yUnits": null,
+      "xUnits": null,
+      "xPrecision": 0.1,
+      "yPrecision": 0.1,
+      "lineSnapDistance": 0.1,
+      "lineType": "connected",
+      "pointType": "none",
+      "data": [
+
+      ],
+      "expression": "y = 3-x",
+      "derivativeOf": null,
+      "piecewiseLinear": null
+    }
+  ],
+  "animations": [
+
+  ],
+  "labelSets": [
+
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Distance",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "degrees Celsius",
+      "abbreviation": "deg C"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "min."
+    },
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "centimeters",
+      "abbreviation": "cm"
+    },
+    {
+      "type": "Unit",
+      "name": "grams",
+      "abbreviation": "gr"
+    },
+    {
+      "type": "Unit",
+      "name": "miles",
+      "abbreviation": "mi"
+    },
+    {
+      "type": "Unit",
+      "name": "hours",
+      "abbreviation": "hr"
+    },
+    {
+      "type": "Unit",
+      "name": "Celsius",
+      "abbreviation": "° C."
+    },
+    {
+      "type": "Unit",
+      "name": "dollars",
+      "abbreviation": "$"
+    },
+    {
+      "type": "Unit",
+      "name": "inches",
+      "abbreviation": "in"
+    },
+    {
+      "type": "Unit",
+      "name": "years",
+      "abbreviation": "yr"
+    },
+    {
+      "type": "Unit",
+      "name": "millimeters",
+      "abbreviation": "mm"
+    },
+    {
+      "type": "Unit",
+      "name": "parts per million",
+      "abbreviation": "ppm"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    }
+  ]
+}
