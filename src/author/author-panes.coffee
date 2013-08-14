@@ -20,7 +20,7 @@ class GraphPane
     unless @includedDataSets then @includedDataSets = []
     unless @labelSetNames then @labelSetNames = []
     @annotationSources = includeAnnotationsFrom?.map (source) ->
-      [page, pane] = (source.match /^page\/(\d)+\/pane\/(\d)+$/)[1..2].map (s) -> parseInt(s, 10) - 1
+      [page, pane] = (source.match /^page\/(\d+)\/pane\/(\d+)$/)[1..2].map (s) -> parseInt(s, 10) - 1
       { page, pane }
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
@@ -77,13 +77,13 @@ class GraphPane
       pane = page?.panes[source.pane]
 
       if not page?
-        throw new Error "When attempting to include annotations from pane #{pane+1} of page #{page+1}, couldn't find the page."
+        throw new Error "When attempting to include annotations from pane #{source.pane+1} of page #{source.page+1}, couldn't find the page."
 
       if not pane?
-        throw new Error "When attempting to include annotations from pane #{pane+1} of page #{page+1}, couldn't find the pane."
+        throw new Error "When attempting to include annotations from pane #{source.pane+1} of page #{source.page+1}, couldn't find the pane."
 
       if not pane.annotation?
-        throw new Error "When attempting to include annotations from pane #{pane+1} of page #{page+1}, couldn't find the annotation."
+        throw new Error "When attempting to include annotations from pane #{source.pane+1} of page #{source.page+1}, couldn't find the annotation."
 
       step.addAnnotationToPane { index: source.pane, annotation: pane.annotation }
 
