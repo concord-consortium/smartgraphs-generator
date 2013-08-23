@@ -162,8 +162,9 @@ AuthorPane.classFor['AnimationPane'] = class AnimationPane
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
     animation = @page.activity.animationsByName[@animation]
-    xMin = animation.getXMin()
-    xMax = animation.getXMax()
+    # TODO: instead of using these, use data supplied in semantic JSON
+    xMin = ''
+    xMax = ''
     # we need to add a graph pane, even though it will be hidden from the user!
     @graphPane = new GraphPane
       title: ""
