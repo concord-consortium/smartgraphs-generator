@@ -1121,7 +1121,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
       if (!this.labelSetNames) this.labelSetNames = [];
       this.annotationSources = includeAnnotationsFrom != null ? includeAnnotationsFrom.map(function(source) {
         var page, pane, _ref;
-        _ref = (source.match(/^page\/(\d)+\/pane\/(\d)+$/)).slice(1, 3).map(function(s) {
+        _ref = (source.match(/^page\/(\d+)\/pane\/(\d+)$/)).slice(1, 3).map(function(s) {
           return parseInt(s, 10) - 1;
         }), page = _ref[0], pane = _ref[1];
         return {
@@ -1239,13 +1239,13 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         page = pages[source.page];
         pane = page != null ? page.panes[source.pane] : void 0;
         if (!(page != null)) {
-          throw new Error("When attempting to include annotations from pane " + (pane + 1) + " of page " + (page + 1) + ", couldn't find the page.");
+          throw new Error("When attempting to include annotations from pane " + (source.pane + 1) + " of page " + (source.page + 1) + ", couldn't find the page.");
         }
         if (!(pane != null)) {
-          throw new Error("When attempting to include annotations from pane " + (pane + 1) + " of page " + (page + 1) + ", couldn't find the pane.");
+          throw new Error("When attempting to include annotations from pane " + (source.pane + 1) + " of page " + (source.page + 1) + ", couldn't find the pane.");
         }
         if (!(pane.annotation != null)) {
-          throw new Error("When attempting to include annotations from pane " + (pane + 1) + " of page " + (page + 1) + ", couldn't find the annotation.");
+          throw new Error("When attempting to include annotations from pane " + (source.pane + 1) + " of page " + (source.page + 1) + ", couldn't find the annotation.");
         }
         return step.addAnnotationToPane({
           index: source.pane,
@@ -1399,19 +1399,17 @@ require.define("/author/author-panes.js", function (require, module, exports, __
   AuthorPane.classFor['AnimationPane'] = AnimationPane = (function() {
 
     function AnimationPane(_arg) {
-      this.animation = _arg.animation;
+      this.animation = _arg.animation, this.xMin = _arg.xMin, this.xMax = _arg.xMax;
     }
 
     AnimationPane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {
-      var animation, xMax, xMin;
+      var animation;
       animation = this.page.activity.animationsByName[this.animation];
-      xMin = animation.getXMin();
-      xMax = animation.getXMax();
       this.graphPane = new GraphPane({
         title: "",
         xLabel: "",
-        xMin: xMin,
-        xMax: xMax,
+        xMin: this.xMin,
+        xMax: this.xMax,
         xTicks: 1,
         yLabel: "",
         yMin: animation.yMin,
@@ -3093,12 +3091,14 @@ require.define("/author/animation.js", function (require, module, exports, __dir
 
     Animation.prototype.getXMin = function() {
       var dataset;
+      console.warn("Please don't call Animation.getXMin; the value should be in the semantic JSON.");
       dataset = this.activity.datasetsByName[this.dataset];
       return dataset.data[0][0];
     };
 
     Animation.prototype.getXMax = function() {
       var dataset;
+      console.warn("Please don't call Animation.getXMax; the value should be in the semantic JSON.");
       dataset = this.activity.datasetsByName[this.dataset];
       return dataset.data[dataset.data.length - 1][0];
     };
