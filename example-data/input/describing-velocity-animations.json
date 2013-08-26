@@ -19,7 +19,9 @@
       "panes": [
         {
           "type": "AnimationPane",
-          "animation": "position-data-animation"
+          "animation": "position-data-animation",
+          "xMin": 0.0,
+          "xMax": 9.0
         },
         {
           "type": "EmptyPane"

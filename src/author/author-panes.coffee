@@ -158,19 +158,16 @@ AuthorPane.classFor['TablePane'] = class TablePane
 
 AuthorPane.classFor['AnimationPane'] = class AnimationPane
 
-  constructor: ({ @animation }) ->
+  constructor: ({ @animation, @xMin, @xMax }) ->
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
     animation = @page.activity.animationsByName[@animation]
-    # TODO: instead of using these, use data supplied in semantic JSON
-    xMin = ''
-    xMax = ''
     # we need to add a graph pane, even though it will be hidden from the user!
     @graphPane = new GraphPane
       title: ""
       xLabel: ""
-      xMin: xMin
-      xMax: xMax
+      xMin: @xMin
+      xMax: @xMax
       xTicks: 1
       yLabel: ""
       yMin: animation.yMin
