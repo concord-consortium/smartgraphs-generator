@@ -1,0 +1,301 @@
+{
+    "_id": "first-derivative-of-animation.df6",
+    "_rev": 1,
+    "data_format_version": 6,
+    "activity": {
+        "title": "First Derivative of Animation",
+        "url": "/shared/first-derivative-of-animation",
+        "owner": "shared",
+        "pages": ["/shared/first-derivative-of-animation/page/1-1-sample-page"],
+        "axes": ["/shared/first-derivative-of-animation/axes/1", "/shared/first-derivative-of-animation/axes/2", "/shared/first-derivative-of-animation/axes/3", "/shared/first-derivative-of-animation/axes/4"],
+        "authorName": "Parker Morse"
+    },
+    "pages": [{
+        "name": "1 Sample Page",
+        "url": "/shared/first-derivative-of-animation/page/1-1-sample-page",
+        "activity": "/shared/first-derivative-of-animation",
+        "index": 1,
+        "introText": "This page will have an animation in the upper-right pane and a first derivative graph in the lower right.",
+        "steps": ["/shared/first-derivative-of-animation/page/1-1-sample-page/step/1"],
+        "firstStep": "/shared/first-derivative-of-animation/page/1-1-sample-page/step/1",
+        "contextVars": []
+    }],
+    "steps": [{
+        "url": "/shared/first-derivative-of-animation/page/1-1-sample-page/step/1",
+        "activityPage": "/shared/first-derivative-of-animation/page/1-1-sample-page",
+        "paneConfig": "split",
+        "panes": {
+            "top": {
+                "type": "graph",
+                "title": "The original data",
+                "xAxis": "/shared/first-derivative-of-animation/axes/1",
+                "yAxis": "/shared/first-derivative-of-animation/axes/2",
+                "showCrossHairs": false,
+                "showGraphGrid": false,
+                "showToolTipCoords": false,
+                "annotations": [],
+                "highlightedAnnotations": [],
+                "data": ["Animate this!"],
+                "legends": {
+                    "title": "legend",
+                    "type": "name",
+                    "referenceDatadef": "",
+                    "datadefs": []
+                },
+                "activeDatadefs": ["Animate this!"]
+            },
+            "bottom": {
+                "type": "graph",
+                "title": "The derivative",
+                "xAxis": "/shared/first-derivative-of-animation/axes/3",
+                "yAxis": "/shared/first-derivative-of-animation/axes/4",
+                "showCrossHairs": false,
+                "showGraphGrid": false,
+                "showToolTipCoords": false,
+                "annotations": [],
+                "highlightedAnnotations": [],
+                "data": ["Velocity over Time"],
+                "legends": {
+                    "title": "legend",
+                    "type": "name",
+                    "referenceDatadef": "",
+                    "datadefs": []
+                },
+                "activeDatadefs": ["Velocity over Time"]
+            }
+        },
+        "tools": [{
+            "name": "animation",
+            "setup": {
+                "pane": "top",
+                "hideGraph": false,
+                "duration": 9000,
+                "channelWidth": 70,
+                "staticImages": [{
+                    "name": "finish",
+                    "image": "finish.png",
+                    "width": 70,
+                    "height": 10,
+                    "xOffset": 0,
+                    "yOffset": 5,
+                    "instances": []
+                }],
+                "backgroundImage": "road-dashed.png",
+                "animations": [{
+                    "data": "Animate this!",
+                    "image": "carWhite2.png",
+                    "width": 30,
+                    "height": 61,
+                    "xOffset": 40,
+                    "yOffset": 0
+                }],
+                "linkedAnimations": [{
+                    "pane": "bottom",
+                    "animations": [{
+                        "data": "Velocity over Time"
+                    }]
+                }]
+            }
+        }],
+        "isFinalStep": true,
+        "nextButtonShouldSubmit": true
+    }],
+    "responseTemplates": [],
+    "axes": [{
+        "url": "/shared/first-derivative-of-animation/axes/1",
+        "units": "/shared/first-derivative-of-animation/units/Time",
+        "min": 0,
+        "max": 10,
+        "nSteps": 10,
+        "label": "Time"
+    }, {
+        "url": "/shared/first-derivative-of-animation/axes/2",
+        "units": "/shared/first-derivative-of-animation/units/Distance",
+        "min": 0,
+        "max": 20,
+        "nSteps": 10,
+        "label": "Distance"
+    }, {
+        "url": "/shared/first-derivative-of-animation/axes/3",
+        "units": "/shared/first-derivative-of-animation/units/Time",
+        "min": 0,
+        "max": 10,
+        "nSteps": 10,
+        "label": "Time"
+    }, {
+        "url": "/shared/first-derivative-of-animation/axes/4",
+        "min": 0,
+        "max": 4,
+        "nSteps": 4,
+        "label": "Velocity"
+    }],
+    "datadefs": [{
+        "type": "UnorderedDataPoints",
+        "records": [{
+            "url": "/shared/first-derivative-of-animation/datadefs/Animate this!",
+            "name": "Animate this!",
+            "activity": "/shared/first-derivative-of-animation",
+            "xUnits": "/shared/first-derivative-of-animation/units/Time",
+            "yUnits": "/shared/first-derivative-of-animation/units/Distance",
+            "points": [
+                [
+                0,
+                0],
+                [
+                1,
+                1],
+                [
+                2,
+                2],
+                [
+                3,
+                3],
+                [
+                4,
+                6],
+                [
+                5,
+                8],
+                [
+                6,
+                10],
+                [
+                7,
+                12],
+                [
+                8,
+                14],
+                [
+                9,
+                16],
+                [
+                10,
+                18]
+            ],
+            "pointType": "none",
+            "lineType": "connected",
+            "lineSnapDistance": 0.1
+        }]
+    }, {
+        "type": "FirstDerivative",
+        "records": [{
+            "url": "/shared/first-derivative-of-animation/datadefs/Velocity over Time",
+            "name": "Velocity over Time",
+            "activity": "/shared/first-derivative-of-animation",
+            "xUnits": "/shared/first-derivative-of-animation/units/Time",
+            "points": [],
+            "pointType": "none",
+            "lineType": "connected",
+            "lineSnapDistance": 0.1,
+            "sourceType": "datadef",
+            "source": "Animate this!",
+            "sourceIsPiecewiseLinear": true
+        }]
+    }],
+    "tags": [],
+    "annotations": [],
+    "variables": [],
+    "units": [{
+        "url": "/shared/first-derivative-of-animation/units/Time",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "Time",
+        "abbreviation": "s",
+        "pluralName": "Time"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/Distance",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "Distance",
+        "abbreviation": "m",
+        "pluralName": "Distance"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/degrees Celsius",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "degrees Celsiu",
+        "abbreviation": "deg C",
+        "pluralName": "degrees Celsius"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/minutes",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "minute",
+        "abbreviation": "min.",
+        "pluralName": "minutes"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/meters",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "meter",
+        "abbreviation": "m",
+        "pluralName": "meters"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/seconds",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "second",
+        "abbreviation": "s",
+        "pluralName": "seconds"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/centimeters",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "centimeter",
+        "abbreviation": "cm",
+        "pluralName": "centimeters"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/grams",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "gram",
+        "abbreviation": "gr",
+        "pluralName": "grams"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/miles",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "mile",
+        "abbreviation": "mi",
+        "pluralName": "miles"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/hours",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "hour",
+        "abbreviation": "hr",
+        "pluralName": "hours"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/Celsius",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "Celsiu",
+        "abbreviation": "° C.",
+        "pluralName": "Celsius"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/dollars",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "dollar",
+        "abbreviation": "$",
+        "pluralName": "dollars"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/inches",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "inche",
+        "abbreviation": "in",
+        "pluralName": "inches"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/years",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "year",
+        "abbreviation": "yr",
+        "pluralName": "years"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/millimeters",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "millimeter",
+        "abbreviation": "mm",
+        "pluralName": "millimeters"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/parts per million",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "parts per million",
+        "abbreviation": "ppm",
+        "pluralName": "parts per million"
+    }, {
+        "url": "/shared/first-derivative-of-animation/units/meters per second",
+        "activity": "/shared/first-derivative-of-animation",
+        "name": "meters per second",
+        "abbreviation": "m/s",
+        "pluralName": "meters per second"
+    }]
+}

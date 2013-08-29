@@ -1,0 +1,241 @@
+{
+  "type": "Activity",
+  "name": "First Derivative of Animation",
+  "authorName": "Parker Morse",
+  "pages": [
+    {
+      "type": "Page",
+      "name": "1 Sample Page",
+      "text": "This page will have an animation in the upper-right pane and a first derivative graph in the lower right.",
+      "panes": [
+        {
+          "type": "PredefinedGraphPane",
+          "title": "The original data",
+          "yLabel": "Distance",
+          "yMin": 0.0,
+          "yMax": 20.0,
+          "xLabel": "Time",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 10.0,
+          "xTicks": 10.0,
+          "includedDataSets": [
+            {
+              "name": "Animate this!",
+              "inLegend": false
+            }
+          ],
+          "showCrossHairs": false,
+          "showToolTipCoords": false,
+          "showGraphGrid": false,
+          "animation": "Animated Points"
+        },
+        {
+          "type": "PredefinedGraphPane",
+          "title": "The derivative",
+          "yLabel": "Velocity",
+          "yMin": 0.0,
+          "yMax": 4.0,
+          "xLabel": "Time",
+          "xMin": 0.0,
+          "xMax": 10.0,
+          "yTicks": 4.0,
+          "xTicks": 10.0,
+          "includedDataSets": [
+            {
+              "name": "Velocity over Time",
+              "inLegend": false
+            }
+          ],
+          "showLinkedAnimation": true,
+          "showCrossHairs": false,
+          "showToolTipCoords": false,
+          "showGraphGrid": false
+        }
+      ]
+    }
+  ],
+  "datasets": [
+    {
+      "type": "datadef",
+      "name": "Animate this!",
+      "yUnits": "Distance",
+      "xUnits": "Time",
+      "xPrecision": 0.1,
+      "yPrecision": 0.1,
+      "lineSnapDistance": 0.1,
+      "lineType": "connected",
+      "pointType": "none",
+      "data": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          2.0,
+          2.0
+        ],
+        [
+          3.0,
+          3.0
+        ],
+        [
+          4.0,
+          6.0
+        ],
+        [
+          5.0,
+          8.0
+        ],
+        [
+          6.0,
+          10.0
+        ],
+        [
+          7.0,
+          12.0
+        ],
+        [
+          8.0,
+          14.0
+        ],
+        [
+          9.0,
+          16.0
+        ],
+        [
+          10.0,
+          18.0
+        ]
+      ],
+      "expression": "",
+      "derivativeOf": null,
+      "piecewiseLinear": null
+    },
+    {
+      "type": "datadef",
+      "name": "Velocity over Time",
+      "yUnits": null,
+      "xUnits": "Time",
+      "xPrecision": 0.1,
+      "yPrecision": 0.1,
+      "lineSnapDistance": 0.1,
+      "lineType": "connected",
+      "pointType": "none",
+      "data": [
+
+      ],
+      "expression": "",
+      "derivativeOf": "Animate this!",
+      "piecewiseLinear": true
+    }
+  ],
+  "animations": [
+    {
+      "name": "Animated Points",
+      "yMin": 0.0,
+      "yMax": 20.0,
+      "markedCoordinates": [
+
+      ],
+      "dataset": "Animate this!",
+      "linkedAnimations": [{ 
+          "dataSet": "Velocity over Time"
+          }]
+    }
+  ],
+  "labelSets": [
+
+  ],
+  "units": [
+    {
+      "type": "Unit",
+      "name": "Time",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "Distance",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "degrees Celsius",
+      "abbreviation": "deg C"
+    },
+    {
+      "type": "Unit",
+      "name": "minutes",
+      "abbreviation": "min."
+    },
+    {
+      "type": "Unit",
+      "name": "meters",
+      "abbreviation": "m"
+    },
+    {
+      "type": "Unit",
+      "name": "seconds",
+      "abbreviation": "s"
+    },
+    {
+      "type": "Unit",
+      "name": "centimeters",
+      "abbreviation": "cm"
+    },
+    {
+      "type": "Unit",
+      "name": "grams",
+      "abbreviation": "gr"
+    },
+    {
+      "type": "Unit",
+      "name": "miles",
+      "abbreviation": "mi"
+    },
+    {
+      "type": "Unit",
+      "name": "hours",
+      "abbreviation": "hr"
+    },
+    {
+      "type": "Unit",
+      "name": "Celsius",
+      "abbreviation": "° C."
+    },
+    {
+      "type": "Unit",
+      "name": "dollars",
+      "abbreviation": "$"
+    },
+    {
+      "type": "Unit",
+      "name": "inches",
+      "abbreviation": "in"
+    },
+    {
+      "type": "Unit",
+      "name": "years",
+      "abbreviation": "yr"
+    },
+    {
+      "type": "Unit",
+      "name": "millimeters",
+      "abbreviation": "mm"
+    },
+    {
+      "type": "Unit",
+      "name": "parts per million",
+      "abbreviation": "ppm"
+    },
+    {
+      "type": "Unit",
+      "name": "meters per second",
+      "abbreviation": "m/s"
+    }
+  ]
+}
