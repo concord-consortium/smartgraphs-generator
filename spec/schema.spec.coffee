@@ -9,12 +9,12 @@ env = JSV.createEnvironment()
 
 describe "the runtime schema", ->
 
-  for exampleFile in fs.readdirSync(exampleDataDir + "/expected-ouput")
+  for exampleFile in fs.readdirSync(exampleDataDir + "/expected-output")
     do (exampleFile) ->
       describe "validating #{exampleFile}", ->
 
         it "should assert that the activity is valid", ->
-          activityString  = fs.readFileSync exampleDataDir + "/expected-ouput/" + exampleFile, 'utf8'
+          activityString  = fs.readFileSync exampleDataDir + "/expected-output/" + exampleFile, 'utf8'
           activity  = JSON.parse activityString
           report = env.validate(activity, schema)
           expect(report.errors.length).toBe(0)

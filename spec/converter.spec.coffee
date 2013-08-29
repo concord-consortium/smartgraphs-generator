@@ -48,6 +48,6 @@ describe "the converter", ->
         it "should output the correct object", ->
           inputString  = fs.readFileSync exampleDataDir + "/input/" + exampleFile, 'utf8'
           inputObject  = JSON.parse inputString
-          expectedOutputString = fs.readFileSync exampleDataDir + "/expected-ouput/" + exampleFile, 'utf8'
+          expectedOutputString = fs.readFileSync exampleDataDir + "/expected-output/" + exampleFile, 'utf8'
           outputObject = converter.convert inputObject
           expect(outputObject).toEqualObject JSON.parse(expectedOutputString)
