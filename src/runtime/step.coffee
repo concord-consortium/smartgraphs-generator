@@ -196,6 +196,9 @@ exports.Step = class Step
     @tools.animation.hideGraph = hideGraph
     @tools.animation.index = index
     @tools.animation.panes = @panes
+    # TODO: Linked animations
+    # if animation.linkedAnimations
+    #     @tools.animation.linkedAnimations = animation.linkedAnimations.toHash()
 
   appendResponseBranch: ({ criterion, step }) ->
     @responseBranches.push {
