@@ -4466,7 +4466,11 @@ require.define("/runtime/datadef.js", function (require, module, exports, __dirn
 
     Datadef.prototype.populateSourceDatasets = function() {
       if (this.derivativeOf != null) {
-        return this.activity.populateDataSet([this.derivativeOf]);
+        return this.activity.populateDataSet([
+          {
+            name: this.derivativeOf
+          }
+        ]);
       }
     };
 
