@@ -133,6 +133,7 @@ exports.RuntimeActivity = class RuntimeActivity
   # returns a list of datadefs and datarefs corresponding to the dataset names in includedDataSets
 
   populateDataSet: (includedDataSets) ->
+    # includedDataSets needs to be an object with a name property - not a string
     populatedDataDefs = []
     populatedDataRefs = []
     activeDataSetIndex = 0

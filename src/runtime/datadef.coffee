@@ -37,7 +37,8 @@ exports.Datadef = class Datadef
     @lineSnapDistance ?= 0
 
   populateSourceDatasets: ->
-    if @derivativeOf? then @activity.populateDataSet [@derivativeOf]
+    # populateDataSet needs an object, not a name
+    if @derivativeOf? then @activity.populateDataSet [{name: @derivativeOf}]
 
   constructUnitRefs: ->
     @xUnitsRef = @activity.getUnitRef dumbSingularize @xUnits if @xUnits
