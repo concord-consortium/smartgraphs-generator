@@ -93,6 +93,15 @@ AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends G
   constructor: ->
     super
 
+AuthorPane.classFor['LinkedAnimationPane'] = class LinkedAnimationPane extends GraphPane
+
+  constructor: ->
+    super
+
+  addToStep: (step) ->
+    super
+    # TODO: add LinkedAnimation to animation tool.
+
 AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 
   constructor: ->
