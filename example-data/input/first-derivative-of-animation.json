@@ -31,7 +31,7 @@
           "animation": "Animated Points"
         },
         {
-          "type": "PredefinedGraphPane",
+          "type": "LinkedAnimationPane",
           "title": "The derivative",
           "yLabel": "Velocity",
           "yMin": 0.0,
@@ -47,7 +47,6 @@
               "inLegend": false
             }
           ],
-          "showLinkedAnimation": true,
           "showCrossHairs": false,
           "showToolTipCoords": false,
           "showGraphGrid": false
@@ -142,10 +141,7 @@
       "markedCoordinates": [
 
       ],
-      "dataset": "Animate this!",
-      "linkedAnimations": [{ 
-          "dataSet": "Velocity over Time"
-          }]
+      "dataset": "Animate this!"
     }
   ],
   "labelSets": [
