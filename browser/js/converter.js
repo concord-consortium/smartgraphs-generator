@@ -1090,7 +1090,7 @@ require.define("/author/sequences.js", function (require, module, exports, __dir
 
 require.define("/author/author-panes.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var AnimationPane, AuthorPane, EmptyPane, GraphPane, ImagePane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
+  var AnimationPane, AuthorPane, EmptyPane, GraphPane, ImagePane, LinkedAnimationPane, PredefinedGraphPane, PredictionGraphPane, SensorGraphPane, TablePane, dumbSingularize,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -1267,6 +1267,36 @@ require.define("/author/author-panes.js", function (require, module, exports, __
     }
 
     return PredefinedGraphPane;
+
+  })(GraphPane);
+
+  AuthorPane.classFor['LinkedAnimationPane'] = LinkedAnimationPane = (function(_super) {
+
+    __extends(LinkedAnimationPane, _super);
+
+    function LinkedAnimationPane() {
+      LinkedAnimationPane.__super__.constructor.apply(this, arguments);
+    }
+
+    LinkedAnimationPane.prototype.addToStep = function(step) {
+      var animation, animationKey, otherPaneIndex;
+      LinkedAnimationPane.__super__.addToStep.apply(this, arguments);
+      otherPaneIndex = 1 - this.index;
+      animationKey = "" + this.page.panes[otherPaneIndex].animation;
+      if (!(animationKey != null)) {
+        throw new Error("A LinkedAnimationPane requires the other pane on the page to display an associated animation.");
+      }
+      animation = this.page.activity.animationsByName[animationKey];
+      if (!(animation != null)) {
+        throw new Error("Couldn't find the animation " + animationName + " in the activity.");
+      }
+      return animation.addLinkedAnimation({
+        pane: this,
+        datasets: this.includedDataSets
+      });
+    };
+
+    return LinkedAnimationPane;
 
   })(GraphPane);
 
@@ -3087,6 +3117,7 @@ require.define("/author/animation.js", function (require, module, exports, __dir
       this.name = _arg.name, this.yMin = _arg.yMin, this.yMax = _arg.yMax, this.markedCoordinates = _arg.markedCoordinates, this.dataset = _arg.dataset;
       this.activity = activity;
       if (this.markedCoodinates == null) this.markedCoodinates = [];
+      if (this.linkedAnimations == null) this.linkedAnimations = [];
     }
 
     Animation.prototype.getXMin = function() {
@@ -3103,10 +3134,19 @@ require.define("/author/animation.js", function (require, module, exports, __dir
       return dataset.data[dataset.data.length - 1][0];
     };
 
+    Animation.prototype.addLinkedAnimation = function(_arg) {
+      this.pane = _arg.pane, this.datasets = _arg.datasets;
+      return this.linkedAnimations.push({
+        pane: this.pane,
+        datasets: this.datasets
+      });
+    };
+
     Animation.prototype.toAnimationTool = function() {
       return new AnimationTool({
         datasetName: this.dataset,
-        staticImageYValues: this.markedCoordinates
+        staticImageYValues: this.markedCoordinates,
+        linkedAnimations: this.linkedAnimations
       });
     };
 
@@ -3131,11 +3171,11 @@ require.define("/runtime/animation-tool.js", function (require, module, exports,
     AnimationTool.prototype.hideGraph = false;
 
     function AnimationTool(_arg) {
-      this.datasetName = _arg.datasetName, this.staticImageYValues = _arg.staticImageYValues;
+      this.datasetName = _arg.datasetName, this.staticImageYValues = _arg.staticImageYValues, this.linkedAnimations = _arg.linkedAnimations;
     }
 
     AnimationTool.prototype.toHash = function() {
-      var y;
+      var dataset, la, y;
       return {
         name: "animation",
         setup: {
@@ -3175,7 +3215,31 @@ require.define("/runtime/animation-tool.js", function (require, module, exports,
               xOffset: 40,
               yOffset: 0
             }
-          ]
+          ],
+          linkedAnimations: (function() {
+            var _i, _len, _ref, _results;
+            _ref = this.linkedAnimations;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              la = _ref[_i];
+              _results.push({
+                pane: this.panes.length === 1 ? 'single' : la.pane === 0 ? 'top' : 'bottom',
+                animations: (function() {
+                  var _j, _len2, _ref2, _results2;
+                  _ref2 = la.datasets;
+                  _results2 = [];
+                  for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+                    dataset = _ref2[_j];
+                    _results2.push({
+                      data: dataset.name
+                    });
+                  }
+                  return _results2;
+                })()
+              });
+            }
+            return _results;
+          }).call(this)
         }
       };
     };
