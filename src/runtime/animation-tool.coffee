@@ -4,7 +4,7 @@ exports.AnimationTool = class AnimationTool
   panes: null
   hideGraph: false
 
-  constructor: ({ @datasetName, @staticImageYValues }) ->
+  constructor: ({ @datasetName, @staticImageYValues, @linkedAnimations }) ->
 
   toHash: ->
     name: "animation"
@@ -31,3 +31,7 @@ exports.AnimationTool = class AnimationTool
         xOffset: 40
         yOffset: 0
       ]
+      linkedAnimations: ({
+        pane: if @panes.length == 1 then 'single' else if la.pane == 0 then 'top' else 'bottom'
+        animations: ({data: dataset.name} for dataset in la.datasets)
+      } for la in @linkedAnimations)

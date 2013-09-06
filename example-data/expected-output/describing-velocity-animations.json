@@ -105,7 +105,8 @@
                 "xOffset": 40,
                 "yOffset": 0
               }
-            ]
+            ],
+            "linkedAnimations": []
           }
         }
       ],
@@ -184,7 +185,8 @@
                 "xOffset": 40,
                 "yOffset": 0
               }
-            ]
+            ],
+            "linkedAnimations": []
           }
         }
       ],

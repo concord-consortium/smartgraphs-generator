@@ -100,7 +100,19 @@ AuthorPane.classFor['LinkedAnimationPane'] = class LinkedAnimationPane extends G
 
   addToStep: (step) ->
     super
-    # TODO: add LinkedAnimation to animation tool.
+    # Find the other pane
+    otherPaneIndex = 1 - @index
+    animationKey = "#{@page.panes[otherPaneIndex].animation}"
+    if not animationKey?
+      throw new Error "A LinkedAnimationPane requires the other pane on the page to display an associated animation."
+
+    # Find that animation in the set of animations
+    # N.B. we're counting on the animation already existing in the activity
+    animation = @page.activity.animationsByName[animationKey]
+    if not animation?
+      throw new Error "Couldn't find the animation #{animationName} in the activity."
+    # Add the linkedAnimation to it
+    animation.addLinkedAnimation({pane: this, datasets: this.includedDataSets})
 
 AuthorPane.classFor['SensorGraphPane'] = class SensorGraphPane extends GraphPane
 

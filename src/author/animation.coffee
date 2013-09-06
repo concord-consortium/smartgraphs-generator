@@ -4,6 +4,7 @@ exports.Animation = class Animation
 
   constructor: ({@name, @yMin, @yMax, @markedCoordinates, @dataset}, @activity) ->
     @markedCoodinates ?= []
+    @linkedAnimations ?= []
 
   # call only when generating runtime json--requires @activity.datasetsByName to be populated
   # DEPRECATED: this should come from the semantic JSON
@@ -19,7 +20,11 @@ exports.Animation = class Animation
     dataset = @activity.datasetsByName[@dataset]
     dataset.data[dataset.data.length-1][0]
 
+  addLinkedAnimation: ({@pane, @datasets}) ->
+    this.linkedAnimations.push({pane: @pane, datasets: @datasets})
+
   toAnimationTool: () ->
     new AnimationTool
       datasetName: @dataset
       staticImageYValues: @markedCoordinates
+      linkedAnimations: @linkedAnimations
