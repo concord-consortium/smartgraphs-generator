@@ -85,7 +85,7 @@ class GraphPane
       if not pane.annotation?
         throw new Error "When attempting to include annotations from pane #{source.pane+1} of page #{source.page+1}, couldn't find the annotation."
 
-      step.addAnnotationToPane { index: source.pane, annotation: pane.annotation }
+      step.addAnnotationToPane { index: @index, annotation: pane.annotation }
 
 
 AuthorPane.classFor['PredefinedGraphPane'] = class PredefinedGraphPane extends GraphPane

@@ -1248,7 +1248,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
           throw new Error("When attempting to include annotations from pane " + (source.pane + 1) + " of page " + (source.page + 1) + ", couldn't find the annotation.");
         }
         return step.addAnnotationToPane({
-          index: source.pane,
+          index: _this.index,
           annotation: pane.annotation
         });
       }) : void 0;
