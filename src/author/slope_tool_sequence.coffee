@@ -181,8 +181,6 @@ exports.SlopeToolSequence = class SlopeToolSequence
       throw new Error "Slope Tool Sequence requires a GraphPane on the page."
     unless @tablePane
       throw new Error "Slope Tool Sequence requires a TablePane on the page."
-    unless @dataSetName
-      throw new Error "Slope Tool Sequence requires a Dataset."
 
     if @dataSetName then @graphPane.activeDatasetName = @dataSetName
 
