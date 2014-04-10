@@ -156,12 +156,12 @@ AuthorPane.classFor['PredictionGraphPane'] = class PredictionGraphPane extends G
 
 AuthorPane.classFor['ImagePane'] = class ImagePane
 
-  constructor: ({@url, @license, @attribution}) ->
+  constructor: ({@url, @license, @attribution, @show_full_image}) ->
 
   addToPageAndActivity: (runtimePage, runtimeActivity) ->
 
   addToStep: (step) ->
-    step.addImagePane { @url, @license, @attribution, @index }
+    step.addImagePane { @url, @license, @attribution, @show_full_image, @index }
 
 
 AuthorPane.classFor['TablePane'] = class TablePane

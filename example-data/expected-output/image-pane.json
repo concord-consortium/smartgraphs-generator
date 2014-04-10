@@ -34,7 +34,8 @@
         "single": {
           "type": "image",
           "path": "http://smartgraphs.concord.org/static/smartgraphs/en/current/resources/images/walking_path.jpg",
-          "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower"
+          "caption": "Creative Commons BY-NC-ND 2.0 image courtesy flickr user altopower",
+          "showFullImage": true
         }
       },
       "isFinalStep": true,

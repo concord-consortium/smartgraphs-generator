@@ -27,15 +27,17 @@ exports.Step = class Step
   getUrl: ->
     "#{@page.getUrl()}/step/#{@index}"
 
-  addImagePane: ({ url, license, attribution, index }) ->
+  addImagePane: ({ url, license, attribution,show_full_image, index }) ->
     @panes[index] = {
       url,
       license,
       attribution,
+      show_full_image,
       toHash: ->
         type:    'image'
         path:    @url
         caption: "#{@license} #{@attribution}"
+        showFullImage: @show_full_image
     }
 
   addGraphPane: ({ title, datadefRef, xAxis, yAxis, index, showCrossHairs, showGraphGrid, showToolTipCoords, includedDataSets, activeDatasetName, dataref, sequenceType }) ->

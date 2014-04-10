@@ -1381,7 +1381,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
   AuthorPane.classFor['ImagePane'] = ImagePane = (function() {
 
     function ImagePane(_arg) {
-      this.url = _arg.url, this.license = _arg.license, this.attribution = _arg.attribution;
+      this.url = _arg.url, this.license = _arg.license, this.attribution = _arg.attribution, this.show_full_image = _arg.show_full_image;
     }
 
     ImagePane.prototype.addToPageAndActivity = function(runtimePage, runtimeActivity) {};
@@ -1391,6 +1391,7 @@ require.define("/author/author-panes.js", function (require, module, exports, __
         url: this.url,
         license: this.license,
         attribution: this.attribution,
+        show_full_image: this.show_full_image,
         index: this.index
       });
     };
@@ -1682,6 +1683,12 @@ require.define("/author/slope_tool_sequence.js", function (require, module, expo
         if (pane instanceof AuthorPane.classFor['TablePane']) {
           this.tablePane = pane;
         }
+      }
+      if (!this.graphPane) {
+        throw new Error("Slope Tool Sequence requires a GraphPane on the page.");
+      }
+      if (!this.tablePane) {
+        throw new Error("Slope Tool Sequence requires a TablePane on the page.");
       }
       if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
     }
@@ -2286,6 +2293,12 @@ require.define("/author/line_construction_sequence.js", function (require, modul
         if (pane instanceof AuthorPane.classFor["TablePane"]) {
           this.tablePane = pane;
         }
+      }
+      if (!this.graphPane) {
+        throw new Error("Line Construction Sequence requires a GraphPane on the page.");
+      }
+      if (!this.tablePane) {
+        throw new Error("Line Construction Sequence requires a TablePane on the page.");
       }
       if (this.dataSetName) this.graphPane.activeDatasetName = this.dataSetName;
       if (!this.maxAttempts) this.maxAttempts = 1;
@@ -4006,17 +4019,19 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
     };
 
     Step.prototype.addImagePane = function(_arg) {
-      var attribution, index, license, url;
-      url = _arg.url, license = _arg.license, attribution = _arg.attribution, index = _arg.index;
+      var attribution, index, license, show_full_image, url;
+      url = _arg.url, license = _arg.license, attribution = _arg.attribution, show_full_image = _arg.show_full_image, index = _arg.index;
       return this.panes[index] = {
         url: url,
         license: license,
         attribution: attribution,
+        show_full_image: show_full_image,
         toHash: function() {
           return {
             type: 'image',
             path: this.url,
-            caption: "" + this.license + " " + this.attribution
+            caption: "" + this.license + " " + this.attribution,
+            showFullImage: this.show_full_image
           };
         }
       };
@@ -4151,6 +4166,9 @@ require.define("/runtime/step.js", function (require, module, exports, __dirname
         highlightedAnnotations: [],
         toHash: function() {
           var annotation;
+          if (!this.datadefRef.datadef) {
+            throw new Error("DataTable requires a data reference, usually from Graph on same page.");
+          }
           return {
             type: 'table',
             data: this.datadefRef.datadef.name,
