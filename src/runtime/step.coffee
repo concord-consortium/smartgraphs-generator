@@ -104,6 +104,8 @@ exports.Step = class Step
       annotations: [],
       highlightedAnnotations: [],
       toHash: ->
+        unless @datadefRef.datadef
+          throw new Error "DataTable requires a data reference, usually from Graph on same page."
         type:                   'table'
         data:                   @datadefRef.datadef.name
         xLabel:                 xLabel

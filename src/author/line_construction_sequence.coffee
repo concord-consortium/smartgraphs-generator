@@ -29,6 +29,10 @@ exports.LineConstructionSequence = class LineConstructionSequence
     for pane, i in @page.panes || []
       @graphPane = pane if pane instanceof AuthorPane.classFor["PredefinedGraphPane"]
       @tablePane = pane if pane instanceof AuthorPane.classFor["TablePane"]
+    unless @graphPane
+      throw new Error "Line Construction Sequence requires a GraphPane on the page."
+    unless @tablePane
+      throw new Error "Line Construction Sequence requires a TablePane on the page."
 
     if @dataSetName then @graphPane.activeDatasetName = @dataSetName
     @maxAttempts = 1 unless @maxAttempts

@@ -176,7 +176,14 @@ exports.SlopeToolSequence = class SlopeToolSequence
     for pane, i in @page.panes || []
       @graphPane = pane if pane instanceof AuthorPane.classFor['PredefinedGraphPane']
       @tablePane = pane if pane instanceof AuthorPane.classFor['TablePane']
-      
+    
+    unless @graphPane
+      throw new Error "Slope Tool Sequence requires a GraphPane on the page."
+    unless @tablePane
+      throw new Error "Slope Tool Sequence requires a TablePane on the page."
+    unless @dataSetName
+      throw new Error "Slope Tool Sequence requires a Dataset."
+
     if @dataSetName then @graphPane.activeDatasetName = @dataSetName
 
 
