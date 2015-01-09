@@ -1,6 +1,7 @@
 {
   "type": "Activity",
   "name": "Simple Graph with Author Created Labels",
+  "ccProjectName": "Graph Literacy",
   "datasets": [
     {
       "name": "datadef-1",

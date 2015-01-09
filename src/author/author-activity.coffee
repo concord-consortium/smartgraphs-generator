@@ -28,8 +28,9 @@ exports.AuthorActivity = class AuthorActivity
     if @hash.type isnt 'Activity'
       throw new Error "smartgraphs-generator: AuthorActivity constructor was called with a hash whose toplevel element does not have type: \"Activity\""
 
-    {@name,  @owner, @authorName} = hash
+    {@name,  @owner, @authorName, @ccProjectName} = hash
     @owner ||= 'shared'        # until we get owner's username into the input hash
+    # @ccProjectName might be nil, and that is fine
     @pages = (new AuthorPage(page, this, i + 1) for page, i in hash.pages)
     @units = (new AuthorUnit(unit, this) for unit in hash.units || [])
     @animations = (new Animation(animation, this) for animation in hash.animations || [])
@@ -46,7 +47,7 @@ exports.AuthorActivity = class AuthorActivity
       @datasetsByName[dataset.name] = dataset
 
   toRuntimeActivity: ->
-    runtimeActivity = new RuntimeActivity @owner, @name, @authorName, @hash.datasets, @hash.labelSets
+    runtimeActivity = new RuntimeActivity @owner, @name, @authorName, @ccProjectName, @hash.datasets, @hash.labelSets
     if @hash.labelSets
       for labelSet, i in @hash.labelSets
         labelsArray = []

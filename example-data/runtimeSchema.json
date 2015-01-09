@@ -30,6 +30,10 @@
         "authorName": {
           "type": "string",
           "optional": true
+        },
+        "ccProjectName": {
+          "type": "string",
+          "optional": true
         }
       }
     },

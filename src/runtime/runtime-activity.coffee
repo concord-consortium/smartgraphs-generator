@@ -26,7 +26,7 @@
 
 exports.RuntimeActivity = class RuntimeActivity
 
-  constructor: (@owner, @name, @authorName, @datasets, @labelSets) ->
+  constructor: (@owner, @name, @authorName, @ccProjectName, @datasets, @labelSets) ->
     @pages     = []
     @steps     = []
     @unitRefs  = {}
@@ -232,6 +232,18 @@ exports.RuntimeActivity = class RuntimeActivity
     page.setIndex @pages.length
     page
 
+  activityHash: ->
+    result = 
+      title: @name
+      url:   @getUrl()
+      owner: @owner
+      pages: (page.getUrl() for page in @pages)
+      axes:  url for url of @axes
+      authorName: @authorName
+    if @ccProjectName
+      result['ccProjectName'] = @ccProjectName
+    result
+
   toHash: ->
     flatten = (arrays) -> [].concat arrays...     # Handy CS idiom. obj.method args... => obj.method.apply(obj, args)
 
@@ -239,13 +251,7 @@ exports.RuntimeActivity = class RuntimeActivity
     _rev: 1
     data_format_version: 6
 
-    activity:
-      title: @name
-      url:   @getUrl()
-      owner: @owner
-      pages: (page.getUrl() for page in @pages)
-      axes:  url for url of @axes
-      authorName: @authorName
+    activity: @activityHash()
 
     pages: page.toHash() for page in @pages
     steps: flatten ((step.toHash() for step in page.steps) for page in @pages)
