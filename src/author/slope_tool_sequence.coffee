@@ -13,10 +13,14 @@ exports.SlopeToolSequence = class SlopeToolSequence
     results
   
   ending_text: () ->
-    "#{@xMax}#{if @xUnits.length > 0 then @xUnits else " for #{@x_axis_name}"}"
+    axis_name_result = " for #{@x_axis_name}"
+    "#{@xMax}#{if @xUnits.length > 0 then @xUnits else axis_name_result}"
   
   starting_text: () ->
-    "#{@xMin}#{if @xUnits.length > 0 then @xUnits}"
+    # NOTE: Probably @xUnits is never being set correctly, which is another problem
+    unit_results = ""
+    unit_results = @xUnits if @xUnits.length > 0
+    "#{@xMin} #{unit_results}"
 
   click_ok_text: () ->
     "<p>Then click \"OK\". </p>"

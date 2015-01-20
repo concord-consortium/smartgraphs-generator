@@ -308,7 +308,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/2",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Click on a point at \n<strong><em>one end</em></strong>  \nof the interval from\n40undefined to 100 for time. </p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Click on a point at \n<strong><em>one end</em></strong>  \nof the interval from\n40  to 100 for time. </p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -388,7 +388,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/3",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na point at \n<strong><em>one end</em></strong>  \nof the interval from\n40undefined to 100 for time.\nTry again.</p>\n<p> Click on a point at \n<strong><em>one end</em></strong>  \nof the interval from\n40undefined to 100 for time. </p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p>The point you have selected is not \na point at \n<strong><em>one end</em></strong>  \nof the interval from\n40  to 100 for time.\nTry again.</p>\n<p> Click on a point at \n<strong><em>one end</em></strong>  \nof the interval from\n40  to 100 for time. </p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -468,7 +468,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/4",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40undefined to 100 for time.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40  to 100 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -558,7 +558,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/5",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40undefined to 100 for time.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> Your points should be adjacent.</p>\n<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40  to 100 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -648,7 +648,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/6",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40undefined to 100 for time.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> You have selected the same point twice.</p>\n<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40  to 100 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
@@ -738,7 +738,7 @@
     {
       "url": "/shared/slope-tool-average-over-range/page/1-page-1/step/7",
       "activityPage": "/shared/slope-tool-average-over-range/page/1-page-1",
-      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na point at \n<strong><em>one end</em></strong>  \nof the interval from\n40undefined to 100 for time.  \nTry again.</p>\n<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40undefined to 100 for time.</p>\n<p>Then click \"OK\". </p>",
+      "beforeText": "<p><strong>Incorrect.</strong></p>\n<p> The point you have selected is not \na point at \n<strong><em>one end</em></strong>  \nof the interval from\n40  to 100 for time.  \nTry again.</p>\n<p>Now click on\nthe point at \n<strong><em>the other end</em></strong>  \nof the interval from\n40  to 100 for time.</p>\n<p>Then click \"OK\". </p>",
       "paneConfig": "split",
       "panes": {
         "top": {
